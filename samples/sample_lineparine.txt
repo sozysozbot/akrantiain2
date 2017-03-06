@@ -38,7 +38,7 @@ vowel "u" !"r" -> $1 /w/
 
 "ph" -> /p/
 "s" !vowel -> /s/
-"l" !vowel -> /ʟ/
+# "l" !vowel -> /ʟ/
 
 "'" -> //
 
@@ -50,3 +50,9 @@ vowel "u" !"r" -> $1 /w/
 "en" ^ -> /ən/;
 "ni" vowel -> /ɲ/ $2;
 "nj" vowel -> /ɲ/ $2;
+
+`edioll` -> /edjol/
+`wioll` -> /wjol/
+`woll` -> /wol/
+"vsfafgh" -> /vusfafuguh/
+"simfgh" -> /zimfuguh/
