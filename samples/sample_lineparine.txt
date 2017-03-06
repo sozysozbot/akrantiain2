@@ -27,6 +27,7 @@ vowel = "a" | "i" | "u" | "e" | "o" | "y"
 "kh" -> /x/
 !vowel ("rkh" | "Rkh") -> /ʁ/
 "rl" -> /ɹ/
+"Rl" -> /ɹ/
 
 "i" vowel -> /j/ $2
 "y" vowel -> /ɥ/ $2
