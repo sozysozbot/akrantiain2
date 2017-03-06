@@ -21,7 +21,7 @@ import Prelude hiding (undefined)
 import Akrantiain.Structure
 
 
-backquoted_string :: Parser [Orthography]
+backquoted_string :: Parser [PNCandidate]
 backquoted_string = do
   char '`'
   str <- many(noneOf "`\n")
@@ -52,34 +52,52 @@ define = do
    char '='
    return ident'
   spaces'
-  let candidates = fmap C $ try $ many(try $ try candidate <* spaces')
-  cands_arr <- try candidates `sepBy` try(char '|' >> spaces') 
+  cands_arr <- options_p
   sent_terminate
-  return $ Define ident cands_arr
+  return $ Define ident (cands_arr)
 
 sent_terminate :: Parser ()
 sent_terminate = eof <|> comment
-  
+
+candidates_p :: Parser Candidates
+candidates_p = fmap C $ try $ many(try $ try pncandidate <* spaces')
+
+options_p :: Parser Options
+options_p = fmap F $ try candidates_p `sepBy` try(char '|' >> spaces') 
 
 candidate :: Parser Candidate
 candidate = try(fmap (Res . Quo) quoted_string) <|> try(fmap Ide identifier) <|> (char '^' >> return (Res Boundary))
-  
+
+pncandidate :: Parser PNCandidate
+pncandidate = fmap Pos candidate <|> fmap Neg (try(char '!' >> candidate)) 
 
 conversion :: Parser Sentence
 conversion = do 
   orthos <- try $ do
    spaces'
-   let ortho = fmap (:[]) (fmap Pos candidate <|> try(fmap Neg $ char '!' >> spaces' >> candidate)) <|> backquoted_string
    orthos' <- many(try$ortho <* spaces')
    string "->"
-   return $ concat orthos'
+   return orthos'
   spaces'
   let phoneme = dollar_int <|> slash_string
   phonemes <- many(try$phoneme <* spaces')
   sent_terminate
   return $ Conversion orthos phonemes
 
+ortho :: Parser Options
+ortho = paren <|> fmap (F . (:[]) . C) (
+ fmap(:[]) (fmap Pos candidate <|> try(fmap Neg $ char '!' >> spaces' >> candidate)) <|> backquoted_string)
 
+paren :: Parser Options
+paren = do 
+ try $ do
+  char '('
+  spaces'
+ a <- options_p
+ spaces'
+ char ')'
+ return a
+  
 sentence :: Parser Sentence
 sentence = conversion <|> define 
 
