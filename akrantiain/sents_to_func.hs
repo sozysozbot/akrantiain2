@@ -4,17 +4,16 @@ module Akrantiain.Sents_to_func
 (sents_to_func
 ) where
 
-import Akrantiain.Expand
 import Akrantiain.Cook
 import Akrantiain.Structure
+import Akrantiain.Resolve_definitions
 
 
 sents_to_func :: Set Sentence -> (Either SemanticError (Input -> Output))
 sents_to_func sents = do
- conv2_arr <- expand sents
- foobar <- mysterious conv2_arr
+ foobar <- mysterious sents
  cookBy foobar
 
-mysterious :: [Conv2] -> Either SemanticError Fixme3
+mysterious :: Set Sentence -> Either SemanticError Fixme3
 mysterious cccccccc = Right Fixme3
 

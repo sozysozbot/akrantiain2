@@ -7,7 +7,7 @@ module Akrantiain.Cook
 ,Fixme3(..)
 ,RuntimeError(..)
 ) where
-import Akrantiain.Expand
+import Akrantiain.Resolve_definitions
 import Akrantiain.Structure
 data RuntimeError = RE {errNo :: Int, errMsg :: String} deriving(Eq, Ord)
 instance Show RuntimeError where
