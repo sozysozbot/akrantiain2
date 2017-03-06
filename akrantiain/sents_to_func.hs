@@ -6,7 +6,7 @@ module Akrantiain.Sents_to_func
 
 import Akrantiain.Cook
 import Akrantiain.Structure
-import Akrantiain.Resolve_definitions
+import Akrantiain.Errors
 
 
 sents_to_func :: Set Sentence -> (Either SemanticError (Input -> Output))

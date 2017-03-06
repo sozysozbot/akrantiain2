@@ -7,11 +7,9 @@ module Akrantiain.Cook
 ,Fixme3(..)
 ,RuntimeError(..)
 ) where
-import Akrantiain.Resolve_definitions
 import Akrantiain.Structure
-data RuntimeError = RE {errNo :: Int, errMsg :: String} deriving(Eq, Ord)
-instance Show RuntimeError where
- show RE{errNo = n, errMsg = str} = "Runtime error (error code #" ++ show n ++ ")\n" ++ str 
+import Akrantiain.Errors
+
 
 data Fixme3 = Fixme3 
 data Fixme4 = Fixme4 

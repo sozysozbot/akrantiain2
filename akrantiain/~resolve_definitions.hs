@@ -5,14 +5,12 @@ module Akrantiain.Resolve_definitions
 ,candids_to_quotes
 ) where
 
+import Akrantiain.Errors
 import Akrantiain.Structure
 -- import qualified Data.Set as S
 import qualified Data.Map as M
 import Data.Maybe(fromJust)
 import Prelude hiding (undefined)
-data SemanticError = E {errNum :: Int, errStr :: String} deriving(Eq, Ord)
-instance Show SemanticError where
- show E{errNum = n, errStr = str} = "Semantic error (error code #" ++ show n ++ ")\n" ++ str 
 
  
 {-
