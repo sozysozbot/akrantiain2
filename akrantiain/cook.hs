@@ -29,12 +29,7 @@ cookBy' :: Fixme4 -> Input -> Output
 cookBy' fixme4 input = undefined
 
 
-data Stat = Stat
-
-type Rule = Array (Array Resolved, Array Phoneme)
-
-update :: Rule -> Stat -> Stat
-update = undefined
+-- data Stat = S [(String, Maybe String)]
 
 
 
