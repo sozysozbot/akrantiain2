@@ -12,13 +12,10 @@ import Akrantiain.Consistency
 
 sents_to_func :: Set Sentence -> (Either SemanticError (Input -> Output))
 sents_to_func sents = do
- foobar <- mysterious sents
- cookBy foobar
-
-mysterious :: Set Sentence -> Either SemanticError Fixme3
-mysterious sents = do 
  sents' <- forM sents $ \sent -> do 
   check_consistency sent
- Right Fixme3
+ fixme3 <- mysterious sents'
+ cookBy fixme3
 
--- sents' :: [Sentence']
+mysterious :: Set Sentence' -> Either SemanticError Fixme3
+mysterious sents' = undefined
