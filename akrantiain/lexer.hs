@@ -40,7 +40,7 @@ sentences = do
  return $ catMaybes sents
 
 comment :: Parser ()
-comment = void(try $ spaces' >> oneOf ";\n") <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
+comment = void space <|> void(try $ spaces' >> void(oneOf ";\n")) <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
 
 -- consonant = "a" | "b" "d" | cons2 | co "c" co 
 define :: Parser Sentence
