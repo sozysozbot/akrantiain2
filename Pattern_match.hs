@@ -1,10 +1,13 @@
-import Data.Maybe(fromJust)
+import Data.Maybe(fromJust, mapMaybe)
+import Data.List(isPrefixOf)
 data W = W String | Dollar_ 
 
 type Condition = (String -> Bool)
 type Rule = [Either Condition (String, W)]
 
 type Stat = [(String, Maybe String)]
+type Front = [(String, Maybe String)]
+type Back = [(String, Maybe String)]
 
 cook :: String -> String
 cook str = concat $ map (fromJust . snd) $ cook' $ map (\x -> ([x], Nothing)) str
@@ -12,8 +15,43 @@ cook str = concat $ map (fromJust . snd) $ cook' $ map (\x -> ([x], Nothing)) st
 cook' :: Stat -> Stat
 cook' = undefined
 
+
+-- merge is allowed, split is not
 apply :: Rule -> Stat -> Stat
-apply rule stat = undefined
+apply = undefined
+
+-- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
+cutlist :: [a] -> [([a],[a])]
+cutlist [] = [([],[])]
+cutlist a@(x:xs) =  ([],a): map f (cutlist xs) where f(a,b) = (x:a,b)
+
+
+
+match :: Rule -> Stat -> [(Front, Back)]
+match [] stat = cutlist stat
+match (Left condition :xs) stat = filter f $ match xs stat where
+ f (front, _) = condition $ concat $ map fst front
+match (Right(pat,w) :xs) stat = mapMaybe g $ match xs stat where
+ g :: (Front, Back) -> Maybe (Front, Back)
+ g (front, back) = do 
+  let rev2 = map (\(a,b) -> (reverse a, b)) . reverse
+  let front' = rev2 front
+  let pat' = reverse pat
+  taken <- takeTill pat' front'
+  return (rev2 $ drop(length taken)front', rev2 taken ++ back)
+   
+ 
+takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
+takeTill "" _ = Just []
+takeTill str [] = Nothing
+takeTill str (x@(s,a):xs)
+ | s `isPrefixOf` str = (x:) <$> takeTill (drop(length s)str) xs
+ | otherwise = Nothing
+
+
+
+
+
 
 sample1 = "sashimi"
 sample2 = "stoxiet"
@@ -33,11 +71,9 @@ rule11= [Right("s",W"s"), Left noVowel]
 rule12= [Right("o",W"o")]
 
 noVowel :: Condition
-noVowel ('a':_) = True
-noVowel ('e':_) = True
-noVowel ('i':_) = True
-noVowel ('o':_) = True
-noVowel ('u':_) = True
-noVowel ('y':_) = True
-noVowel _ = False
+noVowel str
+ | null str = True
+ | last str `elem` "aeiouy" = False
+ | otherwise = True
+
 
