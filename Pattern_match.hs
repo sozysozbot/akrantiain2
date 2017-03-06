@@ -1,7 +1,19 @@
+import Data.Maybe(fromJust)
 data W = W String | Dollar_ 
 
 type Condition = (String -> Bool)
 type Rule = [Either Condition (String, W)]
+
+type Stat = [(String, Maybe String)]
+
+cook :: String -> String
+cook str = concat $ map (fromJust . snd) $ cook' $ map (\x -> ([x], Nothing)) str
+
+cook' :: Stat -> Stat
+cook' = undefined
+
+apply :: Rule -> Stat -> Stat
+apply rule stat = undefined
 
 sample1 = "sashimi"
 sample2 = "stoxiet"
@@ -29,7 +41,3 @@ noVowel ('u':_) = True
 noVowel ('y':_) = True
 noVowel _ = False
 
-update :: Rule -> Stat -> Stat
-update = undefined
-
-data Stat = Stat
