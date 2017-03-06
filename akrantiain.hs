@@ -4,6 +4,7 @@ import Text.Parsec
 import System.Environment
 import System.IO
 import Akrantiain.Sents_to_func
+import Akrantiain.Structure
 import Control.Monad(forM_)
 
 main :: IO ()
@@ -15,8 +16,8 @@ main = do
    handle <- openFile fname ReadMode 
    hSetEncoding handle utf8
    input <- hGetContents handle
-   runParser sentences () fname input >>>= \sents -> -- print sents
-    sents_to_func sents >>>= \func -> interact' func
+   runParser sentences () fname input >>>= \sents -> putStr (concatMap toSource sents)
+    -- sents_to_func sents >>>= \func -> interact' func
     
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()

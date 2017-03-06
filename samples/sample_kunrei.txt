@@ -35,4 +35,4 @@ velar = "g" | "k"
 "n" velar -> /ŋ/ $2
 "n"^velar -> /ŋ/ $2
 vowel "n" "'" -> $1 $1 /̃/ 
-vowel "" "n" !vowel -> $1 $1 
+vowel "" "n" !vowel -> $1 $1 /̃/ 

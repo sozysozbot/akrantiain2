@@ -69,10 +69,10 @@ instance ToSource PNCandidate where
  toSource (Neg cand) = '!':toSource cand
 
 instance ToSource Sentence where
- toSource (Conversion orthos phonemes) = intercalate " "(map toSource' orthos) ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";"
+ toSource (Conversion orthos phonemes) = intercalate " "(map toSource' orthos) ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
   where
    toSource' :: Options -> String
    toSource' (F [x]) = toSource x
    toSource' u = "(" ++ toSource u ++ ")"
- toSource (Define ide options) = toSource ide ++ " = " ++ toSource options
+ toSource (Define ide options) = toSource ide ++ " = " ++ toSource options ++ ";\n"
 
