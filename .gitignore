@@ -1,0 +1,5 @@
+*.bat
+*.hi
+*.o
+*.exe
+private

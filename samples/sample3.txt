@@ -1,0 +1,2 @@
+vowel = "a" | "i"; syll =  vowel  vowel
+syll -> /a/

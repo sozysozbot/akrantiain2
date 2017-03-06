@@ -1,0 +1,50 @@
+"u" -> /u/
+"o" -> /o/
+"a" -> /a/
+"e" -> /e/
+"i" -> /i/
+
+"va" -> /wa/
+"v" -> //
+"h" -> //
+"j" -> /y/
+"je" -> /e/
+"r" -> /r/
+"s" -> /s/
+"z" -> /z/
+"n" -> /n/
+"t" -> /t/
+"d" -> /d/
+"k" -> /k/
+"g" -> /g/
+"m" -> /m/
+"p" -> /p/
+"fa" -> /wa/
+"f" -> //
+"x" -> /h/
+"b" -> /b/
+
+"w" -> //
+"y" -> /y/
+
+"d" "i" -> /z/ $2
+"d" "y" -> /z/ $2
+"d" "u" -> /z/ $2
+"de" u -> /zyo/ /o/
+
+specialcons = "v" !"a" | "h" | "j"
+"n" specialcons vowel -> /n'/ $2 $3
+"m" specialcons vowel -> /n'/ $2 $3
+"m" !vowel -> /n/
+
+vowel = "a" | "e" | "i" | "o" | "u" | "w" | "y"
+
+u = "u" | !"e" "g" !vowel | "fu"
+"u" u -> /u/ /u/
+"o" u -> /o/ /o/
+"a" u -> /o/ /o/
+"e" u -> /yo/ /o/
+"i" u -> /yu/ /u/
+
+"eg" !vowel -> /ee/
+ 
