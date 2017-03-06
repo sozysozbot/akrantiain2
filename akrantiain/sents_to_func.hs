@@ -6,7 +6,6 @@ module Akrantiain.Sents_to_func
 
 import Akrantiain.Expand
 import Akrantiain.Cook
-import Akrantiain.Normalize
 import Akrantiain.Structure
 
 

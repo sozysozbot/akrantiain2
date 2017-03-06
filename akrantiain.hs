@@ -15,8 +15,8 @@ main = do
    handle <- openFile fname ReadMode 
    hSetEncoding handle utf8
    input <- hGetContents handle
-   runParser sentences () fname input >>>= \sents -> print sents
-    -- sents_to_func sents >>>= \func -> interact' func
+   runParser sentences () fname input >>>= \sents -> -- print sents
+    sents_to_func sents >>>= \func -> interact' func
     
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
