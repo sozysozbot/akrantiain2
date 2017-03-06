@@ -1,7 +1,7 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
 module Akrantiain.Structure
-(Candidates(..)
+(Term(..)
 ,Sentence(..)
 ,PNCandidate(..)
 ,Phoneme(..)
@@ -14,6 +14,7 @@ module Akrantiain.Structure
 ,Array
 ,ToSource(..)
 ,Options(..)
+,isConcreteTerm
 ) where
 import Prelude hiding (undefined)
 import Data.List(intercalate)
@@ -33,13 +34,13 @@ instance ToSource Phoneme where
  toSource (Slash str) = '/':str++"/"
 
 
-newtype Options = F(Set Candidates) deriving(Show, Eq, Ord)
+newtype Options = F(Set Term) deriving(Show, Eq, Ord)
 instance ToSource Options where
  toSource (F candids_set) = intercalate " | " (map toSource candids_set)
 
 
 newtype Resolveds = R{ unR ::(Array Resolved) } deriving(Show, Eq, Ord)
-newtype Candidates = C(Array PNCandidate) deriving(Show, Eq, Ord)
+newtype Term = C(Array PNCandidate) deriving(Show, Eq, Ord)
 data Sentence = Conversion (Array Options) (Array Phoneme) | Define Identifier Options deriving(Show, Eq, Ord)
 data PNCandidate = Neg Candidate | Pos Candidate deriving(Show, Eq, Ord)
 
@@ -61,7 +62,7 @@ instance ToSource Candidate where
  toSource (Res res) = toSource res
  toSource (Ide ide) = toSource ide
 
-instance ToSource Candidates where
+instance ToSource Term where
  toSource (C arr) = intercalate " " (map toSource arr)
 
 instance ToSource PNCandidate where
@@ -76,3 +77,10 @@ instance ToSource Sentence where
    toSource' u = "(" ++ toSource u ++ ")"
  toSource (Define ide options) = toSource ide ++ " = " ++ toSource options ++ ";\n"
 
+isConcreteTerm :: Term -> Bool
+isConcreteTerm(C arr2) = any isConc arr2 where
+ isConc :: PNCandidate -> Bool
+ isConc(Neg _) = False
+ isConc(Pos (Ide _)) = True 
+ isConc(Pos (Res Boundary)) = False 
+ isConc(Pos (Res (Quo _))) = True 

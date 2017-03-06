@@ -59,7 +59,7 @@ define = do
 sent_terminate :: Parser ()
 sent_terminate = eof <|> comment
 
-candidates_p :: Parser Candidates
+candidates_p :: Parser Term
 candidates_p = fmap C $ try $ many(try $ try pncandidate <* spaces')
 
 options_p :: Parser Options
