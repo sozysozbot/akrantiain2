@@ -10,6 +10,8 @@ main = do
  putStrLn $ (\(Right x) -> x) $ cook rls "mi"
  putStrLn $ (\(Right x) -> x) $ cook rls "liaxa"
  putStrLn $ (\(Right x) -> x) $ cook rls "lineparine"
+ putStrLn $ (\(Right x) -> x) $ cook rls "krante"
+ putStrLn $ (\(Right x) -> x) $ cook rls "lkurftlesse'd"
 
 c = Ch . (:[])
 
@@ -23,8 +25,8 @@ rls = [
  (lift[(c"s",W"s")]){rightneg = Just(no vowel)},
  (lift[(c"r",W"r")]){leftneg = Just (no vowel)},
  lift[(vowel,Dollar_), (c"r",W"ː")],
- lift[(c"t", W"t")],
- lift[(c"s", W"z")],
+ lift[(c"t",W"t")],
+ lift[(c"s",W"z")],
  lift[(c"a",W"a")],
  lift[(c"i",W"i")],
  lift[(c"u",W"u")],
@@ -33,9 +35,12 @@ rls = [
  lift[(c"k",W"k")],
  lift[(c"l",W"l")],
  lift[(c"s",W"s")],
+ lift[(c"f",W"f")],
  lift[(c"x",W"ʃ")],
  lift[(c"e",W"e")],
  lift[(c"o",W"o")],
+ lift[(c"d",W"d")],
+ lift[(c"'",W "")],
  lift[(c"p",W"p")]
  ]
 --  

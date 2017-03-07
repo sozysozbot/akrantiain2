@@ -1,7 +1,6 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 module Akrantiain.Pattern_match
 (Condition
-,Rule
 ,Stat
 ,Front
 ,Back
@@ -71,15 +70,11 @@ upgrade2 :: ([a] -> Bool) -> ([a] -> Bool)
 upgrade2 f str = all f $ tails str
 
 match :: Rule -> Stat -> [(Front, Back)]
-match k@R{leftneg=Just condition} stat = mapMaybe f $ match k{leftneg=Nothing} stat where
- f a@(front, _)
-  | upgrade2 condition $ concat $ map fst front = Just a
-  | otherwise = Nothing
+match k@R{leftneg=Just condition} stat = filter f $ match k{leftneg=Nothing} stat where
+ f (front, _) = upgrade2 condition $ concat $ map fst front
 match R{middle =[], rightneg=Nothing} stat = cutlist stat
-match k@R{middle=[], rightneg=Just condition} stat = mapMaybe f $ cutlist stat where
- f a@(front, back)
-  | upgrade condition $ concat $ map fst back = Just a
-  | otherwise = Nothing
+match R{middle=[], rightneg=Just condition} stat = filter f $ cutlist stat where
+ f (_, back) = upgrade condition $ concat $ map fst back
 match k@R{middle=(Ch pats,w):xs} stat = concatMap fff pats where 
  fff pat = mapMaybe (g pat) $ match k{middle=xs} stat
  g :: String -> (Front, Back) -> Maybe (Front, Back)
