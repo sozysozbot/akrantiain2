@@ -18,9 +18,8 @@ module Akrantiain.Structure
 ) where
 import Prelude hiding (undefined)
 import Data.List(intercalate)
+import Akrantiain.Global
 
-type Set a = [a]
-type Array a = [a]
 
 
 data Phoneme = Dollar Int | Slash String deriving(Show, Eq, Ord)
