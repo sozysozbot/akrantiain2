@@ -4,18 +4,24 @@ module Akrantiain.Sents_to_rules
 (sents_to_func
 ) where
 
-import Akrantiain.Cook
 import Akrantiain.Structure
 import Akrantiain.Errors
 import Control.Monad(forM)
+import Akrantiain.Pattern_match
 import Akrantiain.Consistency
+
+
+type Input = String
+type Output = Either RuntimeError String
+
+
 
 sents_to_func :: Set Sentence -> (Either SemanticError (Input -> Output))
 sents_to_func sents = do
  sents' <- forM sents $ \sent -> do 
   check_consistency sent
- fixme3 <- mysterious sents'
- cookBy fixme3
+ rules <- mysterious sents'
+ return $ cook rules
 
-mysterious :: Set Sentence' -> Either SemanticError Fixme3
+mysterious :: Set Sentence' -> Either SemanticError [Rule]
 mysterious sents' = undefined
