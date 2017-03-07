@@ -7,11 +7,22 @@ module Akrantiain.Pattern_match
 ,Back
 ,W(..)
 ,cook
+,Choose(..)
+,no
 ) where
 import Data.Maybe(mapMaybe, isNothing)
 import Data.List(isPrefixOf, inits)
 import Akrantiain.Errors
+
+no :: Choose String -> Condition
+no (Ch foo) str
+ | null str = True
+ | str `elem` foo = False
+ | otherwise = True
+
+
 data W = W String | Dollar_ 
+data Choose a = Ch [a] deriving(Show, Eq, Ord)
 
 type Condition = (String -> Bool)
 type Rule = [Either Condition (String, W)]

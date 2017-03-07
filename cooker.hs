@@ -1,16 +1,17 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
 import Akrantiain.Pattern_match
+main :: IO ()
 main = do
- putStrLn $ cook rls "sashimi"
- putStrLn $ cook rls "stoxiet"
+ putStrLn $ (\(Right x) -> x) $ cook rls "sashimi"
+ putStrLn $ (\(Right x) -> x) $ cook rls "stoxiet"
 
  
 rls :: [Rule]
 rls = [
  [Right("sh", W"ʃ")],
  [Right("x",Dollar_), Right("i", W""), Right("e",Dollar_)],
- [Right("s",W"s"), Left noVowel'],
+ [Right("s",W"s"), Left(no vowel)],
  [Right("t", W"t")],
  [Right("s", W"z")],
  [Right("a",W"a")],
@@ -22,11 +23,8 @@ rls = [
  [Right("o",W"o")]
  ]
 
-
+vowel :: Choose String
+vowel = Ch ["a","e","i","o","u","y"]
  
-noVowel' :: Condition
-noVowel' str
- | null str = True
- | str `elem` ["a","e","i","o","u","y"] = False
- | otherwise = True
+
 
