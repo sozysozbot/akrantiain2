@@ -50,10 +50,14 @@ rev2 ::  [([a], t)] -> [([a], t)]
 rev2 = map (\(a,b) -> (reverse a, b)) . reverse
 
 
+main = do
+ putStrLn $ cook "sashimi"
+ putStrLn $ cook "stoxiets"
+
 match :: Rule -> Stat -> [(Front, Back)]
 match [] stat = cutlist stat
 match (Left condition :xs) stat = filter f $ match xs stat where
- f (_, back) = condition $ concat $ map fst back 
+ f (_, back) = upgrade condition $ concat $ map fst back 
 match (Right(pat,w) :xs) stat = mapMaybe g $ match xs stat where
  g :: (Front, Back) -> Maybe (Front, Back)
  g (front, back) = do 
@@ -84,7 +88,7 @@ rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11, r
 
 rule2 = [Right("sh", W"ʃ")]
 rule8 = [Right("x",Dollar_), Right("i", W""), Right("e",Dollar_)]
-rule11= [Right("s",W"s"), Left noVowel] 
+rule11= [Right("s",W"s"), Left noVowel'] 
 
 rule1 = [Right("t", W"t")]
 rule3 = [Right("s", W"z")]
@@ -96,10 +100,18 @@ rule9 = [Right("x", W"ʃ")]
 rule10= [Right("e",W"e")]
 rule12= [Right("o",W"o")]
 
-noVowel :: Condition
-noVowel str
+{-noVowel :: Condition
+noVowel str = all noVowel' $ inits str
  | null str = True
  | head str `elem` "aeiouy" = False
+ | otherwise = True-}
+ 
+noVowel' :: Condition
+noVowel' str
+ | null str = True
+ | str `elem` ["a","e","i","o","u","y"] = False
  | otherwise = True
 
 
+upgrade :: ([a] -> Bool) -> ([a] -> Bool)
+upgrade f str = all f $ inits str
