@@ -1,7 +1,7 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
 import Data.Maybe(fromJust, mapMaybe, isNothing)
-import Data.List(isPrefixOf)
+import Data.List(isPrefixOf, inits)
 data W = W String | Dollar_ 
 
 type Condition = (String -> Bool)
@@ -43,15 +43,20 @@ stoxiet = [("s",Nothing),("t",Nothing),("o",Nothing),("x",Nothing),("i",Nothing)
 --  match rule11 stoxiet == [([],[("s",Just "s"),("t",Nothing),("o",Nothing),("x",Nothing),("i",Nothing),("e",Nothing),("t",Nothing)])]
 --  match rule8 stoxiet == [([("s",Nothing),("t",Nothing),("o",Nothing)],[("x",Nothing),("i",Just ""),("e",Nothing),("t",Nothing)])]
 --  match rule1 sashimi == []
+--  match rule11 sashimi == [([("s",Nothing),("a",Nothing)],[("s",Just "s"),("h",Nothing),("i",Nothing),("m",Nothing),("i",Nothing)])]
+
+
+rev2 ::  [([a], t)] -> [([a], t)]
+rev2 = map (\(a,b) -> (reverse a, b)) . reverse
+
 
 match :: Rule -> Stat -> [(Front, Back)]
 match [] stat = cutlist stat
 match (Left condition :xs) stat = filter f $ match xs stat where
- f (front, _) = condition $ concat $ map fst front
+ f (_, back) = condition $ concat $ map fst back 
 match (Right(pat,w) :xs) stat = mapMaybe g $ match xs stat where
  g :: (Front, Back) -> Maybe (Front, Back)
  g (front, back) = do 
-  let rev2 = map (\(a,b) -> (reverse a, b)) . reverse
   let front' = rev2 front
   let pat' = reverse pat
   taken <- takeTill pat' front'
@@ -59,7 +64,12 @@ match (Right(pat,w) :xs) stat = mapMaybe g $ match xs stat where
   case w of
    W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
    Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
-   
+
+{-[([],[("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing),("i",Nothing),("m",Nothing),("i",Nothing)]),
+ ([("s",Nothing)],[("a",Nothing),("s",Nothing),("h",Nothing),("i",Nothing),("m",Nothing),("i",Nothing)]),
+ ([("s",Nothing),("a",Nothing),("s",Nothing)],[("h",Nothing),("i",Nothing),("m",Nothing),("i",Nothing)]),
+ ([("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing)],[("i",Nothing),("m",Nothing),("i",Nothing)]),
+ ([("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing),("i",Nothing),("m",Nothing)],[("i",Nothing)])]-}
  
 takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
 takeTill "" _ = Just []
@@ -89,7 +99,7 @@ rule12= [Right("o",W"o")]
 noVowel :: Condition
 noVowel str
  | null str = True
- | last str `elem` "aeiouy" = False
+ | head str `elem` "aeiouy" = False
  | otherwise = True
 
 
