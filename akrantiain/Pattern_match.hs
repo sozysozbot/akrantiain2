@@ -9,6 +9,7 @@ module Akrantiain.Pattern_match
 ,cook
 ,Choose(..)
 ,no
+,Rule(..)
 ) where
 import Data.Maybe(mapMaybe, isNothing)
 import Data.List(isPrefixOf, inits)
@@ -26,7 +27,7 @@ data Choose a = Ch [a] deriving(Show, Eq, Ord)
 
 
 type Condition = (String -> Bool)
-type Rule = [Either Condition (Choose String, W)]
+data Rule = R{leftneg :: Maybe(Choose String), middle :: [Either Condition (Choose String, W)], rightneg :: Maybe(Choose String)}
 
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
@@ -64,13 +65,13 @@ rev2 ::  [([a], t)] -> [([a], t)]
 rev2 = map (\(a,b) -> (reverse a, b)) . reverse
 
 match :: Rule -> Stat -> [(Front, Back)]
-match [] stat = cutlist stat
-match (Left condition :xs) stat = mapMaybe f $ match xs stat where
+match R{middle =[]} stat = cutlist stat
+match k@R{middle=(Left condition :xs)} stat = mapMaybe f $ match k{middle=xs} stat where
  f a@(front, back)
   | upgrade condition $ concat $ map fst back = Just a
   | otherwise = Nothing
-match (Right((Ch pats),w) :xs) stat = concatMap fff pats where 
- fff pat = mapMaybe (g pat) $ match xs stat
+match k@R{middle=(Right((Ch pats),w) :xs)} stat = concatMap fff pats where 
+ fff pat = mapMaybe (g pat) $ match k{middle=xs} stat
  g :: String -> (Front, Back) -> Maybe (Front, Back)
  g pat (front, back) = do 
   let front' = rev2 front

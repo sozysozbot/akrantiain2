@@ -12,9 +12,11 @@ main = do
  putStrLn $ (\(Right x) -> x) $ cook rls "lineparine"
 
 c = Ch . (:[])
+
+lift a = R{leftneg = Nothing, middle = a, rightneg = Nothing}
  
 rls :: [Rule]
-rls = [
+rls = map lift [
  [Right(c"sh", W"ʃ")],
  [Right(c"x",Dollar_), Right(c"i", W""), Right(vowel,Dollar_)],
  [Right(c"i",W"j"),Right(vowel,Dollar_)],
