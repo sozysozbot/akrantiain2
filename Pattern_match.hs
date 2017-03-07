@@ -1,3 +1,5 @@
+{-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
+
 import Data.Maybe(fromJust, mapMaybe)
 import Data.List(isPrefixOf)
 data W = W String | Dollar_ 
@@ -18,14 +20,21 @@ cook' = undefined
 
 -- merge is allowed, split is not
 apply :: Rule -> Stat -> Stat
-apply = undefined
+apply rule stat = undefined
 
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
 cutlist :: [a] -> [([a],[a])]
 cutlist [] = [([],[])]
-cutlist a@(x:xs) =  ([],a): map f (cutlist xs) where f(a,b) = (x:a,b)
+cutlist u@(x:xs) =  ([],u): map f (cutlist xs) where f(a,b) = (x:a,b)
 
+sashimi, stoxiet :: Stat
+sashimi = [("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing),("i",Nothing),("m",Nothing),("i",Nothing)]
+stoxiet = [("s",Nothing),("t",Nothing),("o",Nothing),("x",Nothing),("i",Nothing),("e",Nothing),("t",Nothing)]
 
+--  match rule5 sashimi == [([("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing)],[("i",Nothing),("m",Nothing),("i",Nothing)]),([("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing),("i",Nothing),("m",Nothing)],[("i",Nothing)])]
+--  match rule2 sashimi == [([("s",Nothing),("a",Nothing)],[("s",Nothing),("h",Nothing),("i",Nothing),("m",Nothing),("i",Nothing)])]
+--  match rule11 stoxiet == [([],[("s",Nothing),("t",Nothing),("o",Nothing),("x",Nothing),("i",Nothing),("e",Nothing),("t",Nothing)])]
+--  match rule8 stoxiet == [([("s",Nothing),("t",Nothing),("o",Nothing)],[("x",Nothing),("i",Nothing),("e",Nothing),("t",Nothing)])]
 
 match :: Rule -> Stat -> [(Front, Back)]
 match [] stat = cutlist stat
@@ -49,14 +58,7 @@ takeTill str (x@(s,a):xs)
  | otherwise = Nothing
 
 
-
-
-
-
-sample1 = "sashimi"
-sample2 = "stoxiet"
-
-
+rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11, rule12 :: Rule
 rule1 = [Right("t", W"t")]
 rule2 = [Right("sh", W"ʃ")]
 rule3 = [Right("s", W"z")]
