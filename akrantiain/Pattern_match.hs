@@ -27,7 +27,7 @@ data Choose a = Ch [a] deriving(Show, Eq, Ord)
 
 
 type Condition = (String -> Bool)
-data Rule = R{leftneg :: Maybe(Choose String), middle :: [Either Condition (Choose String, W)], rightneg :: Maybe(Choose String)}
+data Rule = R{leftneg :: Maybe(Choose String), middle :: [Either Condition (Choose String, W)], rightneg :: Maybe(Condition)}
 
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
@@ -65,8 +65,8 @@ rev2 ::  [([a], t)] -> [([a], t)]
 rev2 = map (\(a,b) -> (reverse a, b)) . reverse
 
 match :: Rule -> Stat -> [(Front, Back)]
-match R{middle =[]} stat = cutlist stat
-match k@R{middle=(Left condition :xs)} stat = mapMaybe f $ match k{middle=xs} stat where
+match R{middle =[], rightneg=Nothing} stat = cutlist stat
+match k@R{middle=[], rightneg=Just condition} stat = mapMaybe f $ cutlist stat where
  f a@(front, back)
   | upgrade condition $ concat $ map fst back = Just a
   | otherwise = Nothing

@@ -16,28 +16,28 @@ c = Ch . (:[])
 lift a = R{leftneg = Nothing, middle = a, rightneg = Nothing}
  
 rls :: [Rule]
-rls = map lift [
- [Right(c"sh", W"ʃ")],
- [Right(c"x",Dollar_), Right(c"i", W""), Right(vowel,Dollar_)],
- [Right(c"i",W"j"),Right(vowel,Dollar_)],
- [Right(c"s",W"s"), Left(no vowel)],
- [Left(no vowel), Right(c"r",W"r")],
- [Right(vowel,Dollar_), Right(c"r",W"ː")],
- [Right(c"t", W"t")],
- [Right(c"s", W"z")],
- [Right(c"a",W"a")],
- [Right(c"i",W"i")],
- [Right(c"u",W"u")],
- [Right(c"m",W"m")],
- [Right(c"n",W"n")],
- [Right(c"k",W"k")],
- [Right(c"l",W"l")],
- [Right(c"s",W"s")],
- [Right(c"x",W"ʃ")],
- [Right(c"e",W"e")],
- [Right(c"o",W"o")],
- [Right(c"p",W"p")]
+rls = [
+ lift[Right(c"sh", W"ʃ")],
+ lift[Right(c"x",Dollar_), Right(c"i", W""), Right(vowel,Dollar_)],
+ lift[Right(c"i",W"j"),Right(vowel,Dollar_)],
+ (lift[Right(c"s",W"s")]){rightneg = Just(no vowel)},
+ lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
+ lift[Right(c"t", W"t")],
+ lift[Right(c"s", W"z")],
+ lift[Right(c"a",W"a")],
+ lift[Right(c"i",W"i")],
+ lift[Right(c"u",W"u")],
+ lift[Right(c"m",W"m")],
+ lift[Right(c"n",W"n")],
+ lift[Right(c"k",W"k")],
+ lift[Right(c"l",W"l")],
+ lift[Right(c"s",W"s")],
+ lift[Right(c"x",W"ʃ")],
+ lift[Right(c"e",W"e")],
+ lift[Right(c"o",W"o")],
+ lift[Right(c"p",W"p")]
  ]
+--  lift[Left(no vowel), Right(c"r",W"r")],
 
 vowel :: Choose String
 vowel = Ch ["a","e","i","o","u","y"]
