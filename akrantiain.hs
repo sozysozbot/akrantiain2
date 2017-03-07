@@ -3,7 +3,7 @@ import Akrantiain.Lexer
 import Text.Parsec
 import System.Environment
 import System.IO
-import Akrantiain.Sents_to_func
+import Akrantiain.Sents_to_rules
 import Control.Monad(forM_)
 
 main :: IO ()
