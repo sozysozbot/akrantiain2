@@ -8,8 +8,9 @@ module Akrantiain.Pattern_match
 ,W(..)
 ,cook
 ) where
-import Data.Maybe(fromJust, mapMaybe, isNothing)
+import Data.Maybe(mapMaybe, isNothing)
 import Data.List(isPrefixOf, inits)
+import Akrantiain.Errors
 data W = W String | Dollar_ 
 
 type Condition = (String -> Bool)
@@ -19,8 +20,17 @@ type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
 type Back = [(String, Maybe String)]
 
-cook :: [Rule] -> String -> String
-cook rls str = concat $ map (fromJust . snd) $ cook' rls $ map (\x -> ([x], Nothing)) str
+nazo :: (String,Maybe b) -> Either RuntimeError b
+nazo (_, Just b) = Right b
+nazo (a, Nothing) = Left $ RE{errNo = 210, errMsg = "no rules that can handle character {" ++ a ++ "}"}
+
+cook :: [Rule] -> String -> Either RuntimeError String
+cook rls str = do 
+ strs <- mapM nazo (cook' rls stat)
+ return $ concat strs
+ where 
+  stat = map (\x -> ([x], Nothing)) str
+
 
 cook' :: [Rule] -> Stat -> Stat
 cook' rls stat = foldl (flip apply) stat rls
