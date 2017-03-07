@@ -65,8 +65,10 @@ rev2 = map (\(a,b) -> (reverse a, b)) . reverse
 
 match :: Rule -> Stat -> [(Front, Back)]
 match [] stat = cutlist stat
-match (Left condition :xs) stat = filter f $ match xs stat where
- f (_, back) = upgrade condition $ concat $ map fst back 
+match (Left condition :xs) stat = mapMaybe f $ match xs stat where
+ f a@(front, back)
+  | upgrade condition $ concat $ map fst back = Just a
+  | otherwise = Nothing
 match (Right((Ch pats),w) :xs) stat = concatMap fff pats where 
  fff pat = mapMaybe (g pat) $ match xs stat
  g :: String -> (Front, Back) -> Maybe (Front, Back)
