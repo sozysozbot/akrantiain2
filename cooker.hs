@@ -21,6 +21,7 @@ rls = [
  lift[(c"x",Dollar_),(c"i", W""), (vowel,Dollar_)],
  lift[(c"i",W"j"),(vowel,Dollar_)],
  (lift[(c"s",W"s")]){rightneg = Just(no vowel)},
+ (lift[(c"r",W"r")]){leftneg = Just (no vowel)},
  lift[(vowel,Dollar_), (c"r",W"ː")],
  lift[(c"t", W"t")],
  lift[(c"s", W"z")],
@@ -37,7 +38,7 @@ rls = [
  lift[(c"o",W"o")],
  lift[(c"p",W"p")]
  ]
---  lift[Left(no vowel), Right(c"r",W"r")],
+--  
 
 vowel :: Choose String
 vowel = Ch ["a","e","i","o","u","y"]

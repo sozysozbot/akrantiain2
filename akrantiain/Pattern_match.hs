@@ -12,7 +12,7 @@ module Akrantiain.Pattern_match
 ,Rule(..)
 ) where
 import Data.Maybe(mapMaybe, isNothing)
-import Data.List(isPrefixOf, inits)
+import Data.List(isPrefixOf, inits, tails)
 import Akrantiain.Errors
 
 no :: Choose String -> Condition
@@ -27,7 +27,7 @@ data Choose a = Ch [a] deriving(Show, Eq, Ord)
 
 
 type Condition = (String -> Bool)
-data Rule = R{leftneg :: Maybe(Choose String), middle :: [ (Choose String, W)], rightneg :: Maybe(Condition)}
+data Rule = R{leftneg :: Maybe(Condition), middle :: [ (Choose String, W)], rightneg :: Maybe(Condition)}
 
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
@@ -64,13 +64,23 @@ cutlist u@(x:xs) =  ([],u): map f (cutlist xs) where f(a,b) = (x:a,b)
 rev2 ::  [([a], t)] -> [([a], t)]
 rev2 = map (\(a,b) -> (reverse a, b)) . reverse
 
+upgrade :: ([a] -> Bool) -> ([a] -> Bool)
+upgrade f str = all f $ inits str
+
+upgrade2 :: ([a] -> Bool) -> ([a] -> Bool)
+upgrade2 f str = all f $ tails str
+
 match :: Rule -> Stat -> [(Front, Back)]
+match k@R{leftneg=Just condition} stat = mapMaybe f $ match k{leftneg=Nothing} stat where
+ f a@(front, _)
+  | upgrade2 condition $ concat $ map fst front = Just a
+  | otherwise = Nothing
 match R{middle =[], rightneg=Nothing} stat = cutlist stat
 match k@R{middle=[], rightneg=Just condition} stat = mapMaybe f $ cutlist stat where
  f a@(front, back)
   | upgrade condition $ concat $ map fst back = Just a
   | otherwise = Nothing
-match k@R{middle=(((Ch pats),w) :xs)} stat = concatMap fff pats where 
+match k@R{middle=(Ch pats,w):xs} stat = concatMap fff pats where 
  fff pat = mapMaybe (g pat) $ match k{middle=xs} stat
  g :: String -> (Front, Back) -> Maybe (Front, Back)
  g pat (front, back) = do 
@@ -88,7 +98,3 @@ takeTill _ [] = Nothing
 takeTill str (x@(s,_):xs)
  | s `isPrefixOf` str = (x:) <$> takeTill (drop(length s)str) xs
  | otherwise = Nothing
-
-
-upgrade :: ([a] -> Bool) -> ([a] -> Bool)
-upgrade f str = all f $ inits str
