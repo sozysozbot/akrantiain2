@@ -31,10 +31,11 @@ sashimi, stoxiet :: Stat
 sashimi = [("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing),("i",Nothing),("m",Nothing),("i",Nothing)]
 stoxiet = [("s",Nothing),("t",Nothing),("o",Nothing),("x",Nothing),("i",Nothing),("e",Nothing),("t",Nothing)]
 
---  match rule5 sashimi == [([("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing)],[("i",Nothing),("m",Nothing),("i",Nothing)]),([("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing),("i",Nothing),("m",Nothing)],[("i",Nothing)])]
---  match rule2 sashimi == [([("s",Nothing),("a",Nothing)],[("s",Nothing),("h",Nothing),("i",Nothing),("m",Nothing),("i",Nothing)])]
---  match rule11 stoxiet == [([],[("s",Nothing),("t",Nothing),("o",Nothing),("x",Nothing),("i",Nothing),("e",Nothing),("t",Nothing)])]
---  match rule8 stoxiet == [([("s",Nothing),("t",Nothing),("o",Nothing)],[("x",Nothing),("i",Nothing),("e",Nothing),("t",Nothing)])]
+--  match rule5 sashimi == [([("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing)],[("i",Just "i"),("m",Nothing),("i",Nothing)]),([("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing),("i",Nothing),("m",Nothing)],[("i",Just "i")])]
+--  match rule2 sashimi == [([("s",Nothing),("a",Nothing)],[("sh",Just "\643"),("i",Nothing),("m",Nothing),("i",Nothing)])]
+--  match rule11 stoxiet == [([],[("s",Just "s"),("t",Nothing),("o",Nothing),("x",Nothing),("i",Nothing),("e",Nothing),("t",Nothing)])]
+--  match rule8 stoxiet == [([("s",Nothing),("t",Nothing),("o",Nothing)],[("x",Nothing),("i",Just ""),("e",Nothing),("t",Nothing)])]
+--  match rule1 sashimi == []
 
 match :: Rule -> Stat -> [(Front, Back)]
 match [] stat = cutlist stat
@@ -47,7 +48,10 @@ match (Right(pat,w) :xs) stat = mapMaybe g $ match xs stat where
   let front' = rev2 front
   let pat' = reverse pat
   taken <- takeTill pat' front'
-  return (rev2 $ drop(length taken)front', rev2 taken ++ back)
+  let taken' = rev2 taken
+  case w of
+   W w' -> return (rev2 $ drop(length taken')front', (pat,Just w') : back)
+   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
    
  
 takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
