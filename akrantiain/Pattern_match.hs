@@ -27,7 +27,7 @@ data Choose a = Ch [a] deriving(Show, Eq, Ord)
 
 
 type Condition = (String -> Bool)
-data Rule = R{leftneg :: Maybe(Choose String), middle :: [Either Condition (Choose String, W)], rightneg :: Maybe(Condition)}
+data Rule = R{leftneg :: Maybe(Choose String), middle :: [ (Choose String, W)], rightneg :: Maybe(Condition)}
 
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
@@ -70,7 +70,7 @@ match k@R{middle=[], rightneg=Just condition} stat = mapMaybe f $ cutlist stat w
  f a@(front, back)
   | upgrade condition $ concat $ map fst back = Just a
   | otherwise = Nothing
-match k@R{middle=(Right((Ch pats),w) :xs)} stat = concatMap fff pats where 
+match k@R{middle=(((Ch pats),w) :xs)} stat = concatMap fff pats where 
  fff pat = mapMaybe (g pat) $ match k{middle=xs} stat
  g :: String -> (Front, Back) -> Maybe (Front, Back)
  g pat (front, back) = do 
