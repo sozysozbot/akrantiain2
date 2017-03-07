@@ -1,6 +1,6 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
-import Data.Maybe(fromJust, mapMaybe)
+import Data.Maybe(fromJust, mapMaybe, isNothing)
 import Data.List(isPrefixOf)
 data W = W String | Dollar_ 
 
@@ -17,10 +17,17 @@ cook str = concat $ map (fromJust . snd) $ cook' $ map (\x -> ([x], Nothing)) st
 cook' :: Stat -> Stat
 cook' = undefined
 
+--  apply rule5 sashimi == [("s",Nothing),("a",Nothing),("s",Nothing),("h",Nothing),("i",Just "i"),("m",Nothing),("i",Just "i")]
+--  apply rule2 sashimi == [("s",Nothing),("a",Nothing),("sh",Just "\643"),("i",Nothing),("m",Nothing),("i",Nothing)]
+--  apply rule11 stoxiet == [("s",Just "s"),("t",Nothing),("o",Nothing),("x",Nothing),("i",Nothing),("e",Nothing),("t",Nothing)]
+--  apply rule8 stoxiet == [("s",Nothing),("t",Nothing),("o",Nothing),("x",Nothing),("i",Just ""),("e",Nothing),("t",Nothing)]
+--  apply rule1 sashimi == sashimi
 
 -- merge is allowed, split is not
 apply :: Rule -> Stat -> Stat
-apply rule stat = undefined
+apply rule stat = case match rule stat of 
+ [] -> stat
+ ((a,b):_) -> apply rule (a++b)
 
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
 cutlist :: [a] -> [([a],[a])]
@@ -50,14 +57,14 @@ match (Right(pat,w) :xs) stat = mapMaybe g $ match xs stat where
   taken <- takeTill pat' front'
   let taken' = rev2 taken
   case w of
-   W w' -> return (rev2 $ drop(length taken')front', (pat,Just w') : back)
+   W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
    Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
    
  
 takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
 takeTill "" _ = Just []
-takeTill str [] = Nothing
-takeTill str (x@(s,a):xs)
+takeTill _ [] = Nothing
+takeTill str (x@(s,_):xs)
  | s `isPrefixOf` str = (x:) <$> takeTill (drop(length s)str) xs
  | otherwise = Nothing
 
