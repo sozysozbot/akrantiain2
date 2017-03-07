@@ -6,21 +6,22 @@ main = do
  putStrLn $ (\(Right x) -> x) $ cook rls "sashimi"
  putStrLn $ (\(Right x) -> x) $ cook rls "stoxiet"
 
+c = Ch . (:[])
  
 rls :: [Rule]
 rls = [
- [Right("sh", W"ʃ")],
- [Right("x",Dollar_), Right("i", W""), Right("e",Dollar_)],
- [Right("s",W"s"), Left(no vowel)],
- [Right("t", W"t")],
- [Right("s", W"z")],
- [Right("a",W"a")],
- [Right("i",W"i")],
- [Right("m",W"m")],
- [Right("s",W"s")],
- [Right("x",W"ʃ")],
- [Right("e",W"e")],
- [Right("o",W"o")]
+ [Right(c"sh", W"ʃ")],
+ [Right(c"x",Dollar_), Right(c"i", W""), Right(c"e",Dollar_)],
+ [Right(c"s",W"s"), Left(no vowel)],
+ [Right(c"t", W"t")],
+ [Right(c"s", W"z")],
+ [Right(c"a",W"a")],
+ [Right(c"i",W"i")],
+ [Right(c"m",W"m")],
+ [Right(c"s",W"s")],
+ [Right(c"x",W"ʃ")],
+ [Right(c"e",W"e")],
+ [Right(c"o",W"o")]
  ]
 
 vowel :: Choose String

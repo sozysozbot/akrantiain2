@@ -24,8 +24,9 @@ no (Ch foo) str
 data W = W String | Dollar_ 
 data Choose a = Ch [a] deriving(Show, Eq, Ord)
 
+
 type Condition = (String -> Bool)
-type Rule = [Either Condition (String, W)]
+type Rule = [Either Condition (Choose String, W)]
 
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
@@ -66,9 +67,10 @@ match :: Rule -> Stat -> [(Front, Back)]
 match [] stat = cutlist stat
 match (Left condition :xs) stat = filter f $ match xs stat where
  f (_, back) = upgrade condition $ concat $ map fst back 
-match (Right(pat,w) :xs) stat = mapMaybe g $ match xs stat where
- g :: (Front, Back) -> Maybe (Front, Back)
- g (front, back) = do 
+match (Right((Ch pats),w) :xs) stat = concatMap fff pats where 
+ fff pat = mapMaybe (g pat) $ match xs stat
+ g :: String -> (Front, Back) -> Maybe (Front, Back)
+ g pat (front, back) = do 
   let front' = rev2 front
   let pat' = reverse pat
   taken <- takeTill pat' front'
