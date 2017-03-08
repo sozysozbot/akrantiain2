@@ -8,8 +8,6 @@ module Akrantiain.Structure
 ,Set
 ,Array
 ,ToSource(..)
-,Options(..)
-,isConcreteTerm
 ,Select(..)
 ,Choose(..)
 ) where
@@ -52,31 +50,6 @@ instance ToSource a => ToSource (Choose a) where
 data Sentence = Conversion {middle::(Array Select), phons:: (Array Phoneme), lneg ::Maybe Select, rneg::Maybe Select} | Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
 
 
-
-
-
-
-
-
-
-
-
-
-
-newtype Options = F(Set Term) deriving(Show, Eq, Ord)
-instance ToSource Options where
- toSource (F candids_set) = undefined
-
-
-newtype Term = C(Array PNCandidate) deriving(Show, Eq, Ord)
-
-data PNCandidate = Neg Candidate | Pos Candidate deriving(Show, Eq, Ord)
-
-data Candidate = Res Resolved | Ide Identifier deriving(Show, Eq, Ord)
-data Resolved = Boundary | Quo Quote deriving(Show, Eq, Ord)
-
-
-
 instance ToSource Sentence where
  toSource (Conversion selects phonemes left right) = fromMaybe left ++ intercalate " "(map toSource selects) ++ fromMaybe right ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
   where
@@ -85,10 +58,4 @@ instance ToSource Sentence where
    fromMaybe Nothing = ""
  toSource (Define ide options) = toSource ide ++ " = " ++ toSource options ++ ";\n"
 
-isConcreteTerm :: Term -> Bool
-isConcreteTerm(C arr2) = any isConc arr2 where
- isConc :: PNCandidate -> Bool
- isConc(Neg _) = False
- isConc(Pos (Ide _)) = True 
- isConc(Pos (Res Boundary)) = False 
- isConc(Pos (Res (Quo _))) = True 
+

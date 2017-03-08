@@ -18,10 +18,7 @@ type Output = Either RuntimeError String
 
 sents_to_func :: Set Sentence -> (Either SemanticError (Input -> Output))
 sents_to_func sents = do
- sents' <- forM sents $ \sent -> do 
-  check_consistency sent
- rules <- mysterious sents'
- return $ cook (undefined,rules)
+ (punct,rules) <- sentences_to_rules sents
+ return $ cook (punct,rules)
 
-mysterious :: Set Sentence' -> Either SemanticError [Rule]
-mysterious sents' = undefined
+

@@ -31,7 +31,7 @@ no (Ch foo) str
 
 
 
-type Punctuation = [Char]
+
 
 
 
