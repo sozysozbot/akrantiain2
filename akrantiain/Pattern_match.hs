@@ -26,6 +26,7 @@ no (Ch foo) str
 
 data W = W String | Dollar_ 
 data Choose a = Ch [a] deriving(Show, Eq, Ord)
+-- data Punctuation
 
 type Boundary_ = ()
 type Condition = (String -> Bool)
@@ -92,7 +93,7 @@ match k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where
 match k@R{middle=Left():xs} stat = mapMaybe h $ match k{middle=xs} stat where
  h (front, back) = do
   let front' = reverse front
-  guard $ null front || (isSpaces . fst . head) front
+  guard $ null front' || (isSpaces . fst . head) front'
   let (b', f'') = span (isSpaces . fst) front'
   return (reverse f'', reverse b' ++ back)
 

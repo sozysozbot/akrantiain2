@@ -25,7 +25,8 @@ Right b >>>= f  = f b
 c = Ch . (:[])
 
 lift a = R{leftneg = Nothing, middle = a, rightneg = Nothing}
- 
+
+
 rls :: [Rule]
 rls = [
  lift[Right(c"sh", W"ʃ")],
@@ -35,6 +36,7 @@ rls = [
  lift[Right(c"i",W"j"),Right(vowel,Dollar_)],
  (lift[Right(c"s",W"s")]){rightneg = Just(no vowel)},
  (lift[Right(c"j",W"i")]){rightneg = Just(no vowel)},
+ lift[Right(c"y",W"ɥ"),Left ()],
  (lift[Right(c"r",W"r")]){leftneg = Just (no vowel)},
  lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
  lift[Right(c"t",W"t")],
