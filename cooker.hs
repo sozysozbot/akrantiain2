@@ -32,10 +32,12 @@ punct = ",.!?"
 
 rls :: [Rule]
 rls = [
+ lift[Left(), Right(c"wioll", W"wjol"), Left ()],
  lift[Right(c"sh", W"ʃ")],
  lift[Right(Ch["z","x","ch"],Dollar_),Right(c"i", W""),Right(vowel,Dollar_)],
  (lift[Right(vowel,Dollar_),Right(c"i",W"j")]){rightneg =Just(no$c"r")},
  (lift[Right(vowel,Dollar_),Right(c"u",W"w")]){rightneg =Just(no$c"r")},
+ (lift[Right(c"s",W"z"),Right(c"j",Dollar_)]){rightneg = Just(no vowel)},
  lift[Right(c"i",W"j"),Right(vowel,Dollar_)],
  (lift[Right(c"s",W"s")]){rightneg = Just(no vowel)},
  (lift[Right(c"j",W"i")]){rightneg = Just(no vowel)},
