@@ -126,38 +126,6 @@ concat' arr = Quote(arr >>= \(Quote a) -> a)
 
 
 
-
-
-
-candidates_p :: Parser Term
-candidates_p = fmap C $ try $ many(try $ try pncandidate <* spaces')
-
-options_p :: Parser Options
-options_p = fmap F $ try candidates_p `sepBy` try(char '|' >> spaces') 
-
-candidate :: Parser Candidate
-candidate = try(fmap (Res . Quo) quoted_string) <|> try(fmap Ide identifier) <|> (char '^' >> return (Res Boundary))
-
-pncandidate :: Parser PNCandidate
-pncandidate = fmap Pos candidate <|> fmap Neg (try(char '!' >> candidate)) 
-
-
-
-ortho :: Parser Options
-ortho = paren <|> fmap (F . (:[]) . C) (
- fmap(:[]) (fmap Pos candidate <|> try(fmap Neg $ char '!' >> spaces' >> candidate)))
-
-paren :: Parser Options
-paren = do 
- try $ do
-  char '('
-  spaces'
- a <- options_p
- spaces'
- char ')'
- return a
-  
-
   
 
 
