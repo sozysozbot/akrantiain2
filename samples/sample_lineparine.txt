@@ -11,24 +11,24 @@ palat = "Z" | "x" | "ch" | "sh"
 
 "sh" -> /ʃ/
 
-palat "i" vowel -> $1 // $3
-vowel "i" !"r" -> $1 /j/
-palat "i" "u" -> $1 $2 /u/
-vowel "u" !"r" -> $1 /w/
+palat "i" vowel -> $ // $
+vowel "i" !"r" -> $ /j/
+palat "i" "u" -> $ $ /u/
+vowel "u" !"r" -> $ /w/
 
-"ni" vowel -> /ɲ/ $2;
-"nj" vowel -> /ɲ/ $2;
-"i" vowel -> /j/ $2
+"ni" vowel -> /ɲ/ $;
+"nj" vowel -> /ɲ/ $;
+"i" vowel -> /j/ $
 
-"s" "j" !vowel -> /z/ $2;
+"s" "j" !vowel -> /z/ $;
 "s" !vowel -> /s/
 "j" !vowel -> /i/
 
-vowel "y" !vowel -> $1 /ɥ/
+vowel "y" !vowel -> $ /ɥ/
 !vowel ("rkh" | "Rkh") -> /ʁ/
 !vowel ("r" | "R") -> /r/
-vowel "r" -> $1 /ː/
-"y" vowel -> /ɥ/ $2
+vowel "r" -> $ /ː/
+"y" vowel -> /ɥ/ $
 
 
 
