@@ -15,22 +15,45 @@ module Akrantiain.Structure
 ,ToSource(..)
 ,Options(..)
 ,isConcreteTerm
+,Select(..)
+,Choose(..)
 ) where
 import Prelude hiding (undefined)
 import Data.List(intercalate)
 import Akrantiain.Global
 
-
+data Choose a = Ch [a] deriving(Show, Eq, Ord)
 
 data Phoneme = Dollar | Slash String deriving(Show, Eq, Ord)
-
-
-class ToSource a where
- toSource :: a -> String
 
 instance ToSource Phoneme where
  toSource (Dollar) = "$"
  toSource (Slash str) = '/':str++"/"
+
+data Select = Boundary2 | Iden Identifier | Pipe (Choose Quote) deriving(Show, Eq, Ord)
+newtype Quote = Quote String deriving(Show, Eq, Ord)
+newtype Identifier = Id String deriving(Show, Eq, Ord)
+
+instance ToSource Quote where
+ toSource (Quote str) = '"':str++"\""
+instance ToSource Identifier where
+ toSource (Id str) = str
+class ToSource a where
+ toSource :: a -> String
+
+instance ToSource Select where
+ toSource Boundary2 = "^"
+ toSource(Iden i) = toSource i
+ toSource(Pipe(Ch arr)) = case arr of
+  [x] -> toSource x
+  _ -> "(" ++ intercalate " | " (map toSource arr) ++ ")"
+
+instance ToSource a => ToSource (Choose a) where
+ toSource (Ch arr) = case arr of
+  [x] -> toSource x
+  _ -> "(" ++ intercalate " | " (map toSource arr) ++ ")"
+ 
+ 
 
 
 newtype Options = F(Set Term) deriving(Show, Eq, Ord)
@@ -40,22 +63,19 @@ instance ToSource Options where
 
 newtype Resolveds = R{ unR ::(Array Resolved) } deriving(Show, Eq, Ord)
 newtype Term = C(Array PNCandidate) deriving(Show, Eq, Ord)
-data Sentence = Conversion (Array Options) (Array Phoneme) | Define Identifier Options deriving(Show, Eq, Ord)
+data Sentence = Conversion (Array Options) (Array Phoneme) | Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
 data PNCandidate = Neg Candidate | Pos Candidate deriving(Show, Eq, Ord)
 
 data Candidate = Res Resolved | Ide Identifier deriving(Show, Eq, Ord)
 data Resolved = Boundary | Quo Quote deriving(Show, Eq, Ord)
-newtype Identifier = Id String deriving(Show, Eq, Ord)
-newtype Quote = Quote String deriving(Show, Eq, Ord)
 
 
 
 instance ToSource Resolved where
  toSource Boundary = "^"
- toSource (Quo (Quote str)) = '"':str++"\""
+ toSource (Quo quo) = toSource quo 
 
-instance ToSource Identifier where
- toSource (Id str) = str
+
 
 instance ToSource Candidate where
  toSource (Res res) = toSource res

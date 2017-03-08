@@ -20,7 +20,8 @@ isConcrete o@(F terms)
 
 
 check_consistency :: Sentence -> Either SemanticError Sentence'
-check_consistency (Define (Id ide) options) = do
+check_consistency (Define (Id ide) ch_quote) = do
+ let options = undefined ch_quote
  isconc <- isConcrete options
  if isconc then return $ Define' (Id ide) options else Left $ E{errNum = 101, errStr = "non-concrete term used as a candidate of identifier {"++ ide ++"}"}
 check_consistency s@(Conversion options_arr phoneme_arr) = do

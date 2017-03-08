@@ -18,6 +18,7 @@ import Data.Char(isSpace)
 import Data.Either(lefts, rights)
 import Control.Monad(guard)
 import Akrantiain.Errors
+import Akrantiain.Structure(Choose(..))
 import qualified Data.Set as S
 
 no :: Choose String -> Condition
@@ -28,7 +29,7 @@ no (Ch foo) str
 
 
 data W = W String | Dollar_ 
-data Choose a = Ch [a] deriving(Show, Eq, Ord)
+
 type Punctuation = [Char]
 
 type Boundary_ = ()
