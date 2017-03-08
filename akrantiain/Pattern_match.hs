@@ -12,6 +12,7 @@ module Akrantiain.Pattern_match
 ,Boundary_
 ,Punctuation
 ) where
+import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing)
 import Data.List(isPrefixOf, inits, tails, intersperse)
 import Data.Char(isSpace)

@@ -3,7 +3,7 @@
 module Akrantiain.Sents_to_rules
 (sents_to_func
 ) where
-
+import Prelude hiding (undefined)
 import Akrantiain.Structure
 import Akrantiain.Errors
 import Control.Monad(forM,when)

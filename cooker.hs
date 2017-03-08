@@ -1,5 +1,5 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
-
+import Prelude hiding (undefined)
 import Akrantiain.Pattern_match
 import System.IO
 main :: IO ()

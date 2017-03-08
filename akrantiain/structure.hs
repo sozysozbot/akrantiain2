@@ -13,7 +13,7 @@ module Akrantiain.Structure
 ,Conversion(..)
 ,Define(..)
 ) where
--- import Prelude hiding (undefined)
+import Prelude hiding (undefined)
 import Data.List(intercalate)
 import Akrantiain.Global
 

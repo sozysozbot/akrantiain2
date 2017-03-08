@@ -7,7 +7,7 @@ module Akrantiain.Rule
 ,Punctuation
 ,no
 ) where
-
+import Prelude hiding (undefined)
 import Akrantiain.Structure
 
 data Rule = R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}

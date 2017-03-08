@@ -8,7 +8,7 @@ module Akrantiain.Lexer
 ,define
 ,sentences
 ) where
-
+import Prelude hiding (undefined)
 import Text.Parsec hiding(spaces)
 
 import Control.Applicative ((<$>),(<*))
