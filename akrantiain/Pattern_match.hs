@@ -42,7 +42,7 @@ type Back = [(String, Maybe String)]
 nazo2 :: Punctuation -> (String,Maybe String) -> Either String String
 nazo2 _ (_, Just b) = Right b
 nazo2 p (a, Nothing)
- | all (`elem` p) a = Right ""
+ | isSpPunct p a = Right " "
  | otherwise = Left $ a
 
 

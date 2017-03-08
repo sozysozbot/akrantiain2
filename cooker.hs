@@ -73,10 +73,8 @@ rls = [
  lift[Right(c"d",W"d")],
  lift[Right(c"'",W "")],
  lift[Right(c"p",W"p")],
- lift[Right(c"q",W"kw")],
- lift[Right(c" ",W"")] -- need to be automatically inserted
+ lift[Right(c"q",W"kw")]
  ]
---  
 
 
 vowel :: Choose String
