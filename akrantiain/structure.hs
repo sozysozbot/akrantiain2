@@ -1,85 +1,56 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
 module Akrantiain.Structure
-(Term(..)
-,Sentence(..)
-,PNCandidate(..)
+(Sentence
 ,Phoneme(..)
-,Candidate(..)
-,Resolved(..)
 ,Identifier(..)
 ,Quote(..)
-,Resolveds(..)
 ,Set
 ,Array
 ,ToSource(..)
-,Options(..)
-,isConcreteTerm
+,Select(..)
+,Choose(..)
+,Conversion(..)
+,Define(..)
 ) where
-import Prelude hiding (undefined)
+-- import Prelude hiding (undefined)
 import Data.List(intercalate)
 import Akrantiain.Global
 
-
-
-data Phoneme = Dollar Int | Slash String deriving(Show, Eq, Ord)
+data Choose a = Ch [a] deriving(Show, Eq, Ord)
+data Phoneme = Dollar | Slash String deriving(Show, Eq, Ord)
+data Select = Boundary2 | Iden Identifier | Pipe (Choose Quote) deriving(Show, Eq, Ord)
+newtype Quote = Quote{unQ::String} deriving(Show, Eq, Ord)
+newtype Identifier = Id{unId::String} deriving(Show, Eq, Ord)
+type Sentence = Either Conversion Define 
+data Conversion = Conversion {mid::(Array Select), phons:: (Array Phoneme), lneg ::Maybe Select, rneg::Maybe Select}
+data Define = Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
 
 
 class ToSource a where
  toSource :: a -> String
-
 instance ToSource Phoneme where
- toSource (Dollar i) = '$':show i
+ toSource (Dollar) = "$"
  toSource (Slash str) = '/':str++"/"
-
-
-newtype Options = F(Set Term) deriving(Show, Eq, Ord)
-instance ToSource Options where
- toSource (F candids_set) = intercalate " | " (map toSource candids_set)
-
-
-newtype Resolveds = R{ unR ::(Array Resolved) } deriving(Show, Eq, Ord)
-newtype Term = C(Array PNCandidate) deriving(Show, Eq, Ord)
-data Sentence = Conversion (Array Options) (Array Phoneme) | Define Identifier Options deriving(Show, Eq, Ord)
-data PNCandidate = Neg Candidate | Pos Candidate deriving(Show, Eq, Ord)
-
-data Candidate = Res Resolved | Ide Identifier deriving(Show, Eq, Ord)
-data Resolved = Boundary | Quo Quote deriving(Show, Eq, Ord)
-newtype Identifier = Id String deriving(Show, Eq, Ord)
-newtype Quote = Quote String deriving(Show, Eq, Ord)
-
-
-
-instance ToSource Resolved where
- toSource Boundary = "^"
- toSource (Quo (Quote str)) = '"':str++"\""
-
+instance ToSource Quote where
+ toSource (Quote str) = '"':str++"\""
 instance ToSource Identifier where
  toSource (Id str) = str
-
-instance ToSource Candidate where
- toSource (Res res) = toSource res
- toSource (Ide ide) = toSource ide
-
-instance ToSource Term where
- toSource (C arr) = intercalate " " (map toSource arr)
-
-instance ToSource PNCandidate where
- toSource (Pos cand) = toSource cand
- toSource (Neg cand) = '!':toSource cand
-
-instance ToSource Sentence where
- toSource (Conversion orthos phonemes) = intercalate " "(map toSource' orthos) ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
+instance ToSource Select where
+ toSource Boundary2 = "^"
+ toSource(Iden i) = toSource i
+ toSource(Pipe(Ch arr)) = case arr of
+  [x] -> toSource x
+  _ -> "(" ++ intercalate " | " (map toSource arr) ++ ")"
+instance ToSource a => ToSource (Choose a) where
+ toSource (Ch arr) = case arr of
+  [x] -> toSource x
+  _ -> "(" ++ intercalate " | " (map toSource arr) ++ ")"
+instance ToSource Conversion where
+ toSource ((Conversion{mid=selects, phons=phonemes, lneg=left, rneg=right})) = fromMaybe left ++ intercalate " "(map toSource selects) ++ fromMaybe right ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
   where
-   toSource' :: Options -> String
-   toSource' (F [x]) = toSource x
-   toSource' u = "(" ++ toSource u ++ ")"
- toSource (Define ide options) = toSource ide ++ " = " ++ toSource options ++ ";\n"
-
-isConcreteTerm :: Term -> Bool
-isConcreteTerm(C arr2) = any isConc arr2 where
- isConc :: PNCandidate -> Bool
- isConc(Neg _) = False
- isConc(Pos (Ide _)) = True 
- isConc(Pos (Res Boundary)) = False 
- isConc(Pos (Res (Quo _))) = True 
+   fromMaybe :: (ToSource a) => Maybe a -> String
+   fromMaybe (Just a) = "!" ++ toSource a
+   fromMaybe Nothing = ""
+instance ToSource Define where
+ toSource ((Define ide options)) = toSource ide ++ " = " ++ toSource options ++ ";\n"
