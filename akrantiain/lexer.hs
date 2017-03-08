@@ -75,32 +75,59 @@ define = do
   sent_terminate
   return $ Define ident ch_quote
 
-
-
-
-
-
-
-backquoted_string :: Parser [PNCandidate]
-backquoted_string = do
-  char '`'
-  str <- many(noneOf "`\n")
-  char '`'
-  return $ fmap (Pos . Res) [Boundary, (Quo . Quote) str, Boundary] 
-
 spaces' :: Parser ()
 spaces' = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
 
-
-
-
-
-
-
-
-
 sent_terminate :: Parser ()
 sent_terminate = eof <|> comment
+
+conversion :: Parser Sentence
+conversion = do 
+  (selects,l,r) <- try $ do
+   spaces'
+   left <- option Nothing neg_select
+   spaces'
+   selects' <- many(try$select <* spaces')
+   spaces'
+   right <- option Nothing neg_select
+   spaces'
+   string "->"
+   return (selects',left,right)
+  spaces'
+  let phoneme = dollar <|> slash_string
+  phonemes <- many(try$phoneme <* spaces')
+  sent_terminate
+  return $ Conversion selects phonemes l r
+   where
+    neg_select = try $ fmap Just $ char '!' >> spaces' >> select
+
+-- FIXME: Escape sequence not yet implemented
+quoted_string :: Parser Quote
+quoted_string = do
+  char '"'
+  str <- many(noneOf "\"\n")
+  char '"'
+  return $ Quote str
+
+sentence :: Parser Sentence
+sentence = conversion <|> define 
+
+
+
+
+
+concat' :: [Quote] -> Quote
+concat' arr = Quote(arr >>= \(Quote a) -> a)
+
+
+
+
+
+
+
+
+
+
 
 candidates_p :: Parser Term
 candidates_p = fmap C $ try $ many(try $ try pncandidate <* spaces')
@@ -114,22 +141,11 @@ candidate = try(fmap (Res . Quo) quoted_string) <|> try(fmap Ide identifier) <|>
 pncandidate :: Parser PNCandidate
 pncandidate = fmap Pos candidate <|> fmap Neg (try(char '!' >> candidate)) 
 
-conversion :: Parser Sentence
-conversion = do 
-  orthos <- try $ do
-   spaces'
-   orthos' <- many(try$ortho <* spaces')
-   string "->"
-   return orthos'
-  spaces'
-  let phoneme = dollar <|> slash_string
-  phonemes <- many(try$phoneme <* spaces')
-  sent_terminate
-  return $ Conversion orthos phonemes
+
 
 ortho :: Parser Options
 ortho = paren <|> fmap (F . (:[]) . C) (
- fmap(:[]) (fmap Pos candidate <|> try(fmap Neg $ char '!' >> spaces' >> candidate)) <|> backquoted_string)
+ fmap(:[]) (fmap Pos candidate <|> try(fmap Neg $ char '!' >> spaces' >> candidate)))
 
 paren :: Parser Options
 paren = do 
@@ -141,22 +157,7 @@ paren = do
  char ')'
  return a
   
-sentence :: Parser Sentence
-sentence = conversion <|> define 
 
-
-
-
--- FIXME: Escape sequence not yet implemented
-quoted_string :: Parser Quote
-quoted_string = do
-  char '"'
-  str <- many(noneOf "\"\n")
-  char '"'
-  return $ Quote str
-
-concat' :: [Quote] -> Quote
-concat' arr = Quote(arr >>= \(Quote a) -> a)
   
 
 

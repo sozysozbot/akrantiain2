@@ -24,8 +24,9 @@ check_consistency (Define (Id ide) ch_quote) = do
  let options = undefined ch_quote
  isconc <- isConcrete options
  if isconc then return $ Define' (Id ide) options else Left $ E{errNum = 101, errStr = "non-concrete term used as a candidate of identifier {"++ ide ++"}"}
-check_consistency s@(Conversion options_arr phoneme_arr) = do
- optarr2 <- forM options_arr $ \options -> do
+check_consistency s@(Conversion options_arr phoneme_arr foo bar) = do
+ optarr2 <- forM options_arr $ \ch_quote -> do
+  let options = undefined ch_quote
   bool <- isConcrete options
   return (options, bool)
  let merged = merge (Slash "") optarr2 phoneme_arr

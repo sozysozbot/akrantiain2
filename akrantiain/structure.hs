@@ -54,6 +54,18 @@ instance ToSource a => ToSource (Choose a) where
   _ -> "(" ++ intercalate " | " (map toSource arr) ++ ")"
  
  
+data Sentence = Conversion {middle::(Array Select), phons:: (Array Phoneme), lneg ::Maybe Select, rneg::Maybe Select} | Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
+
+
+
+
+
+
+
+
+
+
+
 
 
 newtype Options = F(Set Term) deriving(Show, Eq, Ord)
@@ -61,9 +73,9 @@ instance ToSource Options where
  toSource (F candids_set) = intercalate " | " (map toSource candids_set)
 
 
-newtype Resolveds = R{ unR ::(Array Resolved) } deriving(Show, Eq, Ord)
+newtype Resolveds = Ree{ unR ::(Array Resolved) } deriving(Show, Eq, Ord)
 newtype Term = C(Array PNCandidate) deriving(Show, Eq, Ord)
-data Sentence = Conversion (Array Options) (Array Phoneme) | Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
+
 data PNCandidate = Neg Candidate | Pos Candidate deriving(Show, Eq, Ord)
 
 data Candidate = Res Resolved | Ide Identifier deriving(Show, Eq, Ord)
@@ -89,11 +101,11 @@ instance ToSource PNCandidate where
  toSource (Neg cand) = '!':toSource cand
 
 instance ToSource Sentence where
- toSource (Conversion orthos phonemes) = intercalate " "(map toSource' orthos) ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
+ toSource (Conversion selects phonemes left right) = fromMaybe left ++ intercalate " "(map toSource selects) ++ fromMaybe right ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
   where
-   toSource' :: Options -> String
-   toSource' (F [x]) = toSource x
-   toSource' u = "(" ++ toSource u ++ ")"
+   fromMaybe :: (ToSource a) => Maybe a -> String
+   fromMaybe (Just a) = "!" ++ toSource a
+   fromMaybe Nothing = ""
  toSource (Define ide options) = toSource ide ++ " = " ++ toSource options ++ ";\n"
 
 isConcreteTerm :: Term -> Bool
