@@ -17,6 +17,7 @@ main = do
  cook (punct,rls) "akrantiain"    >>>= putStrLn
  cook (punct,rls) "aus"           >>>= putStrLn
  cook (punct,rls) "panqa'dy"      >>>= putStrLn
+ cook (punct,rls) "Fankaon kaccaon lex ta safes elx wioll ycax elx pojiv Zarhalo gasluifesj farkzirVion befivagRi'i qacemal xadlumirfa mol niv."      >>>= putStrLn
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
 Left  a >>>= _  = hPutStrLn stderr $ show a
@@ -32,7 +33,7 @@ punct = ",.!?"
 rls :: [Rule]
 rls = [
  lift[Right(c"sh", W"ʃ")],
- lift[Right(c"x",Dollar_),Right(c"i", W""),Right(vowel,Dollar_)],
+ lift[Right(Ch["z","x","ch"],Dollar_),Right(c"i", W""),Right(vowel,Dollar_)],
  (lift[Right(vowel,Dollar_),Right(c"i",W"j")]){rightneg =Just(no$c"r")},
  (lift[Right(vowel,Dollar_),Right(c"u",W"w")]){rightneg =Just(no$c"r")},
  lift[Right(c"i",W"j"),Right(vowel,Dollar_)],
@@ -40,6 +41,7 @@ rls = [
  (lift[Right(c"j",W"i")]){rightneg = Just(no vowel)},
  lift[Right(c"y",W"ɥ"),Left ()],
  (lift[Right(c"r",W"r")]){leftneg = Just (no vowel)},
+ (lift[Right(c"R",W"r")]){leftneg = Just (no vowel)},
  lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
  lift[Right(c"t",W"t")],
  lift[Right(c"s",W"z")],
@@ -51,10 +53,20 @@ rls = [
  lift[Right(c"n",W"n")],
  lift[Right(c"k",W"k")],
  lift[Right(c"l",W"l")],
- lift[Right(c"s",W"s")],
+ lift[Right(c"z",W"t͡s")],
  lift[Right(c"f",W"f")],
+ lift[Right(c"F",W"ɸ")],
+ lift[Right(c"V",W"β")],
+ lift[Right(c"Z",W"d͡ʑ")],
  lift[Right(c"x",W"ʃ")],
+ lift[Right(c"c",W"s")],
+ lift[Right(c"j",W"j")],
+ lift[Right(c"w",W"w")],
  lift[Right(c"e",W"e")],
+ lift[Right(c"b",W"b")],
+ lift[Right(c"g",W"g")],
+ lift[Right(c"v",W"v")],
+ lift[Right(c"h",W"h")],
  lift[Right(c"o",W"o")],
  lift[Right(c"d",W"d")],
  lift[Right(c"'",W "")],
