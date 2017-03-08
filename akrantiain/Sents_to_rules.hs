@@ -8,7 +8,7 @@ import Akrantiain.Structure
 import Akrantiain.Errors
 import Control.Monad(forM)
 import Akrantiain.Pattern_match
-import Akrantiain.Consistency
+import Akrantiain.Rule
 
 
 type Input = String
@@ -21,4 +21,8 @@ sents_to_func sents = do
  (punct,rules) <- sentences_to_rules sents
  return $ cook (punct,rules)
 
+
+
+sentences_to_rules :: [Sentence] -> Either SemanticError (Punctuation,[Rule])
+sentences_to_rules = undefined
 

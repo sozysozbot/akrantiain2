@@ -18,7 +18,7 @@ import Data.Char(isSpace)
 import Data.Either(lefts, rights)
 import Control.Monad(guard)
 import Akrantiain.Errors
-import Akrantiain.Consistency
+import Akrantiain.Rule
 import Akrantiain.Structure(Choose(..))
 import qualified Data.Set as S
 
