@@ -44,7 +44,7 @@ cook rls str = do
  strs <- mapM nazo (cook' rls stat)
  return $ concat strs
  where 
-  stat = map (\x -> ([x], Nothing)) str
+  stat = map (\x -> ([x], Nothing)) (str ++ " ") -- extra space required for handling word boundary
 
 
 cook' :: [Rule] -> Stat -> Stat

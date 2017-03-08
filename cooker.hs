@@ -1,20 +1,26 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
 import Akrantiain.Pattern_match
+import System.IO
 main :: IO ()
 main = do
- putStrLn $ (\(Right x) -> x) $ cook rls "sashimi"
- putStrLn $ (\(Right x) -> x) $ cook rls "stoxiet"
- putStrLn $ (\(Right x) -> x) $ cook rls "exiu"
- putStrLn $ (\(Right x) -> x) $ cook rls "selxiunk"
- putStrLn $ (\(Right x) -> x) $ cook rls "mi"
- putStrLn $ (\(Right x) -> x) $ cook rls "liaxa"
- putStrLn $ (\(Right x) -> x) $ cook rls "lineparine"
- putStrLn $ (\(Right x) -> x) $ cook rls "krante"
- putStrLn $ (\(Right x) -> x) $ cook rls "lkurftlesse'd"
- putStrLn $ (\(Right x) -> x) $ cook rls "xorlnemj"
- putStrLn $ (\(Right x) -> x) $ cook rls "akrantiain"
- putStrLn $ (\(Right x) -> x) $ cook rls "aus"
+ cook rls "sashimi"       >>>= putStrLn
+ cook rls "stoxiet"       >>>= putStrLn
+ cook rls "exiu"          >>>= putStrLn
+ cook rls "selxiunk"      >>>= putStrLn
+ cook rls "mi"            >>>= putStrLn
+ cook rls "liaxa"         >>>= putStrLn
+ cook rls "lineparine"    >>>= putStrLn
+ cook rls "krante"        >>>= putStrLn
+ cook rls "lkurftlesse'd" >>>= putStrLn
+ cook rls "xorlnemj"      >>>= putStrLn
+ cook rls "akrantiain"    >>>= putStrLn
+ cook rls "aus"           >>>= putStrLn
+ cook rls "panqa'dy"      >>>= putStrLn
+
+(>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
+Left  a >>>= _  = hPutStrLn stderr $ show a
+Right b >>>= f  = f b
 
 c = Ch . (:[])
 
@@ -47,7 +53,8 @@ rls = [
  lift[Right(c"o",W"o")],
  lift[Right(c"d",W"d")],
  lift[Right(c"'",W "")],
- lift[Right(c"p",W"p")]
+ lift[Right(c"p",W"p")],
+ lift[Right(c" ",W"")] -- need to be automatically inserted
  ]
 --  
 
