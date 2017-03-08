@@ -14,6 +14,7 @@ main = do
  cook (punct,rls) "krante"        >>>= putStrLn
  cook (punct,rls) "lkurftlesse'd" >>>= putStrLn
  cook (punct,rls) "xorlnemj"      >>>= putStrLn
+ cook (punct,rls) "ayplerde"      >>>= putStrLn
  cook (punct,rls) "akrantiain"    >>>= putStrLn
  cook (punct,rls) "aus"           >>>= putStrLn
  cook (punct,rls) "panqa'dy"      >>>= putStrLn
@@ -30,18 +31,22 @@ lift a = R{leftneg = Nothing, middle = a, rightneg = Nothing}
 punct :: Punctuation
 punct = ",.!?"
 
+palat :: Choose String
+palat = Ch["z","x","ch"]
+
 rls :: [Rule]
 rls = [
  lift[Left(), Right(c"wioll", W"wjol"), Left ()],
  lift[Right(c"sh", W"ʃ")],
- lift[Right(Ch["z","x","ch"],Dollar_),Right(c"i", W""),Right(vowel,Dollar_)],
+ lift[Right(palat,Dollar_),Right(c"i", W""),Right(vowel,Dollar_)],
  (lift[Right(vowel,Dollar_),Right(c"i",W"j")]){rightneg =Just(no$c"r")},
+ lift[Right(palat,Dollar_),Right(c"i",Dollar_),Right(c"u",W"u")],
  (lift[Right(vowel,Dollar_),Right(c"u",W"w")]){rightneg =Just(no$c"r")},
  (lift[Right(c"s",W"z"),Right(c"j",Dollar_)]){rightneg = Just(no vowel)},
  lift[Right(c"i",W"j"),Right(vowel,Dollar_)],
  (lift[Right(c"s",W"s")]){rightneg = Just(no vowel)},
  (lift[Right(c"j",W"i")]){rightneg = Just(no vowel)},
- lift[Right(c"y",W"ɥ"),Left ()],
+ (lift[Right(vowel,Dollar_),Right(c"y",W"ɥ")]){rightneg = Just(no vowel)},
  (lift[Right(c"r",W"r")]){leftneg = Just (no vowel)},
  (lift[Right(c"R",W"r")]){leftneg = Just (no vowel)},
  lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
