@@ -9,9 +9,12 @@ module Akrantiain.Pattern_match
 ,Choose(..)
 ,no
 ,Rule(..)
+,Boundary_
 ) where
 import Data.Maybe(mapMaybe, isNothing)
 import Data.List(isPrefixOf, inits, tails)
+import Data.Char(isSpace)
+import Control.Monad(guard)
 import Akrantiain.Errors
 
 no :: Choose String -> Condition
@@ -24,9 +27,9 @@ no (Ch foo) str
 data W = W String | Dollar_ 
 data Choose a = Ch [a] deriving(Show, Eq, Ord)
 
-
+type Boundary_ = ()
 type Condition = (String -> Bool)
-data Rule = R{leftneg :: Maybe(Condition), middle :: [ (Choose String, W)], rightneg :: Maybe(Condition)}
+data Rule = R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
 
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
@@ -75,7 +78,7 @@ match k@R{leftneg=Just condition} stat = filter f $ match k{leftneg=Nothing} sta
 match R{middle =[], rightneg=Nothing} stat = cutlist stat
 match R{middle=[], rightneg=Just condition} stat = filter f $ cutlist stat where
  f (_, back) = upgrade condition $ concat $ map fst back
-match k@R{middle=(Ch pats,w):xs} stat = concatMap fff pats where 
+match k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where 
  fff pat = mapMaybe (g pat) $ match k{middle=xs} stat
  g :: String -> (Front, Back) -> Maybe (Front, Back)
  g pat (front, back) = do 
@@ -86,7 +89,16 @@ match k@R{middle=(Ch pats,w):xs} stat = concatMap fff pats where
   case w of
    W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
    Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
- 
+match k@R{middle=Left():xs} stat = mapMaybe h $ match k{middle=xs} stat where
+ h (front, back) = do
+  let front' = reverse front
+  guard $ null front || (isSpaces . fst . head) front
+  let (b', f'') = span (isSpaces . fst) front'
+  return (reverse f'', reverse b' ++ back)
+
+isSpaces :: String -> Bool
+isSpaces str = all isSpace str
+
 takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
 takeTill "" _ = Just []
 takeTill _ [] = Nothing

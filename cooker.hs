@@ -14,6 +14,7 @@ main = do
  putStrLn $ (\(Right x) -> x) $ cook rls "lkurftlesse'd"
  putStrLn $ (\(Right x) -> x) $ cook rls "xorlnemj"
  putStrLn $ (\(Right x) -> x) $ cook rls "akrantiain"
+ putStrLn $ (\(Right x) -> x) $ cook rls "aus"
 
 c = Ch . (:[])
 
@@ -21,33 +22,35 @@ lift a = R{leftneg = Nothing, middle = a, rightneg = Nothing}
  
 rls :: [Rule]
 rls = [
- lift[(c"sh", W"ʃ")],
- lift[(c"x",Dollar_),(c"i", W""), (vowel,Dollar_)],
- (lift[(vowel,Dollar_),(c"i",W"j")]){rightneg =Just(no$c"r")},
- lift[(c"i",W"j"),(vowel,Dollar_)],
- (lift[(c"s",W"s")]){rightneg = Just(no vowel)},
- (lift[(c"j",W"i")]){rightneg = Just(no vowel)},
- (lift[(c"r",W"r")]){leftneg = Just (no vowel)},
- lift[(vowel,Dollar_), (c"r",W"ː")],
- lift[(c"t",W"t")],
- lift[(c"s",W"z")],
- lift[(c"a",W"a")],
- lift[(c"i",W"i")],
- lift[(c"u",W"u")],
- lift[(c"m",W"m")],
- lift[(c"n",W"n")],
- lift[(c"k",W"k")],
- lift[(c"l",W"l")],
- lift[(c"s",W"s")],
- lift[(c"f",W"f")],
- lift[(c"x",W"ʃ")],
- lift[(c"e",W"e")],
- lift[(c"o",W"o")],
- lift[(c"d",W"d")],
- lift[(c"'",W "")],
- lift[(c"p",W"p")]
+ lift[Right(c"sh", W"ʃ")],
+ lift[Right(c"x",Dollar_),Right(c"i", W""),Right(vowel,Dollar_)],
+ (lift[Right(vowel,Dollar_),Right(c"i",W"j")]){rightneg =Just(no$c"r")},
+ (lift[Right(vowel,Dollar_),Right(c"u",W"w")]){rightneg =Just(no$c"r")},
+ lift[Right(c"i",W"j"),Right(vowel,Dollar_)],
+ (lift[Right(c"s",W"s")]){rightneg = Just(no vowel)},
+ (lift[Right(c"j",W"i")]){rightneg = Just(no vowel)},
+ (lift[Right(c"r",W"r")]){leftneg = Just (no vowel)},
+ lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
+ lift[Right(c"t",W"t")],
+ lift[Right(c"s",W"z")],
+ lift[Right(c"a",W"a")],
+ lift[Right(c"i",W"i")],
+ lift[Right(c"u",W"u")],
+ lift[Right(c"m",W"m")],
+ lift[Right(c"n",W"n")],
+ lift[Right(c"k",W"k")],
+ lift[Right(c"l",W"l")],
+ lift[Right(c"s",W"s")],
+ lift[Right(c"f",W"f")],
+ lift[Right(c"x",W"ʃ")],
+ lift[Right(c"e",W"e")],
+ lift[Right(c"o",W"o")],
+ lift[Right(c"d",W"d")],
+ lift[Right(c"'",W "")],
+ lift[Right(c"p",W"p")]
  ]
 --  
+
 
 vowel :: Choose String
 vowel = Ch ["a","e","i","o","u","y"]
