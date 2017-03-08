@@ -18,6 +18,7 @@ import Data.Char(isSpace)
 import Data.Either(lefts, rights)
 import Control.Monad(guard)
 import Akrantiain.Errors
+import qualified Data.Set as S
 
 no :: Choose String -> Condition
 no (Ch foo) str
@@ -52,7 +53,9 @@ cook r@(punct,_) str = do
  let eitherList = map (nazo2 punct) (cook' r stat)
  case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
-  strs -> Left $ RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ "{" ++ concat(intersperse "}, {"  strs) ++ "}"}
+  strs -> do 
+   let msg = "{" ++ (concat . intersperse "}, {"  . S.toList . S.fromList) strs ++ "}" 
+   Left $ RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
  where 
   stat = map (\x -> ([x], Nothing)) (str ++ " ") -- extra space required for handling word boundary
 
