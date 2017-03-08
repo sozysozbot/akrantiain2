@@ -1,7 +1,7 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
 module Akrantiain.Structure
-(Sentence(..)
+(Sentence
 ,Phoneme(..)
 ,Identifier(..)
 ,Quote(..)
@@ -10,6 +10,8 @@ module Akrantiain.Structure
 ,ToSource(..)
 ,Select(..)
 ,Choose(..)
+,Conversion(..)
+,Define(..)
 ) where
 -- import Prelude hiding (undefined)
 import Data.List(intercalate)
@@ -19,8 +21,10 @@ data Choose a = Ch [a] deriving(Show, Eq, Ord)
 data Phoneme = Dollar | Slash String deriving(Show, Eq, Ord)
 data Select = Boundary2 | Iden Identifier | Pipe (Choose Quote) deriving(Show, Eq, Ord)
 newtype Quote = Quote String deriving(Show, Eq, Ord)
-newtype Identifier = Id String deriving(Show, Eq, Ord)
-data Sentence = Conversion {middle::(Array Select), phons:: (Array Phoneme), lneg ::Maybe Select, rneg::Maybe Select} | Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
+newtype Identifier = Id{unId::String} deriving(Show, Eq, Ord)
+type Sentence = Either Conversion Define 
+data Conversion = Conversion {middle::(Array Select), phons:: (Array Phoneme), lneg ::Maybe Select, rneg::Maybe Select}
+data Define = Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
 
 
 class ToSource a where
@@ -42,10 +46,11 @@ instance ToSource a => ToSource (Choose a) where
  toSource (Ch arr) = case arr of
   [x] -> toSource x
   _ -> "(" ++ intercalate " | " (map toSource arr) ++ ")"
-instance ToSource Sentence where
- toSource (Conversion{middle=selects, phons=phonemes, lneg=left, rneg=right}) = fromMaybe left ++ intercalate " "(map toSource selects) ++ fromMaybe right ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
+instance ToSource Conversion where
+ toSource ((Conversion{middle=selects, phons=phonemes, lneg=left, rneg=right})) = fromMaybe left ++ intercalate " "(map toSource selects) ++ fromMaybe right ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
   where
    fromMaybe :: (ToSource a) => Maybe a -> String
    fromMaybe (Just a) = "!" ++ toSource a
    fromMaybe Nothing = ""
- toSource (Define ide options) = toSource ide ++ " = " ++ toSource options ++ ";\n"
+instance ToSource Define where
+ toSource ((Define ide options)) = toSource ide ++ " = " ++ toSource options ++ ";\n"
