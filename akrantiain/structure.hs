@@ -22,14 +22,14 @@ import Akrantiain.Global
 
 
 
-data Phoneme = Dollar Int | Slash String deriving(Show, Eq, Ord)
+data Phoneme = Dollar | Slash String deriving(Show, Eq, Ord)
 
 
 class ToSource a where
  toSource :: a -> String
 
 instance ToSource Phoneme where
- toSource (Dollar i) = '$':show i
+ toSource (Dollar) = "$"
  toSource (Slash str) = '/':str++"/"
 
 

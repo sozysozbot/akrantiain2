@@ -21,7 +21,7 @@ sents_to_func sents = do
  sents' <- forM sents $ \sent -> do 
   check_consistency sent
  rules <- mysterious sents'
- return $ cook rules
+ return $ cook (undefined,rules)
 
 mysterious :: Set Sentence' -> Either SemanticError [Rule]
 mysterious sents' = undefined

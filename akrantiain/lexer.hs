@@ -2,7 +2,6 @@
 
 module Akrantiain.Lexer
 (parseTest
-,dollar_int
 ,quoted_string
 ,slash_string
 ,conversion
@@ -79,7 +78,7 @@ conversion = do
    string "->"
    return orthos'
   spaces'
-  let phoneme = dollar_int <|> slash_string
+  let phoneme = dollar <|> slash_string
   phonemes <- many(try$phoneme <* spaces')
   sent_terminate
   return $ Conversion orthos phonemes
@@ -120,11 +119,10 @@ quoted_string = do
   char '"'
   return $ Quote str
 
-dollar_int :: Parser Phoneme
-dollar_int = try $ do
+dollar :: Parser Phoneme
+dollar = try $ do
   char '$'
-  num <- many digit
-  return $ Dollar(read num)
+  return $ Dollar
 
   
 identifier :: Parser Identifier
