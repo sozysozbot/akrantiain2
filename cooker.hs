@@ -4,19 +4,19 @@ import Akrantiain.Pattern_match
 import System.IO
 main :: IO ()
 main = do
- cook rls "sashimi"       >>>= putStrLn
- cook rls "stoxiet"       >>>= putStrLn
- cook rls "exiu"          >>>= putStrLn
- cook rls "selxiunk"      >>>= putStrLn
- cook rls "mi"            >>>= putStrLn
- cook rls "liaxa"         >>>= putStrLn
- cook rls "lineparine"    >>>= putStrLn
- cook rls "krante"        >>>= putStrLn
- cook rls "lkurftlesse'd" >>>= putStrLn
- cook rls "xorlnemj"      >>>= putStrLn
- cook rls "akrantiain"    >>>= putStrLn
- cook rls "aus"           >>>= putStrLn
- cook rls "panqa'dy"      >>>= putStrLn
+ cook (punct,rls) "sashimi"       >>>= putStrLn
+ cook (punct,rls) "stoxiet"       >>>= putStrLn
+ cook (punct,rls) "exiu"          >>>= putStrLn
+ cook (punct,rls) "selxiunk"      >>>= putStrLn
+ cook (punct,rls) "mi"            >>>= putStrLn
+ cook (punct,rls) "liaxa"         >>>= putStrLn
+ cook (punct,rls) "lineparine"    >>>= putStrLn
+ cook (punct,rls) "krante"        >>>= putStrLn
+ cook (punct,rls) "lkurftlesse'd" >>>= putStrLn
+ cook (punct,rls) "xorlnemj"      >>>= putStrLn
+ cook (punct,rls) "akrantiain"    >>>= putStrLn
+ cook (punct,rls) "aus"           >>>= putStrLn
+ cook (punct,rls) "panqa'dy"      >>>= putStrLn
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
 Left  a >>>= _  = hPutStrLn stderr $ show a
@@ -26,6 +26,8 @@ c = Ch . (:[])
 
 lift a = R{leftneg = Nothing, middle = a, rightneg = Nothing}
 
+punct :: Punctuation
+punct = ",.!?"
 
 rls :: [Rule]
 rls = [
