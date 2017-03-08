@@ -1,15 +1,10 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
 module Akrantiain.Structure
-(Term(..)
-,Sentence(..)
-,PNCandidate(..)
+(Sentence(..)
 ,Phoneme(..)
-,Candidate(..)
-,Resolved(..)
 ,Identifier(..)
 ,Quote(..)
-,Resolveds(..)
 ,Set
 ,Array
 ,ToSource(..)
@@ -18,7 +13,7 @@ module Akrantiain.Structure
 ,Select(..)
 ,Choose(..)
 ) where
-import Prelude hiding (undefined)
+-- import Prelude hiding (undefined)
 import Data.List(intercalate)
 import Akrantiain.Global
 
@@ -70,10 +65,9 @@ data Sentence = Conversion {middle::(Array Select), phons:: (Array Phoneme), lne
 
 newtype Options = F(Set Term) deriving(Show, Eq, Ord)
 instance ToSource Options where
- toSource (F candids_set) = intercalate " | " (map toSource candids_set)
+ toSource (F candids_set) = undefined
 
 
-newtype Resolveds = Ree{ unR ::(Array Resolved) } deriving(Show, Eq, Ord)
 newtype Term = C(Array PNCandidate) deriving(Show, Eq, Ord)
 
 data PNCandidate = Neg Candidate | Pos Candidate deriving(Show, Eq, Ord)
@@ -82,23 +76,6 @@ data Candidate = Res Resolved | Ide Identifier deriving(Show, Eq, Ord)
 data Resolved = Boundary | Quo Quote deriving(Show, Eq, Ord)
 
 
-
-instance ToSource Resolved where
- toSource Boundary = "^"
- toSource (Quo quo) = toSource quo 
-
-
-
-instance ToSource Candidate where
- toSource (Res res) = toSource res
- toSource (Ide ide) = toSource ide
-
-instance ToSource Term where
- toSource (C arr) = intercalate " " (map toSource arr)
-
-instance ToSource PNCandidate where
- toSource (Pos cand) = toSource cand
- toSource (Neg cand) = '!':toSource cand
 
 instance ToSource Sentence where
  toSource (Conversion selects phonemes left right) = fromMaybe left ++ intercalate " "(map toSource selects) ++ fromMaybe right ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
