@@ -3,13 +3,27 @@
 module Akrantiain.Consistency
 (check_consistency
 ,Sentence'
+,Rule(..)
+,W(..)
+,Boundary_
+,Condition
+,sentences_to_rules
 ) where
 
 import Akrantiain.Structure
 import Akrantiain.Errors
 import Control.Monad(forM)
 
+data Rule = R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
+data W = W String | Dollar_ 
+type Boundary_ = ()
+type Condition = (String -> Bool)
+
 data Sentence' = Conversion' (Array (Options, Phoneme)) | Define' Identifier Options deriving(Show, Eq, Ord)
+
+
+sentences_to_rules :: [Sentence] -> Either SemanticError [Rule]
+sentences_to_rules = undefined
 
 
 isConcrete :: Options -> Either SemanticError Bool
