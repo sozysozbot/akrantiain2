@@ -32,7 +32,7 @@ punct :: Punctuation
 punct = ",.!?"
 
 palat :: Choose String
-palat = Ch["z","x","ch"]
+palat = Ch["z","x","ch","sh"]
 
 rls :: [Rule]
 rls = [
@@ -47,8 +47,7 @@ rls = [
  (lift[Right(c"s",W"s")]){rightneg = Just(no vowel)},
  (lift[Right(c"j",W"i")]){rightneg = Just(no vowel)},
  (lift[Right(vowel,Dollar_),Right(c"y",W"ɥ")]){rightneg = Just(no vowel)},
- (lift[Right(c"r",W"r")]){leftneg = Just (no vowel)},
- (lift[Right(c"R",W"r")]){leftneg = Just (no vowel)},
+ (lift[Right(Ch["r","R"],W"r")]){leftneg = Just (no vowel)},
  lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
  lift[Right(c"t",W"t")],
  lift[Right(c"s",W"z")],
