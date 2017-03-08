@@ -5,6 +5,7 @@ module Akrantiain.Rule
 ,Boundary_
 ,Condition
 ,Punctuation
+,no
 ) where
 
 import Akrantiain.Structure
@@ -14,4 +15,10 @@ data W = W String | Dollar_
 type Boundary_ = ()
 type Condition = (String -> Bool)
 type Punctuation = [Char]
+
+no :: Choose String -> Condition
+no (Ch foo) str
+ | null str = True
+ | str `elem` foo = False
+ | otherwise = True
 

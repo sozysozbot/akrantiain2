@@ -20,10 +20,10 @@ import Akrantiain.Global
 data Choose a = Ch [a] deriving(Show, Eq, Ord)
 data Phoneme = Dollar | Slash String deriving(Show, Eq, Ord)
 data Select = Boundary2 | Iden Identifier | Pipe (Choose Quote) deriving(Show, Eq, Ord)
-newtype Quote = Quote String deriving(Show, Eq, Ord)
+newtype Quote = Quote{unQ::String} deriving(Show, Eq, Ord)
 newtype Identifier = Id{unId::String} deriving(Show, Eq, Ord)
 type Sentence = Either Conversion Define 
-data Conversion = Conversion {middle::(Array Select), phons:: (Array Phoneme), lneg ::Maybe Select, rneg::Maybe Select}
+data Conversion = Conversion {mid::(Array Select), phons:: (Array Phoneme), lneg ::Maybe Select, rneg::Maybe Select}
 data Define = Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
 
 
@@ -47,7 +47,7 @@ instance ToSource a => ToSource (Choose a) where
   [x] -> toSource x
   _ -> "(" ++ intercalate " | " (map toSource arr) ++ ")"
 instance ToSource Conversion where
- toSource ((Conversion{middle=selects, phons=phonemes, lneg=left, rneg=right})) = fromMaybe left ++ intercalate " "(map toSource selects) ++ fromMaybe right ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
+ toSource ((Conversion{mid=selects, phons=phonemes, lneg=left, rneg=right})) = fromMaybe left ++ intercalate " "(map toSource selects) ++ fromMaybe right ++ " -> " ++ intercalate " " (map toSource phonemes) ++ ";\n"
   where
    fromMaybe :: (ToSource a) => Maybe a -> String
    fromMaybe (Just a) = "!" ++ toSource a

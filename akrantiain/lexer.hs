@@ -97,7 +97,7 @@ conversion = do
   let phoneme = dollar <|> slash_string
   phonemes <- many(try$phoneme <* spaces')
   sent_terminate
-  return $ Left$Conversion{middle=selects, phons=phonemes, lneg=l, rneg=r}
+  return $ Left$Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r}
    where
     neg_select = try $ fmap Just $ char '!' >> spaces' >> select
 

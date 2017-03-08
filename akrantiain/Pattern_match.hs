@@ -22,11 +22,6 @@ import Akrantiain.Rule
 import Akrantiain.Structure(Choose(..))
 import qualified Data.Set as S
 
-no :: Choose String -> Condition
-no (Ch foo) str
- | null str = True
- | str `elem` foo = False
- | otherwise = True
 
 
 
