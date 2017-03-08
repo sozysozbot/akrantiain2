@@ -13,8 +13,9 @@ module Akrantiain.Pattern_match
 ,Punctuation
 ) where
 import Data.Maybe(mapMaybe, isNothing)
-import Data.List(isPrefixOf, inits, tails)
+import Data.List(isPrefixOf, inits, tails, intersperse)
 import Data.Char(isSpace)
+import Data.Either(lefts, rights)
 import Control.Monad(guard)
 import Akrantiain.Errors
 
@@ -37,24 +38,27 @@ type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
 type Back = [(String, Maybe String)]
 
-nazo :: Punctuation -> (String,Maybe String) -> Either RuntimeError String
-nazo _ (_, Just b) = Right b
-nazo p (a, Nothing)
+nazo2 :: Punctuation -> (String,Maybe String) -> Either String String
+nazo2 _ (_, Just b) = Right b
+nazo2 p (a, Nothing)
  | all (`elem` p) a = Right ""
- | otherwise = Left $ RE{errNo = 210, errMsg = "no rules that can handle character {" ++ a ++ "}"}
+ | otherwise = Left $ a
+
 
 type Rules = (Punctuation,[Rule])
 
 cook :: Rules -> String -> Either RuntimeError String
-cook r@(punct,rls) str = do 
- strs <- mapM (nazo punct) (cook' r stat)
- return $ concat strs
+cook r@(punct,_) str = do 
+ let eitherList = map (nazo2 punct) (cook' r stat)
+ case lefts eitherList of 
+  [] -> return $ concat $ rights eitherList
+  strs -> Left $ RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ "{" ++ concat(intersperse "}, {"  strs) ++ "}"}
  where 
   stat = map (\x -> ([x], Nothing)) (str ++ " ") -- extra space required for handling word boundary
 
 
 cook' :: Rules -> Stat -> Stat
-cook' r@(punct,rls) stat = foldl (apply punct) stat rls
+cook' (punct,rls) stat = foldl (apply punct) stat rls
 
 -- merge is allowed, split is not
 apply :: Punctuation -> Stat -> Rule -> Stat
@@ -81,8 +85,8 @@ upgrade2 f str = all f $ tails str
 match :: Punctuation -> Rule -> Stat -> [(Front, Back)]
 match punct k@R{leftneg=Just condition} stat = filter f $ match punct k{leftneg=Nothing} stat where
  f (front, _) = upgrade2 condition $ concat $ map fst front
-match punct R{middle =[], rightneg=Nothing} stat = cutlist stat
-match punct R{middle=[], rightneg=Just condition} stat = filter f $ cutlist stat where
+match _ R{middle =[], rightneg=Nothing} stat = cutlist stat
+match _ R{middle=[], rightneg=Just condition} stat = filter f $ cutlist stat where
  f (_, back) = upgrade condition $ concat $ map fst back
 match punct k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where 
  fff pat = mapMaybe (g pat) $ match punct k{middle=xs} stat
@@ -98,12 +102,12 @@ match punct k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where
 match punct k@R{middle=Left():xs} stat = mapMaybe h $ match punct k{middle=xs} stat where
  h (front, back) = do
   let front' = reverse front
-  guard $ null front' || (isSpaces . fst . head) front'
-  let (b', f'') = span (isSpaces . fst) front'
+  guard $ null front' || (isSpPunct punct . fst . head) front'
+  let (b', f'') = span (isSpPunct punct . fst) front'
   return (reverse f'', reverse b' ++ back)
 
-isSpaces :: String -> Bool
-isSpaces str = all isSpace str
+isSpPunct :: Punctuation -> String -> Bool
+isSpPunct punct str = all (\x -> isSpace x || x `elem` punct) str
 
 takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
 takeTill "" _ = Just []
