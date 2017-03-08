@@ -39,6 +39,7 @@ rls = [
  lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
  lift[Right(c"t",W"t")],
  lift[Right(c"s",W"z")],
+ lift[Right(c"y",W"y")],
  lift[Right(c"a",W"a")],
  lift[Right(c"i",W"i")],
  lift[Right(c"u",W"u")],
@@ -54,6 +55,7 @@ rls = [
  lift[Right(c"d",W"d")],
  lift[Right(c"'",W "")],
  lift[Right(c"p",W"p")],
+ lift[Right(c"q",W"kw")],
  lift[Right(c" ",W"")] -- need to be automatically inserted
  ]
 --  
