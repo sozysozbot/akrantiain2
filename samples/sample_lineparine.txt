@@ -4,9 +4,9 @@ vowel = "a" | "i" | "u" | "e" | "o" | "y"
 palat = "Z" | "x" | "ch" | "sh"
 punctuation = "." | "," | "!" | "?"
 
-`edioll` -> /edjol/
-`wioll` -> /wjol/
-`woll` -> /wol/
+^ "edioll" ^ -> /edjol/
+^ "wioll" ^ -> /wjol/
+^ "woll" ^ -> /wol/
 "vsfafgh" -> /vusfafuguh/
 "simfgh" -> /zimfuguh/
 
