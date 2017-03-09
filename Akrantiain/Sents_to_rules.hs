@@ -20,7 +20,7 @@ type Output = Either RuntimeError String
 sents_to_func :: Set Sentence -> (Either SemanticError (Input -> Output))
 sents_to_func sents = do
  (punct,rules) <- sentences_to_rules sents
- return $ cook (punct,rules)
+ return $ cook (Env{pun=punct},rules)
 
 
 sentences_to_rules :: [Sentence] -> Either SemanticError (Punctuation,[Rule])

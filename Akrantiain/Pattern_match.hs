@@ -11,7 +11,7 @@ module Akrantiain.Pattern_match
 ,Rule(..)
 ,Boundary_
 ,Punctuation
-,Environment
+,Environment(..)
 ) where
 import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing)
@@ -32,7 +32,7 @@ import qualified Data.Set as S
 
 
 
-type Environment = Punctuation
+data Environment = Env{pun :: Punctuation}
 type Rules = (Environment,[Rule])
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
@@ -40,7 +40,7 @@ type Back = [(String, Maybe String)]
 
 nazo2 :: Environment -> (String,Maybe String) -> Either String String
 nazo2 _ (_, Just b) = Right b
-nazo2 (p) (a, Nothing)
+nazo2 Env{pun=p} (a, Nothing)
  | isSpPunct p a = Right " "
  | otherwise = Left $ a
 
@@ -102,7 +102,7 @@ match env k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where
 match env k@R{middle=Left():xs} stat = mapMaybe h $ match env k{middle=xs} stat where
  h (front, back) = do
   let front' = reverse front
-  let punct = env
+  let punct = pun env
   guard $ null front' || (isSpPunct punct . fst . head) front'
   let (b', f'') = span (isSpPunct punct . fst) front'
   return (reverse f'', reverse b' ++ back)
