@@ -2,7 +2,7 @@
 
 vowel = "a" | "i" | "u" | "e" | "o" | "y"
 palat = "Z" | "x" | "ch" | "sh"
-punctuation = "." | "," | "!" | "?"
+PUNCTUATION = "." | "," | "!" | "?"
 
 ^ "edioll" ^ -> /edjol/
 ^ "wioll" ^ -> /wjol/

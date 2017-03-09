@@ -29,7 +29,7 @@ sentences_to_rules sents = do
  let duplicates = (map head . filter (\x -> length x > 1) . group . sort . map fst) defs
  when (not $ null duplicates) $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) {" ++ intercalate "}, {" (map unId duplicates) ++ "}"}
  let defs_ = M.fromList defs
- let punct = case Id "punctuation" `M.lookup` defs_ of{Nothing -> "";
+ let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
   Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT
  rules <- forM convs $ \conv@(Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes}) -> do
   let solve = resolve_select defs_
