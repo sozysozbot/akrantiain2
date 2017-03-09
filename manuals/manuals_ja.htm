@@ -25,7 +25,7 @@ div{padding: 0px 0px 0px 30px;}
 </pre>
 <h4 id="comment">2-1. コメント</h4>
 <pre>
-<code>#</code>から行末までに書かれたものは無視される。ただし、<a href="#literal">文字列リテラル</a>および<a href="#slash">スラッシュ文字列リテラル</a>内の<code>#</code>はコメントを意味しない。
+<code>#</code>から行末までに書かれたものは無視される。ただし、<a href="#literal">文字列リテラル</a>および<a href="#slash">スラッシュリテラル</a>内の<code>#</code>はコメントを意味しない。
 複数行コメントは存在しない。
 </pre>
 <h4 id="ident">2-2. 識別子定義文</h4>
@@ -42,7 +42,7 @@ div{padding: 0px 0px 0px 30px;}
 <pre>
 <code><u>SELECT</u></code>を<code>^</code>または「1つの識別子」または「1個の文字列リテラル」または<code>( <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> )</code>とし、
 <code><u>CONDITION</u></code>は<code><u>SELECT</u></code>に<code>!</code>を前置したものとする。
-<code><u>PHONEME</u></code>は<code>$</code>か<code><u>スラッシュ文字リテラル</u></code>とする。
+<code><u>PHONEME</u></code>は<code>$</code>か<code><u>スラッシュリテラル</u></code>とする。
 このとき、変換規則定義文は、次のような構造を持つ。
 <div>
 <code><u>0または1個のCONDITION</u> <u>1個以上のSELECT</u> <u>0または1個のCONDITION</u> -&gt; <u>1個以上のPHONEME</u>;</code>
@@ -54,7 +54,7 @@ div{padding: 0px 0px 0px 30px;}
 <code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -> <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
 こう書くと、「文字列<code><span class="string">"u"</span></code>の後に文字列<code><span class="string">"g"</span></code>があり、直後がパターン<code><span class="identifier">vowel</span></code>にマッチしないとき、<code><span class="string">"u"</span></code>を<code><span class="slash">/u/</span></code>に、<code><span class="string">"g"</span></code>も<code><span class="slash">/u/</span></code>に変換する」という規則が定義される。
 
-<code>^</code>は語の境界にマッチするパターンである。<code>$</code>は「特に変換先のスラッシュ文字列を指定せず、別の規則によって変換させる」ことを表す。
+<code>^</code>は語の境界にマッチするパターンである。<code>$</code>は「特に変換先のスラッシュリテラルを指定せず、別の規則によって変換させる」ことを表す。
 <code>^</code>と<code>$</code>の例としては、こんな感じである。
 <div>
 <code><span class="string">"n"</span> ^ <span class="identifier">lip</span> -> <span class="slash">/m/</span> $</code></div>
@@ -66,6 +66,12 @@ div{padding: 0px 0px 0px 30px;}
 文字列リテラルは、<code><span class="string">"</span></code>の後に、改行でも<code><span class="string">"</span></code>でもない文字が0文字以上続いたあと、<code><span class="string">"</span></code>があるものである。
 <code><span class="string">"</span></code>という文字自体を文字列リテラル内で用いることはできない。
 また、将来の拡張性確保のため、<code><span class="string">\</span></code>という文字を文字列リテラル内で用いることはできない。
+</pre>
+<h4 id="slash">2-5. スラッシュリテラル</h4>
+<pre>
+スラッシュリテラルは、<code><span class="slash">/</span></code>の後に、改行でも<code><span class="slash">/</span></code>でもない文字が0文字以上続いたあと、<code><span class="slash">/</span></code>があるものである。
+<code><span class="slash">/</span></code>という文字自体をスラッシュリテラル内で用いることはできない。
+また、将来の拡張性確保のため、<code><span class="slash">\</span></code>という文字をスラッシュリテラル内で用いることはできない。
 </pre>
 </body>
 </html>
