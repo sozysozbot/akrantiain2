@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>akrantiainマニュアル（日本語）</title>
 <style>
-code{background-color:#f5f7f9; padding:5px;}
+code{background-color:#f5f7f9; padding:3px;margin:2px;}
 .string{color:#cc6600}
 .slash{color:#00aa44}
 .identifier{color:#0000ff}
@@ -39,7 +39,9 @@ div{padding: 0px 0px 0px 30px;}
 こう書くと、識別子<code><span class="identifier">sample</span></code>が<code><span class="string">"foo"</span></code>、<code><span class="string">"bar" "baz"</span></code>、<code><span class="string">"foobar"</span></code>の3つのどれかにマッチするパターンとして定義される。
 識別子は、アルファベットの後に、（アルファベット・数字・<code>_</code>）が0個以上続いたものである。
 
-特殊な識別子として、<code>PUNCTUATION</code>がある。例えば<code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>と定義すると、akrantiainはこれらの文字を句読点と認識する。
+同一の識別子を複数回定義すると、エラーが発生する。
+
+特殊な識別子として、<code><span class="identifier">PUNCTUATION</span></code>がある。例えば<code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>と定義すると、akrantiainはこれらの文字を句読点と認識する。
 これは、例えば<code>This is a pen.</code>という文において、<code>n</code>の字は語末なのだということをakrantiainに認識させるのに必要である。
 </pre>
 <h4 id="convert">2-3. 変換規則定義文</h4>
@@ -51,7 +53,7 @@ div{padding: 0px 0px 0px 30px;}
 <div>
 <code><u>0または1個のCONDITION</u> <u>1個以上のSELECT</u> <u>0または1個のCONDITION</u> -&gt; <u>1個以上のPHONEME</u>;</code>
 </div>
-ここで、「1個以上の<code><u>SELECT</u></code>」を構成する<code><u>SELECT</u></code>のうち<code>^</code>以外のものの個数と、「1個以上の<code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>の個数は一致している必要がある。
+ここで、「1個以上の<code><u>SELECT</u></code>」を構成する<code><u>SELECT</u></code>のうち<code>^</code>以外のものの個数と、「1個以上の<code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>の個数は一致している必要がある。不一致の場合エラーが発生する。
 
 例としては、こんな感じである。
 <div>
@@ -64,6 +66,8 @@ div{padding: 0px 0px 0px 30px;}
 <code><span class="string">"n"</span> ^ <span class="identifier">lip</span> -> <span class="slash">/m/</span> $</code></div>
 こう書くと、「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code><span class="identifier">lip</span></code>にマッチする文字列があるとき、
 <code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code><span class="identifier">lip</span></code>にマッチした文字列については保留し、後に登場する規則に委ねる」という規則が定義される。
+
+変換規則定義文内で用いている識別子がどの識別子定義文でも定義されていない場合は、エラーが発生する。
 </pre>
 <h4 id="literal">2-4. 文字列リテラル</h4>
 <pre>
