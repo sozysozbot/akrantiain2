@@ -22,7 +22,7 @@ import Akrantiain.Errors
 import Akrantiain.Rule
 import Akrantiain.Structure(Choose(..))
 import qualified Data.Set as S
-
+import Control.Monad.Reader
 
 
 
@@ -38,7 +38,7 @@ type Back = [(String, Maybe String)]
 nazo2 :: Punctuation -> (String,Maybe String) -> Either String String
 nazo2 _ (_, Just b) = Right b
 nazo2 p (a, Nothing)
- | isSpPunct p a = Right " "
+ | isSpPunct a p = Right " "
  | otherwise = Left $ a
 
 
@@ -101,12 +101,12 @@ match punct k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where
 match punct k@R{middle=Left():xs} stat = mapMaybe h $ match punct k{middle=xs} stat where
  h (front, back) = do
   let front' = reverse front
-  guard $ null front' || (isSpPunct punct . fst . head) front'
-  let (b', f'') = span (isSpPunct punct . fst) front'
+  guard $ null front' || ((\x->isSpPunct x punct) . fst . head) front'
+  let (b', f'') = span ((\x->isSpPunct x punct) . fst) front'
   return (reverse f'', reverse b' ++ back)
 
-isSpPunct :: Punctuation -> String -> Bool
-isSpPunct punct str = all (\x -> isSpace x || x `elem` punct) str
+isSpPunct :: String -> Punctuation -> Bool
+isSpPunct str punct = all (\x -> isSpace x || x `elem` punct) str
 
 takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
 takeTill "" _ = Just []
