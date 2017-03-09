@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>akrantiainマニュアル（日本語）</title>
+<style>
+code{background-color:#f5f7f9; padding:5px;}
+.string{color:#cc6600}
+.slash{color:#00aa44}
+.identifier{color:#0000ff}
+pre{line-height: 170%}
+div{padding: 0px 0px 0px 30px;}
+</style>
+</head>
+<body>
+<p></p>
+<h3>2. .snojファイルの構文規則</h3>
+<h4 name="structure">2-0. 構造</h4>
+<pre>
+.snojファイルは文の集まりである。文には<a href="#ident">識別子定義文</a>と<a href="#convert">変換規則定義文</a>がある。
+行末は文の境目である。行をまたいで1文を定義することはできない。
+逆に、文末のセミコロンは、行の最後および行コメントの直前では省略できる。
+</pre>
+<h4 name="comment">2-1. コメント</h4>
+<pre>
+<code>#</code>から行末までに書かれたものは無視される。ただし、<a href="#literal">文字列リテラル</a>および<a href="#slash">スラッシュ文字列リテラル</a>内の<code>#</code>はコメントを意味しない。
+複数行コメントは存在しない。
+</pre>
+<h4 name="ident">2-2. 識別子定義文</h4>
+<pre>
+識別子定義文は、次のような構造を持つ。
+<div>
+<code><u>識別子</u> = <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u>;</code></div>
+例としては、こんな感じである。
+<div>
+<code><span class="identifier">sample</span> = <span class="string">"foo"</span> | <span class="string">"bar"</span> <span class="string">"baz"</span> | <span class="string">"foobar"</span>;</code></div>
+こう書くと、識別子<code><span class="identifier">sample</span></code>が<code><span class="string">"foo"</span></code>、<code><span class="string">"bar" "baz"</span></code>、<code><span class="string">"foobar"</span></code>の3つのどれかにマッチするパターンとして定義される。
+</pre>
+<h4 name="#convert">2-3. 変換規則定義文</h4>
+<pre>
+<code><u>SELECT</u></code>を<code>^</code>または「1つの識別子」または「1個の文字列リテラル」または<code>( <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> )</code>とし、
+<code><u>CONDITION</u></code>は<code><u>SELECT</u></code>に<code>!</code>を前置したものとする。
+<code><u>PHONEME</u></code>は<code>$</code>か<code><u>スラッシュ文字リテラル</u></code>とする。
+このとき、変換規則定義文は、次のような構造を持つ。
+<div>
+<code><u>0または1個のCONDITION</u> <u>1個以上のSELECT</u> <u>0または1個のCONDITION</u> -&gt; <u>1個以上のPHONEME</u>;</code>
+</div>
+ここで、「1個以上の<code><u>SELECT</u></code>」を構成する<code><u>SELECT</u></code>のうち<code>^</code>以外のものの個数と、「1個以上の<code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>の個数は一致している必要がある。
+
+例としては、こんな感じである。
+<div>
+<code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -> <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
+こう書くと、「文字列<code><span class="string">"u"</span></code>の後に文字列<code><span class="string">"g"</span></code>があり、直後がパターン<code><span class="identifier">vowel</span></code>にマッチしないとき、<code><span class="string">"u"</span></code>を<code><span class="slash">/u/</span></code>に、<code><span class="string">"g"</span></code>も<code><span class="slash">/u/</span></code>に変換する」という規則が定義される。
+
+<code>^</code>は語の境界にマッチするパターンである。<code>$</code>は「特に変換先のスラッシュ文字列を指定せず、別の規則によって変換させる」ことを表す。
+<code>^</code>と<code>$</code>の例としては、こんな感じである。
+<div>
+<code><span class="string">"n"</span> ^ <span class="identifier">lip</span> -> <span class="slash">/m/</span> $</code></div>
+こう書くと、「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code><span class="identifier">lip</span></code>にマッチする文字列があるとき、
+<code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code><span class="identifier">lip</span></code>にマッチした文字列については保留し、後に登場する規則に委ねる」という規則が定義される。
+</pre>
+</body>
+</html>
