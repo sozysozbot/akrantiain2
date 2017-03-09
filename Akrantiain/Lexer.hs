@@ -110,9 +110,16 @@ quoted_string = do
   return $ Quote str
 
 sentence :: Parser Sentence
-sentence = conversion <|> define -- <|> at_option
+sentence = conversion <|> define <|> at_option
 
-
+at_option :: Parser Sentence
+at_option = do
+ char '@' 
+ spaces' 
+ ide <- identifier 
+ spaces'
+ sent_terminate
+ return $ Middle' ide
 
 
 

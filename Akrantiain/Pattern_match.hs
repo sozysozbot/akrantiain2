@@ -32,8 +32,7 @@ import qualified Data.Set as S
 
 
 
-data Environment = Env{pun :: Punctuation}
-type Rules = (Environment,[Rule])
+
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
 type Back = [(String, Maybe String)]
