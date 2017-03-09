@@ -5,11 +5,16 @@ import Text.Parsec
 import System.Environment
 import System.IO
 import Akrantiain.Sents_to_rules
-import Control.Monad(forM_)
+import Control.Monad(forM_, when)
+import System.Process
+import System.Info
+
+
 
 main :: IO ()
 main = do
  args <- getArgs
+ when (os == "mingw32") $ callCommand "chcp 65001 > nul"
  case args of
   []    -> putStrLn "mi'e .akrantiain."
   (fname:_) -> do
