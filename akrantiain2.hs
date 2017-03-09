@@ -16,7 +16,7 @@ main = do
  args <- getArgs
  when (os == "mingw32") $ callCommand "chcp 65001 > nul"
  case args of
-  []    -> putStrLn "mi'e .akrantiain."
+  []    -> putStrLn "mi'e .akranti'ain."
   (fname:_) -> do
    handle <- openFile fname ReadMode 
    hSetEncoding handle utf8
