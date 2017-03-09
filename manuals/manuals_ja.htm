@@ -38,6 +38,9 @@ div{padding: 0px 0px 0px 30px;}
 <code><span class="identifier">sample</span> = <span class="string">"foo"</span> | <span class="string">"bar"</span> <span class="string">"baz"</span> | <span class="string">"foobar"</span>;</code></div>
 こう書くと、識別子<code><span class="identifier">sample</span></code>が<code><span class="string">"foo"</span></code>、<code><span class="string">"bar" "baz"</span></code>、<code><span class="string">"foobar"</span></code>の3つのどれかにマッチするパターンとして定義される。
 識別子は、アルファベットの後に、（アルファベット・数字・<code>_</code>）が0個以上続いたものである。
+
+特殊な識別子として、<code>PUNCTUATION</code>がある。例えば<code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>と定義すると、akrantiainはこれらの文字を句読点と認識する。
+これは、例えば<code>This is a pen.</code>という文において、<code>n</code>の字は語末なのだということをakrantiainに認識させるのに必要である。
 </pre>
 <h4 id="convert">2-3. 変換規則定義文</h4>
 <pre>
