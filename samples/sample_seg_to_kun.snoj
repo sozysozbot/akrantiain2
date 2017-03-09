@@ -1,0 +1,60 @@
+# Segsyoxafuから訓令式への変換
+# 現状、漢字音まで対応
+
+"d" ("i" | "y" | "u") -> /z/ $
+"de" u -> /zyo/ /o/
+
+specialcons = "h" | "j"
+"n" specialcons vowel -> /n'/ $ $
+"n" "v" non_a_vowel -> /n'/ $ $
+"m" specialcons vowel -> /n'/ $ $
+"m" "v" non_a_vowel -> /n'/ $ $
+"m" !vowel -> /n/
+
+vowel = "a" | "e" | "i" | "o" | "u" | "w" | "y"
+non_a_vowel = "e" | "i" | "o" | "u" | "w" | "y"
+
+"g" vowel -> /g/ $
+"eg" !vowel -> /ei/
+
+u = "u" | "fu"
+"u" u -> /u/ /u/
+"o" u -> /o/ /o/
+"a" u -> /o/ /o/
+"e" u -> /yo/ /o/
+"i" u -> /yu/ /u/
+"u" "g" !vowel -> /u/ /u/
+"o" "g" !vowel -> /o/ /o/
+"a" "g" !vowel -> /o/ /o/
+
+
+
+"va" -> /wa/
+"je" -> /e/
+"fa" -> /wa/
+
+"u" -> /u/
+"o" -> /o/
+"a" -> /a/
+"e" -> /e/
+"i" -> /i/
+
+
+"v" -> //
+"h" -> //
+"j" -> /y/
+"r" -> /r/
+"s" -> /s/
+"z" -> /z/
+"n" -> /n/
+"t" -> /t/
+"d" -> /d/
+"k" -> /k/
+"m" -> /m/
+"p" -> /p/
+"f" -> //
+"x" -> /h/
+"b" -> /b/
+
+"w" -> //
+"y" -> /y/
