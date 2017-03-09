@@ -61,5 +61,11 @@ div{padding: 0px 0px 0px 30px;}
 こう書くと、「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code><span class="identifier">lip</span></code>にマッチする文字列があるとき、
 <code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code><span class="identifier">lip</span></code>にマッチした文字列については保留し、後に登場する規則に委ねる」という規則が定義される。
 </pre>
+<h4 id="literal">2-4. 文字列リテラル</h4>
+<pre>
+文字列リテラルは、<code><span class="string">"</span></code>の後に、改行でも<code><span class="string">"</span></code>でもない文字が0文字以上続いたあと、<code><span class="string">"</span></code>があるものである。
+<code><span class="string">"</span></code>という文字自体を文字列リテラル内で用いることはできない。
+また、将来の拡張性確保のため、<code><span class="string">\</span></code>という文字を文字列リテラル内で用いることはできない。
+</pre>
 </body>
 </html>
