@@ -38,7 +38,7 @@ type Back = [(String, Maybe String)]
 nazo2 :: Punctuation -> (String,Maybe String) -> Either String String
 nazo2 _ (_, Just b) = Right b
 nazo2 p (a, Nothing)
- | isSpPunct a p = Right " "
+ | isSpPunct a `runReader`p = Right " "
  | otherwise = Left $ a
 
 
@@ -101,12 +101,14 @@ match punct k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where
 match punct k@R{middle=Left():xs} stat = mapMaybe h $ match punct k{middle=xs} stat where
  h (front, back) = do
   let front' = reverse front
-  guard $ null front' || ((\x->isSpPunct x punct) . fst . head) front'
-  let (b', f'') = span ((\x->isSpPunct x punct) . fst) front'
+  guard $ null front' || ((\x->isSpPunct x`runReader` punct) . fst . head) front'
+  let (b', f'') = span ((\x->isSpPunct x `runReader`punct) . fst) front'
   return (reverse f'', reverse b' ++ back)
 
-isSpPunct :: String -> Punctuation -> Bool
-isSpPunct str punct = all (\x -> isSpace x || x `elem` punct) str
+isSpPunct :: String -> Reader Punctuation Bool
+isSpPunct str = do 
+ punct <- ask
+ return $ all (\x -> isSpace x || x `elem` punct) str
 
 takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
 takeTill "" _ = Just []
