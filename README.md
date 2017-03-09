@@ -7,7 +7,7 @@ A domain-specific language designed to describe conlangs' orthographies
 ## Getting Started
 
 ### Installing
-#### Linux
+#### Ubuntu
 Clone the repo and run:
 ```
 $ make
