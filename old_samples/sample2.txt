@@ -1,2 +1,0 @@
-vowel = "a" | "i"; conson = "b" | "c"; syll = conson vowel | vowel
-syll -> /a/

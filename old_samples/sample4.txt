@@ -1,2 +1,0 @@
-conson = "b" | "c"; syll = conson "a"
-syll -> /a/
