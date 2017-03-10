@@ -8,6 +8,7 @@ module Akrantiain.Pattern_match
 ,cook
 ,Choose(..)
 ,no
+,no2
 ,Rule(..)
 ,Boundary_
 ,Punctuation

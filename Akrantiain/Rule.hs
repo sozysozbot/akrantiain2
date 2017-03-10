@@ -8,6 +8,7 @@ module Akrantiain.Rule
 ,no
 ,Environment(..)
 ,Rules
+,no2
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
