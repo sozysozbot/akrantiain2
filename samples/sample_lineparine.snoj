@@ -1,5 +1,5 @@
 ## lineparine orthography
-
+@CASE_SENSITIVE;
 vowel = "a" | "i" | "u" | "e" | "o" | "y"
 palat = "Z" | "x" | "ch" | "sh"
 PUNCTUATION = "." | "," | "!" | "?"

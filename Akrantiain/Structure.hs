@@ -1,7 +1,7 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
 module Akrantiain.Structure
-(Sentence
+(Sentence(..)
 ,Phoneme(..)
 ,Identifier(..)
 ,Quote(..)
@@ -22,8 +22,8 @@ data Phoneme = Dollar | Slash String deriving(Show, Eq, Ord)
 data Select = Boundary2 | Iden Identifier | Pipe (Choose Quote) deriving(Show, Eq, Ord)
 newtype Quote = Quote{unQ::String} deriving(Show, Eq, Ord)
 newtype Identifier = Id{unId::String} deriving(Show, Eq, Ord)
-type Sentence = Either Conversion Define 
-data Conversion = Conversion {mid::(Array Select), phons:: (Array Phoneme), lneg ::Maybe Select, rneg::Maybe Select}
+data Sentence = Left' Conversion | Middle' Identifier | Right' Define deriving(Show, Eq, Ord) 
+data Conversion = Conversion {mid::(Array Select), phons:: (Array Phoneme), lneg ::Maybe Select, rneg::Maybe Select} deriving(Show, Eq, Ord) 
 data Define = Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
 
 

@@ -2,23 +2,28 @@
 import Prelude hiding (undefined)
 import Akrantiain.Pattern_match
 import System.IO
+import qualified Data.Map as M
+
+env :: Environment
+env = Env{pun=punct, bools=M.empty}
+
 main :: IO ()
 main = do
- cook (punct,rls) "sashimi"       >>>= putStrLn
- cook (punct,rls) "stoxiet"       >>>= putStrLn
- cook (punct,rls) "exiu"          >>>= putStrLn
- cook (punct,rls) "selxiunk"      >>>= putStrLn
- cook (punct,rls) "mi"            >>>= putStrLn
- cook (punct,rls) "liaxa"         >>>= putStrLn
- cook (punct,rls) "lineparine"    >>>= putStrLn
- cook (punct,rls) "krante"        >>>= putStrLn
- cook (punct,rls) "lkurftlesse'd" >>>= putStrLn
- cook (punct,rls) "xorlnemj"      >>>= putStrLn
- cook (punct,rls) "ayplerde"      >>>= putStrLn
- cook (punct,rls) "akrantiain"    >>>= putStrLn
- cook (punct,rls) "aus"           >>>= putStrLn
- cook (punct,rls) "panqa'dy"      >>>= putStrLn
- cook (punct,rls) "Fankaon kaccaon lex ta safes elx wioll ycax elx pojiv Zarhalo gasluifesj farkzirVion befivagRi'i qacemal xadlumirfa mol niv."      >>>= putStrLn
+ cook (env,rls) "sashimi"       >>>= putStrLn
+ cook (env,rls) "stoxiet"       >>>= putStrLn
+ cook (env,rls) "exiu"          >>>= putStrLn
+ cook (env,rls) "selxiunk"      >>>= putStrLn
+ cook (env,rls) "mi"            >>>= putStrLn
+ cook (env,rls) "liaxa"         >>>= putStrLn
+ cook (env,rls) "lineparine"    >>>= putStrLn
+ cook (env,rls) "krante"        >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd" >>>= putStrLn
+ cook (env,rls) "xorlnemj"      >>>= putStrLn
+ cook (env,rls) "ayplerde"      >>>= putStrLn
+ cook (env,rls) "akrantiain"    >>>= putStrLn
+ cook (env,rls) "aus"           >>>= putStrLn
+ cook (env,rls) "panqa'dy"      >>>= putStrLn
+ cook (env,rls) "Fankaon kaccaon lex ta safes elx wioll ycax elx pojiv Zarhalo gasluifesj farkzirVion befivagRi'i qacemal xadlumirfa mol niv."      >>>= putStrLn
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
 Left  a >>>= _  = hPutStrLn stderr $ show a
@@ -39,15 +44,15 @@ rls = [
  lift[Left(), Right(c"wioll", W"wjol"), Left ()],
  lift[Right(c"sh", W"ʃ")],
  lift[Right(palat,Dollar_),Right(c"i", W""),Right(vowel,Dollar_)],
- (lift[Right(vowel,Dollar_),Right(c"i",W"j")]){rightneg =Just(no$c"r")},
+ (lift[Right(vowel,Dollar_),Right(c"i",W"j")]){rightneg =Just(Negation$c"r")},
  lift[Right(palat,Dollar_),Right(c"i",Dollar_),Right(c"u",W"u")],
- (lift[Right(vowel,Dollar_),Right(c"u",W"w")]){rightneg =Just(no$c"r")},
- (lift[Right(c"s",W"z"),Right(c"j",Dollar_)]){rightneg = Just(no vowel)},
+ (lift[Right(vowel,Dollar_),Right(c"u",W"w")]){rightneg =Just(Negation$c"r")},
+ (lift[Right(c"s",W"z"),Right(c"j",Dollar_)]){rightneg = Just(Negation vowel)},
  lift[Right(c"i",W"j"),Right(vowel,Dollar_)],
- (lift[Right(c"s",W"s")]){rightneg = Just(no vowel)},
- (lift[Right(c"j",W"i")]){rightneg = Just(no vowel)},
- (lift[Right(vowel,Dollar_),Right(c"y",W"ɥ")]){rightneg = Just(no vowel)},
- (lift[Right(Ch["r","R"],W"r")]){leftneg = Just (no vowel)},
+ (lift[Right(c"s",W"s")]){rightneg = Just(Negation vowel)},
+ (lift[Right(c"j",W"i")]){rightneg = Just(Negation vowel)},
+ (lift[Right(vowel,Dollar_),Right(c"y",W"ɥ")]){rightneg = Just(Negation vowel)},
+ (lift[Right(Ch["r","R"],W"r")]){leftneg = Just (Negation vowel)},
  lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
  lift[Right(c"t",W"t")],
  lift[Right(c"s",W"z")],

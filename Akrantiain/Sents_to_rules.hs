@@ -8,7 +8,6 @@ import Akrantiain.Structure
 import Akrantiain.Errors
 import Control.Monad(forM,when)
 import Akrantiain.Pattern_match
-import Data.Either(lefts, rights)
 import Data.List(group, sort, intercalate)
 import qualified Data.Map as M
 
@@ -19,13 +18,20 @@ type Output = Either RuntimeError String
 
 sents_to_func :: Set Sentence -> (Either SemanticError (Input -> Output))
 sents_to_func sents = do
- (punct,rules) <- sentences_to_rules sents
- return $ cook (punct,rules)
+ (env,rules) <- sentences_to_rules sents
+ return $ cook (env,rules)
 
+split3 :: [Sentence] -> ([Conversion],[Identifier],[Define])
+split3 [] = ([],[],[])
+split3 (Left'   c:xs) = let (cs,is,ds) = split3 xs in (c:cs,is,ds)
+split3 (Middle' i:xs) = let (cs,is,ds) = split3 xs in (cs,i:is,ds)
+split3 (Right'  d:xs) = let (cs,is,ds) = split3 xs in (cs,is,d:ds)
 
-sentences_to_rules :: [Sentence] -> Either SemanticError (Punctuation,[Rule])
+sentences_to_rules :: [Sentence] -> Either SemanticError (Environment,[Rule])
 sentences_to_rules sents = do
- let (convs, defs) = (lefts sents, map (\(Define a b) -> (a,b)) $ rights sents)
+ let (convs, vars_pre, defs_pre) = split3 sents
+ let defs = map (\(Define a b) -> (a,b)) $ defs_pre
+ let vars = M.fromList $ zip vars_pre (repeat ())
  let duplicates = (map head . filter (\x -> length x > 1) . group . sort . map fst) defs
  when (not $ null duplicates) $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) {" ++ intercalate "}, {" (map unId duplicates) ++ "}"}
  let defs_ = M.fromList defs
@@ -39,7 +45,7 @@ sentences_to_rules sents = do
   case zipEither midd' (map phon_to_w phonemes) of
    Nothing -> Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv}
    Just newmidd -> return R{leftneg = fmap no' left', middle = newmidd, rightneg = fmap no' right'}
- return(punct,rules)
+ return(Env{pun=punct, bools=vars},rules)
 
 foo :: (a -> Either c b) -> Maybe a -> Either c (Maybe b)
 foo _ Nothing = Right Nothing
@@ -65,6 +71,4 @@ phon_to_w :: Phoneme -> W
 phon_to_w Dollar = Dollar_
 phon_to_w (Slash str) = W str
 
-no' :: Either Boundary_ (Choose String) -> Condition
-no' (Right c) = no c
--- FIXME
+
