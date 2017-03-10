@@ -17,13 +17,14 @@ module Akrantiain.Pattern_match
 import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing)
 import Data.List(isPrefixOf, inits, tails, intersperse)
-import Data.Char(isSpace)
+import Data.Char(isSpace, toLower)
 import Data.Either(lefts, rights)
 import Control.Monad(guard)
 import Akrantiain.Errors
 import Akrantiain.Rule
-import Akrantiain.Structure(Choose(..))
+import Akrantiain.Structure(Choose(..),Identifier(..))
 import qualified Data.Set as S
+import qualified Data.Map as M
 
 
 
@@ -44,17 +45,31 @@ nazo2 Env{pun=p} (a, Nothing)
  | isSpPunct p a = Right " "
  | otherwise = Left $ a
 
+insensitive :: Rule -> Rule
+insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(fmap g) m, rightneg=fmap f r} where
+ f :: Condition -> Condition
+ f (Negation c) = Negation $ h c
+ g :: (Choose String, W) -> (Choose String, W)
+ g (c,w) = (h c,w)
+ h :: Choose String -> Choose String
+ h (Ch arr) = Ch . map (map toLower) $ arr
+-- R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
+
+
+
 
 cook :: Rules -> String -> Either RuntimeError String
-cook r@(env,_) str = do 
- let eitherList = map (nazo2 env) (cook' r stat)
+cook (env,rls') str = do
+ let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
+   Just True -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
+   -- Just False -> doesn't happen yet
+   Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
+ let eitherList = map (nazo2 env) (cook' (env,rls) stat)
  case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
   strs -> do 
    let msg = "{" ++ (concat . intersperse "}, {"  . S.toList . S.fromList) strs ++ "}" 
    Left $ RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
- where 
-  stat = map (\x -> ([x], Nothing)) (str ++ " ") -- extra space required for handling word boundary
 
 
 cook' :: Rules -> Stat -> Stat
