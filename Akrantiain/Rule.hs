@@ -19,16 +19,16 @@ import qualified Data.Map as M
 data Rule = R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
 data W = W String | Dollar_ 
 type Boundary_ = ()
-data Condition = Cond (String -> Bool)
+data Condition = Negation (Choose String) --Cond (String -> Bool)
 type Punctuation = [Char]
 data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier Bool}
 type Rules = (Environment,[Rule])
 
 unCond :: Condition -> (String -> Bool)
-unCond (Cond f) = f
+unCond (Negation c) = no c
 
 no2 :: Choose String -> Condition
-no2 a = Cond(no a)
+no2 a = Negation a
 
 no :: Choose String -> (String -> Bool)
 no (Ch foo) str
@@ -37,5 +37,5 @@ no (Ch foo) str
  | otherwise = True
 
 no' :: Either Boundary_ (Choose String) -> Condition
-no' (Right c) = Cond(no c)
+no' (Right c) = Negation c
 -- FIXME
