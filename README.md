@@ -19,6 +19,16 @@ Try it out by running:
 $ echo lineparine | ./akrantiain2 samples/sample_lineparine.snoj
 ```
 
+Or use it interactively:
+```
+$ ./akrantiain2 samples/sample_lineparine.snoj
+```
+
+Or read from file:
+```
+$ ./akrantiain2 samples/sample_lineparine.snoj < input_sample.txt
+```
+
 #### Windows (7 and 10)
 1. Install Haskell Platform (>= 7.10.2).
 2. Clone the repo.
@@ -30,4 +40,15 @@ $ ghc --make akrantiain2.hs
 Try it out by running:
 ```
 $ echo lineparine | akrantiain2 samples\sample_lineparine.snoj
+```
+
+Or use it interactively:
+```
+$ akrantiain2 samples\sample_lineparine.snoj
+```
+
+Or read from file:
+```
+$ chcp 65001
+$ akrantiain2 samples\sample_lineparine.snoj --file < input_sample.txt
 ```

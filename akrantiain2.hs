@@ -14,10 +14,10 @@ import System.Info
 main :: IO ()
 main = do
  args <- getArgs
- when (os == "mingw32") $ callCommand "chcp 65001 > nul"
  case args of
   []    -> putStrLn "mi'e .akranti'ain."
-  (fname:_) -> do
+  (fname:xs) -> do
+   when (os == "mingw32" && (null xs || head xs /= "--file") ) $ callCommand "chcp 65001 > nul"
    handle <- openFile fname ReadMode 
    hSetEncoding handle utf8
    input <- hGetContents handle
