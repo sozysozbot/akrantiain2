@@ -3,12 +3,14 @@ module Akrantiain.Rule
 (Rule(..)
 ,W(..)
 ,Boundary_
-,Condition(..)
+,Condition
 ,Punctuation
 ,no
 ,Environment(..)
 ,Rules
 ,no2
+,unCond
+,no'
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
@@ -17,10 +19,13 @@ import qualified Data.Map as M
 data Rule = R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
 data W = W String | Dollar_ 
 type Boundary_ = ()
-data Condition = Cond{unCond::(String -> Bool)}
+data Condition = Cond (String -> Bool)
 type Punctuation = [Char]
 data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier Bool}
 type Rules = (Environment,[Rule])
+
+unCond :: Condition -> (String -> Bool)
+unCond (Cond f) = f
 
 no2 :: Choose String -> Condition
 no2 a = Cond(no a)
@@ -31,3 +36,6 @@ no (Ch foo) str
  | str `elem` foo = False
  | otherwise = True
 
+no' :: Either Boundary_ (Choose String) -> Condition
+no' (Right c) = Cond(no c)
+-- FIXME

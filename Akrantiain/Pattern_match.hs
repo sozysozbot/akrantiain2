@@ -1,6 +1,6 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 module Akrantiain.Pattern_match
-(Condition(..)
+(Condition
 ,Stat
 ,Front
 ,Back
@@ -9,6 +9,7 @@ module Akrantiain.Pattern_match
 ,Choose(..)
 ,no
 ,no2
+,no'
 ,Rule(..)
 ,Boundary_
 ,Punctuation
