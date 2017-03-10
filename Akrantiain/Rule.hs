@@ -20,7 +20,7 @@ data W = W String | Dollar_
 type Boundary_ = ()
 data Condition = Negation (Choose String) --Cond (String -> Bool)
 type Punctuation = [Char]
-data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier Bool}
+data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier ()}
 type Rules = (Environment,[Rule])
 
 unCond :: Condition -> (String -> Bool)
