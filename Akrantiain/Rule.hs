@@ -3,12 +3,11 @@ module Akrantiain.Rule
 (Rule(..)
 ,W(..)
 ,Boundary_
-,Condition
+,Condition(..)
 ,Punctuation
 ,no
 ,Environment(..)
 ,Rules
-,no2
 ,unCond
 ,no'
 ) where
@@ -27,8 +26,6 @@ type Rules = (Environment,[Rule])
 unCond :: Condition -> (String -> Bool)
 unCond (Negation c) = no c
 
-no2 :: Choose String -> Condition
-no2 a = Negation a
 
 no :: Choose String -> (String -> Bool)
 no (Ch foo) str
