@@ -76,12 +76,19 @@ div{padding: 0px 0px 0px 30px;}
 <div>
 <code>@ <u>識別子</u> ;</code></div>
 この文は、akrantiainの挙動を、<code><u>識別子</u></code>により指定された挙動に変更することを示す文である。同一の環境指定が複数あってもエラーではない。
+現状で挙動が定義されている環境指定識別子の一覧は、次の通りである。
+<table>
+<tr><td>環境指定識別子</td><td>意味</td></tr>
+<tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>変換元において大文字と小文字を区別する</td></tr></table>
 </pre>
 <h4 id="literal">2-5. 文字列リテラル</h4>
 <pre>
 文字列リテラルは、<code><span class="string">"</span></code>の後に、改行でも<code><span class="string">"</span></code>でもない文字が0文字以上続いたあと、<code><span class="string">"</span></code>があるものである。
 <code><span class="string">"</span></code>という文字自体を文字列リテラル内で用いることはできない。
 また、将来の拡張性確保のため、<code><span class="string">\</span></code>という文字を文字列リテラル内で用いることはできない。
+
+デフォルトでは、文字列リテラル内の大文字と小文字は区別されない。
+区別させるには、<a href="#atmark">環境指定文</a>で環境指定識別子<code><span class="identifier">CASE_SENSITIVE</span></code>を指定する必要がある。
 </pre>
 <h4 id="slash">2-6. スラッシュリテラル</h4>
 <pre>
