@@ -72,5 +72,5 @@ phon_to_w Dollar = Dollar_
 phon_to_w (Slash str) = W str
 
 no' :: Either Boundary_ (Choose String) -> Condition
-no' (Right c) = no c
+no' (Right c) = Cond(no c)
 -- FIXME

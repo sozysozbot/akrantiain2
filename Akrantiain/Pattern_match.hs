@@ -1,6 +1,6 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 module Akrantiain.Pattern_match
-(Condition
+(Condition(..)
 ,Stat
 ,Front
 ,Back
@@ -83,10 +83,10 @@ upgrade2 f str = all f $ tails str
 
 match :: Environment -> Rule -> Stat -> [(Front, Back)]
 match env k@R{leftneg=Just condition} stat = filter f $ match env k{leftneg=Nothing} stat where
- f (front, _) = upgrade2 condition $ concat $ map fst front
+ f (front, _) = upgrade2 (unCond condition) $ concat $ map fst front
 match _ R{middle =[], rightneg=Nothing} stat = cutlist stat
 match _ R{middle=[], rightneg=Just condition} stat = filter f $ cutlist stat where
- f (_, back) = upgrade condition $ concat $ map fst back
+ f (_, back) = upgrade (unCond condition) $ concat $ map fst back
 match env k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where 
  fff pat = mapMaybe (g pat) $ match env k{middle=xs} stat
  g :: String -> (Front, Back) -> Maybe (Front, Back)
