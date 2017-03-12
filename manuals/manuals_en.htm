@@ -7,7 +7,7 @@
 code{background-color:#f5f7f9; padding:3px;margin:2px;}
 .string{color:#cc6600}
 .slash{color:#00aa44}
-.identifier{color:#0000ff}
+.identifier{color:#0000aa}
 pre{line-height: 170%}
 div{padding: 0px 0px 0px 30px;}
 u{font-style: italic;}
@@ -55,7 +55,8 @@ conversion rules are defined using the following syntax:
 <div>
 <code><u>0 or 1 CONDITION</u> <u>1 or more SELECT</u> <u>0 or 1 CONDITION</u> -&gt; <u>1 or more PHONEME</u>;</code>
 </div>
-There is a restriction: the number of 「1 or more <code><u>SELECT</u></code>」を構成する<code><u>SELECT</u></code>のうち<code>^</code>以外のもの must be equal to the number of 「1 or more <code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>; if not, an error occurs.
+There is a restriction: 
+ The number of {<code><u>SELECT</u></code>s (excluding <code>^</code>) that make up <code><u>1 or more SELECT</u></code>} must be equal to the number of {<code><u>PHONEME</u></code>s that make up <code><u>1 or more PHONEME</u></code>}; if not, an error occurs.
 
 For example,
 <div>
@@ -64,7 +65,7 @@ defines a rule which tells akrantiain to do the following:
  "When a <code><span class="string">"u"</span></code> is followed by a <code><span class="string">"g"</span></code>, which in turn is NOT followed by something that matches the pattern <code><span class="identifier">vowel</span></code>, 
   convert the <code><span class="string">"u"</span></code> into <code><span class="slash">/u/</span></code> and the <code><span class="string">"g"</span></code> into <code><span class="slash">/u/</span></code>."
 
-A <code>^</code> is a pattern than matches a word boundary. A <code>$</code> means that 「特に変換先のslash literalを指定せず、別の規則によって変換させる」.
+A <code>^</code> is a pattern than matches a word boundary. A <code>$</code> says: "This rule does not convert the corresponding left-hand side; let other rules written below handle it."
 The following is an example which uses a <code>^</code> and a <code>$</code>:
 <div>
 <code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -> <span class="slash">/m/</span> $</code></div>
@@ -72,7 +73,7 @@ This defines a rule that says:
  "When <code><span class="string">"n"</span></code> is followed by a word boundary, which in turn is followed by something that matches pattern <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>,
   replace <code><span class="string">"n"</span></code> into <span class="slash">/m/</span>; what is matched to <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code> should be left to other rules that follows this rule."
 
-An error occurs when an identifier used inside a conversion rule定義文 is not defined.
+An error occurs when an identifier used inside the definition of a conversion rule is not defined.
 </pre>
 <h4 id="atmark">2-4. Specifying settings</h4>
 <pre>
