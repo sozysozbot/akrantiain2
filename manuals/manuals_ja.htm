@@ -64,9 +64,9 @@ div{padding: 0px 0px 0px 30px;}
 <code>^</code>は語の境界にマッチするパターンである。<code>$</code>は「特に変換先のスラッシュリテラルを指定せず、別の規則によって変換させる」ことを表す。
 <code>^</code>と<code>$</code>の例としては、こんな感じである。
 <div>
-<code><span class="string">"n"</span> ^ <span class="identifier">lip</span> -> <span class="slash">/m/</span> $</code></div>
-こう書くと、「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code><span class="identifier">lip</span></code>にマッチする文字列があるとき、
-<code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code><span class="identifier">lip</span></code>にマッチした文字列については保留し、後に登場する規則に委ねる」という規則が定義される。
+<code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -> <span class="slash">/m/</span> $</code></div>
+こう書くと、「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチする文字列があるとき、
+<code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチした文字列については保留し、後に登場する規則に委ねる」という規則が定義される。
 
 変換規則定義文内で用いている識別子がどの識別子定義文でも定義されていない場合は、エラーが発生する。
 </pre>
