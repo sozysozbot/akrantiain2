@@ -21,7 +21,7 @@ u{font-style: italic;}
 <pre>
 A .snoj file is made up of sentences. A sentence is either an <a href="#ident">identifier定義文</a>, a <a href="#convert">変換規則定義文</a> and an <a href="#atmark">environment指定文</a>.
 Akrantiain works by 変換規則定義文を上から辿っていき and applying the conversion rules from top to bottom.
-故に、変換規則定義文の順番を入れ替えると動作が変わる可能性があるが、一方identifier定義文やenvironment指定文の位置や順序はakrantiainの動作に一切影響を与えない。
+Thus, while 変換規則定義文の順番を入れ替える can change the behavior, the order and positions of identifier定義文s or environment指定文 never affect akrantiain's behavior.
 行末は文の境目である。行をまたいで1文を定義することはできない。
 逆に、a semicolon that terminates a sentence can be omitted when it is at 行の最後およびSingle-line commentの直前では省略できる。
 </pre>
@@ -39,7 +39,7 @@ An identifier定義文 has the following structure.
 <div>
 <code><span class="identifier">sample</span> = <span class="string">"foo"</span> | <span class="string">"bar"</span> <span class="string">"baz"</span> | <span class="string">"foobar"</span>;</code></div>
 This sentence defines the identifier <code><span class="identifier">sample</span></code> as a pattern that matches either <code><span class="string">"foo"</span></code>, <code><span class="string">"bar" "baz"</span></code>, or <code><span class="string">"foobar"</span></code>.
-identifierは、アルファベットの後に、（アルファベット・数字・<code>_</code>）が0個以上続いたものである。
+An identifier is an alphabet followed by 0 or more of (either an alphabet, a digit, or an <code>_</code>).
 
 An error occurs when you define a single identifier multiple times.
 
@@ -76,8 +76,8 @@ An error occurs when 変換規則定義文内で用いているidentifierがど�
 An environment指定文 has the following structure.
 <div>
 <code>@ <u>identifier</u> ;</code></div>
-この文は、akrantiainの挙動を、<code><u>identifier</u></code>により指定された挙動に変更することを示す文である。 It is legal to define 同一のenvironment指定 multiple times.
-現状で挙動が定義されているenvironment指定identifierの一覧は、次の通りである。
+This sentence is a sentence which 示す that akrantiainの挙動を<code><u>identifier</u></code>により指定された挙動に変更すること. It is legal to define 同一のenvironment指定 multiple times.
+The following is the list of 現状で挙動が定義されているenvironment指定identifiers.
 <table>
 <tr><td>environment指定identifier</td><td>Meaning</td></tr>
 <tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>変換元において大文字と小文字を区別する</td></tr></table>
