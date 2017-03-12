@@ -19,9 +19,9 @@ u{font-style: italic;}
 <h3>2. Syntactic structure of .snoj file</h3>
 <h4 id="structure">2-0. Structure</h4>
 <pre>
-A .snoj file is made up of sentences. A sentence either <a href="#ident">defines an identifier</a>, <a href="#convert">defines a 変換規則</a> and <a href="#atmark">environment指定する</a>.
+A .snoj file is made up of sentences. A sentence either <a href="#ident">defines an identifier</a>, <a href="#convert">defines a 変換規則</a> or <a href="#atmark">specify a setting</a>.
 Akrantiain works by 変換規則定義文を上から辿っていき and applying the conversion rules from top to bottom.
-Thus, while 変換規則定義文の順番を入れ替える can change the behavior, the order and positions of identifier definitions or environment指定文 never affect akrantiain's behavior.
+Thus, while 変換規則定義文の順番を入れ替える can change the behavior, the order and positions of identifier definitions or setting specifiers never affect akrantiain's behavior.
 A semicolon or a newline terminates a sentence; thus, a single sentence cannot span multiple lines.
 In other words, a semicolon that terminates a sentence can be omitted when it is at the end of the line or is followed by a single-line comment.
 </pre>
@@ -74,15 +74,16 @@ This defines a rule that says:
 
 An error occurs when an identifier used inside a 変換規則定義文 is not defined.
 </pre>
-<h4 id="atmark">2-4. environment指定文</h4>
+<h4 id="atmark">2-4. Specifying settings</h4>
 <pre>
-An environment指定文 has the following structure.
+A setting specifier has the following structure.
 <div>
 <code>@ <u>identifier</u> ;</code></div>
-This sentence is a sentence which 示す that akrantiainの挙動を<code><u>identifier</u></code>により指定された挙動に変更すること. It is legal to define the same environment指定 multiple times.
-The following is the list of 現状で挙動が定義されているenvironment指定identifiers.
+This sentence tells akrantiain to behave differently from what it normally does.
+It is legal to specify the same setting multiple times.
+The following is the list of identifiers that currently have settings accompanied to them.
 <table>
-<tr><td>environment指定identifier</td><td>Meaning</td></tr>
+<tr><td>Identifiers</td><td>Meaning</td></tr>
 <tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>Make string literals case-sensitive</td></tr></table>
 </pre>
 <h4 id="literal">2-5. String literal</h4>
@@ -92,7 +93,7 @@ It is forbidden to use the character <code><span class="string">"</span></code> 
 Also, for future use, it is currently forbidden to use the character <code><span class="string">\</span></code> inside string literals.
 
 By default, string literals are case-insensitive.
-You need to 指定する <a href="#atmark">environment指定文</a>でenvironment指定identifier<code><span class="identifier">CASE_SENSITIVE</span></code> to make string literals case-sensitive.
+You need to <a href="#atmark">specify the setting</a> <code><span class="identifier">CASE_SENSITIVE</span></code> to make string literals case-sensitive.
 </pre>
 <h4 id="slash">2-6. Slash literal</h4>
 <pre>
