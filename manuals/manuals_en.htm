@@ -19,11 +19,11 @@ u{font-style: italic;}
 <h3>2. Syntactic structure of .snoj file</h3>
 <h4 id="structure">2-0. Structure</h4>
 <pre>
-A .snoj file is made up of sentences. A sentence is either an <a href="#ident">identifier定義文</a>, a <a href="#convert">変換規則定義文</a> and an <a href="#atmark">environment指定文</a>.
+A .snoj file is made up of sentences. A sentence either <a href="#ident">defines an identifier</a>, <a href="#convert">defines a 変換規則</a> and <a href="#atmark">environment指定する</a>.
 Akrantiain works by 変換規則定義文を上から辿っていき and applying the conversion rules from top to bottom.
-Thus, while 変換規則定義文の順番を入れ替える can change the behavior, the order and positions of identifier定義文s or environment指定文 never affect akrantiain's behavior.
-行末は文の境目である。 A single sentence cannot span multiple lines.
-逆に、a semicolon that terminates a sentence can be omitted when it is at the end of the line or is followed by a single-line comment.
+Thus, while 変換規則定義文の順番を入れ替える can change the behavior, the order and positions of identifier definitions or environment指定文 never affect akrantiain's behavior.
+A semicolon or a newline terminates a sentence; thus, a single sentence cannot span multiple lines.
+In other words, a semicolon that terminates a sentence can be omitted when it is at the end of the line or is followed by a single-line comment.
 </pre>
 <h4 id="comment">2-1. Comments</h4>
 <pre>
@@ -44,7 +44,7 @@ An identifier is an alphabet followed by 0 or more of (either an alphabet, a dig
 An error occurs when you define a single identifier multiple times.
 
 A special identifier named <code><span class="identifier">PUNCTUATION</span></code> exists. For example, when you define <code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>, akrantiain recognizes these characters as punctuations.
-This is necessary to, for example, <code>This is a pen.</code>という文において、<code>n</code>の字は語末なのだということをakrantiainに認識させる.
+This is necessary to, for example, letting akrantiain know that <code>n</code> inside the input <code>This is a pen.</code> terminates a word.
 </pre>
 <h4 id="convert">2-3. 変換規則定義文</h4>
 <pre>
@@ -68,10 +68,11 @@ A <code>^</code> is a pattern than matches a word boundary. A <code>$</code> mea
 The following is an example which uses a <code>^</code> and a <code>$</code>:
 <div>
 <code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -> <span class="slash">/m/</span> $</code></div>
-This defines a rule that 「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチする文字列があるとき、
-<code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチした文字列については保留し、後に登場する規則に委ねる」.
+This defines a rule that says:
+ "When <code><span class="string">"n"</span></code> is followed by a word boundary, which in turn is followed by something that matches pattern <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>,
+  replace <code><span class="string">"n"</span></code> into <span class="slash">/m/</span>; what is matched to <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code> should be left to other rules that follows this rule."
 
-An error occurs when an identifier used inside a 変換規則定義文 is not defined by any identifier定義文.
+An error occurs when an identifier used inside a 変換規則定義文 is not defined.
 </pre>
 <h4 id="atmark">2-4. environment指定文</h4>
 <pre>
