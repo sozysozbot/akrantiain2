@@ -2,9 +2,8 @@
 A domain-specific language designed to describe conlangs' orthographies
 
 ## Documentations
-English manual (Under construction)  
-[日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/manuals_ja.htm)
-
+[English manual](https://sozysozbot.github.io/akrantiain2/manuals/manuals_en.htm) (Incomplete)  
+[日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/manuals_ja.htm) (未完)
 ## Getting Started
 
 ### Installing
