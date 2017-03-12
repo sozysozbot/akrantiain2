@@ -38,7 +38,7 @@ An identifier定義文 has the following structure.
 For example,
 <div>
 <code><span class="identifier">sample</span> = <span class="string">"foo"</span> | <span class="string">"bar"</span> <span class="string">"baz"</span> | <span class="string">"foobar"</span>;</code></div>
-This sentence defines the identifier <code><span class="identifier">sample</span></code> as a pattern that matches either <code><span class="string">"foo"</span></code>, <code><span class="string">"bar" "baz"</span></code>, or <code><span class="string">"foobar"</span></code>.
+defines the identifier <code><span class="identifier">sample</span></code> as a pattern that matches either <code><span class="string">"foo"</span></code>, <code><span class="string">"bar" "baz"</span></code>, or <code><span class="string">"foobar"</span></code>.
 An identifier is an alphabet followed by 0 or more of (either an alphabet, a digit, or an <code>_</code>).
 
 An error occurs when you define a single identifier multiple times.
@@ -60,9 +60,9 @@ Let <code><u>PHONEME</u></code> be either <code>$</code> or a slash literal.
 For example,
 <div>
 <code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -> <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
-こう書くと、「文字列<code><span class="string">"u"</span></code>の後に文字列<code><span class="string">"g"</span></code>があり、直後がパターン<code><span class="identifier">vowel</span></code>にマッチしないとき、<code><span class="string">"u"</span></code>を<code><span class="slash">/u/</span></code>に、<code><span class="string">"g"</span></code>も<code><span class="slash">/u/</span></code>に変換する」という規則が定義される。
+defines a rule which means that 「文字列<code><span class="string">"u"</span></code>の後に文字列<code><span class="string">"g"</span></code>があり、直後がパターン<code><span class="identifier">vowel</span></code>にマッチしないとき、<code><span class="string">"u"</span></code>を<code><span class="slash">/u/</span></code>に、<code><span class="string">"g"</span></code>も<code><span class="slash">/u/</span></code>に変換する」.
 
-A <code>^</code> is a pattern than matches a word boundary. <code>$</code>は「特に変換先のslash literalを指定せず、別の規則によって変換させる」ことを表す。
+A <code>^</code> is a pattern than matches a word boundary. A <code>$</code> means that 「特に変換先のslash literalを指定せず、別の規則によって変換させる」.
 The following is an example which uses a <code>^</code> and a <code>$</code>:
 <div>
 <code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -> <span class="slash">/m/</span> $</code></div>
@@ -84,18 +84,18 @@ The following is the list of 現状で挙動が定義されているenvironment�
 </pre>
 <h4 id="literal">2-5. String literal</h4>
 <pre>
-String literal is a <code><span class="string">"</span></code> followed by 0 or more (改行でも<code><span class="string">"</span></code>でもない文字) followed by a <code><span class="string">"</span></code>.
+String literal is a <code><span class="string">"</span></code> followed by 0 or more of (a character that is neither a newline nor a <code><span class="string">"</span></code>) followed by a <code><span class="string">"</span></code>.
 It is forbidden to use the character <code><span class="string">"</span></code> itself inside string literals.
-Also, 将来の拡張性確保のため, it is currently forbidden to use the character <code><span class="string">\</span></code> inside string literals.
+Also, for future use, it is currently forbidden to use the character <code><span class="string">\</span></code> inside string literals.
 
 By default, string literals are case-insensitive.
 区別させるには、you must <a href="#atmark">environment指定文</a>でenvironment指定identifier<code><span class="identifier">CASE_SENSITIVE</span></code>を指定する.
 </pre>
 <h4 id="slash">2-6. Slash literal</h4>
 <pre>
-Slash literal is a <code><span class="slash">/</span></code> followed by 0 or more (改行でも<code><span class="slash">/</span></code>でもない文字) followed by a <code><span class="slash">/</span></code>.
+Slash literal is a <code><span class="slash">/</span></code> followed by 0 or more of (a character that is neither a newline nor a <code><span class="slash">/</span></code>) followed by a <code><span class="slash">/</span></code>.
 It is forbidden to use the character <code><span class="slash">/</span></code> itself inside slash literals.
-Also, 将来の拡張性確保のため, it is currently forbidden to use the character <code><span class="slash">\</span></code> inside string literals.
+Also, for future use, it is currently forbidden to use the character <code><span class="slash">\</span></code> inside string literals.
 </pre>
 </body>
 </html>
