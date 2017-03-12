@@ -76,11 +76,11 @@ An error occurs when an identifier used inside a 変換規則定義文 is not de
 An environment指定文 has the following structure.
 <div>
 <code>@ <u>identifier</u> ;</code></div>
-This sentence is a sentence which 示す that akrantiainの挙動を<code><u>identifier</u></code>により指定された挙動に変更すること. It is legal to define 同一のenvironment指定 multiple times.
+This sentence is a sentence which 示す that akrantiainの挙動を<code><u>identifier</u></code>により指定された挙動に変更すること. It is legal to define the same environment指定 multiple times.
 The following is the list of 現状で挙動が定義されているenvironment指定identifiers.
 <table>
 <tr><td>environment指定identifier</td><td>Meaning</td></tr>
-<tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>変換元において大文字と小文字を区別する</td></tr></table>
+<tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>Make string literals case-sensitive</td></tr></table>
 </pre>
 <h4 id="literal">2-5. String literal</h4>
 <pre>
@@ -89,7 +89,7 @@ It is forbidden to use the character <code><span class="string">"</span></code> 
 Also, for future use, it is currently forbidden to use the character <code><span class="string">\</span></code> inside string literals.
 
 By default, string literals are case-insensitive.
-区別させるには、you must <a href="#atmark">environment指定文</a>でenvironment指定identifier<code><span class="identifier">CASE_SENSITIVE</span></code>を指定する.
+You need to 指定する <a href="#atmark">environment指定文</a>でenvironment指定identifier<code><span class="identifier">CASE_SENSITIVE</span></code> to make string literals case-sensitive.
 </pre>
 <h4 id="slash">2-6. Slash literal</h4>
 <pre>
