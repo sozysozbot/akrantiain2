@@ -22,8 +22,8 @@ u{font-style: italic;}
 A .snoj file is made up of sentences. A sentence is either an <a href="#ident">identifier定義文</a>, a <a href="#convert">変換規則定義文</a> and an <a href="#atmark">environment指定文</a>.
 Akrantiain works by 変換規則定義文を上から辿っていき and applying the conversion rules from top to bottom.
 Thus, while 変換規則定義文の順番を入れ替える can change the behavior, the order and positions of identifier定義文s or environment指定文 never affect akrantiain's behavior.
-行末は文の境目である。行をまたいで1文を定義することはできない。
-逆に、a semicolon that terminates a sentence can be omitted when it is at 行の最後およびSingle-line commentの直前では省略できる。
+行末は文の境目である。 A single sentence cannot span multiple lines.
+逆に、a semicolon that terminates a sentence can be omitted when it is at the end of the line or is followed by a single-line comment.
 </pre>
 <h4 id="comment">2-1. Comments</h4>
 <pre>
@@ -35,7 +35,7 @@ Multiple-line comments do not exist.
 An identifier定義文 has the following structure.
 <div>
 <code><u>identifier</u> = <u>1 or more string literal</u> | <u>1 or more string literal</u> | <u>1 or more string literal</u>;</code></div>
-例としては、こんな感じである。
+For example,
 <div>
 <code><span class="identifier">sample</span> = <span class="string">"foo"</span> | <span class="string">"bar"</span> <span class="string">"baz"</span> | <span class="string">"foobar"</span>;</code></div>
 This sentence defines the identifier <code><span class="identifier">sample</span></code> as a pattern that matches either <code><span class="string">"foo"</span></code>, <code><span class="string">"bar" "baz"</span></code>, or <code><span class="string">"foobar"</span></code>.
@@ -44,7 +44,7 @@ An identifier is an alphabet followed by 0 or more of (either an alphabet, a dig
 An error occurs when you define a single identifier multiple times.
 
 A special identifier named <code><span class="identifier">PUNCTUATION</span></code> exists. For example, when you define <code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>, akrantiain recognizes these characters as punctuations.
-これは、例えば<code>This is a pen.</code>という文において、<code>n</code>の字は語末なのだということをakrantiainに認識させるのに必要である。
+This is necessary to, for example, <code>This is a pen.</code>という文において、<code>n</code>の字は語末なのだということをakrantiainに認識させる.
 </pre>
 <h4 id="convert">2-3. 変換規則定義文</h4>
 <pre>
@@ -57,19 +57,19 @@ Let <code><u>PHONEME</u></code> be either <code>$</code> or a slash literal.
 </div>
 ここで、「1 or more <code><u>SELECT</u></code>」を構成する<code><u>SELECT</u></code>のうち<code>^</code>以外のものの個数と、「1 or more <code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>の個数は一致している必要がある。An error occurs when 不一致.
 
-例としては、こんな感じである。
+For example,
 <div>
 <code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -> <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
 こう書くと、「文字列<code><span class="string">"u"</span></code>の後に文字列<code><span class="string">"g"</span></code>があり、直後がパターン<code><span class="identifier">vowel</span></code>にマッチしないとき、<code><span class="string">"u"</span></code>を<code><span class="slash">/u/</span></code>に、<code><span class="string">"g"</span></code>も<code><span class="slash">/u/</span></code>に変換する」という規則が定義される。
 
 A <code>^</code> is a pattern than matches a word boundary. <code>$</code>は「特に変換先のslash literalを指定せず、別の規則によって変換させる」ことを表す。
-<code>^</code>と<code>$</code>の例としては、こんな感じである。
+The following is an example which uses a <code>^</code> and a <code>$</code>:
 <div>
 <code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -> <span class="slash">/m/</span> $</code></div>
-こう書くと、「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチする文字列があるとき、
-<code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチした文字列については保留し、後に登場する規則に委ねる」という規則が定義される。
+This defines a rule that 「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチする文字列があるとき、
+<code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチした文字列については保留し、後に登場する規則に委ねる」.
 
-An error occurs when 変換規則定義文内で用いているidentifierがどのidentifier定義文でも定義されていない.
+An error occurs when an identifier used inside a 変換規則定義文 is not defined by any identifier定義文.
 </pre>
 <h4 id="atmark">2-4. environment指定文</h4>
 <pre>
@@ -89,7 +89,7 @@ It is forbidden to use the character <code><span class="string">"</span></code> 
 Also, 将来の拡張性確保のため, it is currently forbidden to use the character <code><span class="string">\</span></code> inside string literals.
 
 By default, string literals are case-insensitive.
-区別させるには、<a href="#atmark">environment指定文</a>でenvironment指定identifier<code><span class="identifier">CASE_SENSITIVE</span></code>を指定する必要がある。
+区別させるには、you must <a href="#atmark">environment指定文</a>でenvironment指定identifier<code><span class="identifier">CASE_SENSITIVE</span></code>を指定する.
 </pre>
 <h4 id="slash">2-6. Slash literal</h4>
 <pre>
