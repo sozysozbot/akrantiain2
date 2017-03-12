@@ -30,9 +30,9 @@ Thus, while 変換規則定義文の順番を入れ替える can change the beha
 Anything written after a <code>#</code> till the end of the line is ignored, except for the <code>#</code> inside a <a href="#literal">string literal</a> or a <a href="#slash">slash literal</a>.
 Multiple-line comments do not exist.
 </pre>
-<h4 id="ident">2-2. identifier定義文</h4>
+<h4 id="ident">2-2. Defining identifiers</h4>
 <pre>
-An identifier定義文 has the following structure.
+Identifers are defined using the following syntax:
 <div>
 <code><u>identifier</u> = <u>1 or more string literal</u> | <u>1 or more string literal</u> | <u>1 or more string literal</u>;</code></div>
 For example,
@@ -51,7 +51,7 @@ This is necessary to, for example, <code>This is a pen.</code>という文にお
 Let <code><u>SELECT</u></code> be <code>^</code>, a single identifier, a single string literal or <code>( <u>1 or more string literal</u> | <u>1 or more string literal</u> | <u>1 or more string literal</u> )</code>.
 Let <code><u>CONDITION</u></code> be <code>!</code> followed by a <code><u>SELECT</u></code>.
 Let <code><u>PHONEME</u></code> be either <code>$</code> or a slash literal.
-このとき、変換規則定義文 has the following structure.
+変換規則s are defined using the following syntax:
 <div>
 <code><u>0 or 1 CONDITION</u> <u>1 or more SELECT</u> <u>0 or 1 CONDITION</u> -&gt; <u>1 or more PHONEME</u>;</code>
 </div>
@@ -60,7 +60,9 @@ Let <code><u>PHONEME</u></code> be either <code>$</code> or a slash literal.
 For example,
 <div>
 <code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -> <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
-defines a rule which means that 「文字列<code><span class="string">"u"</span></code>の後に文字列<code><span class="string">"g"</span></code>があり、直後がパターン<code><span class="identifier">vowel</span></code>にマッチしないとき、<code><span class="string">"u"</span></code>を<code><span class="slash">/u/</span></code>に、<code><span class="string">"g"</span></code>も<code><span class="slash">/u/</span></code>に変換する」.
+defines a rule which tells akrantiain to do the following:
+ "When a <code><span class="string">"u"</span></code> is followed by a <code><span class="string">"g"</span></code>, which in turn is NOT followed by something that matches the pattern <code><span class="identifier">vowel</span></code>, 
+  convert the <code><span class="string">"u"</span></code> into <code><span class="slash">/u/</span></code> and the <code><span class="string">"g"</span></code> into <code><span class="slash">/u/</span></code>."
 
 A <code>^</code> is a pattern than matches a word boundary. A <code>$</code> means that 「特に変換先のslash literalを指定せず、別の規則によって変換させる」.
 The following is an example which uses a <code>^</code> and a <code>$</code>:
