@@ -19,9 +19,9 @@ u{font-style: italic;}
 <h3>2. Syntactic structure of .snoj file</h3>
 <h4 id="structure">2-0. Structure</h4>
 <pre>
-A .snoj file is made up of sentences. A sentence either <a href="#ident">defines an identifier</a>, <a href="#convert">defines a 変換規則</a> or <a href="#atmark">specify a setting</a>.
-Akrantiain works by 変換規則定義文を上から辿っていき and applying the conversion rules from top to bottom.
-Thus, while 変換規則定義文の順番を入れ替える can change the behavior, the order and positions of identifier definitions or setting specifiers never affect akrantiain's behavior.
+A .snoj file is made up of sentences. A sentence either <a href="#ident">defines an identifier</a>, <a href="#convert">defines a conversion rule</a> or <a href="#atmark">specify a setting</a>.
+Akrantiain works by applying the conversion rules (in the order it is written in the .snoj file) to the input.
+Thus, while the order of conversion rules' definition does matter, the order and positions of identifier definitions or setting specifiers never affect akrantiain's behavior.
 A semicolon or a newline terminates a sentence; thus, a single sentence cannot span multiple lines.
 In other words, a semicolon that terminates a sentence can be omitted when it is at the end of the line or is followed by a single-line comment.
 </pre>
@@ -39,23 +39,23 @@ For example,
 <div>
 <code><span class="identifier">sample</span> = <span class="string">"foo"</span> | <span class="string">"bar"</span> <span class="string">"baz"</span> | <span class="string">"foobar"</span>;</code></div>
 defines the identifier <code><span class="identifier">sample</span></code> as a pattern that matches either <code><span class="string">"foo"</span></code>, <code><span class="string">"bar" "baz"</span></code>, or <code><span class="string">"foobar"</span></code>.
-An identifier is an alphabet followed by 0 or more of (either an alphabet, a digit, or an <code>_</code>).
+An identifier is an alphabet followed by 0 or more of {either an alphabet, a digit, or an <code>_</code>}.
 
 An error occurs when you define a single identifier multiple times.
 
 A special identifier named <code><span class="identifier">PUNCTUATION</span></code> exists. For example, when you define <code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>, akrantiain recognizes these characters as punctuations.
-This is necessary to, for example, letting akrantiain know that <code>n</code> inside the input <code>This is a pen.</code> terminates a word.
+This is necessary to, for example, letting akrantiain know that character <code>n</code> inside the input <code>This is a pen.</code> terminates a word.
 </pre>
-<h4 id="convert">2-3. 変換規則定義文</h4>
+<h4 id="convert">2-3. Defining conversion rules</h4>
 <pre>
 Let <code><u>SELECT</u></code> be <code>^</code>, a single identifier, a single string literal or <code>( <u>1 or more string literal</u> | <u>1 or more string literal</u> | <u>1 or more string literal</u> )</code>.
 Let <code><u>CONDITION</u></code> be <code>!</code> followed by a <code><u>SELECT</u></code>.
 Let <code><u>PHONEME</u></code> be either <code>$</code> or a slash literal.
-変換規則s are defined using the following syntax:
+conversion rules are defined using the following syntax:
 <div>
 <code><u>0 or 1 CONDITION</u> <u>1 or more SELECT</u> <u>0 or 1 CONDITION</u> -&gt; <u>1 or more PHONEME</u>;</code>
 </div>
-ここで、「1 or more <code><u>SELECT</u></code>」を構成する<code><u>SELECT</u></code>のうち<code>^</code>以外のものの個数と、「1 or more <code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>の個数は一致している必要がある。An error occurs when 不一致.
+There is a restriction: the number of 「1 or more <code><u>SELECT</u></code>」を構成する<code><u>SELECT</u></code>のうち<code>^</code>以外のもの must be equal to the number of 「1 or more <code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>; if not, an error occurs.
 
 For example,
 <div>
@@ -72,7 +72,7 @@ This defines a rule that says:
  "When <code><span class="string">"n"</span></code> is followed by a word boundary, which in turn is followed by something that matches pattern <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>,
   replace <code><span class="string">"n"</span></code> into <span class="slash">/m/</span>; what is matched to <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code> should be left to other rules that follows this rule."
 
-An error occurs when an identifier used inside a 変換規則定義文 is not defined.
+An error occurs when an identifier used inside a conversion rule定義文 is not defined.
 </pre>
 <h4 id="atmark">2-4. Specifying settings</h4>
 <pre>
@@ -88,7 +88,7 @@ The following is the list of identifiers that currently have settings accompanie
 </pre>
 <h4 id="literal">2-5. String literal</h4>
 <pre>
-String literal is a <code><span class="string">"</span></code> followed by 0 or more of (a character that is neither a newline nor a <code><span class="string">"</span></code>) followed by a <code><span class="string">"</span></code>.
+String literal is a <code><span class="string">"</span></code> followed by 0 or more of {a character that is neither a newline nor a <code><span class="string">"</span></code>} followed by a <code><span class="string">"</span></code>.
 It is forbidden to use the character <code><span class="string">"</span></code> itself inside string literals.
 Also, for future use, it is currently forbidden to use the character <code><span class="string">\</span></code> inside string literals.
 
@@ -97,7 +97,7 @@ You need to <a href="#atmark">specify the setting</a> <code><span class="identif
 </pre>
 <h4 id="slash">2-6. Slash literal</h4>
 <pre>
-Slash literal is a <code><span class="slash">/</span></code> followed by 0 or more of (a character that is neither a newline nor a <code><span class="slash">/</span></code>) followed by a <code><span class="slash">/</span></code>.
+Slash literal is a <code><span class="slash">/</span></code> followed by 0 or more of {a character that is neither a newline nor a <code><span class="slash">/</span></code>} followed by a <code><span class="slash">/</span></code>.
 It is forbidden to use the character <code><span class="slash">/</span></code> itself inside slash literals.
 Also, for future use, it is currently forbidden to use the character <code><span class="slash">\</span></code> inside string literals.
 </pre>
