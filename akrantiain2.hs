@@ -5,7 +5,7 @@ import Text.Parsec
 import System.Environment
 import System.IO
 import Akrantiain.Sents_to_rules
-import Control.Monad(forM_, when)
+import Control.Monad(forM_, when, void)
 import System.Process
 import System.Info
 
@@ -26,7 +26,10 @@ main = do
     
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
-Left  a >>>= _  = hPutStrLn stderr $ show a
+Left  a >>>= _  = do 
+ hPutStrLn stderr $ show a
+ hPutStrLn stderr $ "\n\nPress Enter after reading this message."
+ void getLine
 Right b >>>= f  = f b
 
 
