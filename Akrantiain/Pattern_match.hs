@@ -16,7 +16,7 @@ module Akrantiain.Pattern_match
 ) where
 import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing)
-import Data.List(isPrefixOf, inits, tails, intersperse)
+import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(isSpace, toLower)
 import Data.Either(lefts, rights)
 import Control.Monad(guard)
@@ -25,7 +25,7 @@ import Akrantiain.Rule
 import Akrantiain.Structure(Choose(..),Identifier(..))
 import qualified Data.Set as S
 import qualified Data.Map as M
-
+import Control.Arrow(first)
 
 
 type Stat = [(String, Maybe String)]
@@ -36,7 +36,7 @@ nazo2 :: Environment -> (String,Maybe String) -> Either String String
 nazo2 _ (_, Just b) = Right b
 nazo2 Env{pun=p} (a, Nothing)
  | isSpPunct p a = Right " "
- | otherwise = Left $ a
+ | otherwise = Left a
 
 insensitive :: Rule -> Rule
 insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(fmap g) m, rightneg=fmap f r} where
@@ -60,8 +60,8 @@ cook (env,rls') str = do
  case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
   strs -> do 
-   let msg = "{" ++ (concat . intersperse "}, {"  . S.toList . S.fromList) strs ++ "}" 
-   Left $ RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
+   let msg = "{" ++ (intercalate "}, {"  . S.toList . S.fromList) strs ++ "}" 
+   Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
 
 
 cook' :: Rules -> Stat -> Stat
@@ -82,7 +82,7 @@ cutlist u@(x:xs) =  ([],u): map f (cutlist xs) where f(a,b) = (x:a,b)
 
 
 rev2 ::  [([a], t)] -> [([a], t)]
-rev2 = map (\(a,b) -> (reverse a, b)) . reverse
+rev2 = map (first reverse) . reverse
 
 upgrade :: ([a] -> Bool) -> ([a] -> Bool)
 upgrade f str = all f $ inits str
@@ -92,10 +92,10 @@ upgrade2 f str = all f $ tails str
 
 match :: Environment -> Rule -> Stat -> [(Front, Back)]
 match env k@R{leftneg=Just condition} stat = filter f $ match env k{leftneg=Nothing} stat where
- f (front, _) = upgrade2 (unCond condition) $ concat $ map fst front
+ f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
 match _ R{middle =[], rightneg=Nothing} stat = cutlist stat
 match _ R{middle=[], rightneg=Just condition} stat = filter f $ cutlist stat where
- f (_, back) = upgrade (unCond condition) $ concat $ map fst back
+ f (_, back) = upgrade (unCond condition) $ concatMap fst back
 match env k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where 
  fff pat = mapMaybe (g pat) $ match env k{middle=xs} stat
  g :: String -> (Front, Back) -> Maybe (Front, Back)
@@ -116,7 +116,7 @@ match env k@R{middle=Left():xs} stat = mapMaybe h $ match env k{middle=xs} stat 
   return (reverse f'', reverse b' ++ back)
 
 isSpPunct :: Punctuation -> String -> Bool
-isSpPunct punct str = all (\x -> isSpace x || x `elem` punct) str
+isSpPunct punct = all (\x -> isSpace x || x `elem` punct)
 
 takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
 takeTill "" _ = Just []

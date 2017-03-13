@@ -22,7 +22,7 @@ main = do
    hSetEncoding handle utf8
    input <- hGetContents handle
    runParser sentences () fname input >>>= \sents -> 
-    sents_to_func sents >>>= \func -> interact' func
+    sentsToFunc sents >>>= \func -> interact' func
     
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
