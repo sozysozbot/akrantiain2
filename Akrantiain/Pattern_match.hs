@@ -28,13 +28,6 @@ import qualified Data.Map as M
 
 
 
-
-
-
-
-
-
-
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
 type Back = [(String, Maybe String)]
@@ -78,8 +71,9 @@ cook' (env,rls) stat = foldl (apply env) stat rls
 apply :: Environment -> Stat -> Rule -> Stat
 apply env stat rule = case match env rule stat of 
  [] -> stat
- ((a,b):_) -> apply env (a++b) rule 
-
+ c -> let (a,b) = last c in apply env a rule ++ b
+ 
+ 
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
 cutlist :: [a] -> [([a],[a])]
 cutlist [] = [([],[])]
