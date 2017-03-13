@@ -1,14 +1,16 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 import Prelude hiding (undefined)
 import Akrantiain.Pattern_match
+import Akrantiain.Structure
 import System.IO
 import qualified Data.Map as M
 
 env :: Environment
-env = Env{pun=punct, bools=M.empty}
+env = Env{pun=punct, bools=M.fromList[(Id"CASE_SENSITIVE",())]}
 
 main :: IO ()
 main = do
+ cook (env,rls) "sasa"          >>>= putStrLn
  cook (env,rls) "sashimi"       >>>= putStrLn
  cook (env,rls) "stoxiet"       >>>= putStrLn
  cook (env,rls) "exiu"          >>>= putStrLn
