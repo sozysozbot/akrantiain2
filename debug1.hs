@@ -28,7 +28,7 @@ main = do
  cook (env,rls) "Fankaon kaccaon lex ta safes elx wioll ycax elx pojiv Zarhalo gasluifesj farkzirVion befivagRi'i qacemal xadlumirfa mol niv."      >>>= putStrLn
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
-Left  a >>>= _  = hPutStrLn stderr $ show a
+Left  a >>>= _  = hPrint stderr a
 Right b >>>= f  = f b
 
 c = Ch . (:[])

@@ -16,7 +16,6 @@ import Data.Char (isSpace)
 import Text.Parsec.String (Parser)
 import Data.Maybe (catMaybes)
 import Control.Monad(void)
-import Prelude hiding (undefined)
 import Akrantiain.Structure
 
 sentences :: Parser (Set Sentence)
@@ -55,7 +54,7 @@ select = (char '^' >> return Boundary2) <|> fmap Iden identifier <|> try single 
   strings <- strings_sepBy_pipe
   spaces'
   char ')'
-  return $ Pipe $ strings
+  return $ Pipe strings
 
 strings_sepBy_pipe :: Parser (Choose Quote)
 strings_sepBy_pipe = fmap Ch $ strs `sepBy1` try(char '|' >> spaces')
@@ -97,7 +96,7 @@ conversion = do
   let phoneme = dollar <|> slash_string
   phonemes <- many(try$phoneme <* spaces')
   sent_terminate
-  return $ Left'$Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r}
+  return $ Left' Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r}
    where
     neg_select = try $ fmap Just $ char '!' >> spaces' >> select
 
@@ -110,10 +109,10 @@ quoted_string = do
   return $ Quote str
 
 sentence :: Parser Sentence
-sentence = conversion <|> define <|> at_option
+sentence = conversion <|> define <|> atsignOption
 
-at_option :: Parser Sentence
-at_option = do
+atsignOption :: Parser Sentence
+atsignOption = do
  char '@' 
  spaces' 
  ide <- identifier 

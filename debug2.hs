@@ -16,7 +16,7 @@ main = do
  cook (env,rls) "na"      >>>= putStrLn
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
-Left  a >>>= _  = hPutStrLn stderr $ show a
+Left  a >>>= _  = hPrint stderr a
 Right b >>>= f  = f b
 
 c = Ch . (:[])

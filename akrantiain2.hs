@@ -22,13 +22,13 @@ main = do
    hSetEncoding handle utf8
    input <- hGetContents handle
    runParser sentences () fname input >>>= \sents -> 
-    sents_to_func sents >>>= \func -> interact' func
+    sentsToFunc sents >>>= \func -> interact' func
     
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
 Left  a >>>= _  = do 
- hPutStrLn stderr $ show a
- hPutStrLn stderr $ "\n\nPress Enter after reading this message."
+ hPrint stderr a
+ hPutStrLn stderr "\n\nPress Enter after reading this message."
  void getLine
 Right b >>>= f  = f b
 
@@ -36,10 +36,9 @@ Right b >>>= f  = f b
 interact' :: (Show a) => (String -> Either a String) -> IO ()
 interact' f = do 
  s <- getContents
- forM_ (lines s) $ \line -> do
-  case f line of 
+ forM_ (lines s) $ \line -> case f line of 
    Right str -> putStrLn str
-   Left a -> hPutStrLn stderr (show a) >> putStrLn ""
+   Left a -> hPrint stderr a >> putStrLn ""
 
 
  
