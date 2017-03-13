@@ -15,12 +15,12 @@ import Prelude hiding (undefined)
 import Akrantiain.Structure
 import qualified Data.Map as M
 
-data Rule = R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
-data W = W String | Dollar_ 
+data Rule = R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)} deriving (Show, Eq, Ord)
+data W = W String | Dollar_  deriving (Show, Eq, Ord)
 type Boundary_ = ()
-data Condition = Negation (Choose String) --Cond (String -> Bool)
+data Condition = Negation (Choose String)  deriving (Show, Eq, Ord) --Cond (String -> Bool)
 type Punctuation = [Char]
-data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier ()}
+data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier ()} deriving (Show, Eq, Ord)
 type Rules = (Environment,[Rule])
 
 unCond :: Condition -> (String -> Bool)
