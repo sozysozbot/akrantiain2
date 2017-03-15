@@ -39,19 +39,15 @@ sentencesToRules sents = do
   Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT
  rules <- forM convs $ \conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} -> do
   let solve = resolveSelect defs_
-  left'  <- solve `foo` left
-  right' <- solve `foo` right
-  midd' <- mapM solve midd -- midd' :: [Either Boundary_ (Choose String)]
+  left'  <- traverse solve left
+  right' <- traverse solve right
+  midd'  <- traverse solve midd -- midd' :: [Either Boundary_ (Choose String)]
   case zipEither midd' (map phonToW phonemes) of
    Nothing -> Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv}
    Just newmidd -> return R{leftneg = fmap no' left', middle = newmidd, rightneg = fmap no' right'}
  return(Env{pun=punct, bools=vars},rules)
 
-foo :: (a -> Either c b) -> Maybe a -> Either c (Maybe b)
-foo _ Nothing = Right Nothing
-foo f (Just a) = do 
- b <- f a
- return $ Just b
+
  
 zipEither :: [Either a b] -> [c] -> Maybe [Either a (b,c)]
 zipEither [] [] = Just []
