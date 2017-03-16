@@ -51,3 +51,6 @@ Or read from file:
 $ chcp 65001
 $ akrantiain2 samples\sample_lineparine.snoj --file < input_sample.txt
 ```
+
+Note: In Windows, interactive mode does not work when the input contains multi-byte characters.
+In such cases, use "read from file" mode for akrantiain to function properly.
