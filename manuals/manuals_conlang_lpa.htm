@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>kanteluescosti fon akRantiain</title>
+<style>
+@font-face {
+    font-family: "Fynelipa";
+    src: url("./Fynetliparxe.woff");  format('woff');
+}
+body{
+    font-family: "Fynelipa";
+}
+
+pre{
+    font-family: "Fynelipa";
+}
+
+code{
+    font-family: "Fynelipa";
+}
+
+code{background-color:#f5f7f9; padding:3px 1px 3px 3px;margin:2px 0px 2px 2px;font-family:monospace;}
+.string{color:#cc6600; font-family:monospace;}
+.slash{color:#00aa44; font-family:monospace;}
+.identifier{color:#0000aa; font-family:monospace;}
+pre{line-height: 170%}
+div{padding: 0px 0px 0px 30px;}
+u{font-family: "Fynelipa";}
+
+.nolipa { font-family:"Arial"}
+</style>
+</head>
+<body>
+<div><a href="https://github.com/sozysozbot/akrantiain2" class="nolipa">View on Github</a></div>
+<h2>kanteluescosti fon akRantiain</h2>
+<span class="nolipa">
+<a href="./manuals_en.htm" class="lang">English Version</a>
+<a href="./manuals_ja.htm" class="lang">日本語版</a>
+<!-- <a href="./manuals_conlang_lpa.htm" class="lang" style="font-family:'Fynelipa'">kanteluescosti virle lineparine</a> -->
+</span>
+<h3>2. celao'd niukirnasti fon .snoj'd chertif</h3>
+<h4 id="structure">2-0. celasti</h4>
+<pre>
+kRandiurgium celaes .snoj'd chertif. <a href="#ident">snojerl juscirgyl</a> adit <a href="#convert">snojerl liratixkavel</a>, <a href="#atmark">snojerl far</a>'it celaes chertifestana'd lakRaptana.
+leijumeffe ler snojerl liratixkavel'it gerardo faij elx liaoll akRantiain fudiur.
+mag, jol snojerl liratixkavele'd dire festel fudiurmo'c akRantiaina'st pelx snojerl juscirgyl ad snojerl far'd dire nasteon festel niv fudiurmo'c akRantiaina'st.
+leijumen stikiesn ol ; kantet kRandiurgen yst falvit gelx cene niv co stodup leiju fal daliu kRandiurg. cene co yverte kRantergo ; fastace leijumen les back ad leijumen fekverlve.
+</pre>
+<h4 id="comment">2-1. fekverlvesti</h4>
+<pre>
+<code>#</code> ler leijumen stikiesn elj akRantergerl'i xelnkan akRantiain a's. pa, <a href="#literal">lyjotaleijumen tlomeferl</a> ad <a href="#slash">liratixkaven tlomeferl</a> io <code>#</code> niv kantet fekverlve.
+cene niv co lus eustira'd fekverlve.
+</pre>
+<h4 id="ident">2-2. snojerlesti juscirgyl</h4>
+<pre>
+ny la lexe'd vi'atelsta celaes snojerl juscirgyl.
+</pre><div class="pre">
+<code><u>juscirgyl</u> = <u>lyjotaleijumen tlomeferl xo 1</u> | <u>lyjotaleijumen tlomeferl xo 1</u> | <u>lyjotaleijumen tlomeferl xo 1</u>;</code></div><pre>
+panqa'd klirma io ny la lex es.
+</pre><div class="pre">
+<code><span class="identifier">fistir</span> = <span class="string">"iska"</span> | <span class="string">"movi"</span> <span class="string">"fafs"</span> | <span class="string">"falira"</span>;</code></div><pre>
+la lex xale kRante mal juscirgyl l'es &lt;<code><span class="identifier">sample</span></code>&gt; veles snojo akRapsverle fua virlartergerl dqa zu es <code><span class="string">"iska"</span></code> adit <code><span class="string">"movi"</span> <span class="string">"fafs"</span></code>, <code><span class="string">"falira"</span></code>. 
+juscirgyl es 0 xoj vynek ol dieniep ol <code>_</code> oloverl pesta vynek.
+
+fi co snoj eustiravonj deliu juscirgyl mal akRantiain lkurf yst nix la y.
+
+<code><span class="identifier">PUNCTUATION</span></code> es Fanka juscirgyl.
+
+<code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>
+
+akRantiain firlex la zu punctuationa'st snojerl es stikiesn akRapt. mag, panqa'd klirma io kRandiurg l'es "fqa es fafs." falj akRantiain firlex la zu "s" es stikiesn.
+</pre>
+<h4 id="convert">2-3. snojerlesti liratixkavel</h4>
+<pre>
+e snoj <code><u><span class="nolipa">SELECT</span></u></code> <code>^</code> ol panqa'd juscirgyl pl panqa'd lyjotaleijumen tlomeferl ol <code>( <u>lyjotaleijumen tlomeferl xo 1</u> | <u>lyjotaleijumen tlomeferl xo 1</u> | <u>lyjotaleijumen tlomeferl xo 1</u> )</code>'c
+e snoj <code><u><span class="nolipa">CONDITION</span></u></code> fontamolerl <code>!</code>'i <code><u><span class="nolipa">SELECT</span></u></code>e'c.
+e snoj <code><u><span class="nolipa">PHONEME</span></u></code> <code>$</code> ol liratixkaven tlomeferle'c.
+snojerl liratixkavel veles celaeso fal la lex.
+</pre><div class="pre">
+<code><u>0 ol 1's <span class="nolipa">CONDITION</span></u> <u><span class="nolipa">SELECT</span> xo 1</u> <u>0 ol 1'd <span class="nolipa">CONDITION</span></u> -&gt; <u><span class="nolipa">PHONEME</span> xo 1</u>;</code>
+</div><pre>
+deliu &lt;<span class="nolipa">SELECT</span> xo 1&gt;'it lex celaes <span class="nolipa">SELECT</span> fallerj ^ eskij murtmir daliues <span class="nolipa">PHONEME</span>'d murtmir'c zu &lt;<span class="nolipa">PHONEME</span> xo 1&gt;'it celaes. akRantiain lkurf yst nix la y fal daliuesol niv.
+
+panqa'd klirma io ny la lex xale es.
+</pre><div class="pre">
+<code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div><pre>
+
+la lex kantet snojerl zu &lt;lyjotaleiju l'es <code><span class="string">"g"</span></code> mol pesta lyjotaleiju l'es <code><span class="string">"u"</span></code> mal akRapsverle l'es <code><span class="identifier">vowel</span></code> diurle niv fie, <code><span class="string">"u"</span></code> liratixka <code><span class="slash">/u/</span></code>'c mal <code><span class="string">"g"</span></code>'c at liratixka <code><span class="slash">/u/</span></code>.&gt;
+
+なお、<code>-&gt;</code>を構成する<code>-</code>と<code>&gt;</code>の間にスペースを入れることはできない。
+
+<code>^</code> es akRapsverle zu kantet kRaxaiunen yst falvit.
+<code>$</code> es akRapsverle zu kantet liratixkavo leusj eten niukirna filx snojo liratixkaven tlomeferli't.
+
+panqa'd klirma io ny la lex xale es mels <code>^</code> ad <code>$</code>.
+</pre><div class="pre">
+<code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -&gt; <span class="slash">/m/</span> $</code></div><pre>
+la lex kantet snojerl zu &lt;kRaxaiunen yst falvit mol pesta lyjotaleiju l'es <code><span class="string">"n"</span></code> mal lyjotaleiju zu diurle <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>'c i mol fie,
+ <code><span class="string">"n"</span></code> liratixka <span class="slash">/m/</span> mal lyjotaleiju zu diurle <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>'c i melsj xelnkanon icveaines xeu'd niukirna.&gt;
+
+snojerl liratixkavel io lex lus juscirgyl veles niv snojo fal als snojerl juscirgyl fie, volas yst nix la y.
+</pre>
+<h4 id="atmark">2-4. snojerlesti far</h4>
+<pre>
+snojerl far veles celaeso ny la lex.
+</pre><div class="pre">
+<code>@ <u>juscirgyl</u> ;</code></div><pre>
+kRandiurgustan furnkie fudiurmo akRantiaina'st. daliu snojo far es niv yst nix la y.
+cene no io co lus ny la lexe'd snojerl far. 
+</pre><table class="pre">
+<tr><td>snojerl farsti</td><td>kanteterl</td></tr>
+<tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>chennaZom ad kunnaZom veles itepevealo fal liratixkadir</td></tr></table>
+<h4 id="literal">2-5. lyjotaleijumen tlomeferl</h4>
+<pre>
+lyjotaleijumen tlomeferl es molerl <code><span class="string">"</span></code>'s pesta lyjot xo 0 oloverl eski <code><span class="string">"</span></code> pesta <code><span class="string">"</span></code>.
+cene niv co lus <code><span class="string">"</span></code> fal lyjotaleijumen tlomeferl.
+mal, cene niv co lus <code><span class="string">\</span></code> fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+
+eccalanerfergol io akRantiain niv itepeveal chennaZom ad kunnaZom.
+fua itepevealostan, elx deliu co snoj <code><span class="identifier">CASE_SENSITIVE</span></code> fon juscirgyl zu snoj far fal <a href="#atmark">snojerl far</a>.
+</pre>
+<h4 id="slash">2-6. liratixkaven tlomeferl</h4>
+<pre>
+liratixkaven tlomeferl es molerl <code><span class="slash">/</span></code>'s pesta lyjot xo 0 oloverl eski <code><span class="slash">/</span></code> pesta <code><span class="slash">/</span></code>.
+cene niv co lus <code><span class="slash">/</span></code> fal lyjotaleijumen tlomeferl.
+mal, cene niv co lus <code><span class="slash">\</span></code> fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+</pre>
+</body>
+</html>
