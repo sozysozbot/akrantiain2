@@ -1,8 +1,8 @@
-kanteluescosti fon akRantiain
+        kanteluescosti fon akRantiain
 
-2. celao'd niukirnasti fon .snoj'd chertif
+        2. celao'd niukirnasti fon .snoj'd chertif
 
-2-0. celasti
+        2-0. celasti
 
         kRandiurgium celaes .snoj'd chertif. snojerl juscirgyl adit snojerl liratixkavel, snojerl far'it celaes chertifestana'd lakRaptana. leijumeffe ler snojerl liratixkavel'it gerardo faij elx liaoll akRantiain fudiur. mag, jol snojerl liratixkavele'd dire festel fudiurmo'c akRantiaina'st pelx snojerl juscirgyl ad snojerl far'd dire nasteon festel niv fudiurmo'c akRantiaina'st. leijumen stikiesn ol ; kantet kRandiurgen yst falvit gelx cene niv co stodup leiju fal daliu kRandiurg. cene co yverte kRantergo ; fastace leijumen les back ad leijumen fekverlve.
 
@@ -31,10 +31,10 @@ kanteluescosti fon akRantiain
 
         2-3. snojerlesti liratixkavel
 
-e snoj SELECT ^ ol panqa'd juscirgyl pl panqa'd lyjotaleijumen tlomeferl ol ( lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 )'c
-e snoj CONDITION fontamolerl !'i SELECTe'c.
-e snoj PHONEME $ ol liratixkaven tlomeferle'c.
-snojerl liratixkavel veles celaeso fal la lex.
+        e snoj SELECT ^ ol panqa'd juscirgyl pl panqa'd lyjotaleijumen tlomeferl ol ( lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 )'c
+        e snoj CONDITION fontamolerl !'i SELECTe'c.
+        e snoj PHONEME $ ol liratixkaven tlomeferle'c.
+        snojerl liratixkavel veles celaeso fal la lex.
 
         0 ol 1's CONDITION SELECT xo 1 0 ol 1'd CONDITION -> PHONEME xo 1;
 
