@@ -33,11 +33,13 @@ Multiple-line comments do not exist.
 <h4 id="ident">2-2. Defining identifiers</h4>
 <pre>
 Identifers are defined using the following syntax:
-<div>
+</pre><div class="pre">
 <code><u>identifier</u> = <u>1 or more string literal</u> | <u>1 or more string literal</u> | <u>1 or more string literal</u>;</code></div>
+<pre>
 For example,
-<div>
+</pre><div class="pre">
 <code><span class="identifier">sample</span> = <span class="string">"foo"</span> | <span class="string">"bar"</span> <span class="string">"baz"</span> | <span class="string">"foobar"</span>;</code></div>
+<pre>
 defines the identifier <code><span class="identifier">sample</span></code> as a pattern that matches either <code><span class="string">"foo"</span></code>, <code><span class="string">"bar" "baz"</span></code>, or <code><span class="string">"foobar"</span></code>.
 An identifier is an alphabet followed by 0 or more of {either an alphabet, a digit, or an <code>_</code>}.
 
@@ -52,15 +54,15 @@ Let <code><u>SELECT</u></code> be <code>^</code>, a single identifier, a single 
 Let <code><u>CONDITION</u></code> be <code>!</code> followed by a <code><u>SELECT</u></code>.
 Let <code><u>PHONEME</u></code> be either <code>$</code> or a slash literal.
 conversion rules are defined using the following syntax:
-<div>
+</pre><div class="pre">
 <code><u>0 or 1 CONDITION</u> <u>1 or more SELECT</u> <u>0 or 1 CONDITION</u> -&gt; <u>1 or more PHONEME</u>;</code>
-</div>
+</div><pre>
 There is a restriction: 
  The number of {<code><u>SELECT</u></code>s (excluding <code>^</code>) that make up <code><u>1 or more SELECT</u></code>} must be equal to the number of {<code><u>PHONEME</u></code>s that make up <code><u>1 or more PHONEME</u></code>}; if not, an error occurs.
 
 For example,
-<div>
-<code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
+</pre><div class="pre">
+<code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div><pre>
 defines a rule which tells akrantiain to do the following:
  "When a <code><span class="string">"u"</span></code> is followed by a <code><span class="string">"g"</span></code>, which in turn is NOT followed by something that matches the pattern <code><span class="identifier">vowel</span></code>, 
   convert the <code><span class="string">"u"</span></code> into <code><span class="slash">/u/</span></code> and the <code><span class="string">"g"</span></code> into <code><span class="slash">/u/</span></code>."
@@ -69,8 +71,8 @@ Whitespace characters are not allowed inside <code>-&gt;</code>; you cannot spli
 
 A <code>^</code> is a pattern than matches a word boundary. A <code>$</code> says: "This rule does not convert the corresponding left-hand side; let other rules written below handle it."
 The following is an example which uses a <code>^</code> and a <code>$</code>:
-<div>
-<code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -&gt; <span class="slash">/m/</span> $</code></div>
+</pre><div class="pre">
+<code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -&gt; <span class="slash">/m/</span> $</code></div><pre>
 This defines a rule that says:
  "When <code><span class="string">"n"</span></code> is followed by a word boundary, which in turn is followed by something that matches pattern <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>,
   replace <code><span class="string">"n"</span></code> into <span class="slash">/m/</span>; what is matched to <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code> should be left to other rules that follows this rule."
@@ -80,15 +82,15 @@ An error occurs when an identifier used inside the definition of a conversion ru
 <h4 id="atmark">2-4. Specifying settings</h4>
 <pre>
 A setting specifier has the following structure.
-<div>
-<code>@ <u>identifier</u> ;</code></div>
+</pre><div class="pre">
+<code>@ <u>identifier</u> ;</code></div><pre>
 This sentence tells akrantiain to behave differently from what it normally does.
 It is legal to specify the same setting multiple times.
 The following is the list of identifiers that currently have settings accompanied to them.
-<table>
+</pre><table class="pre">
 <tr><td>Identifiers</td><td>Meaning</td></tr>
 <tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>Make string literals case-sensitive</td></tr></table>
-</pre>
+
 <h4 id="literal">2-5. String literal</h4>
 <pre>
 String literal is a <code><span class="string">"</span></code> followed by 0 or more of {a character that is neither a newline nor a <code><span class="string">"</span></code>} followed by a <code><span class="string">"</span></code>.
