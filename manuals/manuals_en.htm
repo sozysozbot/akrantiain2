@@ -60,7 +60,7 @@ There is a restriction:
 
 For example,
 <div>
-<code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -> <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
+<code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
 defines a rule which tells akrantiain to do the following:
  "When a <code><span class="string">"u"</span></code> is followed by a <code><span class="string">"g"</span></code>, which in turn is NOT followed by something that matches the pattern <code><span class="identifier">vowel</span></code>, 
   convert the <code><span class="string">"u"</span></code> into <code><span class="slash">/u/</span></code> and the <code><span class="string">"g"</span></code> into <code><span class="slash">/u/</span></code>."
@@ -68,7 +68,7 @@ defines a rule which tells akrantiain to do the following:
 A <code>^</code> is a pattern than matches a word boundary. A <code>$</code> says: "This rule does not convert the corresponding left-hand side; let other rules written below handle it."
 The following is an example which uses a <code>^</code> and a <code>$</code>:
 <div>
-<code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -> <span class="slash">/m/</span> $</code></div>
+<code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -&gt; <span class="slash">/m/</span> $</code></div>
 This defines a rule that says:
  "When <code><span class="string">"n"</span></code> is followed by a word boundary, which in turn is followed by something that matches pattern <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>,
   replace <code><span class="string">"n"</span></code> into <span class="slash">/m/</span>; what is matched to <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code> should be left to other rules that follows this rule."

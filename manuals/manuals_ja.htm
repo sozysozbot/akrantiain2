@@ -58,13 +58,13 @@ div{padding: 0px 0px 0px 30px;}
 
 例としては、こんな感じである。
 <div>
-<code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -> <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
+<code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
 こう書くと、「文字列<code><span class="string">"u"</span></code>の後に文字列<code><span class="string">"g"</span></code>があり、直後がパターン<code><span class="identifier">vowel</span></code>にマッチしないとき、<code><span class="string">"u"</span></code>を<code><span class="slash">/u/</span></code>に、<code><span class="string">"g"</span></code>も<code><span class="slash">/u/</span></code>に変換する」という規則が定義される。
 
 <code>^</code>は語の境界にマッチするパターンである。<code>$</code>は「特に変換先のスラッシュリテラルを指定せず、別の規則によって変換させる」ことを表す。
 <code>^</code>と<code>$</code>の例としては、こんな感じである。
 <div>
-<code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -> <span class="slash">/m/</span> $</code></div>
+<code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -&gt; <span class="slash">/m/</span> $</code></div>
 こう書くと、「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチする文字列があるとき、
 <code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチした文字列については保留し、後に登場する規則に委ねる」という規則が定義される。
 
