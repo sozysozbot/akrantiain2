@@ -37,7 +37,7 @@ dollar = char '$' >> return Dollar
 slash_string :: Parser Phoneme
 slash_string = do
   char '/'
-  str <- many(noneOf "/\n")
+  str <- many(noneOf "\\/\n" <|> escapeSequence)
   char '/'
   return $ Slash str
   
@@ -100,11 +100,18 @@ conversion = do
    where
     neg_select = try $ fmap Just $ char '!' >> spaces' >> select
 
+escapeSequence :: Parser Char
+escapeSequence = 
+ try(string "\\\\" >> return '\\') <|>  
+ try(string "\\\"" >> return '"')  <|>  
+ try(string "\\/" >> return '/') <|>  
+ try(string "\\'" >> return '\'') 
+
 -- FIXME: Escape sequence not yet implemented
 quoted_string :: Parser Quote
 quoted_string = do
   char '"'
-  str <- many(noneOf "\"\n")
+  str <- many(noneOf "\\\"\n" <|> escapeSequence)
   char '"'
   return $ Quote str
 
