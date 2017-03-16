@@ -6,6 +6,8 @@ A domain-specific language designed to describe conlangs' orthographies
 [日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/manuals_ja.htm) (未完)
 ## Getting Started
 
+All files handled by akrantiain must be in UTF-8.
+
 ### Installing
 #### Ubuntu (16.04)
 Clone the repo and run:
