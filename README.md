@@ -6,6 +6,8 @@ A domain-specific language designed to describe conlangs' orthographies
 [日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/manuals_ja.htm) (未完)
 ## Getting Started
 
+All files handled by akrantiain must be in UTF-8.
+
 ### Installing
 #### Ubuntu (16.04)
 Clone the repo and run:
@@ -51,3 +53,6 @@ Or read from file:
 $ chcp 65001
 $ akrantiain2 samples\sample_lineparine.snoj --file < input_sample.txt
 ```
+
+Note: In Windows, interactive mode does not work when the input contains multi-byte characters.
+In such cases, use "read from file" mode for akrantiain to function properly.
