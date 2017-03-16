@@ -1,0 +1,84 @@
+Kanteluescosti fon Akrantiain
+
+2. Celao'd niukirnasti fon .snoj'd chertif
+
+2-0. Celasti
+
+Krandiurgium celaes .snoj'd chertif. Snojerl juscirgyl adit snojerl liratixkavel, snojerl far'it celaes chertifestana'd lakraptana. Leijumeffe ler snojerl liratixkavel'it gerardo faij elx liaoll Akrantiain fudiur. Mag, jol snojerl liratixkavele'd dire festel fudiurmo'c Akrantiaina'st pelx snojerl juscirgyl ad snojerl far'd dire nasteon festel niv fudiurmo'c Akrantiaina'st. Leijumen stikiesn ol ; kantet krandiurgen yst falvit gelx cene niv co stodup leiju fal daliu krandiurg. Cene co yverte krantergo ; fastace leijumen les back ad leijumen fekverlve.
+
+2-1. Fekverlvesti
+
+# ler leijumen stikiesn elj akrantergerl'i xelnkan Akrantiain a's. Pa, lyjotaleijumen tlomeferl ad liratixkaven tlomeferl io # niv kantet fekverlve. Cene niv co lus eustira'd fekverlve.
+
+2-2. Snojerlesti juscirgyl
+
+Ny la lexe'd vi'atelsta celaes snojerl juscirgyl.
+
+Juscirgyl = lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1;
+
+Panqa'd klirma io ny la lex es.
+
+fistir = "iska" | "movi" "fafs" | "falira";
+
+La lex xale krante mal juscirgyl l'es <fistir> veles snojo akrapsverle fua virlartergerl dqa zu es "iska" adit "movi" "fafs", "falira". Juscirgyl es 0 xoj vynek ol dieniep ol _ oloverl pesta vynek.
+Fi co snoj eustiravonj deliu juscirgyl mal Akrantiain lkurf yst nix la y.
+
+PUNCTUATION es fhanka juscirgyl.
+
+PUNCTUATION = "." | "," | "!" | "?";
+
+Akrantiain firlex la zu PUNCTUATIONa'st snojerl es stikiesn akrapt. Mag, panqa'd klirma io krandiurg l'es "Fqa es fafs." falj Akrantiain firlex la zu "s" es stikiesn.
+
+2-3. Snojerlesti liratixkavel
+
+E snoj SELECT ^ ol panqa'd juscirgyl pl panqa'd lyjotaleijumen tlomeferl ol ( lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 )'c
+E snoj CONDITION fontamolerl !'i SELECTe'c.
+E snoj PHONEME $ ol liratixkaven tlomeferle'c.
+Snojerl liratixkavel veles celaeso fal la lex.
+
+0 ol 1's CONDITION SELECT xo 1 0 ol 1'd CONDITION -> PHONEME xo 1;
+
+Deliu <SELECT xo 1>'it lex celaes SELECT fallerj ^ eskij murtmir daliues PHONEME'd murtmir'c zu <PHONEME xo 1>'it celaes. Akrantiain lkurf yst nix la y fal daliuesol niv.
+
+Panqa'd klirma io ny la lex xale es.
+
+"u" "g" !vowel -> /u/ /u/;
+
+La lex kantet snojerl zu <Lyjotaleiju l'es "g" mol pesta lyjotaleiju l'es "u" mal akrapsverle l'es Vowel diurle niv fie, "u" liratixka /u/'c mal "g"'c at liratixka /u/.
+
+^ es akrapsverle zu kantet kraxaiunen yst falvit.
+$ es akrapsverle zu kantet liratixkavo leusj eten niukirna filx snojo liratixkaven tlomeferli't.
+
+Panqa'd klirma io ny la lex xale es mels ^ ad $.
+
+"n" ^ ("m"|"p") -> /m/ $
+
+La lex kantet snojerl zu <Kraxaiunen yst falvit mol pesta lyjotaleiju l'es "n" mal lyjotaleiju zu diurle ("m"|"p")'c i mol fie, "u" liratixka /m/ mal lyjotaleiju zu diurle ("m"|"p")'c i melsj xelnkanon icveaines xeu'd niukirna.
+
+Snojerl liratixkavel io lex lus juscirgyl veles niv snojo fal als snojerl juscirgyl fie, volas yst nix la y.
+
+2-4. Snojerlesti far
+
+Snojerl far veles celaeso ny la lex.
+
+@ juscirgyl ;
+
+Krandiurgustan furnkie fudiurmo Akrantiaina'st. Daliu snojo far es niv yst nix la y. Cene no io co lus ny la lexe'd snojerl far. 
+
+Snojerl farsti Kanteterl
+CASE_SENSITIVE Chennadzom ad kunnadzom veles itepevealo fal liratixkadir
+
+2-5. lyjotaleijumen tlomeferl
+
+Lyjotaleijumen tlomeferl es molerl "'s pesta lyjot xo 0 oloverl eski " pesta ".
+Cene niv co lus " fal lyjotaleijumen tlomeferl.
+Mal, Cene niv co lus \ fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+
+Eccalanerfergol io Akrantiain niv itepeveal chennadzom ad kunnadzom.
+Fua itepevealostan, elx deliu co snoj CASE_SENSITIVE fon juscirgyl zu snoj far fal snojerl far.
+
+2-6. Liratixkaven tlomeferl
+
+Liratixkaven tlomeferl es molerl \'s pesta lyjot xo 0 oloverl eski \ pesta \.
+Cene niv co lus \ fal lyjotaleijumen tlomeferl.
+Mal, Cene niv co lus \ fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
