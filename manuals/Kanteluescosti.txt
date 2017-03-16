@@ -31,14 +31,14 @@ kanteluescosti fon akRantiain
 
         2-3. snojerlesti liratixkavel
 
-e snoj select ^ ol panqa'd juscirgyl pl panqa'd lyjotaleijumen tlomeferl ol ( lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 )'c
-e snoj condition fontamolerl !'i selecte'c.
-e snoj phoneme $ ol liratixkaven tlomeferle'c.
+e snoj SELECT ^ ol panqa'd juscirgyl pl panqa'd lyjotaleijumen tlomeferl ol ( lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 )'c
+e snoj CONDITION fontamolerl !'i SELECTe'c.
+e snoj PHONEME $ ol liratixkaven tlomeferle'c.
 snojerl liratixkavel veles celaeso fal la lex.
 
-0 ol 1's condition select xo 1 0 ol 1'd condition -> phoneme xo 1;
+        0 ol 1's CONDITION SELECT xo 1 0 ol 1'd CONDITION -> PHONEME xo 1;
 
-deliu <select xo 1>'it lex celaes select fallerj ^ eskij murtmir daliues phoneme'd murtmir'c zu <phoneme xo 1>'it celaes. akRantiain lkurf yst nix la y fal daliuesol niv.
+        deliu <SELECT xo 1>'it lex celaes SELECT fallerj ^ eskij murtmir daliues PHONEME'd murtmir'c zu <PHONEME xo 1>'it celaes. akRantiain lkurf yst nix la y fal daliuesol niv.
 
         panqa'd klirma io ny la lex xale es.
 
