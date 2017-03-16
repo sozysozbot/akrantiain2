@@ -6,30 +6,30 @@ kanteluescosti fon akRantiain
 
 kRandiurgium celaes .snoj'd chertif. snojerl juscirgyl adit snojerl liratixkavel, snojerl far'it celaes chertifestana'd lakRaptana. leijumeffe ler snojerl liratixkavel'it gerardo faij elx liaoll akRantiain fudiur. mag, jol snojerl liratixkavele'd dire festel fudiurmo'c akRantiaina'st pelx snojerl juscirgyl ad snojerl far'd dire nasteon festel niv fudiurmo'c akRantiaina'st. leijumen stikiesn ol ; kantet kRandiurgen yst falvit gelx cene niv co stodup leiju fal daliu kRandiurg. cene co yverte kRantergo ; fastace leijumen les back ad leijumen fekverlve.
 
-2-1. fekverlvesti
+        2-1. fekverlvesti
 
 # ler leijumen stikiesn elj akRantergerl'i xelnkan akRantiain a's. pa, lyjotaleijumen tlomeferl ad liratixkaven tlomeferl io # niv kantet fekverlve. cene niv co lus eustira'd fekverlve.
 
-2-2. snojerlesti juscirgyl
+        2-2. snojerlesti juscirgyl
 
-ny la lexe'd vi'atelsta celaes snojerl juscirgyl.
+        ny la lexe'd vi'atelsta celaes snojerl juscirgyl.
 
 juscirgyl = lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1;
 
-panqa'd klirma io ny la lex es.
+        panqa'd klirma io ny la lex es.
 
 fistir = "iska" | "movi" "fafs" | "falira";
 
 la lex xale kRante mal juscirgyl l'es <fistir> veles snojo akRapsverle fua virlartergerl dqa zu es "iska" adit "movi" "fafs", "falira". juscirgyl es 0 xoj vynek ol dieniep ol _ oloverl pesta vynek.
-fi co snoj eustiravonj deliu juscirgyl mal akRantiain lkurf yst nix la y.
+        fi co snoj eustiravonj deliu juscirgyl mal akRantiain lkurf yst nix la y.
 
-punctuation es Fanka juscirgyl.
+        punctuation es Fanka juscirgyl.
 
-punctuation = "." | "," | "!" | "?";
+        PUNCTUATION = "." | "," | "!" | "?";
 
-akRantiain firlex la zu punctuationa'st snojerl es stikiesn akRapt. mag, panqa'd klirma io kRandiurg l'es "fqa es fafs." falj akRantiain firlex la zu "s" es stikiesn.
+        akRantiain firlex la zu punctuationa'st snojerl es stikiesn akRapt. mag, panqa'd klirma io kRandiurg l'es "fqa es fafs." falj akRantiain firlex la zu "s" es stikiesn.
 
-2-3. snojerlesti liratixkavel
+        2-3. snojerlesti liratixkavel
 
 e snoj select ^ ol panqa'd juscirgyl pl panqa'd lyjotaleijumen tlomeferl ol ( lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 | lyjotaleijumen tlomeferl xo 1 )'c
 e snoj condition fontamolerl !'i selecte'c.
@@ -40,11 +40,11 @@ snojerl liratixkavel veles celaeso fal la lex.
 
 deliu <select xo 1>'it lex celaes select fallerj ^ eskij murtmir daliues phoneme'd murtmir'c zu <phoneme xo 1>'it celaes. akRantiain lkurf yst nix la y fal daliuesol niv.
 
-panqa'd klirma io ny la lex xale es.
+        panqa'd klirma io ny la lex xale es.
 
-"u" "g" !vowel -> /u/ /u/;
+        "u" "g" !vowel -> /u/ /u/;
 
-la lex kantet snojerl zu <lyjotaleiju l'es "g" mol pesta lyjotaleiju l'es "u" mal akRapsverle l'es vowel diurle niv fie, "u" liratixka /u/'c mal "g"'c at liratixka /u/.
+        la lex kantet snojerl zu <lyjotaleiju l'es "g" mol pesta lyjotaleiju l'es "u" mal akRapsverle l'es vowel diurle niv fie, "u" liratixka /u/'c mal "g"'c at liratixka /u/.>
 
 ^ es akRapsverle zu kantet kRaxaiunen yst falvit.
 $ es akRapsverle zu kantet liratixkavo leusj eten niukirna filx snojo liratixkaven tlomeferli't.
@@ -57,28 +57,28 @@ la lex kantet snojerl zu <kRaxaiunen yst falvit mol pesta lyjotaleiju l'es "n" m
 
 snojerl liratixkavel io lex lus juscirgyl veles niv snojo fal als snojerl juscirgyl fie, volas yst nix la y.
 
-2-4. snojerlesti far
+        2-4. snojerlesti far
 
-snojerl far veles celaeso ny la lex.
+        snojerl far veles celaeso ny la lex.
 
-@ juscirgyl ;
+        @ juscirgyl ;
 
-kRandiurgustan furnkie fudiurmo akRantiaina'st. daliu snojo far es niv yst nix la y. cene no io co lus ny la lexe'd snojerl far. 
+        kRandiurgustan furnkie fudiurmo akRantiaina'st. daliu snojo far es niv yst nix la y. cene no io co lus ny la lexe'd snojerl far. 
 
 snojerl farsti kanteterl
-case_sensitive chennaZom ad kunnaZom veles itepevealo fal liratixkadir
+        CASE_SENSITIVE chennaZom ad kunnaZom veles itepevealo fal liratixkadir
 
-2-5. lyjotaleijumen tlomeferl
+                        2-5. lyjotaleijumen tlomeferl
 
-lyjotaleijumen tlomeferl es molerl "'s pesta lyjot xo 0 oloverl eski " pesta ".
-cene niv co lus " fal lyjotaleijumen tlomeferl.
-mal, cene niv co lus \ fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+                        lyjotaleijumen tlomeferl es molerl "'s pesta lyjot xo 0 oloverl eski " pesta ".
+                        cene niv co lus " fal lyjotaleijumen tlomeferl.
+                        mal, cene niv co lus \ fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
 
 eccalanerfergol io akRantiain niv itepeveal chennaZom ad kunnaZom.
 fua itepevealostan, elx deliu co snoj case_sensitive fon juscirgyl zu snoj far fal snojerl far.
 
-2-6. liratixkaven tlomeferl
+                        2-6. liratixkaven tlomeferl
 
-liratixkaven tlomeferl es molerl /'s pesta lyjot xo 0 oloverl eski / pesta /.
-cene niv co lus / fal lyjotaleijumen tlomeferl.
-mal, cene niv co lus \ fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+                        liratixkaven tlomeferl es molerl /'s pesta lyjot xo 0 oloverl eski / pesta /.
+                        cene niv co lus / fal lyjotaleijumen tlomeferl.
+                        mal, cene niv co lus \ fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.

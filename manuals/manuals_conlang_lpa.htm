@@ -32,5 +32,97 @@ u{font-family: "Fynelipa";}
 </style>
 </head>
 <body>
+<div><a href="https://github.com/sozysozbot/akrantiain2" class="nolipa">View on Github</a></div>
+<h2>kanteluescosti fon akRantiain</h2>
+<span class="nolipa">
+<a href="./manuals_en.htm" class="lang">English Version</a>
+<a href="./manuals_ja.htm" class="lang">日本語版</a>
+</span>
+<h3>2. celao'd niukirnasti fon .snoj'd chertif</h3>
+<h4 id="structure">2-0. celasti</h4>
+<pre>
+.snojファイルは文の集まりである。文には<a href="#ident">識別子定義文</a>と<a href="#convert">変換規則定義文</a>、そして<a href="#atmark">環境指定文</a>がある。
+変換規則定義文を上から辿っていき、順に変換規則を適用することによりakrantiainは動作する。
+故に、変換規則定義文の順番を入れ替えると動作が変わる可能性があるが、一方識別子定義文や環境指定文の位置や順序はakrantiainの動作に一切影響を与えない。
+行末は文の境目である。行をまたいで1文を定義することはできない。
+逆に、文末のセミコロンは、行の最後および行コメントの直前では省略できる。
+</pre>
+<h4 id="comment">2-1. fekverlvesti</h4>
+<pre>
+<code>#</code>から行末までに書かれたものは無視される。ただし、<a href="#literal">文字列リテラル</a>および<a href="#slash">スラッシュリテラル</a>内の<code>#</code>はコメントを意味しない。
+複数行コメントは存在しない。
+</pre>
+<h4 id="ident">2-2. snojerlesti juscirgyl</h4>
+<pre>
+ny la lexe'd vi'atelsta celaes snojerl juscirgyl.
+</pre><div class="pre">
+<code><u>識別子</u> = <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u>;</code></div><pre>
+panqa'd klirma io ny la lex es.
+</pre><div class="pre">
+<code><span class="identifier">sample</span> = <span class="string">"foo"</span> | <span class="string">"bar"</span> <span class="string">"baz"</span> | <span class="string">"foobar"</span>;</code></div><pre>
+こう書くと、識別子<code><span class="identifier">sample</span></code>が<code><span class="string">"foo"</span></code>、<code><span class="string">"bar" "baz"</span></code>、<code><span class="string">"foobar"</span></code>の3つのどれかにマッチするパターンとして定義される。
+識別子は、アルファベットの後に、（アルファベット・数字・<code>_</code>）が0個以上続いたものである。
+
+fi co snoj eustiravonj deliu juscirgyl mal akRantiain lkurf yst nix la y.
+
+<code><span class="identifier">PUNCTUATION</span></code> es Fanka juscirgyl.
+
+<code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>
+
+akRantiain firlex la zu punctuationa'st snojerl es stikiesn akRapt. mag, panqa'd klirma io kRandiurg l'es "fqa es fafs." falj akRantiain firlex la zu "s" es stikiesn.
+</pre>
+<h4 id="convert">2-3. snojerlesti liratixkavel</h4>
+<pre>
+<code><u>SELECT</u></code>を<code>^</code>または「1つの識別子」または「1個の文字列リテラル」または<code>( <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> )</code>とし、
+<code><u>CONDITION</u></code>は<code><u>SELECT</u></code>に<code>!</code>を前置したものとする。
+<code><u>PHONEME</u></code>は<code>$</code>か<code><u>スラッシュリテラル</u></code>とする。
+このとき、変換規則定義文は、次のような構造を持つ。
+</pre><div class="pre">
+<code><u>0または1個のCONDITION</u> <u>1個以上のSELECT</u> <u>0または1個のCONDITION</u> -&gt; <u>1個以上のPHONEME</u>;</code>
+</div><pre>
+ここで、「1個以上の<code><u>SELECT</u></code>」を構成する<code><u>SELECT</u></code>のうち<code>^</code>以外のものの個数と、「1個以上の<code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>の個数は一致している必要がある。不一致の場合エラーが発生する。
+
+panqa'd klirma io ny la lex xale es.
+</pre><div class="pre">
+<code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div><pre>
+
+la lex kantet snojerl zu &lt;lyjotaleiju l'es <code><span class="string">"g"</span></code> mol pesta lyjotaleiju l'es <code><span class="string">"u"</span></code> mal akRapsverle l'es <code><span class="identifier">vowel</span></code> diurle niv fie, <code><span class="string">"u"</span></code> liratixka <code><span class="slash">/u/</span></code>'c mal <code><span class="string">"g"</span></code>'c at liratixka <code><span class="slash">/u/</span></code>.&gt;
+
+なお、<code>-&gt;</code>を構成する<code>-</code>と<code>&gt;</code>の間にスペースを入れることはできない。
+
+<code>^</code>は語の境界にマッチするパターンである。<code>$</code>は「特に変換先のスラッシュリテラルを指定せず、別の規則によって変換させる」ことを表す。
+<code>^</code>と<code>$</code>の例としては、こんな感じである。
+</pre><div class="pre">
+<code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -&gt; <span class="slash">/m/</span> $</code></div><pre>
+こう書くと、「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチする文字列があるとき、
+<code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチした文字列については保留し、後に登場する規則に委ねる」という規則が定義される。
+
+変換規則定義文内で用いている識別子がどの識別子定義文でも定義されていない場合は、エラーが発生する。
+</pre>
+<h4 id="atmark">2-4. snojerlesti far</h4>
+<pre>
+snojerl far veles celaeso ny la lex.
+</pre><div class="pre">
+<code>@ <u>juscirgyl</u> ;</code></div><pre>
+kRandiurgustan furnkie fudiurmo akRantiaina'st. daliu snojo far es niv yst nix la y.
+cene no io co lus ny la lexe'd snojerl far. 
+</pre><table class="pre">
+<tr><td>環境指定識別子</td><td>意味</td></tr>
+<tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>chennaZom ad kunnaZom veles itepevealo fal liratixkadir</td></tr></table>
+<h4 id="literal">2-5. lyjotaleijumen tlomeferl</h4>
+<pre>
+lyjotaleijumen tlomeferl es molerl <code><span class="string">"</span></code>'s pesta lyjot xo 0 oloverl eski <code><span class="string">"</span></code> pesta <code><span class="string">"</span></code>.
+cene niv co lus <code><span class="string">"</span></code> fal lyjotaleijumen tlomeferl.
+mal, cene niv co lus <code><span class="string">\</span></code> fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+
+デフォルトでは、文字列リテラル内の大文字と小文字は区別されない。
+区別させるには、<a href="#atmark">環境指定文</a>で環境指定識別子<code><span class="identifier">CASE_SENSITIVE</span></code>を指定する必要がある。
+</pre>
+<h4 id="slash">2-6. liratixkaven tlomeferl</h4>
+<pre>
+liratixkaven tlomeferl es molerl <code><span class="slash">/</span></code>'s pesta lyjot xo 0 oloverl eski <code><span class="slash">/</span></code> pesta <code><span class="slash">/</span></code>.
+cene niv co lus <code><span class="slash">/</span></code> fal lyjotaleijumen tlomeferl.
+mal, cene niv co lus <code><span class="slash">\</span></code> fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+</pre>
 </body>
 </html>
