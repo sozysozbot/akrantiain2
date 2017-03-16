@@ -61,6 +61,8 @@ div{padding: 0px 0px 0px 30px;}
 <code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div>
 こう書くと、「文字列<code><span class="string">"u"</span></code>の後に文字列<code><span class="string">"g"</span></code>があり、直後がパターン<code><span class="identifier">vowel</span></code>にマッチしないとき、<code><span class="string">"u"</span></code>を<code><span class="slash">/u/</span></code>に、<code><span class="string">"g"</span></code>も<code><span class="slash">/u/</span></code>に変換する」という規則が定義される。
 
+なお、<code>-&gt;</code>を構成する<code>-</code>と<code>&gt;</code>の間にスペースを入れることはできない。
+
 <code>^</code>は語の境界にマッチするパターンである。<code>$</code>は「特に変換先のスラッシュリテラルを指定せず、別の規則によって変換させる」ことを表す。
 <code>^</code>と<code>$</code>の例としては、こんな感じである。
 <div>

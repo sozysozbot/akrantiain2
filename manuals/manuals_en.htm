@@ -65,6 +65,8 @@ defines a rule which tells akrantiain to do the following:
  "When a <code><span class="string">"u"</span></code> is followed by a <code><span class="string">"g"</span></code>, which in turn is NOT followed by something that matches the pattern <code><span class="identifier">vowel</span></code>, 
   convert the <code><span class="string">"u"</span></code> into <code><span class="slash">/u/</span></code> and the <code><span class="string">"g"</span></code> into <code><span class="slash">/u/</span></code>."
 
+Whitespace characters are not allowed inside <code>-&gt;</code>; you cannot split a <code>-&gt;</code> into a <code>-</code> and a <code>&gt;</code>.
+
 A <code>^</code> is a pattern than matches a word boundary. A <code>$</code> says: "This rule does not convert the corresponding left-hand side; let other rules written below handle it."
 The following is an example which uses a <code>^</code> and a <code>$</code>:
 <div>
