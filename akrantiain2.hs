@@ -34,7 +34,8 @@ Right b >>>= f  = f b
 
 
 interact' :: (Show a) => (String -> Either a String) -> IO ()
-interact' f = do 
+interact' f = do
+ hSetEncoding stdin utf8
  s <- getContents
  forM_ (lines s) $ \line -> case f line of 
    Right str -> putStrLn str
