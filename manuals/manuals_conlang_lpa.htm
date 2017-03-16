@@ -20,7 +20,7 @@ code{
     font-family: "Fynelipa";
 }
 
-code{background-color:#f5f7f9; padding:3px;margin:2px;font-family:monospace;}
+code{background-color:#f5f7f9; padding:3px 1px 3px 3px;margin:2px 0px 2px 2px;font-family:monospace;}
 .string{color:#cc6600; font-family:monospace;}
 .slash{color:#00aa44; font-family:monospace;}
 .identifier{color:#0000aa; font-family:monospace;}
@@ -90,14 +90,16 @@ la lex kantet snojerl zu &lt;lyjotaleiju l'es <code><span class="string">"g"</sp
 
 なお、<code>-&gt;</code>を構成する<code>-</code>と<code>&gt;</code>の間にスペースを入れることはできない。
 
-<code>^</code>は語の境界にマッチするパターンである。<code>$</code>は「特に変換先のスラッシュリテラルを指定せず、別の規則によって変換させる」ことを表す。
-<code>^</code>と<code>$</code>の例としては、こんな感じである。
+<code>^</code> es akRapsverle zu kantet kRaxaiunen yst falvit.
+<code>$</code> es akRapsverle zu kantet liratixkavo leusj eten niukirna filx snojo liratixkaven tlomeferli't.
+
+panqa'd klirma io ny la lex xale es mels <code>^</code> ad <code>$</code>.
 </pre><div class="pre">
 <code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -&gt; <span class="slash">/m/</span> $</code></div><pre>
-こう書くと、「文字列<code><span class="string">"n"</span></code>の後に語境界があり、その後に<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチする文字列があるとき、
-<code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチした文字列については保留し、後に登場する規則に委ねる」という規則が定義される。
+la lex kantet snojerl zu &lt;kRaxaiunen yst falvit mol pesta lyjotaleiju l'es <code><span class="string">"n"</span></code> mal lyjotaleiju zu diurle <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>'c i mol fie,
+ <code><span class="string">"n"</span></code> liratixka <span class="slash">/m/</span> mal lyjotaleiju zu diurle <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>'c i melsj xelnkanon icveaines xeu'd niukirna.&gt;
 
-変換規則定義文内で用いている識別子がどの識別子定義文でも定義されていない場合は、エラーが発生する。
+snojerl liratixkavel io lex lus juscirgyl veles niv snojo fal als snojerl juscirgyl fie, volas yst nix la y.
 </pre>
 <h4 id="atmark">2-4. snojerlesti far</h4>
 <pre>
@@ -107,7 +109,7 @@ snojerl far veles celaeso ny la lex.
 kRandiurgustan furnkie fudiurmo akRantiaina'st. daliu snojo far es niv yst nix la y.
 cene no io co lus ny la lexe'd snojerl far. 
 </pre><table class="pre">
-<tr><td>環境指定識別子</td><td>意味</td></tr>
+<tr><td>snojerl farsti</td><td>kanteterl</td></tr>
 <tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>chennaZom ad kunnaZom veles itepevealo fal liratixkadir</td></tr></table>
 <h4 id="literal">2-5. lyjotaleijumen tlomeferl</h4>
 <pre>
@@ -115,8 +117,8 @@ lyjotaleijumen tlomeferl es molerl <code><span class="string">"</span></code>'s 
 cene niv co lus <code><span class="string">"</span></code> fal lyjotaleijumen tlomeferl.
 mal, cene niv co lus <code><span class="string">\</span></code> fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
 
-デフォルトでは、文字列リテラル内の大文字と小文字は区別されない。
-区別させるには、<a href="#atmark">環境指定文</a>で環境指定識別子<code><span class="identifier">CASE_SENSITIVE</span></code>を指定する必要がある。
+eccalanerfergol io akRantiain niv itepeveal chennaZom ad kunnaZom.
+fua itepevealostan, elx deliu co snoj <code><span class="identifier">CASE_SENSITIVE</span></code> fon juscirgyl zu snoj far fal <a href="#atmark">snojerl far</a>.
 </pre>
 <h4 id="slash">2-6. liratixkaven tlomeferl</h4>
 <pre>

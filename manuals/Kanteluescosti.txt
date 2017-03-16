@@ -46,16 +46,16 @@ deliu <select xo 1>'it lex celaes select fallerj ^ eskij murtmir daliues phoneme
 
         la lex kantet snojerl zu <lyjotaleiju l'es "g" mol pesta lyjotaleiju l'es "u" mal akRapsverle l'es vowel diurle niv fie, "u" liratixka /u/'c mal "g"'c at liratixka /u/.>
 
-^ es akRapsverle zu kantet kRaxaiunen yst falvit.
-$ es akRapsverle zu kantet liratixkavo leusj eten niukirna filx snojo liratixkaven tlomeferli't.
+        ^ es akRapsverle zu kantet kRaxaiunen yst falvit.
+        $ es akRapsverle zu kantet liratixkavo leusj eten niukirna filx snojo liratixkaven tlomeferli't.
 
-panqa'd klirma io ny la lex xale es mels ^ ad $.
+        panqa'd klirma io ny la lex xale es mels ^ ad $.
 
-"n" ^ ("m"|"p") -> /m/ $
+        "n" ^ ("m"|"p") -> /m/ $
 
-la lex kantet snojerl zu <kRaxaiunen yst falvit mol pesta lyjotaleiju l'es "n" mal lyjotaleiju zu diurle ("m"|"p")'c i mol fie, "u" liratixka /m/ mal lyjotaleiju zu diurle ("m"|"p")'c i melsj xelnkanon icveaines xeu'd niukirna.
+        la lex kantet snojerl zu <kRaxaiunen yst falvit mol pesta lyjotaleiju l'es "n" mal lyjotaleiju zu diurle ("m"|"p")'c i mol fie, "u" liratixka /m/ mal lyjotaleiju zu diurle ("m"|"p")'c i melsj xelnkanon icveaines xeu'd niukirna.>
 
-snojerl liratixkavel io lex lus juscirgyl veles niv snojo fal als snojerl juscirgyl fie, volas yst nix la y.
+        snojerl liratixkavel io lex lus juscirgyl veles niv snojo fal als snojerl juscirgyl fie, volas yst nix la y.
 
         2-4. snojerlesti far
 
@@ -65,20 +65,20 @@ snojerl liratixkavel io lex lus juscirgyl veles niv snojo fal als snojerl juscir
 
         kRandiurgustan furnkie fudiurmo akRantiaina'st. daliu snojo far es niv yst nix la y. cene no io co lus ny la lexe'd snojerl far. 
 
-snojerl farsti kanteterl
+        snojerl farsti kanteterl
         CASE_SENSITIVE chennaZom ad kunnaZom veles itepevealo fal liratixkadir
 
-                        2-5. lyjotaleijumen tlomeferl
+        2-5. lyjotaleijumen tlomeferl
 
-                        lyjotaleijumen tlomeferl es molerl "'s pesta lyjot xo 0 oloverl eski " pesta ".
-                        cene niv co lus " fal lyjotaleijumen tlomeferl.
-                        mal, cene niv co lus \ fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+        lyjotaleijumen tlomeferl es molerl "'s pesta lyjot xo 0 oloverl eski " pesta ".
+        cene niv co lus " fal lyjotaleijumen tlomeferl.
+        mal, cene niv co lus \ fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
 
-eccalanerfergol io akRantiain niv itepeveal chennaZom ad kunnaZom.
-fua itepevealostan, elx deliu co snoj case_sensitive fon juscirgyl zu snoj far fal snojerl far.
+        eccalanerfergol io akRantiain niv itepeveal chennaZom ad kunnaZom.
+        fua itepevealostan, elx deliu co snoj CASE_SENSITIVE fon juscirgyl zu snoj far fal snojerl far.
 
-                        2-6. liratixkaven tlomeferl
+        2-6. liratixkaven tlomeferl
 
-                        liratixkaven tlomeferl es molerl /'s pesta lyjot xo 0 oloverl eski / pesta /.
-                        cene niv co lus / fal lyjotaleijumen tlomeferl.
-                        mal, cene niv co lus \ fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+        liratixkaven tlomeferl es molerl /'s pesta lyjot xo 0 oloverl eski / pesta /.
+        cene niv co lus / fal lyjotaleijumen tlomeferl.
+        mal, cene niv co lus \ fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
