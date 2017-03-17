@@ -2,7 +2,7 @@
 module Akrantiain.Resolve_modules
 (modulesToFunc
 ) where
--- import Prelude hiding (undefined)
+import Prelude hiding (undefined)
 import Akrantiain.Modules
 import Akrantiain.Structure
 import Akrantiain.Sents_to_rules
@@ -13,6 +13,7 @@ sentsToFunc :: Set Sentence -> Either SemanticError (Input -> Output)
 
 -- return func from "_Main" module
 modulesToFunc :: Set Module -> Either SemanticError (Input -> Output)
-modulesToFunc = undefined
+modulesToFunc [Module(ModuleName (Id "_Main"))(Sents sents)] = sentsToFunc sents
+ -- FIXME
 
 
