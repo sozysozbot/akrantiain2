@@ -5,6 +5,7 @@ import Text.Parsec
 import System.Environment
 import System.IO
 import Akrantiain.Sents_to_rules
+import Akrantiain.Resolve_modules
 import Control.Monad(forM_, when, void)
 import System.Process
 import System.Info
