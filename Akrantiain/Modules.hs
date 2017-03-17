@@ -10,3 +10,7 @@ import Akrantiain.Structure
 data Module = Module {moduleName :: ModuleName, insideModule :: InsideModule}
 data ModuleName = Arrow {before :: Identifier, after :: Identifier} | ModuleName Identifier
 data InsideModule = Sents [Sentence] | ModuleChain [ModuleName]
+
+instance ToSource ModuleName where
+ toSource (ModuleName i) = toSource i
+ toSource (Arrow bef aft) = "(" ++ toSource bef ++ " => " ++ toSource aft ++ ")"
