@@ -4,7 +4,6 @@ import Akrantiain.Lexer
 import Text.Parsec
 import System.Environment
 import System.IO
-import Akrantiain.Sents_to_rules
 import Akrantiain.Resolve_modules
 import Control.Monad(forM_, when, void)
 import System.Process
@@ -22,8 +21,8 @@ main = do
    handle <- openFile fname ReadMode 
    hSetEncoding handle utf8
    input <- hGetContents handle
-   runParser sentences () fname input >>>= \sents -> 
-    sentsToFunc sents >>>= \func -> interact' func
+   runParser modules () fname input >>>= \mods -> 
+    modulesToFunc mods >>>= \func -> interact' func
     
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
