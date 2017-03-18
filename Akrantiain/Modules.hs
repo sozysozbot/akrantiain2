@@ -8,7 +8,7 @@ module Akrantiain.Modules
 import Prelude hiding (undefined)
 import Akrantiain.Structure
 data Module = Module {moduleName :: ModuleName, insideModule :: InsideModule}
-data ModuleName = Arrow {before :: Identifier, after :: Identifier} | ModuleName Identifier
+data ModuleName = Arrow {before :: Identifier, after :: Identifier} | ModuleName Identifier deriving(Show, Eq, Ord)
 data InsideModule = Sents [Sentence] | ModuleChain [ModuleName]
 
 instance ToSource ModuleName where
