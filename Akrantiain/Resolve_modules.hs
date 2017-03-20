@@ -1,6 +1,9 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 module Akrantiain.Resolve_modules
-(modulesToFunc
+(module4sToFunc
+,mapM2
+,Module4(..)
+,InsideModule4(..)
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Modules
@@ -8,63 +11,52 @@ import Akrantiain.Structure
 import Akrantiain.Sents_to_rules
 import Akrantiain.Errors
 import qualified Data.Map as M
-import Control.Monad(forM,mapM,(>=>))
+import Control.Monad(forM,(>=>))
+import Akrantiain.MtoM4
 
-data Module' = Module' {moduleName' :: ModuleName, insideModule' :: InsideModule'}
-data InsideModule' = Func (Either SemanticError (Input -> Output)) | ModuleChain' [ModuleName]
+newtype InsideModule5 = Functi{unFuncti :: (Input -> Output)}
+type Resmap5 = M.Map ModuleName InsideModule5
 
-newtype InsideModule3 = Funct{unFunct :: (Either SemanticError (Input -> Output))}
-type Resmap = M.Map ModuleName InsideModule3
 
-data ModuleError = ME{unME::SemanticError}
-
-modulesToFunc :: Set Module -> Either SemanticError (Input -> Output)
-modulesToFunc = modules'ToFunc . map moduleToModule'
 
 -- return func from "_Main" module
-modules'ToFunc :: Set Module' -> Either SemanticError (Input -> Output)
-modules'ToFunc ms = do 
- resmap <- liftLeft unME $ modules'ToResmap ms
+module4sToFunc :: Set Module4 -> Either ModuleError (Input -> Output)
+module4sToFunc m4s = do
+ resmap <- module4sToResmap m4s
  case ModuleName (Id "_Main") `M.lookup` resmap of
-  Just (Funct func) -> func
+  Just (Functi func) -> return func
   Nothing -> error "CANNOT HAPPEN" -- _Main always exists!
 
-modules'ToResmap :: Set Module' -> Either ModuleError Resmap
-modules'ToResmap ms = msToR ms M.empty
-
-
-msToR :: Set Module' -> Resmap -> Either ModuleError Resmap
-msToR [] resmap = return resmap
-msToR (Module'{moduleName' = name, insideModule' = Func func}:ms) resmap = do 
- newMap <- insertIfNew name (Funct func) resmap
- msToR ms newMap
-msToR (m@Module'{moduleName' = name, insideModule' = ModuleChain' chain}:ms) resmap =
+module4sToResmap :: Set Module4 -> Either ModuleError Resmap5
+module4sToResmap ms = m4sToR ms M.empty
+  
+m4sToR :: Set Module4 -> Resmap5 -> Either ModuleError Resmap5
+m4sToR [] resmap = return resmap
+m4sToR (Module4{moduleName4 = name, insideModule4 = Func4 func}:ms) resmap = do 
+ newMap <- insertIfNew name (Functi func) resmap
+ m4sToR ms newMap
+m4sToR (m@Module4{moduleName4 = name, insideModule4 = ModuleChain4 chain}:ms) resmap =
  case forM chain $ \n -> M.lookup n resmap of
-  Nothing -> msToR (ms++[m]) resmap -- FIXME: infinite loop in case of cyclic dependency
+  Nothing -> m4sToR (ms++[m]) resmap -- FIXME: infinite loop in case of cyclic dependency
   Just insides -> do
    let func = combineFuncs insides
-   msToR ms (M.insert name (Funct func) resmap)
+   m4sToR ms (M.insert name (Functi func) resmap)
 
 insertIfNew :: (ToSource a, Ord a) => a -> b -> M.Map a b -> Either ModuleError (M.Map a b)
 insertIfNew a b m = case M.lookup a m of
  Nothing -> return $ M.insert a b m
- Just _ -> Left $ ME E{errNum = 523, errStr = "Duplicate definition of module {"++toSource a++"}"}
+ Just _ -> Left $ ME {errorNo = 1523, errorMsg = "Duplicate definition of module {"++toSource a++"}"}
 
-combineFuncs :: [InsideModule3] -> Either SemanticError (Input -> Output)
-combineFuncs arr = do
- funcs <- mapM unFunct arr -- FIXME: Errors except the first one are discarded
- return $ foldr1 (>=>) funcs
+combineFuncs :: [InsideModule5] -> (Input -> Output)
+combineFuncs arr = 
+ let funcs = map unFuncti arr in
+  foldr1 (>=>) funcs
  
-liftLeft :: (a -> c) -> (Either a b -> Either c b)
-liftLeft f (Left a) = Left $ f a
-liftLeft _ (Right x) = Right x
 
 
-moduleToModule' :: Module -> Module'
-moduleToModule' Module {moduleName = name, insideModule = Sents sents}
- = Module'{moduleName' = name, insideModule' = Func (liftLeft f $ sentsToFunc sents)} where
-  f :: SemanticError -> SemanticError
-  f e = e{errStr = "Inside module "++ toSource name ++ ":\n"++ errStr e}  
-moduleToModule' Module {moduleName = name, insideModule = ModuleChain chain}
- = Module'{moduleName' = name, insideModule' = ModuleChain' chain}
+
+
+
+
+
 
