@@ -101,18 +101,18 @@ The following is the list of identifiers that currently have settings accompanie
 
 <h4 id="literal">2-5. String literal</h4>
 <pre>
-String literal is a <code><span class="string">"</span></code> followed by 0 or more of {a character that is neither a newline nor a <code><span class="string">"</span></code>} followed by a <code><span class="string">"</span></code>.
-It is forbidden to use the character <code><span class="string">"</span></code> itself inside string literals.
-Also, for future use, it is currently forbidden to use the character <code><span class="string">\</span></code> inside string literals.
+A string literal is a literal that describes a string to be converted from. A string literal begins with a <code><span class="string">"</span></code> and ends with a <code><span class="string">"</span></code>, and it does not contain a newline within itself.
+In order to express the character <code>"</code> inside a string literal, you must write <code><span class="string">\"</span></code>.
+In order to express the character <code>\</code> inside a string literal, you must write <code><span class="string">\\</span></code>.
 
 By default, string literals are case-insensitive.
 You need to <a href="#atmark">specify the setting</a> <code><span class="identifier">CASE_SENSITIVE</span></code> to make string literals case-sensitive.
 </pre>
 <h4 id="slash">2-6. Slash literal</h4>
 <pre>
-Slash literal is a <code><span class="slash">/</span></code> followed by 0 or more of {a character that is neither a newline nor a <code><span class="slash">/</span></code>} followed by a <code><span class="slash">/</span></code>.
-It is forbidden to use the character <code><span class="slash">/</span></code> itself inside slash literals.
-Also, for future use, it is currently forbidden to use the character <code><span class="slash">\</span></code> inside string literals.
+A slash literal is a literal that describes a string to be converted to. A slash literal begins with a <code><span class="slash">/</span></code> and ends with a <code><span class="slash">/</span></code>, and it does not contain a newline within itself.
+In order to express the character <code>/</code> inside a slash literal, you must write <code><span class="slash">\/</span></code>.
+In order to express the character <code>\</code> inside a slash literal, you must write <code><span class="slash">\\</span></code>.
 </pre>
 </body>
 </html>
