@@ -86,7 +86,7 @@ conversion = do
    spaces'
    left <- option Nothing neg_select
    spaces'
-   selects' <- many(try$select <* spaces')
+   selects' <- many1(try$select <* spaces')
    spaces'
    right <- option Nothing neg_select
    spaces'
@@ -94,7 +94,7 @@ conversion = do
    return (selects',left,right)
   spaces'
   let phoneme = dollar <|> slash_string
-  phonemes <- many(try$phoneme <* spaces')
+  phonemes <- many1(try$phoneme <* spaces')
   sent_terminate
   return $ Left' Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r}
    where
