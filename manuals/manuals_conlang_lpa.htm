@@ -28,7 +28,8 @@ pre{line-height: 170%}
 div{padding: 0px 0px 0px 30px;}
 u{font-family: "Fynelipa";}
 
-.nolipa { font-family:"Arial"}
+.nolipa { font-family:"Arial"; }
+.untranslated{ background-color: #ffeeee; }
 </style>
 </head>
 <body>
@@ -113,18 +114,17 @@ cene no io co lus ny la lexe'd snojerl far.
 <tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>chennaXom ad kunnaXom veles itepevealo fal liratixkadir</td></tr></table>
 <h4 id="literal">2-5. lyjotaleijumen tlomeferl</h4>
 <pre>
-lyjotaleijumen tlomeferl es molerl <code><span class="string">"</span></code>'s pesta lyjot xo 0 oloverl eski <code><span class="string">"</span></code> pesta <code><span class="string">"</span></code>.
-<span class="nolipa untranslated"><code>"</code>という文字自体を含む文字列を文字列リテラルとして表現するには、文字列中の<code>"</code>を文字列リテラル内で<code><span class="string">\"</span></code>と表記すればよい。
-<code>\</code>という文字を含む文字列を文字列リテラルとして表現するには、文字列中の<code>\</code>を文字列リテラル内で<code><span class="string">\\</span></code>と表記すればよい。</span>
+<span class="nolipa untranslated" title="FIXME: UNTRANSLATED">文字列リテラルは、変換元の文字列を表現するためのリテラルである。文字列リテラルは<code><span class="string">"</span></code>で始まり<code><span class="string">"</span></code>で終わり、内部に改行を含むことはない。
+<code>"</code>という文字自体を含む文字列を文字列リテラルとして表現するには、文字列中の<code>"</code>を文字列リテラル内で<code><span class="string">\"</span></code>と表記する必要がある。
+<code>\</code>という文字を含む文字列を文字列リテラルとして表現するには、文字列中の<code>\</code>を文字列リテラル内で<code><span class="string">\\</span></code>と表記する必要がある。</span>
 
 eccalanerfergol io akRantiain niv itepeveal chennaXom ad kunnaXom.
 fua itepevealostan, elx deliu co snoj <code><span class="identifier">CASE_SENSITIVE</span></code> fon juscirgyl zu snoj far fal <a href="#atmark">snojerl far</a>.
 </pre>
 <h4 id="slash">2-6. liratixkaven tlomeferl</h4>
-<pre>
-liratixkaven tlomeferl es molerl <code><span class="slash">/</span></code>'s pesta lyjot xo 0 oloverl eski <code><span class="slash">/</span></code> pesta <code><span class="slash">/</span></code>.
-<span class="nolipa untranslated"><code>/</code>という文字自体を含む文字列をスラッシュリテラルとして表現するには、文字列中の<code>"</code>をスラッシュリテラル内で<code><span class="slash">\/</span></code>と表記すればよい。
-<code>\</code>という文字を含む文字列をスラッシュリテラルとして表現するには、文字列中の<code>\</code>をスラッシュリテラル内で<code><span class="slash">\\</span></code>と表記すればよい。</span>
+<pre><span class="nolipa untranslated" title="FIXME: UNTRANSLATED">スラッシュリテラルは、変換先の文字列を表現するためのリテラルである。スラッシュリテラルは<code><span class="slash">/</span></code>で始まり<code><span class="slash">/</span></code>で終わり、内部に改行を含むことはない。
+<code>/</code>という文字自体を含む文字列をスラッシュリテラルとして表現するには、文字列中の<code>"</code>をスラッシュリテラル内で<code><span class="slash">\/</span></code>と表記する必要がある。
+<code>\</code>という文字を含む文字列をスラッシュリテラルとして表現するには、文字列中の<code>\</code>をスラッシュリテラル内で<code><span class="slash">\\</span></code>と表記する必要がある。</span>
 </pre>
 </body>
 </html>
