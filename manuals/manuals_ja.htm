@@ -92,17 +92,17 @@ div{padding: 0px 0px 0px 30px;}
 <tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>変換元において大文字と小文字を区別する</td></tr></table>
 <h4 id="literal">2-5. 文字列リテラル</h4>
 <pre>
-文字列リテラルは、<code><span class="string">"</span></code>の後に、改行でも<code><span class="string">"</span></code>でもない文字が0文字以上続いたあと、<code><span class="string">"</span></code>があるものである。
-<code>"</code>という文字自体を含む文字列を文字列リテラルとして表現するには、文字列中の<code>"</code>を文字列リテラル内で<code><span class="string">\"</span></code>と表記すればよい。
-<code>\</code>という文字を含む文字列を文字列リテラルとして表現するには、文字列中の<code>\</code>を文字列リテラル内で<code><span class="string">\\</span></code>と表記すればよい。
+文字列リテラルは、変換元の文字列を表現するためのリテラルである。文字列リテラルは<code><span class="string">"</span></code>で始まり<code><span class="string">"</span></code>で終わり、内部に改行を含むことはない。
+<code>"</code>という文字自体を含む文字列を文字列リテラルとして表現するには、文字列中の<code>"</code>を文字列リテラル内で<code><span class="string">\"</span></code>と表記する必要がある。
+<code>\</code>という文字を含む文字列を文字列リテラルとして表現するには、文字列中の<code>\</code>を文字列リテラル内で<code><span class="string">\\</span></code>と表記する必要がある。
 デフォルトでは、文字列リテラル内の大文字と小文字は区別されない。
 区別させるには、<a href="#atmark">環境指定文</a>で環境指定識別子<code><span class="identifier">CASE_SENSITIVE</span></code>を指定する必要がある。
 </pre>
 <h4 id="slash">2-6. スラッシュリテラル</h4>
 <pre>
-スラッシュリテラルは、<code><span class="slash">/</span></code>の後に、改行でも<code><span class="slash">/</span></code>でもない文字が0文字以上続いたあと、<code><span class="slash">/</span></code>があるものである。
-<code>/</code>という文字自体を含む文字列をスラッシュリテラルとして表現するには、文字列中の<code>"</code>をスラッシュリテラル内で<code><span class="slash">\/</span></code>と表記すればよい。
-<code>\</code>という文字を含む文字列をスラッシュリテラルとして表現するには、文字列中の<code>\</code>をスラッシュリテラル内で<code><span class="slash">\\</span></code>と表記すればよい。
+スラッシュリテラルは、変換先の文字列を表現するためのリテラルである。スラッシュリテラルは<code><span class="slash">/</span></code>で始まり<code><span class="slash">/</span></code>で終わり、内部に改行を含むことはない。
+<code>/</code>という文字自体を含む文字列をスラッシュリテラルとして表現するには、文字列中の<code>"</code>をスラッシュリテラル内で<code><span class="slash">\/</span></code>と表記する必要がある。
+<code>\</code>という文字を含む文字列をスラッシュリテラルとして表現するには、文字列中の<code>\</code>をスラッシュリテラル内で<code><span class="slash">\\</span></code>と表記する必要がある。
 </pre>
 </body>
 </html>
