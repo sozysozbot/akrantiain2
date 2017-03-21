@@ -27,11 +27,9 @@ resolvePunctuation Env{pun=p} (a, Nothing)
  | otherwise = Left a
 
 insensitive :: Rule -> Rule
-insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(fmap g) m, rightneg=fmap f r} where
+insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(first h<$>) m, rightneg=fmap f r} where
  f :: Condition -> Condition
  f (Negation c) = Negation $ h c
- g :: (Choose String, W) -> (Choose String, W)
- g (c,w) = (h c,w)
  h :: Choose String -> Choose String
  h (Ch arr) = Ch . map (map toLower) $ arr
 -- R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
