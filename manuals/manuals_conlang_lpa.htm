@@ -28,7 +28,8 @@ pre{line-height: 170%}
 div{padding: 0px 0px 0px 30px;}
 u{font-family: "Fynelipa";}
 
-.nolipa { font-family:"Arial"}
+.nolipa { font-family:"Arial"; }
+.untranslated{ background-color: #ffeeee; }
 </style>
 </head>
 <body>
@@ -45,7 +46,7 @@ u{font-family: "Fynelipa";}
 kRandiurgium celaes .snoj'd chertif. <a href="#ident">snojerl juscirgyl</a> adit <a href="#convert">snojerl liratixkavel</a>, <a href="#atmark">snojerl far</a>'it celaes chertifestana'd lakRaptana.
 leijumeffe ler snojerl liratixkavel'it gerardo faij elx liaoll akRantiain fudiur.
 mag, jol snojerl liratixkavele'd dire festel fudiurmo'c akRantiaina'st pelx snojerl juscirgyl ad snojerl far'd dire nasteon festel niv fudiurmo'c akRantiaina'st.
-leijumen stikiesn ol ; kantet kRandiurgen yst falvit gelx cene niv co stodup leiju fal daliu kRandiurg. cene co yverte kRantergo ; fastace leijumen les back ad leijumen fekverlve.
+leijumen stikiesn ol <code>;</code> kantet kRandiurgen yst falvit gelx cene niv co stodup leiju fal daliu kRandiurg. cene co yverte kRantergo <code>;</code> fastace leijumen les back ad leijumen fekverlve.
 </pre>
 <h4 id="comment">2-1. fekverlvesti</h4>
 <pre>
@@ -80,7 +81,7 @@ snojerl liratixkavel veles celaeso fal la lex.
 </pre><div class="pre">
 <code><u>0 ol 1's <span class="nolipa">CONDITION</span></u> <u><span class="nolipa">SELECT</span> xo 1</u> <u>0 ol 1'd <span class="nolipa">CONDITION</span></u> -&gt; <u><span class="nolipa">PHONEME</span> xo 1</u>;</code>
 </div><pre>
-deliu &lt;<span class="nolipa">SELECT</span> xo 1&gt;'it lex celaes <span class="nolipa">SELECT</span> fallerj ^ eskij murtmir daliues <span class="nolipa">PHONEME</span>'d murtmir'c zu &lt;<span class="nolipa">PHONEME</span> xo 1&gt;'it celaes. akRantiain lkurf yst nix la y fal daliuesol niv.
+deliu &lt;<span class="nolipa">SELECT</span> xo 1&gt;'it lex celaes <span class="nolipa">SELECT</span> fallerj <code>^</code> eskij murtmir daliues <span class="nolipa">PHONEME</span>'d murtmir'c zu &lt;<span class="nolipa">PHONEME</span> xo 1&gt;'it celaes. akRantiain lkurf yst nix la y fal daliuesol niv.
 
 panqa'd klirma io ny la lex xale es.
 </pre><div class="pre">
@@ -110,21 +111,20 @@ kRandiurgustan furnkie fudiurmo akRantiaina'st. daliu snojo far es niv yst nix l
 cene no io co lus ny la lexe'd snojerl far. 
 </pre><table class="pre">
 <tr><td>snojerl farsti</td><td>kanteterl</td></tr>
-<tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>chennaZom ad kunnaZom veles itepevealo fal liratixkadir</td></tr></table>
+<tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>chennaXom ad kunnaXom veles itepevealo fal liratixkadir</td></tr></table>
 <h4 id="literal">2-5. lyjotaleijumen tlomeferl</h4>
 <pre>
-lyjotaleijumen tlomeferl es molerl <code><span class="string">"</span></code>'s pesta lyjot xo 0 oloverl eski <code><span class="string">"</span></code> pesta <code><span class="string">"</span></code>.
-cene niv co lus <code><span class="string">"</span></code> fal lyjotaleijumen tlomeferl.
-mal, cene niv co lus <code><span class="string">\</span></code> fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+<span class="nolipa untranslated" title="FIXME: UNTRANSLATED">文字列リテラルは、変換元の文字列を表現するためのリテラルである。文字列リテラルは<code><span class="string">"</span></code>で始まり<code><span class="string">"</span></code>で終わり、内部に改行を含むことはない。
+<code>"</code>という文字自体を含む文字列を文字列リテラルとして表現するには、文字列中の<code>"</code>を文字列リテラル内で<code><span class="string">\"</span></code>と表記する必要がある。
+<code>\</code>という文字を含む文字列を文字列リテラルとして表現するには、文字列中の<code>\</code>を文字列リテラル内で<code><span class="string">\\</span></code>と表記する必要がある。</span>
 
-eccalanerfergol io akRantiain niv itepeveal chennaZom ad kunnaZom.
+eccalanerfergol io akRantiain niv itepeveal chennaXom ad kunnaXom.
 fua itepevealostan, elx deliu co snoj <code><span class="identifier">CASE_SENSITIVE</span></code> fon juscirgyl zu snoj far fal <a href="#atmark">snojerl far</a>.
 </pre>
 <h4 id="slash">2-6. liratixkaven tlomeferl</h4>
-<pre>
-liratixkaven tlomeferl es molerl <code><span class="slash">/</span></code>'s pesta lyjot xo 0 oloverl eski <code><span class="slash">/</span></code> pesta <code><span class="slash">/</span></code>.
-cene niv co lus <code><span class="slash">/</span></code> fal lyjotaleijumen tlomeferl.
-mal, cene niv co lus <code><span class="slash">\</span></code> fal lyjotaleijumen tlomeferl fua cafleko jernlutunascho'it fal snyky.
+<pre><span class="nolipa untranslated" title="FIXME: UNTRANSLATED">スラッシュリテラルは、変換先の文字列を表現するためのリテラルである。スラッシュリテラルは<code><span class="slash">/</span></code>で始まり<code><span class="slash">/</span></code>で終わり、内部に改行を含むことはない。
+<code>/</code>という文字自体を含む文字列をスラッシュリテラルとして表現するには、文字列中の<code>"</code>をスラッシュリテラル内で<code><span class="slash">\/</span></code>と表記する必要がある。
+<code>\</code>という文字を含む文字列をスラッシュリテラルとして表現するには、文字列中の<code>\</code>をスラッシュリテラル内で<code><span class="slash">\\</span></code>と表記する必要がある。</span>
 </pre>
 </body>
 </html>
