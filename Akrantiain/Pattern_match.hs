@@ -30,6 +30,7 @@ insensitive :: Rule -> Rule
 insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(first h<$>) m, rightneg=fmap f r} where
  f :: Condition -> Condition
  f (Negation c) = Negation $ h c
+ f (NegBoundary) = NegBoundary
  h :: Choose String -> Choose String
  h (Ch arr) = Ch . map (map toLower) $ arr
 -- R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
