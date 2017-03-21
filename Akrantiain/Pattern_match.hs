@@ -32,9 +32,9 @@ type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
 type Back = [(String, Maybe String)]
 
-nazo2 :: Environment -> (String,Maybe String) -> Either String String
-nazo2 _ (_, Just b) = Right b
-nazo2 Env{pun=p} (a, Nothing)
+resolvePunctuation :: Environment -> (String,Maybe String) -> Either String String
+resolvePunctuation _ (_, Just b) = Right b
+resolvePunctuation Env{pun=p} (a, Nothing)
  | isSpPunct p a = Right " "
  | otherwise = Left a
 
@@ -56,7 +56,7 @@ cook (env,rls') str = do
  let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
    Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
- let eitherList = map (nazo2 env) (cook' (env,rls) stat)
+ let eitherList = map (resolvePunctuation env) (cook' (env,rls) stat)
  case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
   strs -> do 
