@@ -2,6 +2,7 @@
 import Prelude hiding (undefined)
 import Akrantiain.Pattern_match
 import Akrantiain.Structure
+import Akrantiain.Rule
 import System.IO
 import qualified Data.Map as M
 

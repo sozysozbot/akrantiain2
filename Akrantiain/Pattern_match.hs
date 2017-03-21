@@ -1,18 +1,6 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 module Akrantiain.Pattern_match
-(Condition(..)
-,Stat
-,Front
-,Back
-,W(..)
-,cook
-,Choose(..)
-,no
-,no'
-,Rule(..)
-,Boundary_
-,Punctuation
-,Environment(..)
+(cook
 ) where
 import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing)

@@ -6,6 +6,7 @@ module Akrantiain.Sents_to_rules
 import Prelude hiding (undefined)
 import Akrantiain.Structure
 import Akrantiain.Errors
+import Akrantiain.Rule
 import Control.Monad(forM,unless)
 import Akrantiain.Pattern_match
 import Data.List(group, sort, intercalate)
