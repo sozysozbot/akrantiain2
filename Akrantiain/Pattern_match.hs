@@ -14,6 +14,7 @@ import Akrantiain.Structure(Choose(..),Identifier(..))
 import qualified Data.Set as S
 import qualified Data.Map as M
 import Control.Arrow(first)
+import Control.Monad.Reader
 
 
 type Stat = [(String, Maybe String)]
@@ -43,7 +44,7 @@ cook (env,rls') str = do
  let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
    Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
- let eitherList = map (resolvePunctuation env) (cook' env rls stat)
+ let eitherList = map (resolvePunctuation env) (cook' rls stat `runReader` env)
  case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
   strs -> do 
@@ -51,8 +52,10 @@ cook (env,rls') str = do
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
 
 
-cook' :: Environment -> [Rule] -> Stat -> Stat
-cook' env rls stat = foldl (apply env) stat rls
+cook' :: [Rule] -> Stat -> Reader Environment Stat
+cook' rls stat = do
+ env <- ask
+ return $ foldl (apply env) stat rls
 
 -- merge is allowed, split is not
 apply :: Environment -> Stat -> Rule -> Stat
