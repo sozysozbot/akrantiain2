@@ -59,7 +59,7 @@ cook' rls stat = foldM apply stat rls
 apply :: Stat -> Rule -> Reader Environment Stat
 apply stat rule = do
  env <- ask
- case match rule stat env of 
+ case match rule stat `runReader` env of 
   [] -> return stat
   c -> let (a,b) = last c in do
    newStat <- apply a rule
@@ -84,14 +84,14 @@ upgrade f str = all f $ inits str
 upgrade2 :: ([a] -> Bool) -> ([a] -> Bool)
 upgrade2 f str = all f $ tails str
 
-match :: Rule -> Stat -> Environment -> [(Front, Back)]
-match k@R{leftneg=Just condition} stat = \env -> filter f $ match k{leftneg=Nothing} stat env where
+match :: Rule -> Stat -> Reader Environment [(Front, Back)]
+match k@R{leftneg=Just condition} stat = reader $ \env -> filter f $ match k{leftneg=Nothing} stat `runReader` env where
  f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
-match R{middle =[], rightneg=Nothing} stat = \_ -> cutlist stat
-match R{middle=[], rightneg=Just condition} stat = \_ -> filter f $ cutlist stat where
+match R{middle =[], rightneg=Nothing} stat = return $ cutlist stat
+match R{middle=[], rightneg=Just condition} stat = return $ filter f $ cutlist stat where
  f (_, back) = upgrade (unCond condition) $ concatMap fst back
-match k@R{middle=Right(Ch pats,w):xs} stat = \env -> concatMap (fff env) pats where 
- fff env pat = mapMaybe (g pat) $ match k{middle=xs} stat env 
+match k@R{middle=Right(Ch pats,w):xs} stat = reader $ \env -> concatMap (fff env) pats where 
+ fff env pat = mapMaybe (g pat) $ match k{middle=xs} stat `runReader` env 
  g :: String -> (Front, Back) -> Maybe (Front, Back)
  g pat (front, back) = do 
   let front' = rev2 front
@@ -101,7 +101,7 @@ match k@R{middle=Right(Ch pats,w):xs} stat = \env -> concatMap (fff env) pats wh
   case w of
    W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
    Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
-match k@R{middle=Left():xs} stat = \env -> mapMaybe (h env) $ match k{middle=xs} stat env where
+match k@R{middle=Left():xs} stat = reader $ \env -> mapMaybe (h env) $ match k{middle=xs} stat `runReader` env where
  h env (front, back) = do
   let front' = reverse front
   let punct = pun env
