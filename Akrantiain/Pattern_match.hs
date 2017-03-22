@@ -58,8 +58,8 @@ cook' rls stat = foldM apply stat rls
 -- merge is allowed, split is not
 apply :: Stat -> Rule -> Reader Environment Stat
 apply stat rule = do
- env <- ask
- case match rule stat `runReader` env of 
+ frontback_array <- match rule stat
+ case frontback_array of 
   [] -> return stat
   c -> let (a,b) = last c in do
    newStat <- apply a rule
