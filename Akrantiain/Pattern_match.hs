@@ -51,18 +51,27 @@ cook (env,rls') str = do
    let msg = "{" ++ (intercalate "}, {"  . S.toList . S.fromList) strs ++ "}" 
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
 
-
+{- 
+        runReader (m >>= k) env 
+        runReader (k $ runReader m env) env
+-}
+   
 cook' :: [Rule] -> Stat -> Reader Environment Stat
 cook' rls stat = do
  env <- ask
- return $ foldl (\s r -> apply s r `runReader` env) stat rls
+ let func s r = runReader (apply s r) env
+ return $ foldl func stat rls
 
 -- merge is allowed, split is not
 apply :: Stat -> Rule -> Reader Environment Stat
-apply stat rule = reader $ \env -> case match env rule stat of 
- [] -> stat
- c -> let (a,b) = last c in apply a rule `runReader` env ++ b
- 
+apply stat rule = do
+ env <- ask
+ case match env rule stat of 
+  [] -> return stat
+  c -> let (a,b) = last c in do 
+   return $ apply a rule `runReader` env ++ b
+
+
  
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
 cutlist :: [a] -> [([a],[a])]
