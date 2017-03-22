@@ -59,8 +59,8 @@ cook (env,rls') str = do
 cook' :: [Rule] -> Stat -> Reader Environment Stat
 cook' rls stat = do
  env <- ask
- let func s r = runReader (apply s r) env
- return $ foldl func stat rls
+ let func' s r = return $ runReader (apply s r) env
+ foldM func' stat rls
 
 -- merge is allowed, split is not
 apply :: Stat -> Rule -> Reader Environment Stat
