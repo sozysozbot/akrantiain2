@@ -112,17 +112,18 @@ match k@R{middle=Left():xs} stat = do
 
 foo :: Monad m => [String] -> W -> [(Front, Back)] -> m [(Front, Back)]
 foo pats w newMatch = do
- let f pat = mapMaybe (g pat) newMatch
- return $ concat $ map f pats where 
-  g :: String -> (Front, Back) -> Maybe (Front, Back)
-  g pat (front, back) = do 
-   let front' = rev2 front
-   let pat' = reverse pat
-   taken <- takeTill pat' front'
-   let taken' = rev2 taken
-   case w of
-    W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
-    Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
+ let f pat = mapMaybe (ga w pat) newMatch
+ return $ concat $ map f pats 
+
+ga :: W -> String -> (Front, Back) -> Maybe (Front, Back)
+ga w pat (front, back) = do 
+ let front' = rev2 front
+ let pat' = reverse pat
+ taken <- takeTill pat' front'
+ let taken' = rev2 taken
+ case w of
+  W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
+  Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
 isSpPunct :: Punctuation -> String -> Bool
 isSpPunct punct = all (\x -> isSpace x || x `elem` punct)
