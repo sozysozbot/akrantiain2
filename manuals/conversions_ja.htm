@@ -44,22 +44,23 @@ Statと変換規則の仕様は後述。
 <tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
 </table>
 <h4 id="convert">2-2. 変換規則</h4>
-<pre>
-変換規則は、以下の3要素からなる。<!-- data Rule -->
+<pre>変換規則は、以下の3要素からなる。<!-- data Rule --><code><u>PHONEME</u></code>の定義については<a href="manuals_ja.htm">マニュアル</a>を参照のこと。
+<code><u>Negation</u></code><!-- data Condition -->は「文字列の集合または語境界」を要素として持ち、それらが登場しない時に限り変換を行うことを表す。
 </pre>
-<ol style="font-family:monospace">
+<ol style="font-family:monospace; line-height:170%">
 <li>左条件（省略可能）
-        <ul><li>Condition</li></ul>
+        <ul><li><code><u>Negation</u></code></li></ul>
 </li>
 <li>変換元と変換先の対応
-        <ul><li>a</li></ul>
+        <ul><li>「『語境界』または『文字列の集合と<code><u>PHONEME</u></code>の対』」の配列</li></ul>
 </li>
 <li>右条件（省略可能）
-        <ul><li>Condition</li></ul>
+        <ul><li><code><u>Negation</u></code></li></ul>
 </li>
 </ol>
 
 <h4 id="apply">2-3. 変換規則の適用</h4>
+<!-- FIXME: 語境界の否定は未実装 -->
 <pre>
 2017/03/22 05:42現在、変換規則の適用は以下のような流れで行われている。
 FIXME
