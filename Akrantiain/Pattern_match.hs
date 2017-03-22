@@ -59,15 +59,17 @@ cook' rls stat = foldM apply stat rls
 
 -- merge is allowed, split is not
 apply :: Stat -> Rule -> Reader Environment Stat
-apply stat rule = trace (show (stat,rule)) $ do
+apply stat rule = do
  frontback_array <- match rule stat
  case frontback_array of 
   [] -> return stat
-  c -> let (a,b) = last c in do
+  c -> (if rule == vowR then trace (show (c,stat)) else id) $ let (a,b) = last c in do
    newStat <- apply a rule
    return $ newStat ++ b 
 
 
+vowR :: Rule
+vowR = R {leftneg = Nothing, middle = [Right (Ch ["a","e","i","o","u","y"],Dollar_),Right (Ch ["r"],W "\720")], rightneg = Nothing}
 
  
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
@@ -94,19 +96,9 @@ match k@R{leftneg=Just condition} stat = do
 match R{middle =[], rightneg=Nothing} stat = return $ cutlist stat
 match R{middle=[], rightneg=Just condition} stat = return $ filter f $ cutlist stat where
  f (_, back) = upgrade (unCond condition) $ concatMap fst back
-match k@R{middle=Right(Ch pats,w):xs} stat = do
+match k@R{middle=Right(Ch pats,w):xs} stat =  do
  newMatch <- match k{middle=xs} stat 
- let f pat = mapMaybe (g pat) newMatch
- return $ concatMap f pats where 
- g :: String -> (Front, Back) -> Maybe (Front, Back)
- g pat (front, back) = do 
-  let front' = rev2 front
-  let pat' = reverse pat
-  taken <- takeTill pat' front'
-  let taken' = rev2 taken
-  case w of
-   W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
-   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
+ foo pats w newMatch
 match k@R{middle=Left():xs} stat = do 
  newMatch <- match k{middle=xs} stat
  env <- ask
@@ -117,6 +109,20 @@ match k@R{middle=Left():xs} stat = do
   guard $ null front' || (isSpPunct punct . fst . head) front'
   let (b', f'') = span (isSpPunct punct . fst) front'
   return (reverse f'', reverse b' ++ back)
+
+foo :: Monad m => [String] -> W -> [(Front, Back)] -> m [(Front, Back)]
+foo pats w newMatch = do
+ let f pat = mapMaybe (g pat) newMatch
+ return $ concat $ map f pats where 
+  g :: String -> (Front, Back) -> Maybe (Front, Back)
+  g pat (front, back) = do 
+   let front' = rev2 front
+   let pat' = reverse pat
+   taken <- takeTill pat' front'
+   let taken' = rev2 taken
+   case w of
+    W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
+    Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
 isSpPunct :: Punctuation -> String -> Bool
 isSpPunct punct = all (\x -> isSpace x || x `elem` punct)
