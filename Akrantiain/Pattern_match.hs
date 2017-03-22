@@ -51,16 +51,9 @@ cook (env,rls') str = do
    let msg = "{" ++ (intercalate "}, {"  . S.toList . S.fromList) strs ++ "}" 
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
 
-{- 
-        runReader (m >>= k) env 
-        runReader (k $ runReader m env) env
--}
-   
+
 cook' :: [Rule] -> Stat -> Reader Environment Stat
-cook' rls stat = do
- env <- ask
- let func' s r = return $ runReader (apply s r) env
- foldM func' stat rls
+cook' rls stat = foldM apply stat rls
 
 -- merge is allowed, split is not
 apply :: Stat -> Rule -> Reader Environment Stat
