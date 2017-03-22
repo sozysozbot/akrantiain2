@@ -88,18 +88,19 @@ upgrade f str = all f $ inits str
 upgrade2 :: ([a] -> Bool) -> ([a] -> Bool)
 upgrade2 f str = all f $ tails str
 
+
+
 match :: Rule -> Stat -> Reader Environment [(Front, Back)]
-match k@R{leftneg=Just condition} stat = do 
- newMatch <- match k{leftneg=Nothing} stat
- let f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
- return $ filter f $ newMatch where
-match R{middle =[], rightneg=Nothing} stat = return $ cutlist stat
-match R{middle=[], rightneg=Just condition} stat = return $ filter f $ cutlist stat where
+
+match R{leftneg=Nothing, middle =[], rightneg=Nothing} stat = return $ cutlist stat
+
+match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = return $ filter f $ cutlist stat where
  f (_, back) = upgrade (unCond condition) $ concatMap fst back
-match k@R{middle=Right(Ch pats,w):xs} stat =  do
+
+match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
  newMatch <- match k{middle=xs} stat 
  foo pats w newMatch
-match k@R{middle=Left():xs} stat = do 
+match k@R{leftneg=Nothing, middle=Left():xs} stat = do 
  newMatch <- match k{middle=xs} stat
  env <- ask
  return $ mapMaybe (h env) newMatch where
@@ -109,6 +110,13 @@ match k@R{middle=Left():xs} stat = do
   guard $ null front' || (isSpPunct punct . fst . head) front'
   let (b', f'') = span (isSpPunct punct . fst) front'
   return (reverse f'', reverse b' ++ back)
+
+match k@R{leftneg=Just condition} stat = do 
+ newMatch <- match k{leftneg=Nothing} stat
+ let f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
+ return $ filter f $ newMatch where
+
+
 
 foo :: Monad m => [String] -> W -> [(Front, Back)] -> m [(Front, Back)]
 foo pats w newMatch = do
