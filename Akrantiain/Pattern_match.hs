@@ -43,7 +43,7 @@ cook (env,rls') str = do
  let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
    Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
- let eitherList = map (resolvePunctuation env) (cook' (env,rls) stat)
+ let eitherList = map (resolvePunctuation env) (cook' env rls stat)
  case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
   strs -> do 
@@ -51,8 +51,8 @@ cook (env,rls') str = do
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
 
 
-cook' :: Rules -> Stat -> Stat
-cook' (env,rls) stat = foldl (apply env) stat rls
+cook' :: Environment -> [Rule] -> Stat -> Stat
+cook' env rls stat = foldl (apply env) stat rls
 
 -- merge is allowed, split is not
 apply :: Environment -> Stat -> Rule -> Stat
