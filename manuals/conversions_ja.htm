@@ -40,7 +40,7 @@ table.stat td { border-color : orange;
 Statと変換規則の仕様は後述。
 </pre>
 <h4 id="stat">4-1. Stat</h4>
-<pre>Statは、「『文字列と文字列の対』の配列」である。初期状態は、（1文字と未定義の対）の配列であり、例えば入力文字列が"spaghetti"であれば、次のような初期状態となる。</pre>
+<pre>Statは、「『文字列と文字列の対』のリスト」である。初期状態は、（1文字と未定義の対）のリストであり、例えば入力文字列が"spaghetti"であれば、次のような初期状態となる。</pre>
 <table class="stat">
 <tr><td>"s"</td><td>"p"</td><td>"a"</td><td>"g"</td><td>"h"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td></tr>
 <tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
@@ -54,7 +54,7 @@ Statと変換規則の仕様は後述。
         <ul><li><code><u>Negation</u></code></li></ul>
 </li>
 <li>変換元と変換先の対応
-        <ul><li>「『語境界』または『文字列の集合と<code><u>PHONEME</u></code>の対』」の配列</li></ul>
+        <ul><li>「『語境界』または『文字列の集合と<code><u>PHONEME</u></code>の対』」のリスト</li></ul>
 </li>
 <li>右条件（省略可能）
         <ul><li><code><u>Negation</u></code></li></ul>
@@ -93,11 +93,7 @@ Statと変換規則の仕様は後述。
 </table>
 <pre>出力:</pre>
 <table>
-<tr><td>(</td><td>
-        <table class="stat">
-        <tr></tr>
-        <tr></tr>
-        </table></td><td>,</td><td><table class="stat">
+<tr><td>(</td><td>空リスト</td><td>,</td><td><table class="stat">
         <tr><td>"ch"</td><td>"a"</td><td>"t"</td><td>"eau"</td></tr>
         <tr><td>/ʃ/</td><td>null</td><td>null</td><td>null</td></tr>
         </table></td>
@@ -137,10 +133,7 @@ Statと変換規則の仕様は後述。
         <table class="stat">
         <tr><td>"ch"</td><td>"a"</td><td>"t"</td><td>"eau"</td></tr>
         <tr><td>/ʃ/</td><td>null</td><td>null</td><td>null</td></tr>
-        </table></td><td>,</td><td><table class="stat">
-        <tr></tr>
-        <tr></tr>
-        </table></td>
+        </table></td><td>,</td><td>空リスト</td>
         <td>)</td>
 </td></tr>
 </table>
