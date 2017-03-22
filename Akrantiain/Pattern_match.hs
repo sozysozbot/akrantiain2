@@ -36,7 +36,8 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
  h (Ch arr) = Ch . map (map toLower) $ arr
 -- R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
 
-
+lk :: String -> Bool
+lk str = "lk" `isPrefixOf` str
 
 
 cook :: Rules -> String -> Either RuntimeError String
@@ -44,8 +45,9 @@ cook (env,rls') str = do
  let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
    Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
- let eitherList = map (resolvePunctuation env) (cook' rls stat `runReader` env)
- trace (show eitherList) $ case lefts eitherList of 
+ let cooked = cook' rls stat `runReader` env
+ let eitherList = map (resolvePunctuation env) cooked
+ trace (if lk str then show eitherList else "") $ case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
   strs -> do 
    let msg = "{" ++ (intercalate "}, {") strs ++ "}" 
@@ -57,7 +59,7 @@ cook' rls stat = foldM apply stat rls
 
 -- merge is allowed, split is not
 apply :: Stat -> Rule -> Reader Environment Stat
-apply stat rule = do
+apply stat rule = trace (show (stat,rule)) $ do
  frontback_array <- match rule stat
  case frontback_array of 
   [] -> return stat
