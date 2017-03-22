@@ -38,6 +38,7 @@ main = do
 Left  a >>>= _  = hPrint stderr a
 Right b >>>= f  = f b
 
+c :: a -> Choose a
 c = Ch . (:[])
 
 lift a = R{leftneg = Nothing, middle = a, rightneg = Nothing}
