@@ -11,7 +11,6 @@ import Control.Monad(guard)
 import Akrantiain.Errors
 import Akrantiain.Rule
 import Akrantiain.Structure(Choose(..),Identifier(..))
-import qualified Data.Set as S
 import qualified Data.Map as M
 import Control.Arrow(first)
 import Control.Monad.Reader
@@ -48,8 +47,8 @@ cook (env,rls') str = do
  case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
   strs -> do 
-   let msg = "{" ++ (intercalate "}, {"  . S.toList . S.fromList) strs ++ "}" 
-   Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
+   let msg = "{" ++ (intercalate "}, {") strs ++ "}" 
+   Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg} -- FIXME: better message that lets the user know which `r` made akrantiain crash
 
 
 cook' :: [Rule] -> Stat -> Reader Environment Stat
