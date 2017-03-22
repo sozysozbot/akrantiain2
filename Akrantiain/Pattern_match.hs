@@ -61,9 +61,11 @@ apply stat rule = do
  env <- ask
  case match env rule stat of 
   [] -> return stat
-  c -> let (a,b) = last c in do 
-   return $ apply a rule `runReader` env ++ b
+  c -> let (a,b) = last c in do
+   reader $ (++ b) . runReader (apply a rule) 
 
+lift :: MonadReader r m => (b -> a) -> Reader r b -> m a
+lift f q = reader $ f . runReader q
 
  
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
