@@ -5,8 +5,13 @@
 <title>akrantiain変換部の仕様</title>
 <link rel="stylesheet" type="text/css" href="main.css">
 <style>
-
-
+table.stat { border-spacing: 7px 1px; }
+table.stat td { border-color : orange;
+     border-width : 2px;
+     border-style : solid;
+     padding : 4px;
+     text-align:center;
+}
 </style>
 </head>
 <body>
@@ -30,25 +35,35 @@
 <li>変換先を全てつなげ、出力文字列とする。</li>
 </ol>
 <pre>
-Statの説明は後述。
+Statと変換規則の仕様は後述。
 </pre>
 <h4 id="stat">2-1. Stat</h4>
-<pre>Statは、～</pre>
-<h4 id="apply">2-2. 変換規則の適用</h4>
+<pre>Statは、「『文字列と文字列の対』の配列」である。初期状態は、（1文字と未定義の対）の配列であり、例えば入力文字列が"spaghetti"であれば、次のような初期状態となる。</pre>
+<table class="stat">
+<tr><td>"s"</td><td>"p"</td><td>"a"</td><td>"g"</td><td>"h"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td></tr>
+<tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+</table>
+<h4 id="convert">2-2. 変換規則</h4>
+<pre>
+変換規則は、以下の3要素からなる。<!-- data Rule -->
+</pre>
+<ol style="font-family:monospace">
+<li>左条件（省略可能）
+        <ul><li>Condition</li></ul>
+</li>
+<li>変換元と変換先の対応
+        <ul><li>a</li></ul>
+</li>
+<li>右条件（省略可能）
+        <ul><li>Condition</li></ul>
+</li>
+</ol>
+
+<h4 id="apply">2-3. 変換規則の適用</h4>
 <pre>
 2017/03/22 05:42現在、変換規則の適用は以下のような流れで行われている。
 FIXME
 </pre>
-<h4 id="convert">2-3. 変換規則</h4>
-<pre>
-変換規則は、以下の4要素からなる。
-</pre>
-<ol style="font-family:monospace">
-<li>左条件（省略可能）</li>
-<li>変換元</li>
-<li>右条件（省略可能）</li>
-<li>変換先</li>
-</ol>
 
 </body>
 </html>
