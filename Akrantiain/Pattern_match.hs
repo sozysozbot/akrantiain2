@@ -59,13 +59,14 @@ cook' rls stat = foldM apply stat rls
 
 -- merge is allowed, split is not
 apply :: Stat -> Rule -> Reader Environment Stat
-apply stat rule = trace (show (stat,rule)) $ do
+apply stat rule = (if rule == R {leftneg = Nothing, middle = [Right (Ch ["a","e","i","o","u","y"],Dollar_),Right (Ch ["r"],W "\720")], rightneg = Nothing} then trace (show (stat,rule)) else id) $ do
  frontback_array <- match rule stat
  case frontback_array of 
   [] -> return stat
   c -> let (a,b) = last c in do
    newStat <- apply a rule
-   return $ newStat ++ b 
+   newStat2 <- apply b rule
+   return $ newStat ++ newStat2 
 
 
 
