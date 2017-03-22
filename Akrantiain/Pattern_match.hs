@@ -15,6 +15,7 @@ import qualified Data.Set as S
 import qualified Data.Map as M
 import Control.Arrow(first)
 import Control.Monad.Trans.Reader
+import Control.Monad.Trans.Class
 
 
 type Stat = [(String, Maybe String)]
@@ -43,16 +44,18 @@ cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str = cook2 rls' str `runReaderT` env 
 
 cook2 :: [Rule] -> String -> ReaderT Environment (Either RuntimeError) String
-cook2 rls' str = ReaderT $ \env -> do
+cook2 rls' str = do
+ env <- ask
  let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
-   Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
-   Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
+  Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
+  Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
  let eitherList = map (resolvePunctuation env) (cook' rls stat `runReader` env)
- case lefts eitherList of 
-  [] -> return $ concat $ rights eitherList
-  strs -> do 
-   let msg = "{" ++ (intercalate "}, {"  . S.toList . S.fromList) strs ++ "}" 
-   Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
+ lift $ do
+  case lefts eitherList of 
+   [] -> return $ concat $ rights eitherList
+   strs -> do 
+    let msg = "{" ++ (intercalate "}, {"  . S.toList . S.fromList) strs ++ "}" 
+    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
 
 
 cook' :: [Rule] -> Stat -> Reader Environment Stat
