@@ -18,6 +18,11 @@ table.stat td { border-color : orange;
 <div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
 <h2>akrantiainマニュアル</h2>
 <h3>4. akrantiain変換部の仕様</h3>
+<h4 id="structure">4-(-1). 用語の定義</h4>
+<pre>
+「AとBの対」とは、A1つとB1つを共に要素として持つデータ構造である。
+「AとBの対」のAのことをfstと呼び、Bのことをsndと呼ぶ。
+</pre>
 <h4 id="structure">4-0. 概略</h4>
 <pre>
 変換部は、「環境情報(環境指定識別子一覧と句読点情報からなる)」「変換規則のリスト」「入力文字列」を受けとり、「実行時エラー」または「出力文字列」を返す。
@@ -30,21 +35,27 @@ table.stat td { border-color : orange;
         環境指定識別子<code><span class="identifier">CASE_SENSITIVE</span></code>が指定されていなければ、変換規則の入力部と入力文字列を小文字に変換する。
 </li>
 <li>
-        入力文字列の末尾にスペースを付加し、Statに変換する
+        入力文字列の末尾にスペースを付加し、1文字ずつ分割し（1文字と未定義値の対）のリストとしてStatに変換する
 </li>
 <li>「変換規則のリスト」を左から走査していき、Statに順に変換規則を<a href="#apply">適用</a>していく</li>
 <li>Statのうち未処理のものがある場合、変換元がスペースまたは句読点なら変換先にスペースを指定する。そうでなければ実行時エラー#210を吐く。</li>
 <li>変換先を全てつなげ、出力文字列とする。</li>
 </ol>
+<pre>2.では、例えば入力文字列が"spaghetti"であれば、次のようなStatへと変換される。</pre>
+<table class="stat">
+<tr><td>"s"</td><td>"p"</td><td>"a"</td><td>"g"</td><td>"h"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td><td>"　"</td></tr>
+<tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+</table>
 <pre>
 Statと変換規則の仕様は後述。
 </pre>
 <h4 id="stat">4-1. Stat</h4>
-<pre>Statは、「『文字列と文字列の対』のリスト」である。初期状態は、（1文字と未定義の対）のリストであり、例えば入力文字列が"spaghetti"であれば、次のような初期状態となる。</pre>
+<pre>Statは、「『文字列と文字列の対』のリスト」である。対のsndは未定義値であり得る。例えば次のようなものである。</pre>
 <table class="stat">
-<tr><td>"s"</td><td>"p"</td><td>"a"</td><td>"g"</td><td>"h"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td></tr>
-<tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+<tr><td>"s"</td><td>"p"</td><td>"a"</td><td>"gh"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td></tr>
+<tr><td>null</td><td>"p"</td><td>null</td><td>"g"</td><td>null</td><td>null</td><td>"t"</td><td>null</td></tr>
 </table>
+<pre>fstをつなげてできる文字列（この例では"spaghetti"）を、Statのconcatと呼ぶ。</pre>
 <h4 id="convert">4-2. 変換規則</h4>
 <pre>変換規則は、以下の3要素からなる。<!-- data Rule --><code><u>PHONEME</u></code>の定義については<a href="manuals_ja.htm">マニュアル</a>を参照のこと。
 <code><u>Negation</u></code><!-- data Condition -->は「文字列の集合または語境界」を要素として持ち、それらが登場しない時に限り変換を行うことを表す。
@@ -68,7 +79,7 @@ Statと変換規則の仕様は後述。
 </pre>
 <ol style="font-family:monospace; line-height:170%">
 <li>受け取ったStatと変換規則をmatchに渡し、「『Statの対』のリスト」hogeを得る。</li>
-<li>hogeが空なら最初のStatを変更せずに返し、さもなくばリストhogeの最終要素に(a,b)と名付け続行。</li>
+<li>hogeが空なら最初のStatを変更せずに返し、さもなくばリストhogeの最終要素のfstをa、sndをbと名付け続行。</li>
 <li>「aと変換規則をmatchに渡し返ってきたStat」の後ろにbを結合し、返す。</li>
 </ol>
 
@@ -83,8 +94,8 @@ Statと変換規則の仕様は後述。
 というのが大まかな流れである。
 以下、辿っていくときに行われることを具体的に説明していく。
 </pre>
-<!-- FIXME: 語境界の否定は未実装 -->
-<h5>4-4-0.候補の用意</h5>
+
+<h5>4-4-0. 候補の用意</h5> <!-- cutlist -->
 <pre>これについては「百聞は一見に如かず」なので、図を用いる。</pre>
 <pre>入力:</pre>
 <table class="stat">
@@ -132,11 +143,61 @@ Statと変換規則の仕様は後述。
         </table></td><td>,</td><td>空リスト</td>
         <td>)</td></tr>
 </table>
-<h5>4-4-1.</h5>
-<pre></pre>
+<h5>4-4-1. 右条件の処理</h5>
+<!-- FIXME: 語境界の否定は未実装 -->
+<pre>右条件gが在るなら、Statの対のうち、「sndのconcatの接頭辞（自身を含む）が全て、右条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
+<pre>
+具体例を見てみよう。右条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、以下のStat対は通過する。
+</pre>
+<table>
+<tr><td>(</td><td>空リスト</td><td>,</td><td><table class="stat">
+        <tr><td>"w"</td><td>"a"</td><td>"n"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"w"</td><td>"a"</td></tr>
+        <tr><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"n"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"w"</td><td>"a"</td><td>"n"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"t"</td></tr>
+        <tr><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"w"</td><td>"a"</td><td>"n"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td>空リスト</td>
+        <td>)</td></tr>
+</table>
+<pre>しかし、以下のStat対は通過しない。</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"w"</td></tr>
+        <tr><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"a"</td><td>"n"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>なぜなら、このStat対のsndのconcatである"ant"の接頭辞の一つ"an"は、条件「"an", "en", "in", "on", "un"のどれでもない」を満たさないからである。</pre>
+
 <h5>4-4-2.</h5>
 <pre></pre>
-<h5>4-4-3.</h5>
+<h5>4-4-3. 左条件の処理</h5>
+<!-- FIXME: 語境界の否定は未実装 -->
 <pre></pre>
 </body>
 </html>
