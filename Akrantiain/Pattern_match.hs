@@ -14,6 +14,7 @@ import Akrantiain.Structure(Choose(..),Identifier(..))
 import qualified Data.Set as S
 import qualified Data.Map as M
 import Control.Arrow(first)
+import Control.Monad.Reader
 
 
 type Stat = [(String, Maybe String)]
@@ -43,7 +44,7 @@ cook (env,rls') str = do
  let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
    Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
- let eitherList = map (resolvePunctuation env) (cook' (env,rls) stat)
+ let eitherList = map (resolvePunctuation env) (cook' rls stat `runReader` env)
  case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
   strs -> do 
@@ -51,15 +52,21 @@ cook (env,rls') str = do
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}
 
 
-cook' :: Rules -> Stat -> Stat
-cook' (env,rls) stat = foldl (apply env) stat rls
+cook' :: [Rule] -> Stat -> Reader Environment Stat
+cook' rls stat = foldM apply stat rls
 
 -- merge is allowed, split is not
-apply :: Environment -> Stat -> Rule -> Stat
-apply env stat rule = case match env rule stat of 
- [] -> stat
- c -> let (a,b) = last c in apply env a rule ++ b
- 
+apply :: Stat -> Rule -> Reader Environment Stat
+apply stat rule = do
+ frontback_array <- match rule stat
+ case frontback_array of 
+  [] -> return stat
+  c -> let (a,b) = last c in do
+   newStat <- apply a rule
+   return $ newStat ++ b 
+
+
+
  
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
 cutlist :: [a] -> [([a],[a])]
@@ -77,14 +84,18 @@ upgrade f str = all f $ inits str
 upgrade2 :: ([a] -> Bool) -> ([a] -> Bool)
 upgrade2 f str = all f $ tails str
 
-match :: Environment -> Rule -> Stat -> [(Front, Back)]
-match env k@R{leftneg=Just condition} stat = filter f $ match env k{leftneg=Nothing} stat where
- f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
-match _ R{middle =[], rightneg=Nothing} stat = cutlist stat
-match _ R{middle=[], rightneg=Just condition} stat = filter f $ cutlist stat where
+match :: Rule -> Stat -> Reader Environment [(Front, Back)]
+match k@R{leftneg=Just condition} stat = do 
+ newMatch <- match k{leftneg=Nothing} stat
+ let f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
+ return $ filter f $ newMatch where
+match R{middle =[], rightneg=Nothing} stat = return $ cutlist stat
+match R{middle=[], rightneg=Just condition} stat = return $ filter f $ cutlist stat where
  f (_, back) = upgrade (unCond condition) $ concatMap fst back
-match env k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where 
- fff pat = mapMaybe (g pat) $ match env k{middle=xs} stat
+match k@R{middle=Right(Ch pats,w):xs} stat = do
+ newMatch <- match k{middle=xs} stat 
+ let f pat = mapMaybe (g pat) newMatch
+ return $ concatMap f pats where 
  g :: String -> (Front, Back) -> Maybe (Front, Back)
  g pat (front, back) = do 
   let front' = rev2 front
@@ -94,8 +105,11 @@ match env k@R{middle=Right(Ch pats,w):xs} stat = concatMap fff pats where
   case w of
    W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
    Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
-match env k@R{middle=Left():xs} stat = mapMaybe h $ match env k{middle=xs} stat where
- h (front, back) = do
+match k@R{middle=Left():xs} stat = do 
+ newMatch <- match k{middle=xs} stat
+ env <- ask
+ return $ mapMaybe (h env) newMatch where
+ h env (front, back) = do
   let front' = reverse front
   let punct = pun env
   guard $ null front' || (isSpPunct punct . fst . head) front'
