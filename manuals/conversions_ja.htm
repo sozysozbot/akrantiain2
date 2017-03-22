@@ -16,8 +16,9 @@ table.stat td { border-color : orange;
 </head>
 <body>
 <div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
-<h2>akrantiain変換部の仕様</h2>
-<h4 id="structure">2-0. 概略</h4>
+<h2>akrantiainマニュアル</h2>
+<h3>4. akrantiain変換部の仕様</h3>
+<h4 id="structure">4-0. 概略</h4>
 <pre>
 変換部は、「環境情報(環境指定識別子一覧と句読点情報からなる)」「変換規則のリスト」「入力文字列」を受けとり、「実行時エラー」または「出力文字列」を返す。
 なお、環境情報は大局的な定数であり、変換部の処理を行う任意のタイミングで参照されうる。
@@ -38,13 +39,13 @@ table.stat td { border-color : orange;
 <pre>
 Statと変換規則の仕様は後述。
 </pre>
-<h4 id="stat">2-1. Stat</h4>
+<h4 id="stat">4-1. Stat</h4>
 <pre>Statは、「『文字列と文字列の対』の配列」である。初期状態は、（1文字と未定義の対）の配列であり、例えば入力文字列が"spaghetti"であれば、次のような初期状態となる。</pre>
 <table class="stat">
 <tr><td>"s"</td><td>"p"</td><td>"a"</td><td>"g"</td><td>"h"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td></tr>
 <tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
 </table>
-<h4 id="convert">2-2. 変換規則</h4>
+<h4 id="convert">4-2. 変換規則</h4>
 <pre>変換規則は、以下の3要素からなる。<!-- data Rule --><code><u>PHONEME</u></code>の定義については<a href="manuals_ja.htm">マニュアル</a>を参照のこと。
 <code><u>Negation</u></code><!-- data Condition -->は「文字列の集合または語境界」を要素として持ち、それらが登場しない時に限り変換を行うことを表す。
 </pre>
@@ -60,7 +61,7 @@ Statと変換規則の仕様は後述。
 </li>
 </ol>
 
-<h4 id="apply">2-3. 変換規則の適用</h4>
+<h4 id="apply">4-3. 変換規則の適用</h4>
 <!-- apply -->
 <pre>変換規則適用は、「Stat」と「変換規則」を受け取り、「Stat」を返す。
 2017/03/22 20:49現在、変換規則の適用は以下のような流れで行われている。
@@ -71,7 +72,7 @@ Statと変換規則の仕様は後述。
 <li>「aと変換規則をmatchに渡し返ってきたStat」の後ろにbを結合し、返す。</li>
 </ol>
 
-<h4 id="match">2-4. match関数の仕様</h4>
+<h4 id="match">4-4. match関数の仕様</h4>
 <!-- match -->
 <pre>match関数は、「Stat」と「変換規則」を受け取り、「『Statの対』のリスト」を返す。</pre>
 <ol style="font-family:monospace; line-height:170%">
