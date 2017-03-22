@@ -197,6 +197,57 @@ Statと変換規則の仕様は後述。
 <h5>4-4-2.</h5>
 <pre></pre>
 <h5>4-4-3. 左条件の処理</h5>
+<pre>
+左条件gがが在るなら、Statの対のうち、「fstのconcatの接尾辞（自身を含む）が全て、左条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
+</pre>
+<pre>
+具体例を見てみよう。左条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、以下のStat対は通過する。
+</pre>
+<table>
+<tr><td>(</td><td>空リスト</td><td>,</td><td><table class="stat">
+        <tr><td>"w"</td><td>"a"</td><td>"n"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"w"</td></tr>
+        <tr><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"a"</td><td>"n"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"w"</td><td>"a"</td></tr>
+        <tr><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"n"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"w"</td><td>"a"</td><td>"n"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td>空リスト</td>
+        <td>)</td></tr>
+</table>
+<pre>しかし、以下のStat対は通過しない。</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"w"</td><td>"a"</td><td>"n"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"t"</td></tr>
+        <tr><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>なぜなら、このStat対のfstのconcatである"wan"の接尾辞の一つ"an"は、条件「"an", "en", "in", "on", "un"のどれでもない」を満たさないからである。</pre>
+
 <!-- FIXME: 語境界の否定は未実装 -->
 <pre></pre>
 </body>
