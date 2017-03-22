@@ -99,7 +99,7 @@ match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = return $ fil
 
 match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
  newMatch <- match k{middle=xs} stat 
- foo pats w newMatch
+ return $ foo pats w newMatch
 match k@R{leftneg=Nothing, middle=Left():xs} stat = do 
  newMatch <- match k{middle=xs} stat
  env <- ask
@@ -118,10 +118,10 @@ match k@R{leftneg=Just condition} stat = do
 
 
 
-foo :: Monad m => [String] -> W -> [(Front, Back)] -> m [(Front, Back)]
-foo pats w newMatch = do
- let f pat = mapMaybe (ga w pat) newMatch
- return $ concat $ map f pats 
+foo :: [String] -> W -> [(Front, Back)] -> [(Front, Back)]
+foo pats w newMatch = 
+ let f pat = mapMaybe (ga w pat) newMatch in
+ concat $ map f pats 
 
 ga :: W -> String -> (Front, Back) -> Maybe (Front, Back)
 ga w pat (front, back) = do 
