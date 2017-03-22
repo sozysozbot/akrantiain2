@@ -14,6 +14,7 @@ import Akrantiain.Structure(Choose(..),Identifier(..))
 import qualified Data.Map as M
 import Control.Arrow(first)
 import Control.Monad.Reader
+import Debug.Trace
 
 
 type Stat = [(String, Maybe String)]
@@ -44,7 +45,7 @@ cook (env,rls') str = do
    Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
  let eitherList = map (resolvePunctuation env) (cook' rls stat `runReader` env)
- case lefts eitherList of 
+ trace (show eitherList) $ case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
   strs -> do 
    let msg = "{" ++ (intercalate "}, {") strs ++ "}" 
