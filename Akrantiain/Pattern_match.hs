@@ -55,13 +55,13 @@ cook (env,rls') str = do
 cook' :: [Rule] -> Stat -> Reader Environment Stat
 cook' rls stat = do
  env <- ask
- return $ foldl (\s r -> apply s r env) stat rls
+ return $ foldl (\s r -> apply s r `runReader` env) stat rls
 
 -- merge is allowed, split is not
-apply :: Stat -> Rule -> Environment -> Stat
-apply stat rule = \env -> case match env rule stat of 
+apply :: Stat -> Rule -> Reader Environment Stat
+apply stat rule = reader $ \env -> case match env rule stat of 
  [] -> stat
- c -> let (a,b) = last c in apply a rule env ++ b
+ c -> let (a,b) = last c in apply a rule `runReader` env ++ b
  
  
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
