@@ -85,13 +85,17 @@ upgrade2 :: ([a] -> Bool) -> ([a] -> Bool)
 upgrade2 f str = all f $ tails str
 
 match :: Rule -> Stat -> Reader Environment [(Front, Back)]
-match k@R{leftneg=Just condition} stat = reader $ \env -> filter f $ match k{leftneg=Nothing} stat `runReader` env where
- f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
+match k@R{leftneg=Just condition} stat = do 
+ newMatch <- match k{leftneg=Nothing} stat
+ let f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
+ return $ filter f $ newMatch where
 match R{middle =[], rightneg=Nothing} stat = return $ cutlist stat
 match R{middle=[], rightneg=Just condition} stat = return $ filter f $ cutlist stat where
  f (_, back) = upgrade (unCond condition) $ concatMap fst back
-match k@R{middle=Right(Ch pats,w):xs} stat = reader $ \env -> concatMap (fff env) pats where 
- fff env pat = mapMaybe (g pat) $ match k{middle=xs} stat `runReader` env 
+match k@R{middle=Right(Ch pats,w):xs} stat = do
+ newMatch <- match k{middle=xs} stat 
+ let f pat = mapMaybe (g pat) newMatch
+ return $ concatMap f pats where 
  g :: String -> (Front, Back) -> Maybe (Front, Back)
  g pat (front, back) = do 
   let front' = rev2 front
@@ -101,7 +105,10 @@ match k@R{middle=Right(Ch pats,w):xs} stat = reader $ \env -> concatMap (fff env
   case w of
    W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
    Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
-match k@R{middle=Left():xs} stat = reader $ \env -> mapMaybe (h env) $ match k{middle=xs} stat `runReader` env where
+match k@R{middle=Left():xs} stat = do 
+ newMatch <- match k{middle=xs} stat
+ env <- ask
+ return $ mapMaybe (h env) newMatch where
  h env (front, back) = do
   let front' = reverse front
   let punct = pun env
