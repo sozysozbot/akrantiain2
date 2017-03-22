@@ -84,9 +84,71 @@ Statと変換規則の仕様は後述。
 以下、辿っていくときに行われることを具体的に説明していく。
 </pre>
 <!-- FIXME: 語境界の否定は未実装 -->
-<pre>
-
-</pre>
-
+<h5>4-4-0.候補の用意</h5>
+<pre>これについては「百聞は一見に如かず」なので、図を用いる。</pre>
+<pre>入力:</pre>
+<table class="stat">
+<tr><td>"ch"</td><td>"a"</td><td>"t"</td><td>"eau"</td></tr>
+<tr><td>/ʃ/</td><td>null</td><td>null</td><td>null</td></tr>
+</table>
+<pre>出力:</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr></tr>
+        <tr></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"ch"</td><td>"a"</td><td>"t"</td><td>"eau"</td></tr>
+        <tr><td>/ʃ/</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td>
+</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"ch"</td></tr>
+        <tr><td>/ʃ/</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"a"</td><td>"t"</td><td>"eau"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td>
+</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"ch"</td><td>"a"</td></tr>
+        <tr><td>/ʃ/</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"t"</td><td>"eau"</td></tr>
+        <tr><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td>
+</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"ch"</td><td>"a"</td><td>"t"</td></tr>
+        <tr><td>/ʃ/</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"eau"</td></tr>
+        <tr><td>null</td></tr>
+        </table></td>
+        <td>)</td>
+</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"ch"</td><td>"a"</td><td>"t"</td><td>"eau"</td></tr>
+        <tr><td>/ʃ/</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr></tr>
+        <tr></tr>
+        </table></td>
+        <td>)</td>
+</td></tr>
+</table>
+<h5>4-4-1.</h5>
+<pre></pre>
+<h5>4-4-2.</h5>
+<pre></pre>
+<h5>4-4-3.</h5>
+<pre></pre>
 </body>
 </html>
