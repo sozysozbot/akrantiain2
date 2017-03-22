@@ -7,14 +7,14 @@ import Data.Maybe(mapMaybe, isNothing)
 import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(isSpace, toLower)
 import Data.Either(lefts, rights)
-import Control.Monad(guard)
+import Control.Monad(guard, foldM)
 import Akrantiain.Errors
 import Akrantiain.Rule
 import Akrantiain.Structure(Choose(..),Identifier(..))
 import qualified Data.Set as S
 import qualified Data.Map as M
 import Control.Arrow(first)
-import Control.Monad.Reader
+import Control.Monad.Trans.Reader
 
 
 type Stat = [(String, Maybe String)]
@@ -40,10 +40,10 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 
 
 cook :: Rules -> String -> Either RuntimeError String
-cook (env,rls') str = cook2 rls' str env 
+cook (env,rls') str = cook2 rls' str `runReaderT` env 
 
-cook2 :: [Rule] -> String -> Environment -> Either RuntimeError String
-cook2 rls' str = \env -> do
+cook2 :: [Rule] -> String -> ReaderT Environment (Either RuntimeError) String
+cook2 rls' str = ReaderT $ \env -> do
  let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
    Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
