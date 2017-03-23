@@ -120,8 +120,8 @@ match k@R{leftneg=Just condition} stat = do
 
 foo :: [String] -> W -> [(Front, Back)] -> [(Front, Back)]
 foo pats w newMatch = do
- pat <- reverse pats -- thus here is the problem
  (front,back) <- newMatch 
+ pat <- pats
  let front' = rev2 front
  let pat' = reverse pat
  taken <- maybeToList $ takeTill pat' front'
