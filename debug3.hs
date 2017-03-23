@@ -11,22 +11,12 @@ env = Env{pun=punct, bools=M.fromList[(Id"CASE_SENSITIVE",())]}
 
 main :: IO ()
 main = do
- cook (env,rls) "sasa"          >>>= putStrLn
- cook (env,rls) "sashimi"       >>>= putStrLn
- cook (env,rls) "stoxiet"       >>>= putStrLn
- cook (env,rls) "exiu"          >>>= putStrLn
- cook (env,rls) "selxiunk"      >>>= putStrLn
- cook (env,rls) "mi"            >>>= putStrLn
- cook (env,rls) "liaxa"         >>>= putStrLn
- cook (env,rls) "lineparine"    >>>= putStrLn
- cook (env,rls) "krante"        >>>= putStrLn
- cook (env,rls) "lkurftlesse'd" >>>= putStrLn
- cook (env,rls) "xorlnemj"      >>>= putStrLn
- cook (env,rls) "ayplerde"      >>>= putStrLn
- cook (env,rls) "akrantiain"    >>>= putStrLn
- cook (env,rls) "aus"           >>>= putStrLn
- cook (env,rls) "panqa'dy"      >>>= putStrLn
- cook (env,rls) "Fankaon kaccaon lex ta safes elx wioll ycax elx pojiv Zarhalo gasluifesj farkzirVion befivagRi'i qacemal xadlumirfa mol niv."      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd linepyrine"      >>>= putStrLn
+ {-cook (env,rls) "lkurftlesse'd linepurine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd lineporine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd linepirine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd lineperine"      >>>= putStrLn-}
+ cook (env,rls) "lkurftlesse'd lineparine"      >>>= putStrLn
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
 Left  a >>>= _  = hPrint stderr a
