@@ -47,7 +47,7 @@ rls = [
  (lift[Right(c"j",W"i")]){rightneg = Just(Negation vowel)},
  (lift[Right(vowel,Dollar_),Right(c"y",W"ɥ")]){rightneg = Just(Negation vowel)},
  (lift[Right(Ch["r","R"],W"r")]){leftneg = Just (Negation vowel)},
- lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
+ lift[Right(vowel2,Dollar_), Right(c"r",W"ː")],
  lift[Right(c"t",W"t")],
  lift[Right(c"s",W"z")],
  lift[Right(c"y",W"y")],
@@ -83,5 +83,6 @@ rls = [
 vowel :: Choose String
 vowel = Ch ["a","e","i","o","u","y"]
  
-
+vowel2 :: Choose String
+vowel2 = Ch ["e","a","i","o","u","y"]
 

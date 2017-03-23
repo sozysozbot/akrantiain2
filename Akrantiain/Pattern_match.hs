@@ -119,8 +119,8 @@ match k@R{leftneg=Just condition} stat = do
 
 
 foo :: [String] -> W -> [(Front, Back)] -> [(Front, Back)]
-foo pats w newMatch = do
- pat <- pats
+foo pats w newMatch = (if pats == ["e","a","i","o","u","y"] then trace $ "pats is\n\t"++show pats++"\nw is\n\t"++show w++"\nnewMatch is\n\t"++show newMatch else id) $ do
+ pat <- reverse pats -- thus here is the problem
  (front,back) <- newMatch 
  let front' = rev2 front
  let pat' = reverse pat
