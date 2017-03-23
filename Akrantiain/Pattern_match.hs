@@ -119,13 +119,14 @@ match k@R{leftneg=Just condition} stat = do
 
 
 foo :: [String] -> W -> [(Front, Back)] -> [(Front, Back)]
-foo pats w newMatch = (if pats == ["e","a","i","o","u","y"] then trace $ "pats is\n\t"++show pats++"\nw is\n\t"++show w++"\nnewMatch is\n\t"++show newMatch else id) $ do
+foo pats w newMatch = do
  pat <- reverse pats -- thus here is the problem
  (front,back) <- newMatch 
  let front' = rev2 front
  let pat' = reverse pat
  taken <- maybeToList $ takeTill pat' front'
  let taken' = rev2 taken
+ (if pats == ["e","a","i","o","u","y"] then trace $ "{pats is\n\t"++show pats++"\nw is\n\t"++show w++"\nnewMatch is\n\t"++show newMatch++"\ntaken' is\n\t"++show taken' ++"\npat is\n\t"++show pat++"\n}\n\n" else id) $ [()]
  case w of
   W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else [] -- turn out not to be the cause
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
