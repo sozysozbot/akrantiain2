@@ -121,10 +121,7 @@ match k@R{leftneg=Just condition} stat = do
 foo :: [String] -> W -> [(Front, Back)] -> [(Front, Back)]
 foo pats w newMatch = do
  pat <- pats
- concatMap (ga w pat) newMatch
-
-ga :: W -> String -> (Front, Back) -> [(Front, Back)]
-ga w pat (front, back) = do 
+ (front,back) <- newMatch 
  let front' = rev2 front
  let pat' = reverse pat
  taken <- maybeToList $ takeTill pat' front'
