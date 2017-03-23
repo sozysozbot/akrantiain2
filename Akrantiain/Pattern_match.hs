@@ -3,7 +3,7 @@ module Akrantiain.Pattern_match
 (cook
 ) where
 import Prelude hiding (undefined)
-import Data.Maybe(mapMaybe, isNothing)
+import Data.Maybe(mapMaybe, isNothing, maybeToList)
 import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(isSpace, toLower)
 import Data.Either(lefts, rights)
@@ -121,16 +121,16 @@ match k@R{leftneg=Just condition} stat = do
 foo :: [String] -> W -> [(Front, Back)] -> [(Front, Back)]
 foo pats w newMatch = do
  pat <- pats
- mapMaybe (ga w pat) newMatch
+ concatMap (ga w pat) newMatch
 
-ga :: W -> String -> (Front, Back) -> Maybe (Front, Back)
+ga :: W -> String -> (Front, Back) -> [(Front, Back)]
 ga w pat (front, back) = do 
  let front' = rev2 front
  let pat' = reverse pat
- taken <- takeTill pat' front'
+ taken <- maybeToList $ takeTill pat' front'
  let taken' = rev2 taken
  case w of
-  W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing
+  W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else []
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
 isSpPunct :: Punctuation -> String -> Bool
