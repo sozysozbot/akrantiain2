@@ -51,7 +51,9 @@ table.stat td { border-color : orange;
 Statと変換規則の仕様は後述。
 </pre>
 <h4 id="stat">4-1. Stat</h4>
-<pre>Statは、「『文字列と文字列の対』のリスト」である。対のsndは未定義値であり得る。例えば次のようなものである。</pre>
+<pre>
+『文字列と文字列の対』で、対のsndが未定義値であり得るものを、『Stat素』と呼ぶ。
+Statは、「『Stat素』のリスト」である。例えば次のようなものである。</pre>
 <table class="stat">
 <tr><td>"s"</td><td>"p"</td><td>"a"</td><td>"gh"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td></tr>
 <tr><td>null</td><td>"p"</td><td>null</td><td>"g"</td><td>null</td><td>null</td><td>"t"</td><td>null</td></tr>
@@ -197,7 +199,37 @@ Statと変換規則の仕様は後述。
 
 <h5>4-4-2. 「変換元と変換先の対応」の処理</h5>
 <pre>「『語境界』または『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」を右から辿っていき、条件を満たすもののみを通過させながら、Stat内の適切な『変換先』のところに情報を記入していく。</pre>
-
+<h6>4-4-2-1.『語境界』のとき</h6>
+<pre>環境情報を使用する。各Stat対について、以下のような変更を行う。</pre>
+<ol style="font-family:monospace; line-height:170%">
+<li>Stat対のfstが空リストでなく、かつfstを構成するStat素の「変換元」部分に空白文字でも句読点でもない文字があるならば、そもそも通過させない。<!-- FIXME:空文字列だったらどうする？--></li>
+<li>fstの後ろから、「『変換元』部分が全て空白文字か句読点である」を満たすStat素を削り落とし、sndの先頭にくっつける。</li>
+</ol>
+<pre>具体例を見てみよう。<code>,</code>が句読点であるとき、以下のStat対</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"a"</td> <td>" "</td> <td>"b"</td> <td>","</td> <td>" "</td> </tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"c"</td><td>"d"</td><td>"e"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>は通過し、次のようなStat対となる。</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"a"</td> <td>" "</td> <td>"b"</td> </tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>","</td> <td>" "</td> <td>"c"</td><td>"d"</td><td>"e"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>fstの「後ろから」削っていくので、<code>a</code>と<code>b</code>の間にある空白は手が加わらないことに注意。</pre>
 <h5>4-4-3. 左条件の処理</h5>
 <!-- FIXME: 語境界の否定は未実装 -->
 <pre>
