@@ -14,7 +14,6 @@ import Akrantiain.Structure(Choose(..),Identifier(..))
 import qualified Data.Map as M
 import Control.Arrow(first)
 import Control.Monad.Reader
-import Debug.Trace
 
 
 type Stat = [(String, Maybe String)]
@@ -36,9 +35,6 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
  h (Ch arr) = Ch . map (map toLower) $ arr
 -- R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
 
-lk :: String -> Bool
-lk str = "lk" `isPrefixOf` str
-
 
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str = do
@@ -47,7 +43,7 @@ cook (env,rls') str = do
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
- trace (if lk str then show eitherList else "") $ case lefts eitherList of 
+ case lefts eitherList of 
   [] -> return $ concat $ rights eitherList
   strs -> do 
    let msg = "{" ++ (intercalate "}, {") strs ++ "}" 
@@ -63,13 +59,11 @@ apply stat rule = do
  frontback_array <- match rule stat
  case frontback_array of 
   [] -> return stat
-  c -> (if rule == vowR then trace (show (c,stat)) else id) $ let (a,b) = last c in do
+  c -> let (a,b) = last c in do
    newStat <- apply a rule
    return $ newStat ++ b 
 
 
-vowR :: Rule
-vowR = R {leftneg = Nothing, middle = [Right (Ch ["a","e","i","o","u","y"],Dollar_),Right (Ch ["r"],W "\720")], rightneg = Nothing}
 
  
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
@@ -126,7 +120,6 @@ foo pats w newMatch = do
  let pat' = reverse pat
  taken <- maybeToList $ takeTill pat' front'
  let taken' = rev2 taken
- (if pats == ["e","a","i","o","u","y"] then trace $ "{pats is\n\t"++show pats++"\nw is\n\t"++show w++"\nnewMatch is\n\t"++show newMatch++"\ntaken' is\n\t"++show taken' ++"\npat is\n\t"++show pat++"\n}\n\n" else id) $ [()]
  case w of
   W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else [] -- turn out not to be the cause
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
