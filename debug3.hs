@@ -11,22 +11,12 @@ env = Env{pun=punct, bools=M.fromList[(Id"CASE_SENSITIVE",())]}
 
 main :: IO ()
 main = do
- cook (env,rls) "sasa"          >>>= putStrLn
- cook (env,rls) "sashimi"       >>>= putStrLn
- cook (env,rls) "stoxiet"       >>>= putStrLn
- cook (env,rls) "exiu"          >>>= putStrLn
- cook (env,rls) "selxiunk"      >>>= putStrLn
- cook (env,rls) "mi"            >>>= putStrLn
- cook (env,rls) "liaxa"         >>>= putStrLn
- cook (env,rls) "lineparine"    >>>= putStrLn
- cook (env,rls) "krante"        >>>= putStrLn
- cook (env,rls) "lkurftlesse'd" >>>= putStrLn
- cook (env,rls) "xorlnemj"      >>>= putStrLn
- cook (env,rls) "ayplerde"      >>>= putStrLn
- cook (env,rls) "akrantiain"    >>>= putStrLn
- cook (env,rls) "aus"           >>>= putStrLn
- cook (env,rls) "panqa'dy"      >>>= putStrLn
- cook (env,rls) "Fankaon kaccaon lex ta safes elx wioll ycax elx pojiv Zarhalo gasluifesj farkzirVion befivagRi'i qacemal xadlumirfa mol niv."      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd linepyrine"      >>>= putStrLn
+ {-cook (env,rls) "lkurftlesse'd linepurine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd lineporine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd linepirine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd lineperine"      >>>= putStrLn-}
+ cook (env,rls) "lkurftlesse'd lineparine"      >>>= putStrLn
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
 Left  a >>>= _  = hPrint stderr a
@@ -57,7 +47,7 @@ rls = [
  (lift[Right(c"j",W"i")]){rightneg = Just(Negation vowel)},
  (lift[Right(vowel,Dollar_),Right(c"y",W"ɥ")]){rightneg = Just(Negation vowel)},
  (lift[Right(Ch["r","R"],W"r")]){leftneg = Just (Negation vowel)},
- lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
+ lift[Right(vowel2,Dollar_), Right(c"r",W"ː")],
  lift[Right(c"t",W"t")],
  lift[Right(c"s",W"z")],
  lift[Right(c"y",W"y")],
@@ -93,5 +83,6 @@ rls = [
 vowel :: Choose String
 vowel = Ch ["a","e","i","o","u","y"]
  
-
+vowel2 :: Choose String
+vowel2 = Ch ["e","a","i","o","u","y"]
 
