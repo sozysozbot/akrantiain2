@@ -12,10 +12,10 @@ env = Env{pun=punct, bools=M.fromList[(Id"CASE_SENSITIVE",())]}
 main :: IO ()
 main = do
  cook (env,rls) "lkurftlesse'd linepyrine"      >>>= putStrLn
- {-cook (env,rls) "lkurftlesse'd linepurine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd linepurine"      >>>= putStrLn
  cook (env,rls) "lkurftlesse'd lineporine"      >>>= putStrLn
  cook (env,rls) "lkurftlesse'd linepirine"      >>>= putStrLn
- cook (env,rls) "lkurftlesse'd lineperine"      >>>= putStrLn-}
+ cook (env,rls) "lkurftlesse'd lineperine"      >>>= putStrLn
  cook (env,rls) "lkurftlesse'd lineparine"      >>>= putStrLn
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
