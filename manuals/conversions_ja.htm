@@ -147,7 +147,7 @@ Statと変換規則の仕様は後述。
 <!-- FIXME: 語境界の否定は未実装 -->
 <pre>右条件gが在るなら、Statの対のうち、「sndのconcatの接頭辞（自身を含む）が全て、右条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
 <pre>
-具体例を見てみよう。右条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、以下のStat対は通過する。
+具体例を見てみよう。右条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
 </pre>
 <table>
 <tr><td>(</td><td>空リスト</td><td>,</td><td><table class="stat">
@@ -180,7 +180,7 @@ Statと変換規則の仕様は後述。
         </table></td><td>,</td><td>空リスト</td>
         <td>)</td></tr>
 </table>
-<pre>しかし、以下のStat対は通過しない。</pre>
+<pre>しかし、例えば、以下のStat対は通過しない。</pre>
 <table>
 <tr><td>(</td><td>
         <table class="stat">
@@ -203,7 +203,7 @@ Statと変換規則の仕様は後述。
 左条件gがが在るなら、Statの対のうち、「fstのconcatの接尾辞（自身を含む）が全て、左条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
 </pre>
 <pre>
-具体例を見てみよう。左条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、以下のStat対は通過する。
+具体例を見てみよう。左条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
 </pre>
 <table>
 <tr><td>(</td><td>空リスト</td><td>,</td><td><table class="stat">
@@ -236,7 +236,7 @@ Statと変換規則の仕様は後述。
         </table></td><td>,</td><td>空リスト</td>
         <td>)</td></tr>
 </table>
-<pre>しかし、以下のStat対は通過しない。</pre>
+<pre>しかし、例えば、以下のStat対は通過しない。</pre>
 <table>
 <tr><td>(</td><td>
         <table class="stat">
