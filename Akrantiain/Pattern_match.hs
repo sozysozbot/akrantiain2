@@ -127,7 +127,7 @@ foo pats w newMatch = do
  taken <- maybeToList $ takeTill pat' front'
  let taken' = rev2 taken
  case w of
-  W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else []
+  W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else [] -- turn out not to be the cause
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
 isSpPunct :: Punctuation -> String -> Bool
