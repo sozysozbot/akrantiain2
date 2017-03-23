@@ -119,9 +119,9 @@ match k@R{leftneg=Just condition} stat = do
 
 
 foo :: [String] -> W -> [(Front, Back)] -> [(Front, Back)]
-foo pats w newMatch = 
- let f pat = mapMaybe (ga w pat) newMatch in
- concat $ map f pats 
+foo pats w newMatch = do
+ pat <- pats
+ mapMaybe (ga w pat) newMatch
 
 ga :: W -> String -> (Front, Back) -> Maybe (Front, Back)
 ga w pat (front, back) = do 
