@@ -20,13 +20,14 @@ table.stat td { border-color : orange;
 <div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
 <h2>akrantiainマニュアル</h2>
 <h3>4. akrantiain変換部の仕様</h3>
-<h4 id="structure">4-(-1). 用語の定義</h4>
+<h4 id="define-words">4-(-1). 用語の定義</h4>
 <pre>
 「AとBの対」とは、A1つとB1つを共に要素として持つデータ構造である。
 「AとBの対」のAのことをfstと呼び、Bのことをsndと呼ぶ。
 「空白文字」とは、<span class="FIXME" title="Haskellに依存しない説明をせよ">HaskellのisSpace関数に与えるとTrueを返す任意の文字である。</span>
+「未定義値」とは、失敗・未設定などを表すための特殊な値である。例えば、Cならヌルポインタ、JavaScriptならundefined、HaskellならNothingで表現できる。
 </pre>
-<h4 id="structure">4-0. 概略</h4>
+<h4 id="conversion-overall">4-0. 概略</h4>
 <pre>
 変換部は、「環境情報(環境指定識別子一覧と句読点情報からなる)」「変換規則のリスト」「入力文字列」を受けとり、「実行時エラー」または「出力文字列」を返す。
 なお、環境情報は大局的な定数であり、変換部の処理を行う任意のタイミングで参照されうる。
@@ -203,7 +204,7 @@ Statは、「『Stat素』のリスト」である。例えば次のようなも
 <h6>4-4-2-1. 『語境界』のとき</h6>
 <pre>環境情報を使用する。各Stat対について、以下のような変更を行う。</pre>
 <ol style="font-family:monospace; line-height:170%">
-<li class="FIXME" title="空文字列だったらどうする？">Stat対のfstが空リストでなく、かつfstを構成するStat素の「変換元」部分に空白文字でも句読点でもない文字があるならば、そもそも通過させない。</li>
+<li class="FIXME" title="空文字列だったらどうする？">Stat対のfstが空リストでなく、かつ「Stat対のfstの最終要素であるStat素」のfstに空白文字でも句読点でもない文字があるならば、そもそも通過させない。</li>
 <li>fstの後ろから、「『変換元』部分が全て空白文字か句読点である」を満たすStat素を削り落とし、sndの先頭にくっつける。</li>
 </ol>
 <pre>具体例を見てみよう。<code>,</code>が句読点であるとき、以下のStat対</pre>
@@ -218,7 +219,21 @@ Statは、「『Stat素』のリスト」である。例えば次のようなも
         </table></td>
         <td>)</td></tr>
 </table>
-<pre>は通過し、次のようなStat対となる。</pre>
+<pre>の「fstの最終要素であるStat素」は次の青枠で示した部分であり、</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"a"</td> <td>" "</td> <td>"b"</td> <td>","</td> <td style="border-color:blue">" "</td> </tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td><td style="border-color:blue">null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"c"</td><td>"d"</td><td>"e"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+
+<pre>これのfstは空白文字からのみ構成されるので、
+このStat対は通過し、次のようなStat対となる。</pre>
 <table>
 <tr><td>(</td><td>
         <table class="stat">
@@ -232,13 +247,42 @@ Statは、「『Stat素』のリスト」である。例えば次のようなも
 </table>
 <pre>fstの「後ろから」削っていくので、<code>a</code>と<code>b</code>の間にある空白は手が加わらないことに注意。</pre>
 <h6>4-4-2-2.「『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」のとき</h6>
-<pre class="FIXME">
-書け
+<pre>まず、「変換関数」<!-- ソースコード中の`testPattern` -->を定義する。変換関数は、「<code><u>PHONEME</u></code>」「パターン文字列」「Stat対」を受け取り、「Stat対」を返したり返さなかったりする関数である。（「Stat対または未定義値」を返す、と言ってもよい）
+「Stat対のfstの後ろからk個のStat素を削り落とすと、その削り落としたところのconcatがパターン文字列と一致する」となるようなkが存在しないなら未定義値を返す。
+<span class="FIXME" title="空文字列があって、kが複数ありうる場合は？">存在するならば</span>、
+</pre>
+<ul style="font-family:monospace; line-height:170%">
+<li><code><u>PHONEME</u></code>が<code>$</code>である場合
+<ul><li>Stat対のfstの後ろからk個のStat素を削り落とし、Stat対のsndの先頭にくっつける。</li></ul></li>
+<li><code><u>PHONEME</u></code>が文字列である場合
+<ol><li>Stat対のfstの後ろからk個のStat素を削り落とす。</li>
+<li>そのk個のStat素のそれぞれのsndが全て未定義値である場合、Stat対のsndの先頭に「パターン文字列と<code><u>PHONEME</u></code>の対」をくっつける。さもなくば未定義値を返す。</li>
+</ol>
+</li>
+</ul>
+
+<pre class="FIXME" title="ここに具体例を入れろ">
+＜ここに具体例を入れろ＞
+</pre>
+
+<pre>
+さて、変換関数が定義できたので、これを用い 「変換元と変換先の対応」が「『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」のときに行う操作について説明する。
+</pre>
+<ol style="font-family:monospace; line-height:170%">
+<li>空のリストansを用意する。</li>
+<li>二重ループを<span class="FIXME" title="日本語表現を工夫せよ">行う。</span>外側のループは「Stat対のリスト」についてのループで、内側のループが「与えられた『文字列の集合』」についてのループである。<br>
+<span style="font-size:80%">ちなみに、1週間分ぐらいの進捗が溶けた悪名高き「linepurineバグ」は、端的に言えばこのループの順番を間違えたことによるバグである。</span>
+<ul><li>ループ内では、「Stat対」と「文字列」、そして「<code><u>PHONEME</u></code>」を「変換関数」に渡し、返ってきたStat対をansの末尾に付加する。未定義値が返ってきた場合はなにもしない。</li></ul></li>
+<li>最後に、ansを返す。</li>
+</ol>
+
+<pre>
+4-4-2-2.は、あくまで「『Stat対を通過させる』という操作を繰り返す」という見方で説明した4-4-1.や4-4-2-1.や4-4-3.と違い、
+「Stat対のリスト」から二重ループを経て別の「Stat対のリスト」を返すという見方で説明していることに留意せよ。
 </pre>
 <h5>4-4-3. 左条件の処理</h5>
 <pre class="FIXME" title="語境界の否定は未実装">
 左条件gが在るなら、Statの対のうち、「fstのconcatの接尾辞（自身を含む）が全て、左条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
-</pre>
 <pre>
 具体例を見てみよう。左条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
 </pre>

@@ -93,7 +93,7 @@ match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = return $ fil
 
 match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
  newMatch <- match k{middle=xs} stat 
- return $ catMaybes [ga w fb pat | fb <- newMatch, pat <- pats]
+ return $ catMaybes [testPattern w fb pat | fb <- newMatch, pat <- pats]
 match k@R{leftneg=Nothing, middle=Left():xs} stat = do 
  newMatch <- match k{middle=xs} stat
  env <- ask
@@ -112,14 +112,16 @@ match k@R{leftneg=Just condition} stat = do
 
 
 
-ga :: W -> (Front, Back) -> String -> Maybe (Front, Back)
-ga w (front, back) pat = do
+testPattern :: W -> (Front, Back) -> String -> Maybe (Front, Back)
+testPattern w (front, back) pat = do
  let front' = rev2 front
  let pat' = reverse pat
  taken <- takeTill pat' front'
  let taken' = rev2 taken
  case w of
-  W w' -> if all (isNothing . snd) taken' then return (rev2 $ drop(length taken')front', (pat,Just w') : back) else Nothing -- turn out not to be the cause
+  W w' -> do
+   guard $ all (isNothing . snd) taken' 
+   return (rev2 $ drop(length taken')front', (pat,Just w') : back) 
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
 isSpPunct :: Punctuation -> String -> Bool
