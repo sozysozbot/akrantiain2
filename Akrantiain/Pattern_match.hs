@@ -116,10 +116,10 @@ foo :: [String] -> W -> [(Front, Back)] -> [(Front, Back)]
 foo pats w newMatch = do
  (front,back) <- newMatch 
  pat <- pats
- maybeToList $ ga w pat (front, back)
+ maybeToList $ ga w (front, back) pat
 
-ga :: W -> String -> (Front, Back) -> Maybe (Front, Back)
-ga w pat (front, back) = do
+ga :: W -> (Front, Back) -> String -> Maybe (Front, Back)
+ga w (front, back) pat = do
  let front' = rev2 front
  let pat' = reverse pat
  taken <- takeTill pat' front'
