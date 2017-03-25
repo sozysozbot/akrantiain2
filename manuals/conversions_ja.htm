@@ -20,14 +20,14 @@ table.stat td { border-color : orange;
 <div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
 <h2>akrantiainマニュアル</h2>
 <h3>4. akrantiain変換部の仕様</h3>
-<h4 id="structure">4-(-1). 用語の定義</h4>
+<h4 id="define-words">4-(-1). 用語の定義</h4>
 <pre>
 「AとBの対」とは、A1つとB1つを共に要素として持つデータ構造である。
 「AとBの対」のAのことをfstと呼び、Bのことをsndと呼ぶ。
 「空白文字」とは、<span class="FIXME" title="Haskellに依存しない説明をせよ">HaskellのisSpace関数に与えるとTrueを返す任意の文字である。</span>
 「未定義値」とは、失敗・未設定などを表すための特殊な値である。例えば、Cならヌルポインタ、JavaScriptならundefined、HaskellならNothingで表現できる。
 </pre>
-<h4 id="structure">4-0. 概略</h4>
+<h4 id="conversion-overall">4-0. 概略</h4>
 <pre>
 変換部は、「環境情報(環境指定識別子一覧と句読点情報からなる)」「変換規則のリスト」「入力文字列」を受けとり、「実行時エラー」または「出力文字列」を返す。
 なお、環境情報は大局的な定数であり、変換部の処理を行う任意のタイミングで参照されうる。
@@ -283,7 +283,6 @@ Statは、「『Stat素』のリスト」である。例えば次のようなも
 <h5>4-4-3. 左条件の処理</h5>
 <pre class="FIXME" title="語境界の否定は未実装">
 左条件gが在るなら、Statの対のうち、「fstのconcatの接尾辞（自身を含む）が全て、左条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
-</pre>
 <pre>
 具体例を見てみよう。左条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
 </pre>
