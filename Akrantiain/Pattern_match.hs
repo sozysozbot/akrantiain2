@@ -3,7 +3,7 @@ module Akrantiain.Pattern_match
 (cook
 ) where
 import Prelude hiding (undefined)
-import Data.Maybe(mapMaybe, isNothing, maybeToList)
+import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(isSpace, toLower)
 import Data.Either(lefts, rights)
@@ -93,7 +93,7 @@ match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = return $ fil
 
 match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
  newMatch <- match k{middle=xs} stat 
- return $ foo pats w newMatch
+ return $ catMaybes [ga w fb pat | fb <- newMatch, pat <- pats]
 match k@R{leftneg=Nothing, middle=Left():xs} stat = do 
  newMatch <- match k{middle=xs} stat
  env <- ask
@@ -111,12 +111,6 @@ match k@R{leftneg=Just condition} stat = do
  return $ filter f $ newMatch where
 
 
-
-foo :: [String] -> W -> [(Front, Back)] -> [(Front, Back)]
-foo pats w newMatch = do
- (front,back) <- newMatch 
- pat <- pats
- maybeToList $ ga w (front, back) pat
 
 ga :: W -> (Front, Back) -> String -> Maybe (Front, Back)
 ga w (front, back) pat = do
