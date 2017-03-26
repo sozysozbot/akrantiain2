@@ -33,7 +33,6 @@ dollar :: Parser Phoneme
 dollar = char '$' >> return Dollar
 
 
--- FIXME: Escape sequence not yet implemented
 slash_string :: Parser Phoneme
 slash_string = do
   char '/'
@@ -107,7 +106,6 @@ escapeSequence =
  try(string "\\/" >> return '/') <|>  
  try(string "\\'" >> return '\'') 
 
--- FIXME: Escape sequence not yet implemented
 quoted_string :: Parser Quote
 quoted_string = do
   char '"'
