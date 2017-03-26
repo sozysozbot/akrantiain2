@@ -2,6 +2,8 @@
 
 module Akrantiain.Sents_to_rules
 (sentsToFunc
+,Input
+,Output
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure

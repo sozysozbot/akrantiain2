@@ -7,6 +7,7 @@ module Akrantiain.Lexer
 ,conversion
 ,define
 ,sentences
+,modules
 ) where
 import Prelude hiding (undefined)
 import Text.Parsec hiding(spaces)
@@ -17,6 +18,11 @@ import Text.Parsec.String (Parser)
 import Data.Maybe (catMaybes)
 import Control.Monad(void)
 import Akrantiain.Structure
+import Akrantiain.Modules
+
+modules :: Parser (Set Module) -- FIXME -- only handles _Main
+modules = ((:[]) . Module (ModuleName $ Id "_Main") . Sents) <$> sentences
+
 
 sentences :: Parser (Set Sentence)
 sentences = do
