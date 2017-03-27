@@ -20,9 +20,35 @@ import Control.Monad(void)
 import Akrantiain.Structure
 import Akrantiain.Modules
 
+---- parsing modules -----
+
 modules :: Parser (Set Module) -- FIXME -- only handles _Main
 modules = ((:[]) . Module (ModuleName $ Id "_Main") . Sents) <$> sentences
 
+{-
+ foo
+ (A => B)
+ A => B => C
+ -}
+modChainElem :: Parser [ModuleName]
+modChainElem = try p <|> try(char '(' *> spaces' *> p <* spaces' <* char ')' ) where
+ p = fmap f ids
+ f :: [Identifier] -> [ModuleName]
+ f [] = error "CANNOT HAPPEN"
+ f [x] = [ModuleName x]
+ f [x,y] = [Arrow{before = x, after = y}]
+ f (x:y:zs) = f[x,y] ++ f(y:zs)
+ ids = identifier `sepBy1` try(string "=>" >> spaces')
+
+{-
+ foo >> bar
+ A=>B >> baz >> B=>C
+ foobar >> (A => B => C) >> barfoo
+ -}
+modChain :: Parser [ModuleName]
+modChain = fmap concat $ modChainElem `sepBy1` try(string ">>" >> spaces')
+
+---- parsing the rest -----
 
 sentences :: Parser (Set Sentence)
 sentences = do
