@@ -23,7 +23,12 @@ import Akrantiain.Modules
 ---- parsing modules -----
 
 modules :: Parser (Set Module) -- FIXME -- only handles _Main
-modules = ((:[]) . Module (ModuleName $ Id "_Main") . Sents) <$> sentences
+modules = do
+ mods <- many (try(comment >> return Nothing) <|> fmap Just parseModule)
+ insideMain <- parseInside
+ eof
+ return $ Module{moduleName = ModuleName(Id "_Main"), insideModule = insideMain} : catMaybes mods
+
 
 {-
  foo
@@ -70,16 +75,18 @@ parseModule = do
   char '%' >> spaces'
   oneModule
  spaces' >> char '{' >> spaces'
- inside <- execModules <|> fmap Sents sentences
- spaces' >> char '}'
+ inside <- parseInside
+ spaces' >> char '}' >> spaces'
  return Module{moduleName = modname, insideModule = inside}
+ 
+parseInside :: Parser InsideModule
+parseInside = execModules <|> fmap Sents sentences
 
 ---- parsing the rest -----
 
 sentences :: Parser (Set Sentence)
 sentences = do
  sents <- many (try(comment >> return Nothing) <|> try(fmap Just sentence))
- eof
  return $ catMaybes sents
 
 comment :: Parser ()
