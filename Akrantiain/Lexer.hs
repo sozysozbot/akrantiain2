@@ -26,6 +26,7 @@ modules :: Parser (Set Module) -- FIXME -- only handles _Main
 modules = do
  mods <- many (try(comment >> return Nothing) <|> fmap Just parseModule)
  insideMain <- parseInside
+ skipMany comment
  eof
  return $ Module{moduleName = ModuleName(Id "_Main"), insideModule = insideMain} : catMaybes mods
 
@@ -36,7 +37,7 @@ modules = do
  A => B => C
  -}
 modChainElem :: Parser [ModuleName]
-modChainElem = try p <|> try(char '(' *> spaces' *> p <* spaces' <* char ')' ) where
+modChainElem = try (p <* spaces') <|> try(char '(' *> spaces' *> p <* spaces' <* char ')' <* spaces') where
  p = fmap f ids
  f :: [Identifier] -> [ModuleName]
  f [] = error "CANNOT HAPPEN"
@@ -80,7 +81,9 @@ parseModule = do
  return Module{moduleName = modname, insideModule = inside}
  
 parseInside :: Parser InsideModule
-parseInside = execModules <|> fmap Sents sentences
+parseInside = try execModules' <|> fmap Sents sentences where
+ execModules' = skipMany comment *> execModules <* skipMany comment
+  
 
 ---- parsing the rest -----
 
