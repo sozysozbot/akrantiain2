@@ -16,5 +16,6 @@ data InsideModule = Sents [Sentence] | ModuleChain [ModuleName]
 
 Anything written outside the module definition syntax is regarded as the component of a module named "_Main".
 (Note that users are forbidden by the lexer to start an identifier with an _)
+All modules have to precede the components of _Main.
 
 
