@@ -4,10 +4,11 @@ import Akrantiain.Lexer
 import Text.Parsec
 import System.Environment
 import System.IO
-import Akrantiain.Sents_to_rules
+import Akrantiain.Resolve_modules
 import Control.Monad(forM_, when, void)
 import System.Process
 import System.Info
+import Akrantiain.MtoM4
 
 
 
@@ -21,8 +22,10 @@ main = do
    handle <- openFile fname ReadMode 
    hSetEncoding handle utf8
    input <- hGetContents handle
-   runParser sentences () fname input >>>= \sents -> 
-    sentsToFunc sents >>>= \func -> interact' func
+   runParser modules () fname input >>>= \mods -> 
+    mapM2 moduleToModule4 mods >>>= \mod4s -> 
+    module4sToFunc mod4s >>>= \func -> 
+    interact' func
     
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()

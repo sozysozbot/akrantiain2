@@ -1,0 +1,22 @@
+Module definition:
+% foo { ... }
+% A => B { ... }
+
+"..." can be either:
+ - %% followed by a sequence of module followed by a semicolon
+    ex. %% foo >> (A => B => C) >> bar;
+ - normal sentences
+    ex. @CASE_SENSITIVE; a = "a" | "A"; a -> /a/;
+
+* a semicolon can be omitted if immediately followed by a } 
+(not yet implemented)
+
+data Module = Module {moduleName :: ModuleName, insideModule :: InsideModule}
+data ModuleName = Arrow {before :: Identifier, after :: Identifier} | ModuleName Identifier
+data InsideModule = Sents [Sentence] | ModuleChain [ModuleName]
+
+Anything written outside the module definition syntax is regarded as the component of a module named "_Main".
+(Note that users are forbidden by the lexer to start an identifier with an _)
+All modules have to precede the components of _Main.
+
+
