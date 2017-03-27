@@ -9,6 +9,7 @@ Module definition:
     ex. @CASE_SENSITIVE; a = "a" | "A"; a -> /a/;
 
 * a semicolon can be omitted if immediately followed by a } 
+(not yet implemented)
 
 data Module = Module {moduleName :: ModuleName, insideModule :: InsideModule}
 data ModuleName = Arrow {before :: Identifier, after :: Identifier} | ModuleName Identifier
