@@ -22,7 +22,7 @@ import Akrantiain.Modules
 
 ---- parsing modules -----
 
-modules :: Parser (Set Module) -- FIXME -- only handles _Main
+modules :: Parser (Set Module)
 modules = do
  mods <- many (try(comment >> return Nothing) <|> fmap Just parseModule)
  insideMain <- parseInside
