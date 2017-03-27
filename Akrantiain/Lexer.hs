@@ -38,7 +38,7 @@ modChainElem = try p <|> try(char '(' *> spaces' *> p <* spaces' <* char ')' ) w
  f [x] = [ModuleName x]
  f [x,y] = [Arrow{before = x, after = y}]
  f (x:y:zs) = f[x,y] ++ f(y:zs)
- ids = identifier `sepBy1` try(string "=>" >> spaces')
+ ids = identifier `sepBy1` try(spaces' >> string "=>" >> spaces')
 
 {-
  foo >> bar
@@ -47,6 +47,32 @@ modChainElem = try p <|> try(char '(' *> spaces' *> p <* spaces' <* char ')' ) w
  -}
 modChain :: Parser [ModuleName]
 modChain = fmap concat $ modChainElem `sepBy1` try(string ">>" >> spaces')
+
+{-
+ foo
+ A => B
+ -}
+oneModule :: Parser ModuleName
+oneModule = try foo <|> fmap ModuleName identifier where
+ foo = do{x <- identifier; spaces'; string "=>"; spaces'; y <- identifier; return Arrow{before=x, after=y}}
+
+execModules :: Parser InsideModule
+execModules = do
+ try $ string "%%"
+ spaces'
+ mods <- modChain
+ sent_terminate
+ return $ ModuleChain mods
+
+parseModule :: Parser Module
+parseModule = do
+ modname <- try $ do
+  char '%' >> spaces'
+  oneModule
+ spaces' >> char '{' >> spaces'
+ inside <- execModules <|> fmap Sents sentences
+ spaces' >> char '}'
+ return Module{moduleName = modname, insideModule = inside}
 
 ---- parsing the rest -----
 
