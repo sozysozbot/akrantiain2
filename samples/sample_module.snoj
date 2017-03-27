@@ -1,0 +1,13 @@
+% bar {
+        "z" -> /a/;
+}
+% A => B {"a" -> /b/;}
+% B => C {"b" -> /c/;}
+% foo {"c" -> /d/;}
+% foobaz {
+        %% foo >> baz;
+}
+% baz {"d" -> /e/;}
+%% bar >> (A => B => C) >> foobaz;
+
+ 
