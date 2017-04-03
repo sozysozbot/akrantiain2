@@ -6,6 +6,7 @@ A domain-specific language designed to describe conlangs' orthographies
 [English manual about modules](https://sozysozbot.github.io/akrantiain2/manuals/module_en.htm) (Incomplete)  
 [.snojファイルについての日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/manuals_ja.htm) (未完)  
 [akrantiain変換部についての日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/conversions_ja.htm) (未完)  
+[Twitterで飛んできたQ&A](https://sozysozbot.github.io/akrantiain2/manuals/FAQ_ja.htm)(未完)  
 ny lirsesen [kanteluescosti virle lineparine](https://sozysozbot.github.io/akrantiain2/manuals/manuals_conlang_lpa.htm)  
 ## Getting Started
 
