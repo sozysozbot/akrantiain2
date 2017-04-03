@@ -34,7 +34,7 @@ $ ./akrantiain2 samples/sample_lineparine.snoj < samples/input_sample_lineparine
 ```
 
 #### Windows (7 and 10)
-1. Install Haskell Platform (>= 7.10.2).
+1. Install Haskell Platform Full (>= 7.10.2).
 2. Clone the repo.
 3. Run:
 ```
