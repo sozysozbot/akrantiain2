@@ -59,4 +59,27 @@ $ akrantiain2 samples\sample_lineparine.snoj --file < samples\input_sample_linep
 ```
 
 Note: In Windows, interactive mode does not work when the input contains multi-byte characters.
-In such cases, use "read from file" mode for akrantiain to function properly.
+In such cases, use "read from file" mode for akrantiain so that it can function properly.
+
+#### Mac
+1. Install Haskell Platform Full (>= 7.10.2).
+2. Clone the repo.
+3. Run:
+```
+$ make
+```
+
+Try it out by running:
+```
+$ echo lineparine | ./akrantiain2 samples/sample_lineparine.snoj
+```
+
+Or use it interactively:
+```
+$ ./akrantiain2 samples/sample_lineparine.snoj
+```
+
+Or read from file:
+```
+$ ./akrantiain2 samples/sample_lineparine.snoj < samples/input_sample_lineparine.txt
+```
