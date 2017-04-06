@@ -5,7 +5,7 @@ module Akrantiain.Pattern_match
 import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, inits, tails, intercalate)
-import Data.Char(isSpace, toLower)
+import Data.Char(toLower)
 import Data.Either(lefts, rights)
 import Control.Monad(guard)
 import Akrantiain.Errors
@@ -129,8 +129,6 @@ testPattern w (front, back) pat = do
    return (rev2 $ drop(length taken')front', (pat,Just w') : back)
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
-isSpPunct :: Punctuation -> String -> Bool
-isSpPunct punct = all (\x -> isSpace x || x `elem` punct)
 
 takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
 takeTill "" _ = Just []

@@ -10,10 +10,12 @@ module Akrantiain.Rule
 ,Rules
 ,unCond
 ,no'
+,isSpPunct
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
 import qualified Data.Map as M
+import Data.Char(isSpace)
 
 data Rule = R{leftneg :: Maybe Condition, middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe Condition} deriving (Show, Eq, Ord)
 data W = W String | Dollar_  deriving (Show, Eq, Ord)
@@ -25,9 +27,10 @@ type Rules = (Environment,[Rule])
 
 unCond :: Condition -> (Punctuation -> String -> Bool)
 unCond (Negation c) = \_ -> no c
--- unCond NegBoundary =
--- FIXME: unmatched pattern
+unCond NegBoundary = \punct str -> not(isSpPunct punct str)
 
+isSpPunct :: Punctuation -> String -> Bool
+isSpPunct punct = all (\x -> isSpace x || x `elem` punct)
 
 no :: Choose String -> (String -> Bool)
 no (Ch foo) str
