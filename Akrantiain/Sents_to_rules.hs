@@ -51,7 +51,7 @@ sentencesToRules sents = do
  return(Env{pun=punct, bools=vars},rules)
 
 
- 
+
 zipEither :: [Either a b] -> [c] -> Maybe [Either a (b,c)]
 zipEither [] [] = Just []
 zipEither [] _ = Nothing
@@ -69,5 +69,3 @@ resolveSelect defs (Iden iden) = case iden `M.lookup` defs of
 phonToW :: Phoneme -> W
 phonToW Dollar = Dollar_
 phonToW (Slash str) = W str
-
-

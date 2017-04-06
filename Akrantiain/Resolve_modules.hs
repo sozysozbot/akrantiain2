@@ -29,10 +29,10 @@ module4sToFunc m4s = do
 
 module4sToResmap :: Set Module4 -> Either ModuleError Resmap5
 module4sToResmap ms = m4sToR ms M.empty
-  
+
 m4sToR :: Set Module4 -> Resmap5 -> Either ModuleError Resmap5
 m4sToR [] resmap = return resmap
-m4sToR (Module4{moduleName4 = name, insideModule4 = Func4 func}:ms) resmap = do 
+m4sToR (Module4{moduleName4 = name, insideModule4 = Func4 func}:ms) resmap = do
  newMap <- insertIfNew name (Functi func) resmap
  m4sToR ms newMap
 m4sToR (m@Module4{moduleName4 = name, insideModule4 = ModuleChain4 chain}:ms) resmap =
@@ -48,15 +48,6 @@ insertIfNew a b m = case M.lookup a m of
  Just _ -> Left $ ME {errorNo = 1523, errorMsg = "Duplicate definition of module {"++toSource a++"}"}
 
 combineFuncs :: [InsideModule5] -> (Input -> Output)
-combineFuncs arr = 
+combineFuncs arr =
  let funcs = map unFuncti arr in
   foldr1 (>=>) funcs
- 
-
-
-
-
-
-
-
-

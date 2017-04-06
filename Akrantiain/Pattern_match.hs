@@ -43,10 +43,10 @@ cook (env,rls') str = do
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
- case lefts eitherList of 
+ case lefts eitherList of
   [] -> return $ concat $ rights eitherList
-  strs -> do 
-   let msg = "{" ++ (intercalate "}, {") strs ++ "}" 
+  strs -> do
+   let msg = "{" ++ (intercalate "}, {") strs ++ "}"
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg} -- FIXME: better message that lets the user know which `r` made akrantiain crash
 
 
@@ -57,15 +57,15 @@ cook' rls stat = foldM apply stat rls
 apply :: Stat -> Rule -> Reader Environment Stat
 apply stat rule = do
  frontback_array <- match rule stat
- case frontback_array of 
+ case frontback_array of
   [] -> return stat
   c -> let (a,b) = last c in do
    newStat <- apply a rule
-   return $ newStat ++ b 
+   return $ newStat ++ b
 
 
 
- 
+
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
 cutlist :: [a] -> [([a],[a])]
 cutlist [] = [([],[])]
@@ -92,9 +92,9 @@ match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = return $ fil
  f (_, back) = upgrade (unCond condition) $ concatMap fst back
 
 match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
- newMatch <- match k{middle=xs} stat 
+ newMatch <- match k{middle=xs} stat
  return $ catMaybes [testPattern w fb pat | fb <- newMatch, pat <- pats]
-match k@R{leftneg=Nothing, middle=Left():xs} stat = do 
+match k@R{leftneg=Nothing, middle=Left():xs} stat = do
  newMatch <- match k{middle=xs} stat
  env <- ask
  return $ mapMaybe (h env) newMatch where
@@ -105,7 +105,7 @@ match k@R{leftneg=Nothing, middle=Left():xs} stat = do
   let (b', f'') = span (isSpPunct punct . fst) front'
   return (reverse f'', reverse b' ++ back)
 
-match k@R{leftneg=Just condition} stat = do 
+match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat
  let f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
  return $ filter f $ newMatch where
@@ -120,8 +120,8 @@ testPattern w (front, back) pat = do
  let taken' = rev2 taken
  case w of
   W w' -> do
-   guard $ all (isNothing . snd) taken' 
-   return (rev2 $ drop(length taken')front', (pat,Just w') : back) 
+   guard $ all (isNothing . snd) taken'
+   return (rev2 $ drop(length taken')front', (pat,Just w') : back)
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
 isSpPunct :: Punctuation -> String -> Bool

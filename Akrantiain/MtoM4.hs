@@ -18,10 +18,10 @@ liftLeft _ (Right x) = Right x
 
 moduleToModule4 :: Module -> Either SemanticError Module4
 moduleToModule4 Module {moduleName = name, insideModule = Sents sents}
- = do 
+ = do
  func <- liftLeft f $ sentsToFunc sents
  return Module4{moduleName4 = name, insideModule4 = Func4 func} where
   f :: SemanticError -> SemanticError
-  f e = e{errStr = "Inside module "++ toSource name ++ ":\n"++ errStr e}  
+  f e = e{errStr = "Inside module "++ toSource name ++ ":\n"++ errStr e}
 moduleToModule4 Module {moduleName = name, insideModule = ModuleChain chain}
  = return Module4{moduleName4 = name, insideModule4 = ModuleChain4 chain}

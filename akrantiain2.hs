@@ -19,17 +19,17 @@ main = do
   []    -> putStrLn "mi'e .akranti'ain."
   (fname:xs) -> do
    when (os == "mingw32" && (null xs || head xs /= "--file") ) $ callCommand "chcp 65001 > nul"
-   handle <- openFile fname ReadMode 
+   handle <- openFile fname ReadMode
    hSetEncoding handle utf8
    input <- hGetContents handle
-   runParser modules () fname input >>>= \mods -> 
-    mapM2 moduleToModule4 mods >>>= \mod4s -> 
-    module4sToFunc mod4s >>>= \func -> 
+   runParser modules () fname input >>>= \mods ->
+    mapM2 moduleToModule4 mods >>>= \mod4s ->
+    module4sToFunc mod4s >>>= \func ->
     interact' func
-    
+
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
-Left  a >>>= _  = do 
+Left  a >>>= _  = do
  hPrint stderr a
  hPutStrLn stderr "\n\nPress Enter after reading this message."
  void getLine
@@ -40,13 +40,6 @@ interact' :: (Show a) => (String -> Either a String) -> IO ()
 interact' f = do
  hSetEncoding stdin utf8
  s <- getContents
- forM_ (lines s) $ \line -> case f line of 
+ forM_ (lines s) $ \line -> case f line of
    Right str -> putStrLn str
    Left a -> hPrint stderr a >> putStrLn ""
-
-
- 
-
-
-
-

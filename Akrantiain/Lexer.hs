@@ -79,11 +79,11 @@ parseModule = do
  inside <- parseInside
  spaces' >> char '}' >> spaces'
  return Module{moduleName = modname, insideModule = inside}
- 
+
 parseInside :: Parser InsideModule
 parseInside = try execModules' <|> fmap Sents sentences where
  execModules' = skipMany comment *> execModules <* skipMany comment
-  
+
 
 ---- parsing the rest -----
 
@@ -107,14 +107,14 @@ slash_string = do
   str <- many(noneOf "\\/\n" <|> escapeSequence)
   char '/'
   return $ Slash str
-  
+
 identifier :: Parser Identifier
 identifier = fmap Id $ (:) <$> letter <*> many (alphaNum <|> char '_')
 
 
 select :: Parser Select
 select = (char '^' >> return Boundary2) <|> fmap Iden identifier <|> try single <|> try mult  where
- single = (Pipe . Ch . (:[])) <$> quoted_string 
+ single = (Pipe . Ch . (:[])) <$> quoted_string
  mult = do
   char '('
   spaces'
@@ -127,7 +127,7 @@ strings_sepBy_pipe :: Parser (Choose Quote)
 strings_sepBy_pipe = fmap Ch $ strs `sepBy1` try(char '|' >> spaces')
  where strs = concat' <$> many1(quoted_string <* spaces')
 
--- consonant = "a" | "b" "d" | cons2 | co "c" co 
+-- consonant = "a" | "b" "d" | cons2 | co "c" co
 define :: Parser Sentence
 define = do
   ident <- try $ do
@@ -148,7 +148,7 @@ sent_terminate :: Parser ()
 sent_terminate = eof <|> comment
 
 conversion :: Parser Sentence
-conversion = do 
+conversion = do
   (selects,l,r) <- try $ do
    spaces'
    left <- option Nothing neg_select
@@ -168,11 +168,11 @@ conversion = do
     neg_select = try $ fmap Just $ char '!' >> spaces' >> select
 
 escapeSequence :: Parser Char
-escapeSequence = 
- try(string "\\\\" >> return '\\') <|>  
- try(string "\\\"" >> return '"')  <|>  
- try(string "\\/" >> return '/') <|>  
- try(string "\\'" >> return '\'') 
+escapeSequence =
+ try(string "\\\\" >> return '\\') <|>
+ try(string "\\\"" >> return '"')  <|>
+ try(string "\\/" >> return '/') <|>
+ try(string "\\'" >> return '\'')
 
 quoted_string :: Parser Quote
 quoted_string = do
@@ -186,9 +186,9 @@ sentence = conversion <|> define <|> atsignOption
 
 atsignOption :: Parser Sentence
 atsignOption = do
- char '@' 
- spaces' 
- ide <- identifier 
+ char '@'
+ spaces'
+ ide <- identifier
  spaces'
  sent_terminate
  return $ Middle' ide
@@ -198,14 +198,3 @@ atsignOption = do
 
 concat' :: [Quote] -> Quote
 concat' arr = Quote(arr >>= \(Quote a) -> a)
-
-
-
-
-
-
-
-
-  
-
-

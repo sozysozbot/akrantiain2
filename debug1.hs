@@ -92,6 +92,3 @@ rls = [
 
 vowel :: Choose String
 vowel = Ch ["a","e","i","o","u","y"]
- 
-
-
