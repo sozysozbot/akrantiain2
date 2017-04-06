@@ -16,7 +16,7 @@ main :: IO ()
 main = do
  args <- getArgs
  case args of
-  []    -> putStrLn "mi'e .akranti'ain."
+  []    -> explain
   (fname:xs) -> do
    when (os == "mingw32" && (null xs || head xs /= "--file") ) $ callCommand "chcp 65001 > nul"
    handle <- openFile fname ReadMode
@@ -43,3 +43,6 @@ interact' f = do
  forM_ (lines s) $ \line -> case f line of
    Right str -> putStrLn str
    Left a -> hPrint stderr a >> putStrLn ""
+
+explain :: IO ()
+explain = putStrLn "mi'e .akranti'ain." -- FIXME: better explanation required
