@@ -49,6 +49,8 @@ An error occurs when you define a single identifier multiple times.
 
 A special identifier named <code><span class="identifier">PUNCTUATION</span></code> exists. For example, when you define <code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>, akrantiain recognizes these characters as punctuations.
 This is necessary to, for example, letting akrantiain know that character <code>n</code> inside the input <code>This is a pen.</code> terminates a word.
+<span class="FIXME">Currently, using a string literal whose length is longer than 1 (ex. <code><span class="string">"foo"</span></code>) inside the definition of <code><span class="identifier">PUNCTUATION</span></code> may result in unintended behavior.
+This is a bug, and is intended to be fixed in the future.</span>
 </pre>
 <h4 id="convert">2-3. Defining conversion rules</h4>
 <pre>

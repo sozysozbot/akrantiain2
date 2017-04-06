@@ -39,7 +39,7 @@ sentencesToRules sents = do
  unless (null duplicates) $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) {" ++ intercalate "}, {" (map unId duplicates) ++ "}"}
  let defs_ = M.fromList defs
  let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
-  Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT
+  Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (at least it is explicitly explained in manual)
  rules <- forM convs $ \conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} -> do
   let solve = resolveSelect defs_
   left'  <- traverse solve left
