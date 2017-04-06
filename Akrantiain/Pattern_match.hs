@@ -17,9 +17,7 @@ import Control.Monad.Reader
 
 
 type Stat = [(String, Maybe String)]
-type Front = [(String, Maybe String)]
-type Back = [(String, Maybe String)]
-type StatPair = (Front, Back)
+type StatPair = (Stat, Stat)
 
 resolvePunctuation :: Environment -> (String,Maybe String) -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
@@ -124,7 +122,7 @@ match k@R{leftneg=Just condition} stat = do
 
 
 
-testPattern :: W -> (Front, Back) -> String -> Maybe StatPair
+testPattern :: W -> StatPair -> String -> Maybe StatPair
 testPattern w (front, back) pat = do
  let front' = rev2 front
  let pat' = reverse pat
