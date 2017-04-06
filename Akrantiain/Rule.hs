@@ -8,7 +8,6 @@ module Akrantiain.Rule
 ,no
 ,Environment(..)
 ,Rules
-,unCond
 ,no'
 ,isSpPunct
 ) where
@@ -25,9 +24,6 @@ type Punctuation = [Char]
 data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier ()} deriving (Show, Eq, Ord)
 type Rules = (Environment,[Rule])
 
-unCond :: Condition -> (Punctuation -> String -> Bool)
-unCond (Negation c) = \_ -> no c
-unCond NegBoundary = \punct str -> not(isSpPunct punct str)
 
 isSpPunct :: Punctuation -> String -> Bool
 isSpPunct punct = all (\x -> isSpace x || x `elem` punct)

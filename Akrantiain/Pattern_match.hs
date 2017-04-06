@@ -82,6 +82,9 @@ upgrade f str = all f $ inits str
 upgrade2 :: ([a] -> Bool) -> ([a] -> Bool)
 upgrade2 f str = all f $ tails str
 
+unCond :: Condition -> (Punctuation -> String -> Bool)
+unCond (Negation c) = \_ -> no c
+unCond NegBoundary = \punct str -> not(isSpPunct punct str)
 
 
 match :: Rule -> Stat -> Reader Environment [(Front, Back)]
