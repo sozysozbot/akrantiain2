@@ -19,6 +19,7 @@ import Control.Monad.Reader
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
 type Back = [(String, Maybe String)]
+type StatPair = (Front, Back)
 
 resolvePunctuation :: Environment -> (String,Maybe String) -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
@@ -87,7 +88,7 @@ unCond (Negation c) = \_ -> no c
 unCond NegBoundary = \punct str -> not(isSpPunct punct str)
 
 
-match :: Rule -> Stat -> Reader Environment [(Front, Back)]
+match :: Rule -> Stat -> Reader Environment [StatPair]
 
 match R{leftneg=Nothing, middle =[], rightneg=Nothing} stat = return $ cutlist stat
 
@@ -120,7 +121,7 @@ match k@R{leftneg=Just condition} stat = do
 
 
 
-testPattern :: W -> (Front, Back) -> String -> Maybe (Front, Back)
+testPattern :: W -> (Front, Back) -> String -> Maybe StatPair
 testPattern w (front, back) pat = do
  let front' = rev2 front
  let pat' = reverse pat
