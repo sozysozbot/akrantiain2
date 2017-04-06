@@ -38,7 +38,7 @@ table.stat td { border-color : orange;
         環境指定識別子<code><span class="identifier">CASE_SENSITIVE</span></code>が指定されていなければ、変換規則の入力部と入力文字列を小文字に変換する。
 </li>
 <li>
-        入力文字列の末尾にスペースを付加し、1文字ずつ分割し（1文字と未定義値の対）のリストとしてStatに変換する
+        入力文字列の先頭と末尾にスペースを付加し、1文字ずつ分割し（1文字と未定義値の対）のリストとしてStatに変換する
 </li>
 <li>「変換規則のリスト」を左から走査していき、Statに順に変換規則を<a href="#apply">適用</a>していく</li>
 <li>Statのうち未処理のものがある場合、変換元がスペースまたは句読点なら変換先にスペースを指定する。そうでなければ実行時エラー#210を吐く。</li>
@@ -46,8 +46,8 @@ table.stat td { border-color : orange;
 </ol>
 <pre>2.では、例えば入力文字列が"spaghetti"であれば、次のようなStatへと変換される。</pre>
 <table class="stat">
-<tr><td>"s"</td><td>"p"</td><td>"a"</td><td>"g"</td><td>"h"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td><td>"　"</td></tr>
-<tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+<tr><td>"　"</td><td>"s"</td><td>"p"</td><td>"a"</td><td>"g"</td><td>"h"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td><td>"　"</td></tr>
+<tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
 </table>
 <pre>
 Statと変換規則の仕様は後述。

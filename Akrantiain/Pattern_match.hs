@@ -39,8 +39,8 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str = do
  let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
-   Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
-   Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
+   Just () -> (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " ")); -- extra spaces required for handling word boundary
+   Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " ")) }
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
