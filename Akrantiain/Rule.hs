@@ -8,12 +8,13 @@ module Akrantiain.Rule
 ,no
 ,Environment(..)
 ,Rules
-,unCond
 ,no'
+,isSpPunct
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
 import qualified Data.Map as M
+import Data.Char(isSpace)
 
 data Rule = R{leftneg :: Maybe Condition, middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe Condition} deriving (Show, Eq, Ord)
 data W = W String | Dollar_  deriving (Show, Eq, Ord)
@@ -23,10 +24,9 @@ type Punctuation = [Char]
 data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier ()} deriving (Show, Eq, Ord)
 type Rules = (Environment,[Rule])
 
-unCond :: Condition -> (String -> Bool)
-unCond (Negation c) = no c
--- FIXME: unmatched pattern
 
+isSpPunct :: Punctuation -> String -> Bool
+isSpPunct punct = all (\x -> isSpace x || x `elem` punct)
 
 no :: Choose String -> (String -> Bool)
 no (Ch foo) str

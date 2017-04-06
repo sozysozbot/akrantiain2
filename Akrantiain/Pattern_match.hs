@@ -5,7 +5,7 @@ module Akrantiain.Pattern_match
 import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, inits, tails, intercalate)
-import Data.Char(isSpace, toLower)
+import Data.Char(toLower)
 import Data.Either(lefts, rights)
 import Control.Monad(guard)
 import Akrantiain.Errors
@@ -19,6 +19,7 @@ import Control.Monad.Reader
 type Stat = [(String, Maybe String)]
 type Front = [(String, Maybe String)]
 type Back = [(String, Maybe String)]
+type StatPair = (Front, Back)
 
 resolvePunctuation :: Environment -> (String,Maybe String) -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
@@ -39,16 +40,19 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str = do
  let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
-   Just () -> (rls', map (\x -> ([x], Nothing)) (str ++ " ")); -- extra space required for handling word boundary
-   Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (str ++ " ")) }
+   Just () -> (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " ")); -- extra spaces required for handling word boundary
+   Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " ")) }
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
-  [] -> return $ concat $ rights eitherList
+  [] -> return $ dropTwo $ concat $ rights eitherList
   strs -> do
    let msg = "{" ++ (intercalate "}, {") strs ++ "}"
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg} -- FIXME: better message that lets the user know which `r` made akrantiain crash
 
+dropTwo :: String -> String
+dropTwo = dropOne . reverse . dropOne . reverse
+ where dropOne = \(' ':xs) -> xs -- GUARANTEED TO BE SAFE
 
 cook' :: [Rule] -> Stat -> Reader Environment Stat
 cook' rls stat = foldM apply stat rls
@@ -77,19 +81,25 @@ rev2 ::  [([a], t)] -> [([a], t)]
 rev2 = map (first reverse) . reverse
 
 upgrade :: ([a] -> Bool) -> ([a] -> Bool)
-upgrade f str = all f $ inits str
+upgrade f str = all f $ tail $ inits str
 
 upgrade2 :: ([a] -> Bool) -> ([a] -> Bool)
-upgrade2 f str = all f $ tails str
+upgrade2 f str = all f $ init $ tails str
+
+unCond :: Condition -> (Punctuation -> String -> Bool)
+unCond (Negation c) = \_ -> no c
+unCond NegBoundary = \punct str -> not(isSpPunct punct str)
 
 
-
-match :: Rule -> Stat -> Reader Environment [(Front, Back)]
+match :: Rule -> Stat -> Reader Environment [StatPair]
 
 match R{leftneg=Nothing, middle =[], rightneg=Nothing} stat = return $ cutlist stat
 
-match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = return $ filter f $ cutlist stat where
- f (_, back) = upgrade (unCond condition) $ concatMap fst back
+match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = do
+ env <- ask
+ let punct = pun env
+ return $ filter (f punct) $ cutlist stat where
+  f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
 
 match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
  newMatch <- match k{middle=xs} stat
@@ -107,12 +117,14 @@ match k@R{leftneg=Nothing, middle=Left():xs} stat = do
 
 match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat
- let f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
+ env <- ask
+ let punct = pun env
+ let f (front, _) = upgrade2 (unCond condition punct) $ concatMap fst front
  return $ filter f $ newMatch where
 
 
 
-testPattern :: W -> (Front, Back) -> String -> Maybe (Front, Back)
+testPattern :: W -> (Front, Back) -> String -> Maybe StatPair
 testPattern w (front, back) pat = do
  let front' = rev2 front
  let pat' = reverse pat
@@ -124,8 +136,6 @@ testPattern w (front, back) pat = do
    return (rev2 $ drop(length taken')front', (pat,Just w') : back)
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
-isSpPunct :: Punctuation -> String -> Bool
-isSpPunct punct = all (\x -> isSpace x || x `elem` punct)
 
 takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
 takeTill "" _ = Just []

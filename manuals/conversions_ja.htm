@@ -38,16 +38,16 @@ table.stat td { border-color : orange;
         環境指定識別子<code><span class="identifier">CASE_SENSITIVE</span></code>が指定されていなければ、変換規則の入力部と入力文字列を小文字に変換する。
 </li>
 <li>
-        入力文字列の末尾にスペースを付加し、1文字ずつ分割し（1文字と未定義値の対）のリストとしてStatに変換する
+        入力文字列の先頭と末尾にスペースを付加し、1文字ずつ分割し（1文字と未定義値の対）のリストとしてStatに変換する
 </li>
 <li>「変換規則のリスト」を左から走査していき、Statに順に変換規則を<a href="#apply">適用</a>していく</li>
 <li>Statのうち未処理のものがある場合、変換元がスペースまたは句読点なら変換先にスペースを指定する。そうでなければ実行時エラー#210を吐く。</li>
-<li>変換先を全てつなげ、出力文字列とする。</li>
+<li>変換先を全てつなげ、先頭と末尾にあるスペースをそれぞれ1個だけ削除し、出力文字列とする。</li>
 </ol>
 <pre>2.では、例えば入力文字列が"spaghetti"であれば、次のようなStatへと変換される。</pre>
 <table class="stat">
-<tr><td>"s"</td><td>"p"</td><td>"a"</td><td>"g"</td><td>"h"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td><td>"　"</td></tr>
-<tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+<tr><td>"　"</td><td>"s"</td><td>"p"</td><td>"a"</td><td>"g"</td><td>"h"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td><td>"　"</td></tr>
+<tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
 </table>
 <pre>
 Statと変換規則の仕様は後述。
@@ -149,7 +149,7 @@ Statは、「『Stat素』のリスト」である。例えば次のようなも
         <td>)</td></tr>
 </table>
 <h5>4-4-1. 右条件の処理</h5>
-<pre class="FIXME" title="語境界の否定は未実装">右条件gが在るなら、Statの対のうち、「sndのconcatの接頭辞（自身を含む）が全て、右条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
+<pre>右条件gが在るなら、Statの対のうち、「sndのconcatの接頭辞（空文字列を含まない。自身を含む。）が全て、右条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
 <pre>
 具体例を見てみよう。右条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
 </pre>
@@ -197,6 +197,10 @@ Statは、「『Stat素』のリスト」である。例えば次のようなも
         <td>)</td></tr>
 </table>
 <pre>なぜなら、このStat対のsndのconcatである"ant"の接頭辞の一つ"an"は、条件「"an", "en", "in", "on", "un"のどれでもない」を満たさないからである。</pre>
+
+<pre class="FIXME" title="書け">条件が「語境界の否定」という場合についても見てみよう。
+＜書け＞
+</pre>
 
 <h5>4-4-2. 「変換元と変換先の対応」の処理</h5>
 <pre>「『語境界』または『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」を右から辿っていき、条件を満たすもののみを通過させながら、Stat内の適切な『変換先』のところに情報を記入していく。</pre>
@@ -280,8 +284,8 @@ Statは、「『Stat素』のリスト」である。例えば次のようなも
 「Stat対のリスト」から二重ループを経て別の「Stat対のリスト」を返すという見方で説明していることに留意せよ。
 </pre>
 <h5>4-4-3. 左条件の処理</h5>
-<pre class="FIXME" title="語境界の否定は未実装">
-左条件gが在るなら、Statの対のうち、「fstのconcatの接尾辞（自身を含む）が全て、左条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
+<pre>
+左条件gが在るなら、Statの対のうち、「fstのconcatの接尾辞（空文字列を含まない。自身を含む。）が全て、左条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
 <pre>
 具体例を見てみよう。左条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
 </pre>
@@ -330,7 +334,9 @@ Statは、「『Stat素』のリスト」である。例えば次のようなも
 </table>
 <pre>なぜなら、このStat対のfstのconcatである"wan"の接尾辞の一つ"an"は、条件「"an", "en", "in", "on", "un"のどれでもない」を満たさないからである。</pre>
 
-
+<pre class="FIXME" title="書け">条件が「語境界の否定」という場合についても見てみよう。
+＜書け＞
+</pre>
 <pre></pre>
 </body>
 </html>
