@@ -6,6 +6,7 @@ module Akrantiain.Resolve_modules
 ,InsideModule4(..)
 ) where
 import Prelude hiding (undefined)
+import Data.List(intercalate)
 import Akrantiain.Modules
 import Akrantiain.Structure
 import Akrantiain.Sents_to_rules
@@ -35,12 +36,18 @@ m4sToR [] resmap = return resmap
 m4sToR (Module4{moduleName4 = name, insideModule4 = Func4 func}:ms) resmap = do
  newMap <- insertIfNew name (Functi func) resmap
  m4sToR ms newMap
-m4sToR (m@Module4{moduleName4 = name, insideModule4 = ModuleChain4 chain}:ms) resmap =
- case forM chain $ \n -> M.lookup n resmap of
-  Nothing -> m4sToR (ms++[m]) resmap -- FIXME: infinite loop in case of cyclic dependency
+m4sToR mss@(m@Module4{moduleName4 = name, insideModule4 = ModuleChain4 chain}:ms) resmap = if all isResolveNeeded mss
+ then let strs = map (toSource . moduleName4) mss in
+  Left $ ME {errorNo = 1652, errorMsg = "Unresolvable module(s) {" ++ intercalate "}, {" strs ++ "}"}
+ else case forM chain $ \n -> M.lookup n resmap of
+  Nothing -> m4sToR (ms++[m]) resmap
   Just insides -> do
    let func = combineFuncs insides
    m4sToR ms (M.insert name (Functi func) resmap)
+
+isResolveNeeded :: Module4 -> Bool
+isResolveNeeded Module4{insideModule4 = Func4 _} = False
+isResolveNeeded Module4{insideModule4 = ModuleChain4 _} = True
 
 insertIfNew :: (ToSource a, Ord a) => a -> b -> M.Map a b -> Either ModuleError (M.Map a b)
 insertIfNew a b m = case M.lookup a m of
