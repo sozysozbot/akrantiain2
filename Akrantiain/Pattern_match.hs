@@ -15,11 +15,11 @@ import qualified Data.Map as M
 import Control.Arrow(first)
 import Control.Monad.Reader
 
-
-type Stat = [(String, Maybe String)]
+type StatElem = (String, Maybe String)
+type Stat = [StatElem]
 type StatPair = (Stat, Stat)
 
-resolvePunctuation :: Environment -> (String,Maybe String) -> Either String String
+resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
 resolvePunctuation Env{pun=p} (a, Nothing)
  | isSpPunct p a = Right " "
@@ -134,9 +134,9 @@ testPattern w (front, back) pat = do
    return (rev2 $ drop(length taken')front', (pat,Just w') : back)
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
-
-takeTill :: String -> [(String,a)] -> Maybe [(String, a)]
-takeTill "" _ = Just []
+-- String -> Stat -> Maybe Stat
+takeTill :: (Eq b) => [b] -> [([b],a)] -> Maybe [([b], a)]
+takeTill [] _ = Just []
 takeTill _ [] = Nothing
 takeTill str (x@(s,_):xs)
  | s `isPrefixOf` str = (x:) <$> takeTill (drop(length s)str) xs
