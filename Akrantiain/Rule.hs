@@ -25,7 +25,7 @@ type Rules = (Environment,[Rule])
 
 unCond :: Condition -> (String -> Bool)
 unCond (Negation c) = no c
--- FIXME
+-- FIXME: unmatched pattern
 
 
 no :: Choose String -> (String -> Bool)
