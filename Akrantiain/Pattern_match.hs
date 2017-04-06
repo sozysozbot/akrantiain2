@@ -88,8 +88,11 @@ match :: Rule -> Stat -> Reader Environment [(Front, Back)]
 
 match R{leftneg=Nothing, middle =[], rightneg=Nothing} stat = return $ cutlist stat
 
-match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = return $ filter f $ cutlist stat where
- f (_, back) = upgrade (unCond condition) $ concatMap fst back
+match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = do
+ env <- ask
+ let punct = pun env
+ return $ filter (f punct) $ cutlist stat where
+  f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
 
 match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
  newMatch <- match k{middle=xs} stat
@@ -107,7 +110,9 @@ match k@R{leftneg=Nothing, middle=Left():xs} stat = do
 
 match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat
- let f (front, _) = upgrade2 (unCond condition) $ concatMap fst front
+ env <- ask
+ let punct = pun env
+ let f (front, _) = upgrade2 (unCond condition punct) $ concatMap fst front
  return $ filter f $ newMatch where
 
 

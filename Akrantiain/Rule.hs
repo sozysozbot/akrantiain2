@@ -23,8 +23,9 @@ type Punctuation = [Char]
 data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier ()} deriving (Show, Eq, Ord)
 type Rules = (Environment,[Rule])
 
-unCond :: Condition -> (String -> Bool)
-unCond (Negation c) = no c
+unCond :: Condition -> (Punctuation -> String -> Bool)
+unCond (Negation c) = \_ -> no c
+-- unCond NegBoundary =
 -- FIXME: unmatched pattern
 
 
