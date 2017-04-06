@@ -45,11 +45,14 @@ cook (env,rls') str = do
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
-  [] -> return $ concat $ rights eitherList
+  [] -> return $ dropTwo $ concat $ rights eitherList
   strs -> do
    let msg = "{" ++ (intercalate "}, {") strs ++ "}"
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg} -- FIXME: better message that lets the user know which `r` made akrantiain crash
 
+dropTwo :: String -> String
+dropTwo = dropOne . reverse . dropOne . reverse
+ where dropOne = \(' ':xs) -> xs -- GUARANTEED TO BE SAFE
 
 cook' :: [Rule] -> Stat -> Reader Environment Stat
 cook' rls stat = foldM apply stat rls
