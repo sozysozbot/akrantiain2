@@ -77,10 +77,10 @@ rev2 ::  [([a], t)] -> [([a], t)]
 rev2 = map (first reverse) . reverse
 
 upgrade :: ([a] -> Bool) -> ([a] -> Bool)
-upgrade f str = all f $ inits str
+upgrade f str = all f $ tail $ inits str
 
 upgrade2 :: ([a] -> Bool) -> ([a] -> Bool)
-upgrade2 f str = all f $ tails str
+upgrade2 f str = all f $ init $ tails str
 
 unCond :: Condition -> (Punctuation -> String -> Bool)
 unCond (Negation c) = \_ -> no c
