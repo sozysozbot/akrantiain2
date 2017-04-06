@@ -109,13 +109,10 @@ match k@R{leftneg=Nothing, middle=Left():xs} stat = do
  h env (front, back) = do
   let front' = reverse front
   let punct = pun env
-  guard $ null front' || head(mapMaybe(isSpPunct2 punct . fst) front')
+  let tmp = map(isSpPunct punct) $ filter (/="") $ map fst front'
+  guard $ null tmp || head tmp
   let (b', f'') = span (isSpPunct punct . fst) front'
   return (reverse f'', reverse b' ++ back)
-   where
-     isSpPunct2 :: Punctuation -> String -> Maybe Bool
-     isSpPunct2 _ "" = Nothing
-     isSpPunct2 p str = Just $ isSpPunct p str
 
 match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat
