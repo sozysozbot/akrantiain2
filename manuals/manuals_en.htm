@@ -14,12 +14,12 @@ u{font-style: italic;}
 </head>
 <body>
 <div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
-<h2>akrantiain manual</h2>
+<h1>akrantiain manual</h1>
 <!-- <a href="./manuals_en.htm" class="lang">English Version</a> -->
 <a href="./manuals_ja.htm" class="lang">日本語版</a>
 <a href="./manuals_conlang_lpa.htm" class="lang" style="font-family:'Fynelipa'">kanteluescosti virle lineparine</a>
-<h3>2. Syntactic structure of .snoj file</h3>
-<h4 id="structure">2-0. Structure</h4>
+<h2>2. Syntactic structure of .snoj file</h2>
+<h3 id="structure">2-0. Structure</h3>
 <pre>
 A .snoj file is made up of sentences. A sentence either <a href="#ident">defines an identifier</a>, <a href="#convert">defines a conversion rule</a> or <a href="#atmark">specify a setting</a>.
 Akrantiain works by applying the conversion rules (in the order it is written in the .snoj file) to the input.
@@ -27,12 +27,12 @@ Thus, while the order of conversion rules' definition does matter, the order and
 A semicolon or a newline terminates a sentence; thus, a single sentence cannot span multiple lines.
 In other words, a semicolon that terminates a sentence can be omitted when it is at the end of the line or is followed by a single-line comment.
 </pre>
-<h4 id="comment">2-1. Comments</h4>
+<h3 id="comment">2-1. Comments</h3>
 <pre>
 Anything written after a <code>#</code> till the end of the line is ignored, except for the <code>#</code> inside a <a href="#literal">string literal</a> or a <a href="#slash">slash literal</a>.
 Multiple-line comments do not exist.
 </pre>
-<h4 id="ident">2-2. Defining identifiers</h4>
+<h3 id="ident">2-2. Defining identifiers</h3>
 <pre>
 Identifers are defined using the following syntax:
 </pre><div class="pre">
@@ -52,7 +52,7 @@ This is necessary to, for example, letting akrantiain know that character <code>
 <span class="FIXME">Currently, using a string literal whose length is longer than 1 (ex. <code><span class="string">"foo"</span></code>) inside the definition of <code><span class="identifier">PUNCTUATION</span></code> may result in unintended behavior.
 This is a bug, and is intended to be fixed in the future.</span>
 </pre>
-<h4 id="convert">2-3. Defining conversion rules</h4>
+<h3 id="convert">2-3. Defining conversion rules</h3>
 <pre>
 Let <code><u>SELECT</u></code> be <code>^</code>, a single identifier, a single string literal or <code>( <u>1 or more string literal</u> | <u>1 or more string literal</u> | <u>1 or more string literal</u> )</code>.
 Let <code><u>CONDITION</u></code> be <code>!</code> followed by a <code><u>SELECT</u></code>.
@@ -83,7 +83,7 @@ This defines a rule that says:
 
 An error occurs when an identifier used inside the definition of a conversion rule is not defined.
 </pre>
-<h4 id="atmark">2-4. Specifying settings</h4>
+<h3 id="atmark">2-4. Specifying settings</h3>
 <pre>
 A setting specifier has the following structure.
 </pre><div class="pre">
@@ -95,7 +95,7 @@ The following is the list of identifiers that currently have settings accompanie
 <tr><td>Identifiers</td><td>Meaning</td></tr>
 <tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>Make string literals case-sensitive</td></tr></table>
 
-<h4 id="literal">2-5. String literal</h4>
+<h3 id="literal">2-5. String literal</h3>
 <pre>
 A string literal is a literal that describes a string to be converted from. A string literal begins with a <code><span class="string">"</span></code> and ends with a <code><span class="string">"</span></code>, and it does not contain a newline within itself.
 In order to express the character <code>"</code> inside a string literal, you must write <code><span class="string">\"</span></code>.
@@ -104,7 +104,7 @@ In order to express the character <code>\</code> inside a string literal, you mu
 By default, string literals are case-insensitive.
 You need to <a href="#atmark">specify the setting</a> <code><span class="identifier">CASE_SENSITIVE</span></code> to make string literals case-sensitive.
 </pre>
-<h4 id="slash">2-6. Slash literal</h4>
+<h3 id="slash">2-6. Slash literal</h3>
 <pre>
 A slash literal is a literal that describes a string to be converted to. A slash literal begins with a <code><span class="slash">/</span></code> and ends with a <code><span class="slash">/</span></code>, and it does not contain a newline within itself.
 In order to express the character <code>/</code> inside a slash literal, you must write <code><span class="slash">\/</span></code>.

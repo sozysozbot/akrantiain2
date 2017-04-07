@@ -17,16 +17,16 @@ table.stat td { border-color : orange;
 </head>
 <body>
 <div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
-<h2>akrantiainマニュアル</h2>
-<h3>4. akrantiain変換部の仕様</h3>
-<h4 id="define-words">4-(-1). 用語の定義</h4>
+<h1>akrantiainマニュアル</h1>
+<h2>4. akrantiain変換部の仕様</h2>
+<h3 id="define-words">4-(-1). 用語の定義</h3>
 <pre>
 「AとBの対」とは、A1つとB1つを共に要素として持つデータ構造である。
 「AとBの対」のAのことをfstと呼び、Bのことをsndと呼ぶ。
 「空白文字」とは、<span class="FIXME" title="Haskellに依存しない説明をせよ">HaskellのisSpace関数に与えるとTrueを返す任意の文字である。</span>
 「未定義値」とは、失敗・未設定などを表すための特殊な値である。例えば、Cならヌルポインタ、JavaScriptならundefined、HaskellならNothingで表現できる。
 </pre>
-<h4 id="conversion-overall">4-0. 概略</h4>
+<h3 id="conversion-overall">4-0. 概略</h3>
 <pre>
 変換部は、「環境情報(環境指定識別子一覧と句読点情報からなる)」「変換規則のリスト」「入力文字列」を受けとり、「実行時エラー」または「出力文字列」を返す。
 なお、環境情報は大局的な定数であり、変換部の処理を行う任意のタイミングで参照されうる。
@@ -52,7 +52,7 @@ table.stat td { border-color : orange;
 <pre>
 Statと変換規則の仕様は後述。
 </pre>
-<h4 id="stat">4-1. Stat</h4>
+<h3 id="stat">4-1. Stat</h3>
 <pre>
 『文字列と文字列の対』で、対のsndが未定義値であり得るものを、『Stat素』<!-- ソースコード中の`StatElem` -->と呼ぶ。
 Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」である。例えば次のようなものである。</pre>
@@ -61,7 +61,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 <tr><td>null</td><td>"p"</td><td>null</td><td>"g"</td><td>null</td><td>null</td><td>"t"</td><td>null</td></tr>
 </table>
 <pre>fstをつなげてできる文字列（この例では"spaghetti"）を、Statのconcatと呼ぶ。</pre>
-<h4 id="convert">4-2. 変換規則</h4>
+<h3 id="convert">4-2. 変換規則</h3>
 <pre>変換規則は、以下の3要素からなる。<!-- ソースコード中の`data Rule` --><code><u>PHONEME</u></code>の定義については<a href="manuals_ja.htm">マニュアル</a>を参照のこと。
 <code><u>Negation</u></code><!-- ソースコード中の`data Condition` -->は「文字列の集合または語境界」を要素として持ち、それらが登場しない時に限り変換を行うことを表す。
 </pre>
@@ -77,7 +77,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 </li>
 </ol>
 
-<h4 id="apply">4-3. 変換規則の適用</h4>
+<h3 id="apply">4-3. 変換規則の適用</h3>
 <!-- ソースコード中の`apply` -->
 <pre>変換規則適用は、「Stat」と「変換規則」を受け取り、「Stat」を返す。
 2017/03/22 20:49現在、変換規則の適用は以下のような流れで行われている。
@@ -88,7 +88,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 <li>「aと変換規則をmatchに渡し返ってきたStat」の後ろにbを結合し、返す。</li>
 </ol>
 
-<h4 id="match">4-4. match関数の仕様</h4>
+<h3 id="match">4-4. match関数の仕様</h3>
 <!-- ソースコード中の`match` -->
 <pre>match関数は、「Stat」と「変換規則」を受け取り、「『Statの対』のリスト」を返す。</pre>
 <ol style="font-family:monospace; line-height:170%">
@@ -100,7 +100,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 以下、辿っていくときに行われることを具体的に説明していく。
 </pre>
 
-<h5>4-4-0. 候補の用意</h5> <!-- ソースコード中の`cutlist` -->
+<h4>4-4-0. 候補の用意</h4> <!-- ソースコード中の`cutlist` -->
 <pre>これについては「百聞は一見に如かず」なので、図を用いる。</pre>
 <pre>入力:</pre>
 <table class="stat">
@@ -148,7 +148,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
         </table></td><td>,</td><td>空リスト</td>
         <td>)</td></tr>
 </table>
-<h5>4-4-1. 右条件の処理</h5>
+<h4>4-4-1. 右条件の処理</h4>
 <pre>右条件gが在るなら、Statの対のうち、「sndのconcatの接頭辞（空文字列を含まない。自身を含む。）が全て、右条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
 <pre>
 具体例を見てみよう。右条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
@@ -202,9 +202,9 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 ＜書け＞
 </pre>
 
-<h5>4-4-2. 「変換元と変換先の対応」の処理</h5>
+<h4>4-4-2. 「変換元と変換先の対応」の処理</h4>
 <pre>「『語境界』または『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」を右から辿っていき、条件を満たすもののみを通過させながら、Stat内の適切な『変換先』のところに情報を記入していく。</pre>
-<h6>4-4-2-1. 『語境界』のとき</h6>
+<h5>4-4-2-1. 『語境界』のとき</h5>
 <pre>環境情報を使用する。各Stat対について、以下のような変更を行う。</pre>
 <ol style="font-family:monospace; line-height:170%">
 <li>Stat対のfstを構成する全てのStat素から、それぞれfstをとって作られるリストを考え、このリストから空文字列を全て除く。<br>
@@ -287,7 +287,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 
 
 
-<h6>4-4-2-2.「『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」のとき</h6>
+<h5>4-4-2-2.「『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」のとき</h5>
 <pre>まず、「変換関数」<!-- ソースコード中の`testPattern` -->を定義する。変換関数は、「<code><u>PHONEME</u></code>」「パターン文字列」「Stat対」を受け取り、「Stat対」を返したり返さなかったりする関数である。（「Stat対または未定義値」を返す、と言ってもよい）
 「Stat対のfstの後ろからk個のStat素を削り落とすと、その削り落としたところのconcatがパターン文字列と一致する」となるようなkが存在しないなら未定義値を返す。
 <span class="FIXME" title="空文字列があって、kが複数ありうる場合は？">存在するならば</span>、
@@ -321,7 +321,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 4-4-2-2.は、あくまで「『Stat対を通過させる』という操作を繰り返す」という見方で説明した4-4-1.や4-4-2-1.や4-4-3.と違い、
 「Stat対のリスト」から二重ループを経て別の「Stat対のリスト」を返すという見方で説明していることに留意せよ。
 </pre>
-<h5>4-4-3. 左条件の処理</h5>
+<h4>4-4-3. 左条件の処理</h4>
 <pre>
 左条件gが在るなら、Statの対のうち、「fstのconcatの接尾辞（空文字列を含まない。自身を含む。）が全て、左条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。</pre>
 <pre>
