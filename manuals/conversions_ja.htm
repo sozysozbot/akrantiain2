@@ -250,6 +250,43 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
         <td>)</td></tr>
 </table>
 <pre>fstの「後ろから」削っていくので、<code>a</code>と<code>b</code>の間にある空白は手が加わらないことに注意。</pre>
+
+<pre>別の具体例を見てみよう。<code>,</code>が句読点であるとき、以下のStat対</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"a"</td> <td>" "</td> <td>"b"</td> <td>"c"</td> <td>""</td> </tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td><td>"s"</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"c"</td><td>"d"</td><td>"e"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>の「Stat対のfstを構成する全てのStat素から、それぞれfstをとって作られるリスト」は次の青枠で示した部分であり、</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td style="border-color:blue">"a"</td> <td style="border-color:blue">" "</td> <td style="border-color:blue">"b"</td> <td style="border-color:blue">"c"</td> <td style="border-color:blue">""</td> </tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td><td>"s"</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"c"</td><td>"d"</td><td>"e"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+
+<pre>今回の場合、「このリストから空文字列を全て除いたリスト」は</pre>
+
+        <table class="stat">
+        <tr><td style="border-color:blue">"a"</td> <td style="border-color:blue">" "</td> <td style="border-color:blue">"b"</td> <td style="border-color:blue">"c"</td></tr>
+
+        </table>
+<pre>である。
+このリストの最終要素は空白文字以外の文字を含むので、今回はStat対は通過しない。</pre>
+
+
+
 <h6>4-4-2-2.「『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」のとき</h6>
 <pre>まず、「変換関数」<!-- ソースコード中の`testPattern` -->を定義する。変換関数は、「<code><u>PHONEME</u></code>」「パターン文字列」「Stat対」を受け取り、「Stat対」を返したり返さなかったりする関数である。（「Stat対または未定義値」を返す、と言ってもよい）
 「Stat対のfstの後ろからk個のStat素を削り落とすと、その削り落としたところのconcatがパターン文字列と一致する」となるようなkが存在しないなら未定義値を返す。
