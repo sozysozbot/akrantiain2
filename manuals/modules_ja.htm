@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>akrantiainマニュアル（日本語）</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<style>
+@font-face {
+    font-family: "Fynelipa";
+    src: url("./Fynetliparxe.woff");  format('woff');
+}
+
+</style>
+</head>
+<body>
+<div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
+<h1>akrantiainマニュアル</h1>
+<a href="main_ja.htm">トップに戻る</a><br>
+
+<h2>1. .snojファイルの構文規則</h2>
+<h3 id="structure">1-0. 構造</h3>
+<pre>.snojファイルはモジュールの集まりである。
+モジュールには「明示モジュール」と「暗黙モジュール」の2種類があり、明示モジュールは各.snojファイルに0個以上、暗黙モジュールは各.snojファイルに1個のみ存在する。
+.snojファイルが渡された時、その中に存在する暗黙モジュールに指定された変換を、akrantiainは実行する。
+
+明示モジュールには「名前」と「中身」があり、以下のような構文を取る。</pre>
+
+<div class="pre"><!-- ソースコード中の`parseModule` -->
+<code>% <u>モジュール名</u> { <u>中身</u> }</code></div>
+
+<pre>
+一方、暗黙モジュールには名前がなく、中身のみを持つ。暗黙モジュールの中身は.snojファイル内に直に記述される。
+
+明示・暗黙に関わらず、一つのモジュール定義の途中に別のモジュール定義を挟むことはできない。</pre>
+
+<h3 id="mod_name">1-1. モジュール名</h3><!-- ソースコード中の`oneModule` -->
+<pre>モジュール名には、2種類の形がある。</pre>
+<div class="pre">
+<code><u>識別子</u></code></div>
+<div class="pre">
+<code><u>識別子</u> =&gt; <u>識別子</u></code></div></div>
+<pre>（識別子は、アルファベットの後に、（アルファベット・数字・<code>_</code>）が0個以上続いたものである。）
+前者を「単独型」、後者を「推移型」と呼ぶ。あくまで見た目上の差であり、本質的には単独型と推移型に差はない。
+
+同一名のモジュールが複数定義されている場合、モジュールエラー#1523を吐く。
+</pre>
+
+<h3 id="inside">1-2. モジュールの中身</h3>
+<pre>モジュールの中身には、2種類の形がある。片方は、<span class="chapter_name">2章</span>で説明する「文列」であり、もう片方は「モジュールの合成」である。
+なお、この2種の差は本質的なものである。</pre>
+
+<h3 id="modchainelem">1-3. modChain素</h3><!-- ソースコード中の`modChainElem` -->
+<pre>modChain素には、以下の4種類がある。</pre>
+<ol style="font-family:monospace">
+<li>単一の識別子</li>
+<li>2個以上の識別子を<code>=&gt;</code>で区切ったもの</li>
+<li>1.を<code>(</code>と<code>)</code>で囲んだもの</li>
+<li>2.を<code>(</code>と<code>)</code>で囲んだもの</li>
+</ol>
+<pre>1.と3.は等価であり、2.と4.は等価である。
+1.及び3.は、同名の単独型モジュールを表す。
+2.及び4.は、以下のような方法で1個以上の推移型モジュールを合成したものを表す。
+</pre>
+<pre class="FIXME" title="まともな説明をしろ">「例えば、<code>A =&gt; B =&gt; C =&gt; D</code>は、3つのモジュール<code>A =&gt; B </code>、<code>B =&gt; C</code>、<code>C =&gt; D</code>を合成したものである。」</pre>
+
+<h3 id="composition">1-4. モジュールの合成</h3>
+<pre>1つ以上のモジュールを合成して、別のモジュールの定義とすることができる。これには主に二つの用途がある。</pre>
+<ol style="font-family:monospace">
+<li>複数のモジュールを合成したものに名前をつける</li>
+<li>1つ以上のモジュールを合成したものを暗黙モジュールの定義とすることで、明示モジュールを実際に利用する</li>
+</ol>
+<pre>モジュールを合成するには、以下の構文を用いる。</pre><!-- ソースコード中の`execModules` -->
+<div class="pre">
+<code>%% <u>modChain素</u> &gt;&gt; <u>modChain素</u> &gt;&gt; <u>modChain素</u>;</code></div>
+<pre>つまり、1個以上のmodChain素を<code>&gt;&gt;</code>で区切って、先頭に<code>%%</code>、末尾に<code>;</code>を置いたものである。
+1つのモジュール合成を、行をまたいで定義することはできない。
+逆に、末尾のセミコロンは、行の最後および行コメントの直前では省略できる。
+
+modChain素自体がモジュールの連鎖を表すことができ、それを連鎖させたものでモジュールの合成を表すが、この2種類の連鎖に意味的な差はなく、例えば、
+<div class="pre">
+<code>% baz { %% foo &gt;&gt; (A =&gt; B =&gt; C) &gt;&gt; bar; }</code>
+</div>
+という定義があった時、<code>baz</code>という名のモジュールは、入力された文字列を<code>foo</code>、<code>A =&gt; B</code>、<code>B =&gt; C</code>、<code>bar</code>という4つのモジュールに順に通過させることと等価な挙動をするモジュールとして定義される。
+なお、定義中に登場するモジュール名を持つモジュールが存在しない場合、または、モジュールが循環参照している場合、モジュールエラー#1652を吐く。
+</pre>
+</body>
+</html>

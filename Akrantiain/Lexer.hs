@@ -30,6 +30,13 @@ modules = do
  eof
  return $ Module{moduleName = ModuleName(Id "_Main"), insideModule = insideMain} : catMaybes mods
 
+{-
+ foo
+ A => B
+ -}
+oneModule :: Parser ModuleName
+oneModule = try foo <|> fmap ModuleName identifier where
+ foo = do{x <- identifier; spaces'; string "=>"; spaces'; y <- identifier; return Arrow{before=x, after=y}}
 
 {-
  foo
@@ -54,13 +61,6 @@ modChainElem = try (p <* spaces') <|> try(char '(' *> spaces' *> p <* spaces' <*
 modChain :: Parser [ModuleName]
 modChain = fmap concat $ modChainElem `sepBy1` try(string ">>" >> spaces')
 
-{-
- foo
- A => B
- -}
-oneModule :: Parser ModuleName
-oneModule = try foo <|> fmap ModuleName identifier where
- foo = do{x <- identifier; spaces'; string "=>"; spaces'; y <- identifier; return Arrow{before=x, after=y}}
 
 execModules :: Parser InsideModule
 execModules = do
