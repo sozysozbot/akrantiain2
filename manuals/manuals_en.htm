@@ -18,10 +18,10 @@ u{font-style: italic;}
 <!-- <a href="./manuals_en.htm" class="lang">English Version</a> -->
 <a href="./manuals_ja.htm" class="lang">日本語版</a>
 <a href="./manuals_conlang_lpa.htm" class="lang" style="font-family:'Fynelipa'">kanteluescosti virle lineparine</a>
-<h2>2. Syntactic structure of .snoj file</h2>
+<h2>2. The syntactic structure of a sentence sequence</h2>
 <h3 id="structure">2-0. Structure</h3>
 <pre>
-A .snoj file is made up of sentences. A sentence either <a href="#ident">defines an identifier</a>, <a href="#convert">defines a conversion rule</a> or <a href="#atmark">specify a setting</a>.
+A sentence sequence is made up of sentences. A sentence either <a href="#ident">defines an identifier</a>, <a href="#convert">defines a conversion rule</a> or <a href="#atmark">specify a setting</a>.
 Akrantiain works by applying the conversion rules (in the order it is written in the .snoj file) to the input.
 Thus, while the order of conversion rules' definition does matter, the order and positions of identifier definitions or setting specifiers never affect akrantiain's behavior.
 A semicolon or a newline terminates a sentence; thus, a single sentence cannot span multiple lines.
