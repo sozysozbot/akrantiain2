@@ -46,6 +46,7 @@ m4sToR mss@(m@Module4{moduleName4 = name, insideModule4 = ModuleChain4 chain}:ms
    m4sToR ms (M.insert name (Functi func) resmap)
 
 isResolveNeeded :: Module4 -> Bool
+isResolveNeeded Module4{moduleName4 = HiddenModule} = False
 isResolveNeeded Module4{insideModule4 = Func4 _} = False
 isResolveNeeded Module4{insideModule4 = ModuleChain4 _} = True
 
