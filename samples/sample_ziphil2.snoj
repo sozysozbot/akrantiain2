@@ -1,0 +1,12 @@
+% first {
+  "a" -> /A/
+  "b" -> /B/
+  "c" -> /C/
+  "d" -> /D/
+}
+% second {
+  upper = "A" | "B" | "C"
+  upper -> /!/
+  "D" -> /$/
+}
+%% first >> second;

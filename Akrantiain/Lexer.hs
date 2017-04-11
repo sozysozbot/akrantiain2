@@ -26,9 +26,9 @@ modules :: Parser (Set Module)
 modules = do
  mods <- many (try(comment >> return Nothing) <|> fmap Just parseModule)
  insideMain <- parseInside
- skipMany comment
+ mods2 <- many (try(comment >> return Nothing) <|> fmap Just parseModule)
  eof
- return $ Module{moduleName = HiddenModule, insideModule = insideMain} : catMaybes mods
+ return $ Module{moduleName = HiddenModule, insideModule = insideMain} : catMaybes mods ++ catMaybes mods2
 
 {-
  foo
