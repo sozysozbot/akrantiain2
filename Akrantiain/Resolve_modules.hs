@@ -24,7 +24,7 @@ type Resmap5 = M.Map ModuleName InsideModule5
 module4sToFunc :: Set Module4 -> Either ModuleError (Input -> Output)
 module4sToFunc m4s = do
  resmap <- module4sToResmap m4s
- case ModuleName (Id "_Main") `M.lookup` resmap of
+ case HiddenModule `M.lookup` resmap of
   Just (Functi func) -> return func
   Nothing -> error "CANNOT HAPPEN" -- _Main always exists!
 
@@ -46,6 +46,7 @@ m4sToR mss@(m@Module4{moduleName4 = name, insideModule4 = ModuleChain4 chain}:ms
    m4sToR ms (M.insert name (Functi func) resmap)
 
 isResolveNeeded :: Module4 -> Bool
+isResolveNeeded Module4{moduleName4 = HiddenModule} = False
 isResolveNeeded Module4{insideModule4 = Func4 _} = False
 isResolveNeeded Module4{insideModule4 = ModuleChain4 _} = True
 
