@@ -24,7 +24,7 @@ Try it out by running:
 $ echo lineparine | ./akrantiain2 samples/sample_lineparine.snoj
 ```
 
-Or use it interactively:
+Or use it interactively (press [Ctrl+D] -> [Enter] to terminate):
 ```
 $ ./akrantiain2 samples/sample_lineparine.snoj
 ```
@@ -47,7 +47,7 @@ Try it out by running:
 $ echo lineparine | akrantiain2 samples\sample_lineparine.snoj
 ```
 
-Or use it interactively:
+Or use it interactively (press [Ctrl+Z] -> [Enter] to terminate):
 ```
 $ akrantiain2 samples\sample_lineparine.snoj
 ```
@@ -74,7 +74,7 @@ Try it out by running:
 $ echo lineparine | ./akrantiain2 samples/sample_lineparine.snoj
 ```
 
-Or use it interactively:
+Or use it interactively (Press control+D to terminate):
 ```
 $ ./akrantiain2 samples/sample_lineparine.snoj
 ```
