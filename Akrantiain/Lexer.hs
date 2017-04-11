@@ -28,7 +28,7 @@ modules = do
  insideMain <- parseInside
  skipMany comment
  eof
- return $ Module{moduleName = ModuleName(Id "_Main"), insideModule = insideMain} : catMaybes mods
+ return $ Module{moduleName = HiddenModule, insideModule = insideMain} : catMaybes mods
 
 {-
  foo
