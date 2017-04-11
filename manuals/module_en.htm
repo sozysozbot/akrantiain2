@@ -27,9 +27,8 @@ data Module = Module {moduleName :: ModuleName, insideModule :: InsideModule}
 data ModuleName = Arrow {before :: Identifier, after :: Identifier} | ModuleName Identifier
 data InsideModule = Sents [Sentence] | ModuleChain [ModuleName]
 
-Anything written outside the module definition syntax is regarded as the component of a module named &quot;_Main&quot;.
+Anything written outside the module definition syntax is regarded as the component of the implicit module, which is called &quot;_Main&quot; in, for example, error messages.
 (Note that users are forbidden by the lexer to start an identifier with an _)
-All modules have to precede the components of _Main.
 </pre>
 </body>
 </html>
