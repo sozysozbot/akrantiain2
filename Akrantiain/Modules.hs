@@ -16,3 +16,4 @@ type ModChain = [ModuleName]
 instance ToSource ModuleName where
  toSource (ModuleName i) = toSource i
  toSource (Arrow bef aft) = "(" ++ toSource bef ++ " => " ++ toSource aft ++ ")"
+ toSource HiddenModule = toSource (Id "_Main")
