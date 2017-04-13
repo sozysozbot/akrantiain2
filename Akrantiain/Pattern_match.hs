@@ -11,6 +11,7 @@ import Control.Monad(guard)
 import Akrantiain.Errors
 import Akrantiain.Rule
 import Akrantiain.Structure(Choose(..),Identifier(..))
+import Akrantiain.NFD
 import qualified Data.Map as M
 import Control.Arrow(first)
 import Control.Monad.Reader
