@@ -1,8 +1,11 @@
 # Zyepheng
 # details of Zyepheng is described in https://github.com/Magnezone462/Zyengio
 
-
-% Zyepheng => syll {
+####################################################
+## input: pheŋqrimshieŋbyochetmyukkuaŋzyengiozyeŋio
+## output: [phe][ŋ][qri][m][shie][ŋ][byo][che][t][myu][k][kua][ŋ][zye][n][gio][zye][ŋio]
+####################################################
+% Zyepheng => a1 {
 @FALL_THROUGH
  letter = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "ŋ" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "ə";
 
@@ -17,8 +20,18 @@
  vowel "" initial_letter -> $ /][/ $
 }
 
+####################################################
+## input: [phe][ŋ][qri][m][shie][ŋ][byo][che][t][myu][k][kua][ŋ][zye][n][gio][zye][ŋio]
+## output:
+####################################################
+% a1 => syll {
+@FALL_THROUGH
+ coda = "p" | "t" | "k" | "m" | "n" | "ŋ";
+ "][" coda "]" -> // $ $
+}
+
 % syll => IPA {
 
 }
 
-%% Zyepheng => syll;
+%% Zyepheng => a1 => syll;
