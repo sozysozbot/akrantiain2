@@ -42,7 +42,7 @@ table.stat td { border-color : orange;
         入力文字列の先頭と末尾にスペースを付加し、1文字ずつ分割し（1文字と未定義値の対）のリストとしてStatに変換する
 </li>
 <li>「変換規則のリスト」を左から走査していき、Statに順に変換規則を<a href="#apply">適用</a>していく</li>
-<li>Statのうち未処理のものがある場合、変換元がスペースまたは句読点なら変換先にスペースを指定する。そうでなければ実行時エラー#210を吐く。</li>
+<li>Statのうち未処理のものがある場合、変換元がスペースまたは句読点なら変換先にスペースを指定する。<br>そうでないとき、環境指定識別子<code><span class="identifier">FALL_THROUGH</span></code>が指定されていなければ実行時エラー#210を吐き、指定されていれば変換先に変換元をそのまま代入する。</li>
 <li>変換先を全てつなげ、先頭と末尾にあるスペースをそれぞれ1個だけ削除し、出力文字列とする。</li>
 </ol>
 <pre>2.では、例えば入力文字列が"spaghetti"であれば、次のようなStatへと変換される。</pre>
@@ -63,7 +63,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 </table>
 <pre>fstをつなげてできる文字列（この例では"spaghetti"）を、Statのconcatと呼ぶ。</pre>
 <h3 id="convert">4-2. 変換規則</h3>
-<pre>変換規則は、以下の3要素からなる。<!-- ソースコード中の`data Rule` --><code><u>PHONEME</u></code>の定義については<a href="manuals_ja.htm">マニュアル</a>を参照のこと。
+<pre>変換規則は、以下の3要素からなる。<!-- ソースコード中の`data Rule` --><code><u>PHONEME</u></code>の定義については<a href="manuals_ja.htm">2章</a>を参照のこと。
 <code><u>Negation</u></code><!-- ソースコード中の`data Condition` -->は「文字列の集合または語境界」を要素として持ち、それらが登場しない時に限り変換を行うことを表す。
 </pre>
 <ol style="font-family:monospace; line-height:170%">
