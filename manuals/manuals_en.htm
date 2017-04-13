@@ -61,14 +61,14 @@ conversion rules are defined using the following syntax:
 </pre><div class="pre">
 <code><u>0 or 1 CONDITION</u> <u>1 or more SELECT</u> <u>0 or 1 CONDITION</u> -&gt; <u>1 or more PHONEME</u>;</code>
 </div><pre>
-There is a restriction: 
+There is a restriction:
  The number of {<code><u>SELECT</u></code>s (excluding <code>^</code>) that make up <code><u>1 or more SELECT</u></code>} must be equal to the number of {<code><u>PHONEME</u></code>s that make up <code><u>1 or more PHONEME</u></code>}; if not, an error occurs.
 
 For example,
 </pre><div class="pre">
 <code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div><pre>
 defines a rule which tells akrantiain to do the following:
- "When a <code><span class="string">"u"</span></code> is followed by a <code><span class="string">"g"</span></code>, which in turn is NOT followed by something that matches the pattern <code><span class="identifier">vowel</span></code>, 
+ "When a <code><span class="string">"u"</span></code> is followed by a <code><span class="string">"g"</span></code>, which in turn is NOT followed by something that matches the pattern <code><span class="identifier">vowel</span></code>,
   convert the <code><span class="string">"u"</span></code> into <code><span class="slash">/u/</span></code> and the <code><span class="string">"g"</span></code> into <code><span class="slash">/u/</span></code>."
 
 Whitespace characters are not allowed inside <code>-&gt;</code>; you cannot split a <code>-&gt;</code> into a <code>-</code> and a <code>&gt;</code>.
@@ -93,7 +93,9 @@ It is legal to specify the same setting multiple times.
 The following is the list of identifiers that currently have settings accompanied to them.
 </pre><table class="pre">
 <tr><td>Identifiers</td><td>Meaning</td></tr>
-<tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>Make string literals case-sensitive</td></tr></table>
+<tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>Make string literals case-sensitive</td></tr>
+<tr><td><code><span class="identifier">FALL_THROUGH</span></code></td><td>When parts of the input isn't consumed by the conversion rules, make them fall through instead of throwing an error</td></tr>
+</table>
 
 <h3 id="literal">2-5. String literal</h3>
 <pre>

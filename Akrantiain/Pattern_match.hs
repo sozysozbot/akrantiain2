@@ -2,7 +2,7 @@
 module Akrantiain.Pattern_match
 (cook
 ) where
-import Prelude hiding (undefined)
+-- import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(toLower)
@@ -21,9 +21,11 @@ type StatPair = (Stat, Stat)
 
 resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
-resolvePunctuation Env{pun=p} (a, Nothing)
- | isSpPunct p a = Right " "
- | otherwise = Left a
+resolvePunctuation env (a, Nothing)
+ | isSpPunct (pun env) a = Right " "
+ | otherwise = case M.lookup (Id "FALL_THROUGH") (bools env) of{
+  Nothing -> Left a;
+  Just () -> Right a;}
 
 insensitive :: Rule -> Rule
 insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(first h<$>) m, rightneg=fmap f r} where
