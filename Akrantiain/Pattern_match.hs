@@ -2,7 +2,7 @@
 module Akrantiain.Pattern_match
 (cook
 ) where
--- import Prelude hiding (undefined)
+import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(toLower)
