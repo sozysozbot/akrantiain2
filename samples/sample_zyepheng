@@ -3,6 +3,7 @@
 
 
 % Zyepheng => syll {
+@FALL_THROUGH
  letter = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "ŋ" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "ə";
 
  initial_letter = "p" | "b" | "m" | "f" | "v" | "w" | "t" | "d" | "n" | "c" | "l" | "s" | "z" | "j" | "k" | "g" | "ŋ" | "q" | "x";
