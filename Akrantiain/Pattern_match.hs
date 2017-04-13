@@ -25,7 +25,7 @@ resolvePunctuation env (a, Nothing)
  | isSpPunct (pun env) a = Right " "
  | otherwise = case M.lookup (Id "FALL_THROUGH") (bools env) of{
   Nothing -> Left a;
-  Just () -> undefined}
+  Just () -> Right a;}
 
 insensitive :: Rule -> Rule
 insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(first h<$>) m, rightneg=fmap f r} where
