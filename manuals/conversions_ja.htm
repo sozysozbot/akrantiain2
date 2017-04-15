@@ -34,7 +34,8 @@ table.stat td { border-color : orange;
 2017/03/22 20:49現在、akrantiain変換部は以下のような流れになっている。
 </pre>
 <!-- ソースコード中の`cook` -->
-<ol style="font-family:monospace">
+<ol style="font-family:monospace; line-height: 170%" start="0">
+<li>変換規則の入力部・変換規則の出力部・入力文字列をUnicode正規化形式のNFDで分解する。</li>
 <li>
         環境指定識別子<code><span class="identifier">CASE_SENSITIVE</span></code>が指定されていなければ、変換規則の入力部と入力文字列を小文字に変換する。
 </li>
@@ -43,7 +44,7 @@ table.stat td { border-color : orange;
 </li>
 <li>「変換規則のリスト」を左から走査していき、Statに順に変換規則を<a href="#apply">適用</a>していく</li>
 <li>Statのうち未処理のものがある場合、変換元がスペースまたは句読点なら変換先にスペースを指定する。<br>そうでないとき、環境指定識別子<code><span class="identifier">FALL_THROUGH</span></code>が指定されていなければ実行時エラー#210を吐き、指定されていれば変換先に変換元をそのまま代入する。</li>
-<li>変換先を全てつなげ、先頭と末尾にあるスペースをそれぞれ1個だけ削除し、出力文字列とする。</li>
+<li>変換先を全てつなげ、先頭と末尾にあるスペースをそれぞれ1個だけ削除したものを、Unicode正規化形式のNFCで合成し、出力文字列とする。</li>
 </ol>
 <pre>2.では、例えば入力文字列が"spaghetti"であれば、次のようなStatへと変換される。</pre>
 <table class="stat">
