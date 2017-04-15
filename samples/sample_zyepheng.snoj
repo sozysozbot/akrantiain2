@@ -4,25 +4,29 @@
 ####################################################
 ## input: pheŋqrimshieŋbyochetmyukkuaŋzyengiozyeŋio
 ## output: [phe][ŋ][qri][m][shie][ŋ][byo][che][t][myu][k][kua][ŋ][zye][n][gio][zye][ŋio]
+##
+## input: Qi jiə́ siá chò phietxàu briè thyuŋkyun tàu Sibelijia khiò
+## output: [qi] [jiə́] [siá] [chò] [phie][t][xàu] [briè] [thyu][ŋ][kyu][n] [tàu] [si][be][li][jia] [khiò]
 ####################################################
 % Zyepheng => a1 {
 @FALL_THROUGH
- letter = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "ŋ" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "ə";
+ letter = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "ŋ" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "ə" | "́" | "̀" | "̂";
 
  initial_letter = "p" | "b" | "m" | "f" | "v" | "w" | "t" | "d" | "n" | "c" | "l" | "s" | "z" | "j" | "k" | "g" | "ŋ" | "q" | "x";
 
  vowel = "a" | "e" | "i" | "o" | "u" | "ə";
+ accent = ""　| "́" | "̀" | "̂"
  coda = "p" | "t" | "k" | "m" | "n" | "ŋ";
 
  ^ "" letter -> /[/ $
  letter "" ^ -> $ /]/
- vowel coda "" initial_letter -> $ $ /][/ $
- vowel "" initial_letter -> $ /][/ $
+ vowel accent coda "" initial_letter -> $ $ $ /][/ $
+ vowel accent "" initial_letter -> $ $ /][/ $
 }
 
 ####################################################
 ## input: [phe][ŋ][qri][m][shie][ŋ][byo][che][t][myu][k][kua][ŋ][zye][n][gio][zye][ŋio]
-## output:
+## output: [pheŋ][qrim][shieŋ][byo][chet][myuk][kuaŋ][zyen][gio][zye][ŋio]
 ####################################################
 % a1 => syll {
 @FALL_THROUGH
