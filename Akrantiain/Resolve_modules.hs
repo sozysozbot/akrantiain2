@@ -22,7 +22,7 @@ type RMap = M.Map ModuleName InsideModule4
 module4sToFunc' :: Set Module4 -> Either ModuleError (Input -> Output)
 module4sToFunc' m4s = do
   rmap <- toRMap (map toTuple m4s)
-  foo rmap HiddenModule
+  resolve rmap HiddenModule
 
 toTuple :: Module4 -> (ModuleName, InsideModule4)
 toTuple Module4{moduleName4 = a, insideModule4 = b} = (a,b)
@@ -35,10 +35,10 @@ toRMap list
      str = "{" ++ intercalate "}, {" (map toSource dupList)++ "}"
      dupList = map head . filter((> 1) . length) . group . sort . map fst $ list
 
-foo :: RMap -> ModuleName -> Either ModuleError (Input -> Output)
-foo rmap name = case name `M.lookup` rmap of
+resolve :: RMap -> ModuleName -> Either ModuleError (Input -> Output)
+resolve rmap name = case name `M.lookup` rmap of
  Nothing -> Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
  Just (Func4 func) -> return func
  Just (ModuleChain4 mods) -> do
-  funcs <- mapM (foo rmap) mods
+  funcs <- mapM (resolve rmap) mods
   return $ foldr1 (>=>) funcs
