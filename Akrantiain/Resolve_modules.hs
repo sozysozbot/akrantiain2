@@ -1,12 +1,13 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 module Akrantiain.Resolve_modules
 (module4sToFunc
+,module4sToFunc'
 ,mapM2
 ,Module4(..)
 ,InsideModule4(..)
 ) where
-import Prelude hiding (undefined)
-import Data.List(intercalate)
+-- import Prelude hiding (undefined)
+import Data.List(intercalate, sort, group)
 import Akrantiain.Modules
 import Akrantiain.Structure
 import Akrantiain.Sents_to_rules
@@ -18,7 +19,27 @@ import Akrantiain.MtoM4
 newtype InsideModule5 = Functi{unFuncti :: (Input -> Output)}
 type Resmap5 = M.Map ModuleName InsideModule5
 
+type RMap = M.Map ModuleName InsideModule4
 
+-- return func from HiddenModule
+module4sToFunc' :: Set Module4 -> Either ModuleError (Input -> Output)
+module4sToFunc' m4s = do
+  rmap <- toRMap (map toTuple m4s)
+  foo rmap HiddenModule
+
+toTuple :: Module4 -> (ModuleName, InsideModule4)
+toTuple Module4{moduleName4 = a, insideModule4 = b} = (a,b)
+
+toRMap :: [(ModuleName, InsideModule4)] -> Either ModuleError RMap
+toRMap list
+ | length list == M.size (M.fromList list) = return $ M.fromList list -- No duplicate
+ | otherwise = Left $ ME {errorNo = 1523, errorMsg = "Duplicate definition of module(s) "++str}
+    where
+     str = "{" ++ intercalate "}, {" (map toSource dupList)++ "}"
+     dupList = map head . filter((> 1) . length) . group . sort . map fst $ list
+
+foo :: RMap -> ModuleName -> Either ModuleError (Input -> Output)
+foo = undefined
 
 -- return func from "_Main" module
 module4sToFunc :: Set Module4 -> Either ModuleError (Input -> Output)
