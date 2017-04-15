@@ -1,7 +1,6 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 module Akrantiain.Resolve_modules
-(module4sToFunc
-,module4sToFunc'
+(module4sToFunc'
 ,mapM2
 ,Module4(..)
 ,InsideModule4(..)
