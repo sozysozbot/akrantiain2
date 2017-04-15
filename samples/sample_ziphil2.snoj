@@ -4,9 +4,11 @@
   "c" -> /C/
   "d" -> /D/
 }
+
+%% first >> second;
+
 % second {
   upper = "A" | "B" | "C"
   upper -> /!/
   "D" -> /$/
 }
-%% first >> second;

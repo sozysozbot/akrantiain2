@@ -24,7 +24,7 @@ main = do
    input <- hGetContents handle
    runParser modules () fname input >>>= \mods ->
     mapM2 moduleToModule4 mods >>>= \mod4s ->
-    module4sToFunc mod4s >>>= \func ->
+    module4sToFunc' mod4s >>>= \func ->
     interact' func
 
 
