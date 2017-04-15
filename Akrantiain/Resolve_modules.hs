@@ -39,7 +39,13 @@ toRMap list
      dupList = map head . filter((> 1) . length) . group . sort . map fst $ list
 
 foo :: RMap -> ModuleName -> Either ModuleError (Input -> Output)
-foo = undefined
+foo rmap name = case name `M.lookup` rmap of
+ Nothing -> Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
+ Just (Func4 func) -> return func
+ Just (ModuleChain4 mods) -> do
+  funcs <- mapM (foo rmap) mods
+  return $ foldr1 (>=>) funcs
+
 
 -- return func from "_Main" module
 module4sToFunc :: Set Module4 -> Either ModuleError (Input -> Output)
