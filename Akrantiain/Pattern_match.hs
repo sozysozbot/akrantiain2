@@ -2,7 +2,7 @@
 module Akrantiain.Pattern_match
 (cook
 ) where
--- import Prelude hiding (undefined)
+import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(toLower)
@@ -11,6 +11,7 @@ import Control.Monad(guard)
 import Akrantiain.Errors
 import Akrantiain.Rule
 import Akrantiain.Structure(Choose(..),Identifier(..))
+import Akrantiain.NFD
 import qualified Data.Map as M
 import Control.Arrow(first)
 import Control.Monad.Reader
@@ -38,7 +39,8 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 
 
 cook :: Rules -> String -> Either RuntimeError String
-cook (env,rls') str = do
+cook (env,rls') str_ = do
+ let str = nfd str_
  let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
    Just () -> (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " ")); -- extra spaces required for handling word boundary
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " ")) }

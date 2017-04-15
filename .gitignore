@@ -1,4 +1,5 @@
 *.bat
+!make.bat
 *.hi
 *.o
 *.exe
