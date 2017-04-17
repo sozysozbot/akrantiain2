@@ -1,8 +1,8 @@
 .PHONY: foo clean
 foo :
 	ghc --version || sudo apt-get install haskell-platform
-	cabal update
-	cabal install unicode-transforms
+	cabal update || true
+	cabal install unicode-transforms || true
 	ghc --make akrantiain2.hs -o akrantiain2
 	ghc --make debug1.hs -o debug1
 	ghc --make debug2.hs -o debug2
