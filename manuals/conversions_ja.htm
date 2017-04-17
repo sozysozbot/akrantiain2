@@ -350,14 +350,44 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 </pre>
 <ul style="font-family:monospace; line-height:170%">
 <li><code><u>PHONEME</u></code>が<code>$</code>である場合
-<ul><li>Stat対のfstの後ろからk個のStat素を削り落とし、Stat対のsndの先頭にくっつける。</li></ul></li>
+<ul><li>Stat対のfstの後ろからk個のStat素を削り落とし、Stat対のsndの先頭にくっつける。そしてそれを返す。</li></ul></li>
 <li><code><u>PHONEME</u></code>が文字列である場合
 <ol><li>Stat対のfstの後ろからk個のStat素を削り落とす。</li>
-<li>そのk個のStat素のそれぞれのsndが全て未定義値である場合、Stat対のsndの先頭に「パターン文字列と<code><u>PHONEME</u></code>の対」をくっつける。さもなくば未定義値を返す。</li>
+<li>そのk個のStat素のそれぞれのsndが全て未定義値である場合、Stat対のsndの先頭に「パターン文字列と<code><u>PHONEME</u></code>の対」をくっつけ、それを返す。さもなくば未定義値を返す。</li>
 </ol>
 </li>
 </ul>
 
+<pre>
+具体例を見てみよう。
+まず、<code><u>PHONEME</u></code>が<code>$</code>である場合。パターン文字列が<code><span class="string">"a"</span></code>、Stat対が次のようなものであるときを考える。
+</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"c"</td> <td>"a"</td> <td>"n"</td> <td>"a"</td> </tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"l"</td></tr>
+        <tr><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>
+この時、Stat対のfstの後ろから1個のStat素を削り落とすと、その削り落としたところのconcatは"a"であり、パターン文字列と一致する。
+ゆえに、変換関数は以下のStat対を返す。
+</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"c"</td> <td>"a"</td> <td>"n"</td> </tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"a"</td> <td>"l"</td></tr>
+        <tr><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
 <pre class="FIXME" title="ここに具体例を入れろ">
 ＜ここに具体例を入れろ＞
 </pre>
