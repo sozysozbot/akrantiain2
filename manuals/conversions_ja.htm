@@ -200,9 +200,63 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 </table>
 <pre>なぜなら、このStat対のsndのconcatである"ant"の接頭辞の一つ"an"は、条件「"an", "en", "in", "on", "un"のどれでもない」を満たさないからである。</pre>
 
-<pre class="FIXME" title="書け">条件が「語境界の否定」という場合についても見てみよう。
-＜書け＞
+<pre>条件が「語境界の否定」という場合についても見てみよう。
+この時、例えば、以下のStat対は通過する。
 </pre>
+
+<table>
+<tr><td>(</td><td>空リスト</td><td>,</td><td><table class="stat">
+        <tr><td>"a"</td><td>" "</td><td>"c"</td><td>"a"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"a"</td><td>" "</td></tr>
+        <tr><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"c"</td><td>"a"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"a"</td><td>" "</td><td>"c"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"a"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"a"</td><td>" "</td><td>"c"</td><td>"a"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"t"</td></tr>
+        <tr><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"a"</td><td>" "</td><td>"c"</td><td>"a"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td>空リスト</td>
+        <td>)</td></tr>
+</table>
+<pre>しかし、例えば、以下のStat対は通過しない。</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"a"</td></tr>
+        <tr><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>" "</td><td>"c"</td><td>"a"</td><td>"t"</td></tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>なぜなら、このStat対のsndのconcatである" cat"の接頭辞の一つ" "は、条件「スペースまたは句読点のみで構成される文字列ではない」を満たさないからである。</pre>
 
 <h4>4-4-2. 「変換元と変換先の対応」の処理</h4>
 <pre>「『語境界』または『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」を右から辿っていき、条件を満たすもののみを通過させながら、Stat内の適切な『変換先』のところに情報を記入していく。</pre>
