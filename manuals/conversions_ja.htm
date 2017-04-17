@@ -388,10 +388,51 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
         </table></td>
         <td>)</td></tr>
 </table>
-<pre class="FIXME" title="ここに具体例を入れろ">
-＜ここに具体例を入れろ＞
+<pre>
+次に、<code><u>PHONEME</u></code>が文字列である場合。<code><u>PHONEME</u></code>が<code><span class="slash">/ɛ/</span></code>、パターン文字列が<code><span class="string">"ai"</span></code>であるときを考える。
+Stat対が次のようなものであるとき、
 </pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"a"</td> <td>"i"</td> </tr>
+        <tr><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"m"</td> <td>"ez"</td></tr>
+        <tr><td>null</td><td>"e"</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>
+Stat対のfstの後ろから2個のStat素を削り落とすと、その削り落としたところのconcatは"ai"であり、パターン文字列と一致する。
+さらに、その2個のStat素は共に「sndが未定義値である」を満たす。
+ゆえに、変換関数は以下のStat対を返す。
+</pre>
+<table>
+<tr><td>(</td><td>空リスト</td><td>,</td><td><table class="stat">
+        <tr><td>"ai"</td><td>"m"</td><td>"ez"</td></tr>
+        <tr><td>"ɛ"</td><td>null</td><td>"e"</td></tr>
+        </table></td>
+        <td>)</td></tr></table>
+<pre>一方、Stat対が次のようなものであるとき、
+</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"h"</td> <td>"a"</td><td>"i"</td></tr>
+        <tr><td>null</td><td>"a"</td><td>"i"</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"̈"</td> <td>"r"</td></tr>
+        <tr><td>""</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>
+（補足:左から4つ目のStat素はCOMBINING DIAERESIS (U+0308)である。）
+Stat対のfstの後ろから2個のStat素を削り落とすと、その削り落としたところのconcatは"ai"であり、パターン文字列と一致するが、
+2個のStat素のsndは未定義値ではないので、変換関数は未定義値を返す。 
 
+</pre>
 <pre>
 さて、変換関数が定義できたので、これを用い 「変換元と変換先の対応」が「『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」のときに行う操作について説明する。
 </pre>
