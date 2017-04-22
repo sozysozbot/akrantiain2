@@ -1,12 +1,18 @@
 ## SemanticError
-`Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv}`  
-`Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) {" ++ intercalate "}, {" (map unId duplicates) ++ "}"}`   
-`Left E{errNum = 335, errStr = "unresolved identifier {" ++ unId iden ++ "}"}`  
+errNum | errStr
+----- | -----
+`333`|`"mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv`  
+`334`|`"duplicate definition regarding identifier(s) {" ++ intercalate "}, {" (map unId duplicates) ++ "}"`   
+`335`|`"unresolved identifier {" ++ unId iden ++ "}"`  
 
 ## RuntimeError
-`Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg}`
+errNo | errMsg
+----- | -----
+`210`|`"no rules that can handle character(s) "++ msg`
 
 ## ModuleError
-`Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}`  
-`Left $ ME {errorNo = 1112, errorMsg = "Circular reference involving module {" ++ toSource name ++ "}"}`  
-`Left $ ME {errorNo = 1523, errorMsg = "Duplicate definition of module(s) "++str}`  
+errorNo | errorMsg
+----- | -----
+`1111`|`"Module {" ++ toSource name ++ "} does not exist"`  
+`1112`|`"Circular reference involving module {" ++ toSource name ++ "}"`  
+`1523`|`"Duplicate definition of module(s) "++str`  
