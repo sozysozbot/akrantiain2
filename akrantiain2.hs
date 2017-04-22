@@ -9,6 +9,7 @@ import Control.Monad(forM_, when, void)
 import System.Process
 import System.Info
 import Akrantiain.MtoM4
+import Control.Monad.Writer
 
 
 
@@ -34,6 +35,13 @@ Left  a >>>= _  = do
  hPutStrLn stderr "\n\nPress Enter after reading this message."
  void getLine
 Right b >>>= f  = f b
+
+(>>==) :: (Show w, Show a) => WriterT [w] (Either a) b -> (b -> IO ()) -> IO ()
+wr >>== func = runWriterT wr >>>= func' where
+ func' (b, w) = do
+  mapM_ (hPrint stderr) w
+  func b
+
 
 
 interact' :: (Show a) => (String -> Either a String) -> IO ()
