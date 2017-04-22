@@ -4,10 +4,16 @@ module Akrantiain.Errors
 (SemanticError(..)
 ,RuntimeError(..)
 ,ModuleError(..)
+,SemanticWarning(..)
+,RuntimeWarning(..)
+,ModuleWarning(..)
+,SemanticMsg
+,RuntimeMsg
 ,mapM2
 ) where
 import Prelude hiding (undefined)
 import Data.Either(lefts,rights)
+import Control.Monad.Writer
 
 data SemanticError = E {errNum :: Int, errStr :: String} deriving(Eq, Ord)
 instance Show SemanticError where
@@ -27,3 +33,11 @@ mapM2 f ds = let{es = map f ds; (ls,rs) = (lefts es, rights es)} in
  case ls of
   [] -> Right rs
   _ -> Left ls
+
+data SemanticWarning = SemanticWarning {warnNum   :: Int, warnStr    :: String} deriving(Eq, Ord)
+data RuntimeWarning  = RuntimeWarning  {warnNo    :: Int, warnMsg    :: String} deriving(Eq, Ord)
+data ModuleWarning   = ModuleWarning   {warningNo :: Int, warningMsg :: String} deriving(Eq, Ord)
+
+type SemanticMsg a = WriterT [SemanticWarning] (Either SemanticError) a
+type RuntimeMsg  a = WriterT [RuntimeWarning]  (Either RuntimeError ) a
+type ModuleMsg   a = WriterT [ModuleWarning]   (Either ModuleError  ) a
