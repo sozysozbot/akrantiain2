@@ -49,7 +49,7 @@ resolve (rmap, stack) name
   Nothing -> lift $ Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
   Just (Func4 func) -> lift $ return func
   Just (ModuleChain4 mods) -> do
-   set <- ask 
-   lift $ do
-    funcs <- forM mods $ \modu -> resolve (rmap, name:stack) modu `runReaderT` set
-    return $ foldr1 (>=>) funcs
+   funcs <- forM mods $ resolve (rmap, name:stack)
+   lift $ return $ foldr1 (>=>) funcs
+
+
