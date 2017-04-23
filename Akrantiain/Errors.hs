@@ -9,7 +9,9 @@ module Akrantiain.Errors
 ,ModuleWarning(..)
 ,SemanticMsg
 ,RuntimeMsg
+,ModuleMsg
 ,mapM2
+,lift,tell
 ) where
 import Prelude hiding (undefined)
 import Data.Either(lefts,rights)
