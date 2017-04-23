@@ -1,7 +1,6 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 module Akrantiain.Resolve_modules
 (module4sToFunc'
-,mapM2
 ,Module4(..)
 ,InsideModule4(..)
 ) where
@@ -35,7 +34,8 @@ toRMap list
      str = "{" ++ intercalate "}, {" (map toSource dupList)++ "}"
      dupList = map head . filter((> 1) . length) . group . sort . map fst $ list
 
-type S = (RMap, [ModuleName])
+type S = (RMap, [ModuleName]) 
+-- snd is the `call stack` used to detect circular reference
 
 resolve :: S -> ModuleName -> Either ModuleError (Input -> Output)
 resolve (rmap,arr) name
