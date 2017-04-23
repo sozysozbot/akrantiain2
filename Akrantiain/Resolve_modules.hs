@@ -13,6 +13,7 @@ import Akrantiain.Errors
 import qualified Data.Map as M
 import Control.Monad((>=>))
 import Akrantiain.MtoM4
+import Control.Monad.Writer
 
 
 type RMap = M.Map ModuleName InsideModule4
@@ -37,12 +38,17 @@ toRMap list
 type S = (RMap, [ModuleName]) 
 -- snd is the `call stack` used to detect circular reference
 
+
+
 resolve :: S -> ModuleName -> Either ModuleError (Input -> Output)
-resolve (rmap,arr) name
+resolve s name = resolve' s name
+
+resolve' :: S -> ModuleName -> Either ModuleError (Input -> Output)
+resolve' (rmap,arr) name
  | name `elem` arr = Left $ ME {errorNo = 1112, errorMsg = "Circular reference involving module {" ++ toSource name ++ "}"}
  | otherwise = case name `M.lookup` rmap of
   Nothing -> Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
   Just (Func4 func) -> return func
   Just (ModuleChain4 mods) -> do
-   funcs <- mapM (resolve (rmap, name:arr)) mods
+   funcs <- mapM (resolve' (rmap, name:arr)) mods
    return $ foldr1 (>=>) funcs
