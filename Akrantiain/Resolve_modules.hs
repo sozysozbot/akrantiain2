@@ -14,6 +14,7 @@ import qualified Data.Map as M
 import qualified Data.Set as S
 import Control.Monad((>=>), forM)
 import Akrantiain.MtoM4
+import Control.Monad.Reader
 
 
 type RMap = M.Map ModuleName InsideModule4
@@ -39,14 +40,14 @@ type S = (RMap, [ModuleName])
 -- snd is the `call stack` used to detect circular reference
 
 resolve' :: S -> ModuleName -> ModuleMsg (Input -> Output)
-resolve' s name = lift $ resolve s name S.empty
+resolve' s name = lift $ resolve s name `runReaderT` S.empty
 
-resolve :: S -> ModuleName -> S.Set ModuleName -> Either ModuleError (Input -> Output)
-resolve (rmap, stack) name set
- | name `elem` stack = Left $ ME {errorNo = 1112, errorMsg = "Circular reference involving module {" ++ toSource name ++ "}"}
+resolve :: S -> ModuleName -> ReaderT (S.Set ModuleName) (Either ModuleError) (Input -> Output)
+resolve (rmap, stack) name 
+ | name `elem` stack = ReaderT $ \set -> Left $ ME {errorNo = 1112, errorMsg = "Circular reference involving module {" ++ toSource name ++ "}"}
  | otherwise = case name `M.lookup` rmap of
-  Nothing -> Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
-  Just (Func4 func) -> return func
-  Just (ModuleChain4 mods) -> do
-   funcs <- forM mods $ \modu -> resolve (rmap, name:stack) modu set
+  Nothing -> ReaderT $ \set -> Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
+  Just (Func4 func) -> ReaderT $ \set -> return func
+  Just (ModuleChain4 mods) -> ReaderT $ \set -> do
+   funcs <- forM mods $ \modu -> resolve (rmap, name:stack) modu `runReaderT` set
    return $ foldr1 (>=>) funcs
