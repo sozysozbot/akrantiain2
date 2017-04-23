@@ -41,13 +41,16 @@ type S = (RMap, [ModuleName])
 
 
 resolve :: S -> ModuleName -> ModuleMsg (Input -> Output)
-resolve s name = lift $ resolve' s name
+resolve s name = do 
+ (func, mods) <- lift $ runWriterT (resolve' s name)
+ tell undefined
+ return func
 
-resolve' :: S -> ModuleName -> Either ModuleError (Input -> Output)
+resolve' :: S -> ModuleName -> WriterT [ModuleName] (Either ModuleError) (Input -> Output)
 resolve' (rmap,arr) name
- | name `elem` arr = Left $ ME {errorNo = 1112, errorMsg = "Circular reference involving module {" ++ toSource name ++ "}"}
- | otherwise = case name `M.lookup` rmap of
-  Nothing -> Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
+ | name `elem` arr = lift $ Left $ ME {errorNo = 1112, errorMsg = "Circular reference involving module {" ++ toSource name ++ "}"}
+ | otherwise = tell [name] >> case name `M.lookup` rmap of
+  Nothing -> lift $ Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
   Just (Func4 func) -> return func
   Just (ModuleChain4 mods) -> do
    funcs <- mapM (resolve' (rmap, name:arr)) mods
