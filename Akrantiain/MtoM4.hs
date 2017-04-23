@@ -16,9 +16,9 @@ liftLeft :: (a -> c) -> (Either a b -> Either c b)
 liftLeft f (Left a) = Left $ f a
 liftLeft _ (Right x) = Right x
 
-moduleToModule4 :: Module -> Either SemanticError Module4
+moduleToModule4 :: Module -> SemanticMsg Module4
 moduleToModule4 Module {moduleName = name, insideModule = Sents sents}
- = do
+ = lift $ do
  func <- liftLeft f $ sentsToFunc sents
  return Module4{moduleName4 = name, insideModule4 = Func4 func} where
   f :: SemanticError -> SemanticError
