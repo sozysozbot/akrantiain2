@@ -20,8 +20,8 @@ type RMap = M.Map ModuleName InsideModule4
 
 -- return func from HiddenModule
 module4sToFunc' :: Set Module4 -> ModuleMsg (Input -> Output)
-module4sToFunc' m4s = lift $ do
-  rmap <- toRMap (map toTuple m4s)
+module4sToFunc' m4s = do
+  rmap <- lift $ toRMap (map toTuple m4s)
   resolve (rmap,[]) HiddenModule
 
 toTuple :: Module4 -> (ModuleName, InsideModule4)
@@ -40,8 +40,8 @@ type S = (RMap, [ModuleName])
 
 
 
-resolve :: S -> ModuleName -> Either ModuleError (Input -> Output)
-resolve s name = resolve' s name
+resolve :: S -> ModuleName -> ModuleMsg (Input -> Output)
+resolve s name = lift $ resolve' s name
 
 resolve' :: S -> ModuleName -> Either ModuleError (Input -> Output)
 resolve' (rmap,arr) name
