@@ -4,14 +4,15 @@ module Akrantiain.Resolve_modules
 ,Module4(..)
 ,InsideModule4(..)
 ) where
--- import Prelude hiding (undefined)
+import Prelude hiding (undefined)
 import Data.List(intercalate, sort, group)
 import Akrantiain.Modules
 import Akrantiain.Structure
 import Akrantiain.Sents_to_rules
 import Akrantiain.Errors
 import qualified Data.Map as M
-import Control.Monad((>=>))
+import qualified Data.Set as S
+import Control.Monad((>=>), unless)
 import Akrantiain.MtoM4
 import Control.Monad.Writer
 
@@ -42,8 +43,11 @@ type S = (RMap, [ModuleName])
 
 resolve :: RMap -> ModuleName -> ModuleMsg (Input -> Output)
 resolve rmap name = do 
- (func, mods) <- lift $ runWriterT (resolve' (rmap,[]) name)
- tell undefined
+ (func, mods') <- lift $ runWriterT (resolve' (rmap,[]) name)
+ let allmods = S.fromList . map fst . M.toList $ rmap
+ let unused = allmods S.\\ (S.fromList mods')
+ unless (S.null unused) $ do
+  tell [ModuleWarning{warningNo = 2000, warningMsg = "Unused module(s) {" ++ intercalate "}, {" (map toSource $ S.toList unused) ++ "}"}]
  return func
 
 resolve' :: S -> ModuleName -> WriterT [ModuleName] (Either ModuleError) (Input -> Output)
