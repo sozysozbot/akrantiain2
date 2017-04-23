@@ -44,10 +44,12 @@ resolve' s name = lift $ resolve s name `runReaderT` S.empty
 
 resolve :: S -> ModuleName -> ReaderT (S.Set ModuleName) (Either ModuleError) (Input -> Output)
 resolve (rmap, stack) name 
- | name `elem` stack = ReaderT $ \set -> Left $ ME {errorNo = 1112, errorMsg = "Circular reference involving module {" ++ toSource name ++ "}"}
+ | name `elem` stack = lift $ Left $ ME {errorNo = 1112, errorMsg = "Circular reference involving module {" ++ toSource name ++ "}"}
  | otherwise = case name `M.lookup` rmap of
-  Nothing -> ReaderT $ \set -> Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
-  Just (Func4 func) -> ReaderT $ \set -> return func
-  Just (ModuleChain4 mods) -> ReaderT $ \set -> do
-   funcs <- forM mods $ \modu -> resolve (rmap, name:stack) modu `runReaderT` set
-   return $ foldr1 (>=>) funcs
+  Nothing -> lift $ Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
+  Just (Func4 func) -> lift $ return func
+  Just (ModuleChain4 mods) -> do
+   set <- ask 
+   lift $ do
+    funcs <- forM mods $ \modu -> resolve (rmap, name:stack) modu `runReaderT` set
+    return $ foldr1 (>=>) funcs
