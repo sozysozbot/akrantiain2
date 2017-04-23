@@ -19,8 +19,8 @@ import Akrantiain.MtoM4
 type RMap = M.Map ModuleName InsideModule4
 
 -- return func from HiddenModule
-module4sToFunc' :: Set Module4 -> Either ModuleError (Input -> Output)
-module4sToFunc' m4s = do
+module4sToFunc' :: Set Module4 -> ModuleMsg (Input -> Output)
+module4sToFunc' m4s = lift $ do
   rmap <- toRMap (map toTuple m4s)
   resolve (rmap,[]) HiddenModule
 
