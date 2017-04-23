@@ -12,6 +12,7 @@ module Akrantiain.Structure
 ,Choose(..)
 ,Conversion(..)
 ,Define(..)
+,toBraces
 ) where
 import Prelude hiding (undefined)
 import Data.List(intercalate)
@@ -54,3 +55,7 @@ instance ToSource Conversion where
    fromMaybe Nothing = ""
 instance ToSource Define where
  toSource (Define ide options) = toSource ide ++ " = " ++ toSource options ++ ";\n"
+
+
+toBraces :: ToSource a => [a] -> String
+toBraces list = "{" ++ intercalate "}, {" (map toSource list)++ "}"
