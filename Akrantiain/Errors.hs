@@ -37,8 +37,16 @@ mapM2 f ds = let{es = map f ds; (ls,rs) = (lefts es, rights es)} in
   _ -> Left ls
 
 data SemanticWarning = SemanticWarning {warnNum   :: Int, warnStr    :: String} deriving(Eq, Ord)
+instance Show SemanticWarning where
+ show SemanticWarning{warnNum = n, warnStr = str} = "Semantic warning (warning code #" ++ show n ++ ")\n" ++ str
+
 data RuntimeWarning  = RuntimeWarning  {warnNo    :: Int, warnMsg    :: String} deriving(Eq, Ord)
+instance Show RuntimeWarning where
+ show RuntimeWarning{warnNo = n, warnMsg = str} = "Runtime warning (warning code #" ++ show n ++ ")\n" ++ str
+
 data ModuleWarning   = ModuleWarning   {warningNo :: Int, warningMsg :: String} deriving(Eq, Ord)
+instance Show ModuleWarning where
+ show ModuleWarning{warningNo = n, warningMsg = str} = "Module warning (warning code #" ++ show n ++ ")\n" ++ str
 
 type SemanticMsg a = WriterT [SemanticWarning] (Either SemanticError) a
 type RuntimeMsg  a = WriterT [RuntimeWarning]  (Either RuntimeError ) a
