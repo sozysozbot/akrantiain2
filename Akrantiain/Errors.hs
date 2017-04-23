@@ -11,6 +11,7 @@ module Akrantiain.Errors
 ,RuntimeMsg
 ,ModuleMsg
 ,mapM2
+,mapM3
 ,lift,tell
 ) where
 import Prelude hiding (undefined)
@@ -35,6 +36,15 @@ mapM2 f ds = let{es = map f ds; (ls,rs) = (lefts es, rights es)} in
  case ls of
   [] -> Right rs
   _ -> Left ls
+
+-- similar to mapM but keeps track of all warnings
+mapM3 :: (Monoid e) => (d -> WriterT e (Either c) b) -> [d] -> WriterT e (Either [c]) [b]
+mapM3 f ds = WriterT tmp where 
+ tmp = do -- Either [c] ([b], e)
+  bes <- mapM2 (runWriterT . f) ds -- Either [c] [(b,e)]
+  return (map fst bes, mconcat $ map snd bes)
+ 
+ 
 
 data SemanticWarning = SemanticWarning {warnNum   :: Int, warnStr    :: String} deriving(Eq, Ord)
 instance Show SemanticWarning where
