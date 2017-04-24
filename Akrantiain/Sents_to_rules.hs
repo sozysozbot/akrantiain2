@@ -20,8 +20,8 @@ type Output = Either RuntimeError String
 
 
 
-sentsToFunc :: Set Sentence -> Either SemanticError (Input -> Output)
-sentsToFunc sents = do
+sentsToFunc :: Set Sentence -> SemanticMsg (Input -> Output)
+sentsToFunc sents = lift $ do
  (env,rules) <- sentencesToRules sents
  return $ cook (env,rules)
 
