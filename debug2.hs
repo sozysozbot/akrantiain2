@@ -7,7 +7,7 @@ import System.IO
 import qualified Data.Map as M
 
 env :: Environment
-env = Env{pun=punct, bools=M.fromList[(Id"CASE_SENSITIVE",())]}
+env = Env{pun=punct, bools=M.fromList[(CASE_SENSITIVE,())]}
 
 main :: IO ()
 main = do

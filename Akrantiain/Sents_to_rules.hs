@@ -13,6 +13,7 @@ import Control.Monad(forM,unless)
 import Akrantiain.Pattern_match
 import Data.List(group, sort)
 import qualified Data.Map as M
+import Data.Maybe(mapMaybe)
 
 type Input = String
 type Output = Either RuntimeError String
@@ -34,7 +35,8 @@ sentencesToRules :: [Sentence] -> Either SemanticError (Environment,[Rule])
 sentencesToRules sents = do
  let (convs, vars_pre, defs_pre) = split3 sents
  let defs = map (\(Define a b) -> (a,b)) defs_pre
- let vars = M.fromList $ zip vars_pre (repeat ())
+ let vars' = mapMaybe toSettingSpecifier vars_pre -- FIXME
+ let vars = M.fromList $ zip vars' (repeat ())
  let duplicates = (map head . filter (\x -> length x > 1) . group . sort . map fst) defs
  unless (null duplicates) $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) " ++ toBraces duplicates}
  let defs_ = M.fromList defs

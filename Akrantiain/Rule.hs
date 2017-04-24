@@ -28,7 +28,7 @@ data Environment = Env{pun :: Punctuation, bools :: Settings} deriving (Show, Eq
 type Rules = (Environment,[Rule])
 
 data SettingSpecifier = CASE_SENSITIVE | FALL_THROUGH deriving (Show, Eq, Ord)
-type Settings = M.Map Identifier ()
+type Settings = M.Map SettingSpecifier ()
 
 toSettingSpecifier :: Identifier -> Maybe SettingSpecifier
 toSettingSpecifier (Id "CASE_SENSITIVE") = Just CASE_SENSITIVE
