@@ -11,7 +11,7 @@ import Akrantiain.Errors
 import Akrantiain.Rule
 import Control.Monad(forM,unless)
 import Akrantiain.Pattern_match
-import Data.List(group, sort, intercalate)
+import Data.List(group, sort)
 import qualified Data.Map as M
 
 type Input = String
@@ -36,7 +36,7 @@ sentencesToRules sents = do
  let defs = map (\(Define a b) -> (a,b)) defs_pre
  let vars = M.fromList $ zip vars_pre (repeat ())
  let duplicates = (map head . filter (\x -> length x > 1) . group . sort . map fst) defs
- unless (null duplicates) $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) {" ++ intercalate "}, {" (map unId duplicates) ++ "}"}
+ unless (null duplicates) $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) " ++ toBraces duplicates}
  let defs_ = M.fromList defs
  let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
   Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (at least it is explicitly explained in manual)

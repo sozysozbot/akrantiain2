@@ -5,7 +5,7 @@ module Akrantiain.Resolve_modules
 ,InsideModule4(..)
 ) where
 import Prelude hiding (undefined)
-import Data.List(intercalate, sort, group)
+import Data.List(sort, group)
 import Akrantiain.Modules
 import Akrantiain.Structure
 import Akrantiain.Sents_to_rules
@@ -31,9 +31,8 @@ toTuple Module4{moduleName4 = a, insideModule4 = b} = (a,b)
 toRMap :: [(ModuleName, InsideModule4)] -> Either ModuleError RMap
 toRMap list
  | length list == M.size (M.fromList list) = return $ M.fromList list -- No duplicate
- | otherwise = Left $ ME {errorNo = 1523, errorMsg = "Duplicate definition of module(s) "++str}
+ | otherwise = Left $ ME {errorNo = 1523, errorMsg = "Duplicate definition of module(s) " ++ toBraces dupList}
     where
-     str = "{" ++ intercalate "}, {" (map toSource dupList)++ "}"
      dupList = map head . filter((> 1) . length) . group . sort . map fst $ list
 
 type S = (RMap, [ModuleName]) 
@@ -47,7 +46,7 @@ resolve rmap name = do
  let allmods = S.fromList . map fst . M.toList $ rmap
  let unused = allmods S.\\ (S.fromList mods')
  unless (S.null unused) $ do
-  tell [ModuleWarning{warningNo = 2000, warningMsg = "Unused module(s) {" ++ intercalate "}, {" (map toSource $ S.toList unused) ++ "}"}]
+  tell [ModuleWarning{warningNo = 2000, warningMsg = "Unused module(s) " ++ toBraces (S.toList unused)}]
  return func
 
 resolve' :: S -> ModuleName -> WriterT [ModuleName] (Either ModuleError) (Input -> Output)
