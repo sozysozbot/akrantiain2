@@ -21,7 +21,7 @@ type Output = Either RuntimeError String
 
 
 sentsToFunc :: Set Sentence -> SemanticMsg (Input -> Output)
-sentsToFunc sents = lift $ do
+sentsToFunc sents = do
  (env,rules) <- sentencesToRules sents
  return $ cook (env,rules)
 
@@ -31,8 +31,8 @@ split3 (Left'   c:xs) = let (cs,is,ds) = split3 xs in (c:cs,is,ds)
 split3 (Middle' i:xs) = let (cs,is,ds) = split3 xs in (cs,i:is,ds)
 split3 (Right'  d:xs) = let (cs,is,ds) = split3 xs in (cs,is,d:ds)
 
-sentencesToRules :: [Sentence] -> Either SemanticError (Environment,[Rule])
-sentencesToRules sents = do
+sentencesToRules :: [Sentence] -> SemanticMsg (Environment,[Rule])
+sentencesToRules sents = lift $ do
  let (convs, vars_pre, defs_pre) = split3 sents
  let defs = map (\(Define a b) -> (a,b)) defs_pre
  let vars' = mapMaybe toSettingSpecifier vars_pre -- FIXME
