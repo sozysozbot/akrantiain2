@@ -10,6 +10,9 @@ module Akrantiain.Rule
 ,Rules
 ,no'
 ,isSpPunct
+,SettingSpecifier(..)
+,Settings
+,toSettingSpecifier
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
@@ -21,9 +24,16 @@ data W = W String | Dollar_  deriving (Show, Eq, Ord)
 type Boundary_ = ()
 data Condition = Negation (Choose String) | NegBoundary deriving (Show, Eq, Ord)
 type Punctuation = [Char]
-data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier ()} deriving (Show, Eq, Ord)
+data Environment = Env{pun :: Punctuation, bools :: Settings} deriving (Show, Eq, Ord)
 type Rules = (Environment,[Rule])
 
+data SettingSpecifier = CASE_SENSITIVE | FALL_THROUGH deriving (Show, Eq, Ord)
+type Settings = M.Map SettingSpecifier ()
+
+toSettingSpecifier :: Identifier -> Maybe SettingSpecifier
+toSettingSpecifier (Id "CASE_SENSITIVE") = Just CASE_SENSITIVE
+toSettingSpecifier (Id "FALL_THROUGH") = Just FALL_THROUGH
+toSettingSpecifier _ = Nothing
 
 isSpPunct :: Punctuation -> String -> Bool
 isSpPunct punct = all (\x -> isSpace x || x `elem` punct)

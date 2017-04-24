@@ -10,7 +10,7 @@ import Data.Either(lefts, rights)
 import Control.Monad(guard)
 import Akrantiain.Errors
 import Akrantiain.Rule
-import Akrantiain.Structure(Choose(..),Identifier(..))
+import Akrantiain.Structure(Choose(..))
 import Akrantiain.NFD
 import qualified Data.Map as M
 import Control.Arrow(first)
@@ -24,7 +24,7 @@ resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
 resolvePunctuation env (a, Nothing)
  | isSpPunct (pun env) a = Right " "
- | otherwise = case M.lookup (Id "FALL_THROUGH") (bools env) of{
+ | otherwise = case M.lookup (FALL_THROUGH) (bools env) of{
   Nothing -> Left a;
   Just () -> Right a;}
 
@@ -41,7 +41,7 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str_ = do
  let str = nfd str_
- let (rls,stat) = case M.lookup (Id "CASE_SENSITIVE") (bools env) of{
+ let (rls,stat) = case M.lookup (CASE_SENSITIVE) (bools env) of{
    Just () -> (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " ")); -- extra spaces required for handling word boundary
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " ")) }
  let cooked = cook' rls stat `runReader` env

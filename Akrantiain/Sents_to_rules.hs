@@ -13,13 +13,14 @@ import Control.Monad(forM,unless)
 import Akrantiain.Pattern_match
 import Data.List(group, sort)
 import qualified Data.Map as M
+import Data.Either(lefts, rights)
 
 type Input = String
 type Output = Either RuntimeError String
 
 
 
-sentsToFunc :: Set Sentence -> Either SemanticError (Input -> Output)
+sentsToFunc :: Set Sentence -> SemanticMsg (Input -> Output)
 sentsToFunc sents = do
  (env,rules) <- sentencesToRules sents
  return $ cook (env,rules)
@@ -30,17 +31,25 @@ split3 (Left'   c:xs) = let (cs,is,ds) = split3 xs in (c:cs,is,ds)
 split3 (Middle' i:xs) = let (cs,is,ds) = split3 xs in (cs,i:is,ds)
 split3 (Right'  d:xs) = let (cs,is,ds) = split3 xs in (cs,is,d:ds)
 
-sentencesToRules :: [Sentence] -> Either SemanticError (Environment,[Rule])
+
+toSettingSpecifier' :: Identifier -> Either Identifier SettingSpecifier
+toSettingSpecifier' i = case toSettingSpecifier i of
+ Nothing -> Left i
+ Just a -> Right a
+
+sentencesToRules :: [Sentence] -> SemanticMsg (Environment,[Rule])
 sentencesToRules sents = do
  let (convs, vars_pre, defs_pre) = split3 sents
  let defs = map (\(Define a b) -> (a,b)) defs_pre
- let vars = M.fromList $ zip vars_pre (repeat ())
+ let (unknowns, vars') = (\x -> (lefts x, rights x)) $ map toSettingSpecifier' vars_pre
+ unless (null unknowns) $ tell [SemanticWarning{warnNum = 2435, warnStr = "unknown setting-specifier(s) " ++ toBraces unknowns}]
+ let vars = M.fromList $ zip vars' (repeat ())
  let duplicates = (map head . filter (\x -> length x > 1) . group . sort . map fst) defs
- unless (null duplicates) $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) " ++ toBraces duplicates}
+ unless (null duplicates) $ lift $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) " ++ toBraces duplicates}
  let defs_ = M.fromList defs
  let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
   Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (at least it is explicitly explained in manual)
- rules <- forM convs $ \conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} -> do
+ rules <- lift $ forM convs $ \conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} -> do
   let solve = resolveSelect defs_
   left'  <- traverse solve left
   right' <- traverse solve right
