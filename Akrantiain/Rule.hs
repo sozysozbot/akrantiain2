@@ -10,7 +10,7 @@ module Akrantiain.Rule
 ,Rules
 ,no'
 ,isSpPunct
-,SettingSpecifier
+,SettingSpecifier(..)
 ,Settings
 ,toSettingSpecifier
 ) where
