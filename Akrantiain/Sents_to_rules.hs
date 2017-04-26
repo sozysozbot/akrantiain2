@@ -49,7 +49,11 @@ sentencesToRules sents = do
  let defs_ = M.fromList defs
  let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
   Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (at least it is explicitly explained in manual)
- rules <- lift $ forM convs $ \conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} -> do
+ rules <- lift $ forM convs $ handle_conv defs_
+ return(Env{pun=punct, bools=vars},rules)
+
+handle_conv :: M.Map Identifier (Choose Quote) -> Conversion -> Either SemanticError Rule
+handle_conv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} = do
   let solve = resolveSelect defs_
   left'  <- traverse solve left
   right' <- traverse solve right
@@ -57,7 +61,6 @@ sentencesToRules sents = do
   case zipEither midd' (map phonToW phonemes) of
    Nothing -> Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv}
    Just newmidd -> return R{leftneg = fmap no' left', middle = newmidd, rightneg = fmap no' right'}
- return(Env{pun=punct, bools=vars},rules)
 
 
 
