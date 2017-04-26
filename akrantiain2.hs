@@ -24,9 +24,9 @@ main = do
    handle <- openFile fname ReadMode
    hSetEncoding handle utf8
    input <- hGetContents handle
-   runParser modules () fname input >>>= \mods ->
-    mapM3 moduleToModule4 mods >>== \mod4s ->
-    module4sToFunc' mod4s >>== \func ->
+   runParser modules () fname input >>>= \mods -> -- handles ParseError
+    mapM3 moduleToModule4 mods >>== \mod4s -> -- handles SemanticError and SemanticWarning
+    module4sToFunc' mod4s >>== \func -> -- handles ModuleError and ModuleWarning
     interact' func
 
 
