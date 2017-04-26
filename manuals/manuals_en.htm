@@ -61,9 +61,12 @@ conversion rules are defined using the following syntax:
 </pre><div class="pre">
 <code><u>0 or 1 CONDITION</u> <u>1 or more SELECT</u> <u>0 or 1 CONDITION</u> -&gt; <u>1 or more PHONEME</u>;</code>
 </div><pre>
-There is a restriction:
- The number of {<code><u>SELECT</u></code>s (excluding <code>^</code>) that make up <code><u>1 or more SELECT</u></code>} must be equal to the number of {<code><u>PHONEME</u></code>s that make up <code><u>1 or more PHONEME</u></code>}; if not, an error occurs.
-
+There are two restrictions:</pre>
+<ul style="font-family: monospace">
+<li>The number of {<code><u>SELECT</u></code>s (excluding <code>^</code>) that make up <code><u>1 or more SELECT</u></code>} must be equal to the number of {<code><u>PHONEME</u></code>s that make up <code><u>1 or more PHONEME</u></code>}; if not, an error occurs.</li>
+<li>The <code><u>1 or more PHONEME</u></code> part cannot consist fully of <code>$</code>s. Violating this also results in an error.</li>
+</ul>
+<pre>
 For example,
 </pre><div class="pre">
 <code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div><pre>

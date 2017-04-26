@@ -6,6 +6,7 @@ errNum | errStr
 `333`|`"mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv`  
 `334`|`"duplicate definition regarding identifier(s) {" ++ intercalate "}, {" (map unId duplicates) ++ "}"`   
 `335`|`"unresolved identifier {" ++ unId iden ++ "}"`  
+`336`|`"right-hand side of the following sentence consists solely of dollar(s):\n" ++ toSource conv`
 
 ## SemanticWarning
 warnNum | warnStr

@@ -60,6 +60,7 @@
 <code><u>0または1個のCONDITION</u> <u>1個以上のSELECT</u> <u>0または1個のCONDITION</u> -&gt; <u>1個以上のPHONEME</u>;</code>
 </div><pre>
 ここで、「1個以上の<code><u>SELECT</u></code>」を構成する<code><u>SELECT</u></code>のうち<code>^</code>以外のものの個数と、「1個以上の<code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>の個数は一致している必要がある。不一致の場合エラーが発生する。
+また、「1個以上の<code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>が全て<code>$</code>であると、エラーが発生する。
 
 例としては、こんな感じである。
 </pre><div class="pre">
