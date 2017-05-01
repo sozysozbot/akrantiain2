@@ -24,9 +24,8 @@ resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
 resolvePunctuation env (a, Nothing)
  | isSpPunct (pun env) a = Right " "
- | otherwise = case S.member (FALL_THROUGH) (bools env) of{
-  False -> Left a;
-  True -> Right a;}
+ | S.member (FALL_THROUGH) (bools env) = Right a 
+ | otherwise = Left a
 
 insensitive :: Rule -> Rule
 insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(first h<$>) m, rightneg=fmap f r} where
@@ -40,9 +39,7 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str_ = do
- let str = case S.member USE_NFD (bools env) of{
-   True -> nfd str_;
-   False -> str_}
+ let str = if S.member USE_NFD (bools env) then nfd str_ else str_
  let (rls,stat) = case S.member (CASE_SENSITIVE) (bools env) of{
    True -> (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " ")); -- extra spaces required for handling word boundary
    False -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " ")) }
@@ -51,9 +48,7 @@ cook (env,rls') str_ = do
  case lefts eitherList of
   [] -> do
    let ans = dropTwo $ concat $ rights eitherList
-   case S.member USE_NFD (bools env) of
-    True -> return $ nfc ans
-    False -> return ans
+   if S.member USE_NFD (bools env) then return $ nfc ans else return ans
   strs -> do
    let msg = "{" ++ (intercalate "}, {") strs ++ "}"
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg} -- FIXME: better message that lets the user know which `r` made akrantiain crash
