@@ -24,7 +24,7 @@ resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
 resolvePunctuation env (a, Nothing)
  | isSpPunct (pun env) a = Right " "
- | S.member (FALL_THROUGH) (bools env) = Right a 
+ | FALL_THROUGH `S.member` bools env = Right a 
  | otherwise = Left a
 
 insensitive :: Rule -> Rule
@@ -40,7 +40,7 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str_ = do
  let str = if S.member USE_NFD (bools env) then nfd str_ else str_
- let (rls,stat) = case S.member (CASE_SENSITIVE) (bools env) of{
+ let (rls,stat) = case CASE_SENSITIVE `S.member` bools env of{
    True -> (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " ")); -- extra spaces required for handling word boundary
    False -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " ")) }
  let cooked = cook' rls stat `runReader` env
@@ -48,9 +48,9 @@ cook (env,rls') str_ = do
  case lefts eitherList of
   [] -> do
    let ans = dropTwo $ concat $ rights eitherList
-   if S.member USE_NFD (bools env) then return $ nfc ans else return ans
+   if USE_NFD `S.member` bools env then return $ nfc ans else return ans
   strs -> do
-   let msg = "{" ++ (intercalate "}, {") strs ++ "}"
+   let msg = "{" ++ intercalate "}, {" strs ++ "}"
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg} -- FIXME: better message that lets the user know which `r` made akrantiain crash
 
 dropTwo :: String -> String
@@ -124,7 +124,7 @@ match k@R{leftneg=Just condition} stat = do
  env <- ask
  let punct = pun env
  let f (front, _) = upgrade2 (unCond condition punct) $ concatMap fst front
- return $ filter f $ newMatch where
+ return $ filter f newMatch
 
 
 

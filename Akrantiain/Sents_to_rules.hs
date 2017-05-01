@@ -15,6 +15,7 @@ import Data.List(group, sort)
 import qualified Data.Set as S
 import qualified Data.Map as M
 import Data.Either(lefts, rights)
+import Control.Arrow((&&&))
 
 type Input = String
 type Output = Either RuntimeError String
@@ -42,7 +43,7 @@ sentencesToRules :: [Sentence] -> SemanticMsg (Environment,[Rule])
 sentencesToRules sents = do
  let (convs, vars_pre, defs_pre) = split3 sents
  let defs = map (\(Define a b) -> (a,b)) defs_pre
- let (unknowns, vars') = (\x -> (lefts x, rights x)) $ map toSettingSpecifier' vars_pre
+ let (unknowns, vars') = lefts &&& rights $ map toSettingSpecifier' vars_pre
  unless (null unknowns) $ tell [SemanticWarning{warnNum = 2435, warnStr = "unknown setting-specifier(s) " ++ toBraces unknowns}]
  let vars = S.fromList vars'
  let duplicates = (map head . filter (\x -> length x > 1) . group . sort . map fst) defs
@@ -50,11 +51,11 @@ sentencesToRules sents = do
  let defs_ = M.fromList defs
  let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
   Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (at least it is explicitly explained in manual)
- rules <- lift $ forM convs $ handle_conv defs_
+ rules <- lift $ forM convs $ handleConv defs_
  return(Env{pun=punct, bools=vars},rules)
 
-handle_conv :: M.Map Identifier (Choose Quote) -> Conversion -> Either SemanticError Rule
-handle_conv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} = do
+handleConv :: M.Map Identifier (Choose Quote) -> Conversion -> Either SemanticError Rule
+handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} = do
   let solve = resolveSelect defs_
   left'  <- traverse solve left
   right' <- traverse solve right

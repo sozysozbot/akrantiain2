@@ -31,7 +31,7 @@ toTuple Module4{moduleName4 = a, insideModule4 = b} = (a,b)
 toRMap :: [(ModuleName, InsideModule4)] -> Either ModuleError RMap
 toRMap list
  | length list == M.size (M.fromList list) = return $ M.fromList list -- No duplicate
- | otherwise = Left $ ME {errorNo = 1523, errorMsg = "Duplicate definition of module(s) " ++ toBraces dupList}
+ | otherwise = Left ME {errorNo = 1523, errorMsg = "Duplicate definition of module(s) " ++ toBraces dupList}
     where
      dupList = map head . filter((> 1) . length) . group . sort . map fst $ list
 
@@ -44,16 +44,16 @@ resolve :: RMap -> ModuleName -> ModuleMsg (Input -> Output)
 resolve rmap name = do 
  (func, mods') <- lift $ runWriterT (resolve' (rmap,[]) name)
  let allmods = S.fromList . map fst . M.toList $ rmap
- let unused = allmods S.\\ (S.fromList mods')
- unless (S.null unused) $ do
+ let unused = allmods S.\\ S.fromList mods'
+ unless (S.null unused) $ 
   tell [ModuleWarning{warningNo = 2000, warningMsg = "Unused module(s) " ++ toBraces (S.toList unused)}]
  return func
 
 resolve' :: S -> ModuleName -> WriterT [ModuleName] (Either ModuleError) (Input -> Output)
 resolve' (rmap,arr) name
- | name `elem` arr = lift $ Left $ ME {errorNo = 1112, errorMsg = "Circular reference involving module {" ++ toSource name ++ "}"}
+ | name `elem` arr = lift $ Left ME {errorNo = 1112, errorMsg = "Circular reference involving module {" ++ toSource name ++ "}"}
  | otherwise = tell [name] >> case name `M.lookup` rmap of
-  Nothing -> lift $ Left $ ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
+  Nothing -> lift $ Left ME {errorNo = 1111, errorMsg = "Module {" ++ toSource name ++ "} does not exist"}
   Just (Func4 func) -> return func
   Just (ModuleChain4 mods) -> do
    funcs <- mapM (resolve' (rmap, name:arr)) mods
