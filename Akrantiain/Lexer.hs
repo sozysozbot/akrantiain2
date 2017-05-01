@@ -1,13 +1,7 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
 module Akrantiain.Lexer
-(parseTest
-,quoted_string
-,slash_string
-,conversion
-,define
-,sentences
-,modules
+(modules
 ) where
 import Prelude hiding (undefined)
 import Text.Parsec hiding(spaces)
