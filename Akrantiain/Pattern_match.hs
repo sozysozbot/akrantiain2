@@ -20,15 +20,13 @@ type StatElem = (String, Maybe String)
 type Stat = [StatElem]
 type StatPair = (Stat, Stat)
 
-lookup_ a b = if a `S.member` b then Just () else Nothing
-
 resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
 resolvePunctuation env (a, Nothing)
  | isSpPunct (pun env) a = Right " "
- | otherwise = case lookup_ (FALL_THROUGH) (bools env) of{
-  Nothing -> Left a;
-  Just () -> Right a;}
+ | otherwise = case S.member (FALL_THROUGH) (bools env) of{
+  False -> Left a;
+  True -> Right a;}
 
 insensitive :: Rule -> Rule
 insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(first h<$>) m, rightneg=fmap f r} where
@@ -42,20 +40,20 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str_ = do
- let str = case lookup_ USE_NFD (bools env) of{
-   Just () -> nfd str_;
-   Nothing -> str_}
- let (rls,stat) = case lookup_ (CASE_SENSITIVE) (bools env) of{
-   Just () -> (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " ")); -- extra spaces required for handling word boundary
-   Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " ")) }
+ let str = case S.member USE_NFD (bools env) of{
+   True -> nfd str_;
+   False -> str_}
+ let (rls,stat) = case S.member (CASE_SENSITIVE) (bools env) of{
+   True -> (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " ")); -- extra spaces required for handling word boundary
+   False -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " ")) }
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
   [] -> do
    let ans = dropTwo $ concat $ rights eitherList
-   case lookup_ USE_NFD (bools env) of
-    Just () -> return $ nfc ans
-    Nothing -> return ans
+   case S.member USE_NFD (bools env) of
+    True -> return $ nfc ans
+    False -> return ans
   strs -> do
    let msg = "{" ++ (intercalate "}, {") strs ++ "}"
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg} -- FIXME: better message that lets the user know which `r` made akrantiain crash
