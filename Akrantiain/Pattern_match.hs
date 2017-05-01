@@ -40,14 +40,20 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str_ = do
- let str = nfd str_
+ let str = case M.lookup USE_NFD (bools env) of{
+   Just () -> nfd str_;
+   Nothing -> str_}
  let (rls,stat) = case M.lookup (CASE_SENSITIVE) (bools env) of{
    Just () -> (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " ")); -- extra spaces required for handling word boundary
    Nothing -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " ")) }
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
-  [] -> return $ nfc $ dropTwo $ concat $ rights eitherList
+  [] -> do
+   let ans = dropTwo $ concat $ rights eitherList
+   case M.lookup USE_NFD (bools env) of
+    Just () -> return $ nfc ans
+    Nothing -> return ans
   strs -> do
    let msg = "{" ++ (intercalate "}, {") strs ++ "}"
    Left RE{errNo = 210, errMsg = "no rules that can handle character(s) "++ msg} -- FIXME: better message that lets the user know which `r` made akrantiain crash
