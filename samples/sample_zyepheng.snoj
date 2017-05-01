@@ -9,7 +9,8 @@
 ## output: [qi] [jiə́] [siá] [chò] [phie][t][xàu] [briè] [thyu][ŋ][kyu][n] [tàu] [si][be][li][jia] [khiò]
 ####################################################
 % Zyepheng => a1 {
-@FALL_THROUGH
+@FALL_THROUGH;
+@USE_NFD;
  letter = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "ŋ" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "ə" | "́" | "̀" | "̂";
 
  initial_letter = "p" | "b" | "m" | "f" | "v" | "w" | "t" | "d" | "n" | "c" | "l" | "s" | "z" | "j" | "k" | "g" | "ŋ" | "q" | "x";
@@ -29,7 +30,8 @@
 ## output: [pheŋ][qrim][shieŋ][byo][chet][myuk][kuaŋ][zyen][gio][zye][ŋio]
 ####################################################
 % a1 => syll {
-@FALL_THROUGH
+@FALL_THROUGH;
+@USE_NFD;
  coda = "p" | "t" | "k" | "m" | "n" | "ŋ";
  "][" coda "]" -> // $ $
 }
