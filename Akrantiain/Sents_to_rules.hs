@@ -12,6 +12,7 @@ import Akrantiain.Rule
 import Control.Monad(forM,unless,when)
 import Akrantiain.Pattern_match
 import Data.List(group, sort)
+import qualified Data.Set as S
 import qualified Data.Map as M
 import Data.Either(lefts, rights)
 
@@ -43,7 +44,7 @@ sentencesToRules sents = do
  let defs = map (\(Define a b) -> (a,b)) defs_pre
  let (unknowns, vars') = (\x -> (lefts x, rights x)) $ map toSettingSpecifier' vars_pre
  unless (null unknowns) $ tell [SemanticWarning{warnNum = 2435, warnStr = "unknown setting-specifier(s) " ++ toBraces unknowns}]
- let vars = M.fromList $ zip vars' (repeat ())
+ let vars = S.fromList vars'
  let duplicates = (map head . filter (\x -> length x > 1) . group . sort . map fst) defs
  unless (null duplicates) $ lift $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) " ++ toBraces duplicates}
  let defs_ = M.fromList defs

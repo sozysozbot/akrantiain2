@@ -4,10 +4,10 @@ import Akrantiain.Pattern_match
 import Akrantiain.Structure
 import Akrantiain.Rule
 import System.IO
-import qualified Data.Map as M
+import qualified Data.Set as S
 
 env :: Environment
-env = Env{pun=punct, bools=M.fromList[(CASE_SENSITIVE,())]}
+env = Env{pun=punct, bools=S.fromList[CASE_SENSITIVE]}
 
 main :: IO ()
 main = do

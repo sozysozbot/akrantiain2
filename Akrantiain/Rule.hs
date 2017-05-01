@@ -16,7 +16,7 @@ module Akrantiain.Rule
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
-import qualified Data.Map as M
+import qualified Data.Set as S
 import Data.Char(isSpace)
 
 data Rule = R{leftneg :: Maybe Condition, middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe Condition} deriving (Show, Eq, Ord)
@@ -28,7 +28,7 @@ data Environment = Env{pun :: Punctuation, bools :: Settings} deriving (Show, Eq
 type Rules = (Environment,[Rule])
 
 data SettingSpecifier = CASE_SENSITIVE | FALL_THROUGH | USE_NFD deriving (Show, Eq, Ord)
-type Settings = M.Map SettingSpecifier ()
+type Settings = S.Set SettingSpecifier
 
 toSettingSpecifier :: Identifier -> Maybe SettingSpecifier
 toSettingSpecifier (Id "CASE_SENSITIVE") = Just CASE_SENSITIVE
