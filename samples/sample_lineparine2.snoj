@@ -1,0 +1,89 @@
+## lineparine orthography
+
+% font_transcription => IPA {
+@CASE_SENSITIVE;
+vowel = "a" | "i" | "u" | "e" | "o" | "y"
+palat = "Z" | "x" | "ch" | "sh"
+PUNCTUATION = "." | "," | "!" | "?"
+
+^ "edioll" ^ -> /edjol/
+^ "wioll" ^ -> /wjol/
+^ "woll" ^ -> /wol/
+"vsfafgh" -> /vusfafuguh/
+"simfgh" -> /zimfuguh/
+
+"sh" -> /ʃ/
+
+palat "i" vowel -> $ // $
+vowel "i" !"r" -> $ /j/
+palat "i" "u" -> $ $ /u/
+vowel "u" !"r" -> $ /w/
+
+"ni" vowel -> /ɲ/ $;
+"nj" vowel -> /ɲ/ $;
+"i" vowel -> /j/ $
+
+"s" "j" !vowel -> /z/ $;
+"s" !vowel -> /s/
+!vowel "j" !vowel -> /i/
+
+vowel "y" !vowel -> $ /ɥ/
+!vowel ("rkh" | "Rkh") -> /ʁ/
+!vowel ("r" | "R") -> /r/
+vowel "r" -> $ /ː/
+"y" vowel -> /ɥ/ $
+
+
+
+
+"tz" -> /t͡st͡s/;
+"sx" -> /ʃʃ/;
+"dZ" -> /d͡ʑd͡ʑ/;
+"en" ^ -> /ən/;
+
+"ts" -> /t͡s/
+"ch" -> /t͡ʃ/
+"ng" -> /ŋ/
+
+"th" -> /θ/
+"dh" -> /ð/
+"kh" -> /x/
+
+"rl" -> /ɹ/
+"Rl" -> /ɹ/
+
+"ph" -> /p/
+
+
+
+"a" -> /a/; "i" -> /i/; "u" -> /u/; "e" -> /e/; "o" -> /o/; "y" -> /y/
+
+"p" -> /p/; "b" -> /b/; "t" -> /t/; "d" -> /d/; "k" -> /k/; "g" -> /g/;
+"m" -> /m/; "n" -> /n/; "f" -> /f/; "v" -> /v/; 
+"c" -> /s/; "z" -> /t͡s/;
+"s" -> /z/ 
+"x" -> /ʃ/
+"h" -> /h/
+"w" -> /w/
+"j" -> /j/
+"l" -> /l/
+"q" -> /kw/
+
+"'" -> //
+
+"Z" -> /d͡ʑ/
+"F"  -> /ɸ/
+"V"  -> /β/
+
+# "l" !vowel -> /ʟ/
+}
+
+% normal_transcription => font_transcription {
+@FALL_THROUGH;
+	"fh" -> /F/
+	"vh" -> /V/
+	"dz" -> /X/
+	# does not handle r, since it will be correctly handled in the next module
+}
+
+%% normal_transcription => font_transcription => IPA;
