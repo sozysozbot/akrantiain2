@@ -23,7 +23,7 @@ vowel "u" !"r" -> $ /w/
 
 "s" "j" !vowel -> /z/ $;
 "s" !vowel -> /s/
-"j" !vowel -> /i/
+!vowel "j" !vowel -> /i/
 
 vowel "y" !vowel -> $ /ɥ/
 !vowel ("rkh" | "Rkh") -> /ʁ/
