@@ -1,4 +1,6 @@
 ## lineparine orthography
+
+% font_transcription -> IPA {
 @CASE_SENSITIVE;
 vowel = "a" | "i" | "u" | "e" | "o" | "y"
 palat = "Z" | "x" | "ch" | "sh"
@@ -74,4 +76,6 @@ vowel "r" -> $ /ː/
 "V"  -> /β/
 
 # "l" !vowel -> /ʟ/
+}
 
+%% font_transcription -> IPA;
