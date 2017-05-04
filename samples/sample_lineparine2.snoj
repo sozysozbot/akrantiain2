@@ -3,7 +3,7 @@
 % font_transcription => IPA {
 @CASE_SENSITIVE;
 vowel = "a" | "i" | "u" | "e" | "o" | "y"
-palat = "Z" | "x" | "ch" | "sh"
+palat = "X" | "x" | "ch" | "sh"
 PUNCTUATION = "." | "," | "!" | "?"
 
 ^ "edioll" ^ -> /edjol/
@@ -38,7 +38,7 @@ vowel "r" -> $ /ː/
 
 "tz" -> /t͡st͡s/;
 "sx" -> /ʃʃ/;
-"dZ" -> /d͡ʑd͡ʑ/;
+"dX" -> /d͡ʑd͡ʑ/;
 "en" ^ -> /ən/;
 
 "ts" -> /t͡s/
@@ -71,7 +71,7 @@ vowel "r" -> $ /ː/
 
 "'" -> //
 
-"Z" -> /d͡ʑ/
+"X" -> /d͡ʑ/
 "F"  -> /ɸ/
 "V"  -> /β/
 
