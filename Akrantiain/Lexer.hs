@@ -166,8 +166,7 @@ escapeSequence :: Parser Char
 escapeSequence =
  try(string "\\\\" >> return '\\') <|>
  try(string "\\\"" >> return '"')  <|>
- try(string "\\/" >> return '/') <|>
- try(string "\\'" >> return '\'')
+ try(string "\\/" >> return '/') 
 
 quoted_string :: Parser Quote
 quoted_string = do
