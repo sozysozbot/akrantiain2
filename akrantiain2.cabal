@@ -23,3 +23,16 @@ executable akrantiain2
   build-depends:       base >=4.7 && <4.10, mtl >=2.2 && <2.3, parsec >=3.1 && <3.2, unicode-transforms >=0.3 && <0.4, text >=1.2 && <1.3, containers >=0.5 && <0.6, transformers >=0.5 && <0.6, QuickCheck >=2.9 && <2.10, process >=1.6 && <1.7
   -- hs-source-dirs:      
   default-language:    Haskell2010
+
+test-suite unit-test
+  type:                exitcode-stdio-1.0
+  main-is:             Main.hs
+  ghc-options:         -Wall
+  hs-source-dirs:      test
+  build-depends:
+                       base >=4.7 && <4.10,
+                       hspec-core >=2.1.7,
+                       hspec >=2.1.7,
+                       hspec-expectations >=0.6.1.1,
+                       QuickCheck >=2.9
+  default-language:    Haskell2010
