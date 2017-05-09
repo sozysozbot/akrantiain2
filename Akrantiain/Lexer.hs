@@ -14,6 +14,8 @@ import Control.Monad(void)
 import Akrantiain.Structure
 import Akrantiain.Modules
 import Akrantiain.NFD
+import Numeric
+import Data.Char(chr)
 
 ---- parsing modules -----
 
@@ -166,8 +168,14 @@ escapeSequence :: Parser Char
 escapeSequence =
  try(string "\\\\" >> return '\\') <|>
  try(string "\\\"" >> return '"')  <|>
- try(string "\\/" >> return '/') <|>
- try(string "\\'" >> return '\'')
+ try(string "\\/" >> return '/') <|> try uni where
+  uni = do
+   string "\\u"
+   hexes <- sequence $ replicate 4 hexDigit
+   let [(num,"")] = readHex hexes 
+   return $ chr num
+
+
 
 quoted_string :: Parser Quote
 quoted_string = do
