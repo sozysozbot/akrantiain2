@@ -4,7 +4,7 @@ List is instance of Functor
   satisfies Functor law : fmap id == id
   satisfies Functor law : fmap (g.h) f == (fmap g . fmap h) f
 
-Finished in 0.0016 seconds
+Finished in 0.0004 seconds
 2 examples, 0 failures
 Test suite unit-test: PASS
 Test suite logged to: dist/test/akrantiain2-0.6.2-unit-test.log

@@ -70,6 +70,27 @@
   (major1) == 0 && (major2) <  3 || \
   (major1) == 0 && (major2) == 3 && (minor) <= 0)
 
+/* package hspec-2.4.3 */
+#define VERSION_hspec "2.4.3"
+#define MIN_VERSION_hspec(major1,major2,minor) (\
+  (major1) <  2 || \
+  (major1) == 2 && (major2) <  4 || \
+  (major1) == 2 && (major2) == 4 && (minor) <= 3)
+
+/* package hspec-core-2.4.3 */
+#define VERSION_hspec_core "2.4.3"
+#define MIN_VERSION_hspec_core(major1,major2,minor) (\
+  (major1) <  2 || \
+  (major1) == 2 && (major2) <  4 || \
+  (major1) == 2 && (major2) == 4 && (minor) <= 3)
+
+/* package hspec-expectations-0.8.2 */
+#define VERSION_hspec_expectations "0.8.2"
+#define MIN_VERSION_hspec_expectations(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  8 || \
+  (major1) == 0 && (major2) == 8 && (minor) <= 2)
+
 /* tool alex-3.2.1 */
 #define TOOL_VERSION_alex "3.2.1"
 #define MIN_TOOL_VERSION_alex(major1,major2,minor) (\
