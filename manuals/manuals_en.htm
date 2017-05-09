@@ -106,6 +106,7 @@ The following is the list of identifiers that currently have settings accompanie
 A string literal is a literal that describes a string to be converted from. A string literal begins with a <code><span class="string">"</span></code> and ends with a <code><span class="string">"</span></code>, and it does not contain a newline within itself.
 In order to express the character <code>"</code> inside a string literal, you must write <code><span class="string">\"</span></code>.
 In order to express the character <code>\</code> inside a string literal, you must write <code><span class="string">\\</span></code>.
+A character in Unicode's Basic Multilingual Plane can also be represented inside a string literal by writing <code><span class="string">\u</span></code> followed by the character's code point in four hexadecimal digits. (<code>0</code>~<code>9</code>, <code>A</code>~<code>F</code>, <code>a</code>~<code>f</code>)
 
 By default, string literals are case-insensitive.
 You need to <a href="#atmark">specify the setting</a> <code><span class="identifier">CASE_SENSITIVE</span></code> to make string literals case-sensitive.
@@ -115,6 +116,7 @@ You need to <a href="#atmark">specify the setting</a> <code><span class="identif
 A slash literal is a literal that describes a string to be converted to. A slash literal begins with a <code><span class="slash">/</span></code> and ends with a <code><span class="slash">/</span></code>, and it does not contain a newline within itself.
 In order to express the character <code>/</code> inside a slash literal, you must write <code><span class="slash">\/</span></code>.
 In order to express the character <code>\</code> inside a slash literal, you must write <code><span class="slash">\\</span></code>.
+A character in Unicode's Basic Multilingual Plane can also be represented inside a slash literal by writing <code><span class="slash">\u</span></code> followed by the character's code point in four hexadecimal digits. (<code>0</code>~<code>9</code>, <code>A</code>~<code>F</code>, <code>a</code>~<code>f</code>)
 </pre>
 </body>
 </html>
