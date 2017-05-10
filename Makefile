@@ -17,6 +17,7 @@ debug :
 	chmod 755 debug2
 	chmod 755 debug3
 	chmod 755 tester
+	./tester check lineparine lineparine2 zyepheng 
 
 clean:
 	$(RM) akrantiain2
