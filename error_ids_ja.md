@@ -12,8 +12,8 @@ errNum | errStr | 意味
 `336`|`"right-hand side of the following sentence consists solely of dollar(s):\n" ++ toSource conv` | 変換規則定義文で、右側が全て`$`である
 
 ## 意味論的警告
-warnNum | warnStr
------ | -----
+warnNum | warnStr | 意味
+----- | ----- | ---
 `2435`|`"unknown setting-specifier(s) " ++ toBraces unknowns` | 未知の環境指定識別子がある
 
 
@@ -21,15 +21,15 @@ warnNum | warnStr
 # モジュールメッセージ
 
 ## モジュールエラー
-errorNo | errorMsg
------ | -----
+errorNo | errorMsg | 意味
+----- | ----- | ---
 `1111`|`"Module {" ++ toSource name ++ "} does not exist"`  
 `1112`|`"Circular reference involving module {" ++ toSource name ++ "}"`  
 `1523`|`"Duplicate definition of module(s) "++str` | 
 
 ## モジュール警告
-warningNo | warningMsg 
------ | -----
+warningNo | warningMsg | 意味
+----- | ----- | ---
 `2000`|`"Unused module(s) " ++ toBraces (S.toList unused)` | 定義されているが使用されていないモジュールがある
 
 
@@ -37,7 +37,7 @@ warningNo | warningMsg
 # 実行時メッセージ
 
 ## 実行時エラー
-errNo | errMsg
------ | -----
+errNo | errMsg | 意味
+----- | ----- | ---
 `210`|`"no rules that can handle character(s) "++ msg` | 変換できない文字が入力にある
 
