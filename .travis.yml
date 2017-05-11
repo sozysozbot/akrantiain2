@@ -1,2 +1,3 @@
 language: haskell
-
+script:
+  - ghc --make akrantiain2.hs -o akrantiain2 && echo 'aaa' && ghc --make tester.hs -o tester && echo 'bbb' && ./tester check lineparine lineparine2 zyepheng 
