@@ -11,7 +11,7 @@ debug :
 	ghc --make debug1.hs -o debug1
 	ghc --make debug2.hs -o debug2
 	ghc --make debug3.hs -o debug3
-	ghc --make debug3.hs -o tester
+	ghc --make tester.hs -o tester
 	chmod 755 akrantiain2
 	chmod 755 debug1
 	chmod 755 debug2
