@@ -6,6 +6,10 @@ vowel = "a" | "i" | "u" | "e" | "o" | "y"
 palat = "X" | "x" | "ch" | "sh"
 PUNCTUATION = "." | "," | "!" | "?"
 
+^ "-" -> /-/
+"-" ^ -> /-/
+"-" -> //
+
 ^ "edioll" ^ -> /edjol/
 ^ "wioll" ^ -> /wjol/
 ^ "woll" ^ -> /wol/
