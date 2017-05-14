@@ -16,6 +16,24 @@ import Akrantiain.Modules
 import Akrantiain.NFD
 import Numeric
 import Data.Char(chr)
+import qualified Text.Parsec.Token as Token
+
+
+languageDef =
+  Token.LanguageDef { Token.commentStart    = ""
+           , Token.commentEnd      = ""
+           , Token.commentLine     = "#"
+           , Token.identStart      = letter
+           , Token.identLetter     = alphaNum <|> char '_'
+           , Token.reservedNames   = []
+           , Token.caseSensitive   = True
+           , Token.reservedOpNames = ["->", "=>", ">>", "=", "|"]
+           }
+
+
+
+
+
 
 ---- parsing modules -----
 
