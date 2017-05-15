@@ -21,8 +21,8 @@ main = do
   ("check":arr) -> forM_ arr $ \name -> do
    hPutStrLn stderr $ "Checking the output of sample {" ++ name ++ "}..."
    callCommand $ 
-    "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".tmp"
-   callCommand ("diff samples/output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
+    "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
+   callCommand ("diff samples/.output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
    hPutStrLn stderr $ "Finished checking the output of sample {" ++ name ++ "}."
 
 foo :: String -> E.IOException -> IO a
