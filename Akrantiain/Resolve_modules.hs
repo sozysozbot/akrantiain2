@@ -31,7 +31,7 @@ toTuple Module4{moduleName4 = a, insideModule4 = b} = (a,b)
 toRMap :: [(ModuleName, InsideModule4)] -> Either ModuleError RMap
 toRMap list
  | length list == M.size (M.fromList list) = return $ M.fromList list -- No duplicate
- | otherwise = Left ME {errorNo = 1523, errorMsg = "Duplicate definition of module(s) " ++ toBraces dupList}
+ | otherwise = Left ME {errorNo = 1113, errorMsg = "Duplicate definition of module(s) " ++ toBraces dupList}
     where
      dupList = map head . filter((> 1) . length) . group . sort . map fst $ list
 
