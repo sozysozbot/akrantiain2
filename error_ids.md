@@ -22,7 +22,7 @@ errorNo | errorMsg
 ----- | -----
 `1111`|`"Module {" ++ toSource name ++ "} does not exist"`  
 `1112`|`"Circular reference involving module {" ++ toSource name ++ "}"`  
-`1523`|`"Duplicate definition of module(s) "++str`  
+`1113`|`"Duplicate definition of module(s) "++str`  
 
 ## ModuleWarning
 warningNo | warningMsg 

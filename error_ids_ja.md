@@ -25,7 +25,7 @@ errorNo | errorMsg | 意味
 ----- | ----- | ---
 `1111`|`"Module {" ++ toSource name ++ "} does not exist"` | 定義されていないモジュールが使用されている
 `1112`|`"Circular reference involving module {" ++ toSource name ++ "}"` | モジュールが循環依存を起こしている
-`1523`|`"Duplicate definition of module(s) "++str` | 同一名のモジュールが複数回定義されている
+`1113`|`"Duplicate definition of module(s) "++str` | 同一名のモジュールが複数回定義されている
 
 ## モジュール警告
 warningNo | warningMsg | 意味
