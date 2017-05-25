@@ -10,6 +10,16 @@ import Control.Monad.Reader
 tell True str = hPutStrLn stderr str
 tell False str = return ()
 
+tell' :: String -> ReaderT Bool IO ()
+tell' str = do
+ bool <- ask
+ lift $ tell bool str
+
+call' :: String -> ReaderT Bool IO ()
+call' str = do
+ bool <- ask
+ lift $ call bool str
+
 call True str = callCommand str
 call False str = callCommand (str ++ " 2> /dev/null")
 
@@ -30,11 +40,11 @@ f [] = lift $ do
    void getLine
 f ("--create":arr) = do
  bool <- ask
- forM_ arr $ \name -> lift $ do
-   tell bool $ "Creating the output sample for {" ++ name ++ "}..."
-   call bool $ 
+ forM_ arr $ \name -> do
+   tell' $ "Creating the output sample for {" ++ name ++ "}..."
+   call' $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
-   tell bool $ "Created the output sample for {" ++ name ++ "}."
+   tell' $ "Created the output sample for {" ++ name ++ "}."
 f ("--check":arr) = check arr 
 f ["--check_from",filename] = do
  arr <- lift $ (filter (/="") . lines) <$> readFile filename 
@@ -43,12 +53,12 @@ f ["--check_from",filename] = do
 check :: [String] -> ReaderT Bool IO ()  
 check arr = do
  bool <- ask
- forM_ arr $ \name -> lift $ do
-   tell bool $ "Checking the output of sample {" ++ name ++ "}..."
-   call bool $ 
+ forM_ arr $ \name -> do
+   tell' $ "Checking the output of sample {" ++ name ++ "}..."
+   call' $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
-   call bool ("diff samples/.output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
-   tell bool $ "Finished checking the output of sample {" ++ name ++ "}."
+   lift $ call bool ("diff samples/.output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
+   tell' $ "Finished checking the output of sample {" ++ name ++ "}."
 
 foo :: String -> E.IOException -> IO a
 foo name e = do
