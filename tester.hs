@@ -15,7 +15,9 @@ call False str = callCommand (str ++ " 2> /dev/null")
 main :: IO ()
 main = do
  args <- getArgs
- f args True
+ if "--verbose" `elem` args
+  then f (filter (/="--verbose") args) True
+  else f args False
 
 f [] _ = do
    hPutStrLn stderr $ unlines[
