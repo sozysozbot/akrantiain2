@@ -4,6 +4,7 @@ import System.Process
 import System.Info
 import Control.Monad
 import Control.Exception as E
+import Control.Monad.Reader
 
 
 tell True = hPutStrLn stderr
@@ -16,23 +17,23 @@ main :: IO ()
 main = do
  args <- getArgs
  if "--verbose" `elem` args
-  then f (filter (/="--verbose") args) True
-  else f args False
+  then f (filter (/="--verbose") args) `runReaderT` True
+  else f args `runReaderT` False
 
-f [] _ = do
+f [] = ReaderT $ \_ -> do
    hPutStrLn stderr $ unlines[
     "Usage: ",
     "\t./tester --create [sample_names]",
     "\t./tester --check [sample_names]",
     "\t./tester --check_from [file_name]"]
    void getLine
-f ("--create":arr) bool = forM_ arr $ \name -> do
+f ("--create":arr) = ReaderT $ \bool -> forM_ arr $ \name -> do
    tell bool $ "Creating the output sample for {" ++ name ++ "}..."
    call bool $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
    tell bool $ "Created the output sample for {" ++ name ++ "}."
-f ("--check":arr) bool = check arr bool
-f ["--check_from",filename] bool = do
+f ("--check":arr) = ReaderT $ check arr 
+f ["--check_from",filename] = ReaderT $ \bool -> do
    arr <- (filter (/="") . lines) <$> readFile filename 
    check arr bool
    
