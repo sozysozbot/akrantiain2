@@ -18,7 +18,12 @@ main = do
    callCommand $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
    hPutStrLn stderr $ "Created the output sample for {" ++ name ++ "}."
-  ("check":arr) -> forM_ arr $ \name -> do
+  ("check":arr) -> action arr
+  ["check_from",filename] -> do
+   arr <- (filter (/="") . lines) <$> readFile filename 
+   action arr
+   
+action arr = forM_ arr $ \name -> do
    hPutStrLn stderr $ "Checking the output of sample {" ++ name ++ "}..."
    callCommand $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
