@@ -36,9 +36,9 @@ f ("--create":arr) = do
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
    tell bool $ "Created the output sample for {" ++ name ++ "}."
 f ("--check":arr) = check arr 
-f ["--check_from",filename] = ReaderT $ \bool -> do
-   arr <- (filter (/="") . lines) <$> readFile filename 
-   check arr `runReaderT` bool
+f ["--check_from",filename] = do
+ arr <- lift $ (filter (/="") . lines) <$> readFile filename 
+ check arr
 
 check :: [String] -> ReaderT Bool IO ()  
 check arr = do
