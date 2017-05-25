@@ -15,25 +15,26 @@ call False str = callCommand (str ++ " 2> /dev/null")
 main :: IO ()
 main = do
  args <- getArgs
- case args of 
-  [] -> do
+ f args
+
+f [] = do
    hPutStrLn stderr $ unlines[
     "Usage: ",
     "\t./tester --create [sample_names]",
     "\t./tester --check [sample_names]",
     "\t./tester --check_from [file_name]"]
    void getLine
-  ("--create":arr) -> forM_ arr $ \name -> do
+f ("--create":arr) = forM_ arr $ \name -> do
    tell True $ "Creating the output sample for {" ++ name ++ "}..."
    call True $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
    tell True $ "Created the output sample for {" ++ name ++ "}."
-  ("--check":arr) -> action arr
-  ["--check_from",filename] -> do
+f ("--check":arr) = check arr
+f ["--check_from",filename] = do
    arr <- (filter (/="") . lines) <$> readFile filename 
-   action arr
+   check arr
    
-action arr = forM_ arr $ \name -> do
+check arr = forM_ arr $ \name -> do
    tell True $ "Checking the output of sample {" ++ name ++ "}..."
    call True $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
