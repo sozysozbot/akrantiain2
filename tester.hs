@@ -6,6 +6,12 @@ import Control.Monad
 import Control.Exception as E
 
 
+tell True = hPutStrLn stderr
+tell False = \_ -> return ()
+
+call True str = callCommand str
+call False str = callCommand (str ++ " 2> /dev/null")
+
 main :: IO ()
 main = do
  args <- getArgs
@@ -18,21 +24,21 @@ main = do
     "\t./tester check_from [file_name]"]
    void getLine
   ("create":arr) -> forM_ arr $ \name -> do
-   hPutStrLn stderr $ "Creating the output sample for {" ++ name ++ "}..."
-   callCommand $ 
+   tell True $ "Creating the output sample for {" ++ name ++ "}..."
+   call True $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
-   hPutStrLn stderr $ "Created the output sample for {" ++ name ++ "}."
+   tell True $ "Created the output sample for {" ++ name ++ "}."
   ("check":arr) -> action arr
   ["check_from",filename] -> do
    arr <- (filter (/="") . lines) <$> readFile filename 
    action arr
    
 action arr = forM_ arr $ \name -> do
-   hPutStrLn stderr $ "Checking the output of sample {" ++ name ++ "}..."
-   callCommand $ 
+   tell True $ "Checking the output of sample {" ++ name ++ "}..."
+   call True $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
-   callCommand ("diff samples/.output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
-   hPutStrLn stderr $ "Finished checking the output of sample {" ++ name ++ "}."
+   call True ("diff samples/.output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
+   tell True $ "Finished checking the output of sample {" ++ name ++ "}."
 
 foo :: String -> E.IOException -> IO a
 foo name e = do
