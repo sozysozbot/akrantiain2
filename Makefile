@@ -17,7 +17,7 @@ debug :
 	chmod 755 debug2
 	chmod 755 debug3
 	chmod 755 tester
-	./tester check lineparine lineparine2 zyepheng emptystring1 asciiprintable_to_charcode
+	./tester check lineparine lineparine2 zyepheng emptystring1 asciiprintable_to_charcode base10_to_base2
 
 clean:
 	$(RM) akrantiain2
