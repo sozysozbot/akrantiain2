@@ -19,17 +19,17 @@ main = do
   [] -> do
    hPutStrLn stderr $ unlines[
     "Usage: ",
-    "\t./tester create [sample_names]",
-    "\t./tester check [sample_names]",
-    "\t./tester check_from [file_name]"]
+    "\t./tester --create [sample_names]",
+    "\t./tester --check [sample_names]",
+    "\t./tester --check_from [file_name]"]
    void getLine
-  ("create":arr) -> forM_ arr $ \name -> do
+  ("--create":arr) -> forM_ arr $ \name -> do
    tell True $ "Creating the output sample for {" ++ name ++ "}..."
    call True $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
    tell True $ "Created the output sample for {" ++ name ++ "}."
-  ("check":arr) -> action arr
-  ["check_from",filename] -> do
+  ("--check":arr) -> action arr
+  ["--check_from",filename] -> do
    arr <- (filter (/="") . lines) <$> readFile filename 
    action arr
    

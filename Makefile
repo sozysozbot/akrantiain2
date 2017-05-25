@@ -17,7 +17,7 @@ debug :
 	chmod 755 debug2
 	chmod 755 debug3
 	chmod 755 tester
-	./tester check_from testerlist.txt
+	./tester --check_from testerlist.txt
 
 clean:
 	$(RM) akrantiain2
