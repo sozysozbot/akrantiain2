@@ -11,7 +11,7 @@ main = do
  args <- getArgs
  case args of 
   [] -> do
-   hPutStrLn stderr "Usage: ./tester create [sample_names]"
+   hPutStrLn stderr "Usage: \n\t./tester create [sample_names]\n\t./tester check [sample_names]"
    void getLine
   ("create":arr) -> forM_ arr $ \name -> do
    hPutStrLn stderr $ "Creating the output sample for {" ++ name ++ "}..."
