@@ -28,17 +28,22 @@ f [] = lift $ do
     "\t./tester --check [sample_names]",
     "\t./tester --check_from [file_name]"]
    void getLine
-f ("--create":arr) = ReaderT $ \bool -> forM_ arr $ \name -> do
+f ("--create":arr) = do
+ bool <- ask
+ forM_ arr $ \name -> lift $ do
    tell bool $ "Creating the output sample for {" ++ name ++ "}..."
    call bool $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
    tell bool $ "Created the output sample for {" ++ name ++ "}."
-f ("--check":arr) = ReaderT $ check arr 
+f ("--check":arr) = check arr 
 f ["--check_from",filename] = ReaderT $ \bool -> do
    arr <- (filter (/="") . lines) <$> readFile filename 
-   check arr bool
-   
-check arr bool = forM_ arr $ \name -> do
+   check arr `runReaderT` bool
+
+check :: [String] -> ReaderT Bool IO ()  
+check arr = do
+ bool <- ask
+ forM_ arr $ \name -> lift $ do
    tell bool $ "Checking the output of sample {" ++ name ++ "}..."
    call bool $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
