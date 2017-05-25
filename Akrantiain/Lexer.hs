@@ -7,15 +7,14 @@ import Prelude hiding (undefined)
 import Text.Parsec hiding(spaces)
 
 import Control.Applicative ((<$>),(<*))
-import Data.Char (isSpace)
+import Data.Char (isSpace,chr)
 import Text.Parsec.String (Parser)
 import Data.Maybe (catMaybes)
-import Control.Monad(void)
+import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Akrantiain.Modules
 import Akrantiain.NFD
 import Numeric
-import Data.Char(chr)
 
 ---- parsing modules -----
 
@@ -171,7 +170,7 @@ escapeSequence =
  try(string "\\/" >> return '/') <|> try uni where
   uni = do
    string "\\u"
-   hexes <- sequence $ replicate 4 hexDigit
+   hexes <- replicateM 4 hexDigit
    let [(num,"")] = readHex hexes 
    return $ chr num
 

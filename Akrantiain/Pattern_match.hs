@@ -40,9 +40,10 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str_ = do
  let str = if S.member USE_NFD (bools env) then nfd str_ else str_
- let (rls,stat) = case CASE_SENSITIVE `S.member` bools env of{
-   True -> (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " ")); -- extra spaces required for handling word boundary
-   False -> (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " ")) }
+ let (rls,stat) = 
+      if CASE_SENSITIVE `S.member` bools env 
+       then (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " "))-- extra spaces required for handling word boundary
+       else (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " "))
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
