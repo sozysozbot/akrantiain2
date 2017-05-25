@@ -57,7 +57,7 @@ check arr = do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
    call' $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
-   lift $ call bool ("diff samples/.output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
+   lift $ callCommand ("diff samples/.output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
    tell' $ "Finished checking the output of sample {" ++ name ++ "}."
 
 foo :: String -> E.IOException -> IO a
