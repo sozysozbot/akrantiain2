@@ -7,8 +7,8 @@ import Control.Exception as E
 import Control.Monad.Reader
 
 
-tell True = hPutStrLn stderr
-tell False = \_ -> return ()
+tell True str = hPutStrLn stderr str
+tell False str = return ()
 
 call True str = callCommand str
 call False str = callCommand (str ++ " 2> /dev/null")
@@ -20,7 +20,8 @@ main = do
   then f (filter (/="--verbose") args) `runReaderT` True
   else f args `runReaderT` False
 
-f [] = ReaderT $ \_ -> do
+f :: [String] -> ReaderT Bool IO ()
+f [] = lift $ do
    hPutStrLn stderr $ unlines[
     "Usage: ",
     "\t./tester --create [sample_names]",
