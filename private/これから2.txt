@@ -8,19 +8,19 @@
 
 $ズレを一時的に禁じた。復活させるかどうかは知らん。
 
-!^について。
+# !^について。 --> solved
 
 ^ "wioll" ^　-> #"wiol"みたいな?
 
 Runするのはフォルダの直下ですね
 
-Ctrl+Z, CTRL+D
+# Ctrl+Z, CTRL+D --> solved
 
 "k" ("a" | "") "i" -> /k/ $ /i/みたいなのはOKやぞというお話をどこかに書く
 
 consonant かつ vowel を表す consonant & vowel　とか？
 
-PUNCTUATIONって現状だと一文字ずつしか使えないよね。ならそう縛ればいいんでねーの
+# PUNCTUATIONって現状だと一文字ずつしか使えないよね。ならそう縛ればいいんでねーの --> solved
 
 # akrantiainのバージョンとかそろそろ考え始めてみてもいいのでは？ --> solved
 
