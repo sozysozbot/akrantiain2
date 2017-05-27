@@ -59,6 +59,7 @@ check arr = do
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
    lift $ callCommand ("diff samples/.output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
    tell' $ "Finished checking the output of sample {" ++ name ++ "}."
+ lift $ hPutStrLn stderr $ "Finished checking all cases."
 
 foo :: String -> E.IOException -> IO a
 foo name e = do
