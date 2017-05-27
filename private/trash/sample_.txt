@@ -1,0 +1,19 @@
+vowel = "a" | "e" | "i" | "o" | "u" | "y"
+front_vowel = "e" | "i" | "y"
+back_vowel = "a" | "o" | "u"
+
+"g" front_vowel !vowel -> /ʒ/ $2
+"g" -> /g/
+"g" "u" front_vowel -> /g/ // $3
+"g" "e" back_vowel -> /ʒ/ // $3
+"ai" -> /ɛ/
+"ei" -> /ɛ/
+"au" -> /o/
+"a" -> /a/
+"e" -> /ə/
+"i" -> /i/
+"o" -> /o/
+"u" -> /y/
+"y" -> /i/
+"ou" -> /u/
+"oi" -> /wa/

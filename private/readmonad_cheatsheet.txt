@@ -1,0 +1,26 @@
+{-
+  q >>= k 
+  Reader $ \r -> runReader (k $ runReader q r) r
+
+  
+  (Reader r) >>= f 
+  Reader $ \e -> runReader (f (r e)) e
+  
+  (Reader id) >>= f 
+  Reader $ \e -> runReader (f e) e
+-}
+
+liftM f q = reader $ f . runReader q
+
+
+
+
+
+do{env <- ask; let b = f `runReader` env; return b}
+
+reader id >>= (return . runReader f )
+
+f
+
+do{b <- f; return b}
+

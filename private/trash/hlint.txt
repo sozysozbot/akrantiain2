@@ -1,0 +1,106 @@
+.\~Pattern_match.hs:15:12: Warning: Use concatMap
+Found:
+  concat $
+    map (fromJust . snd) $ cook' $ map (\ x -> ([x], Nothing)) str
+Why not:
+  concatMap (fromJust . snd)
+    (cook' $ map (\ x -> ([x], Nothing)) str)
+
+.\~Pattern_match.hs:50:13: Suggestion: Use first
+Found:
+  \ (a, b) -> (reverse a, b)
+Why not:
+  Control.Arrow.first reverse
+
+.\~Pattern_match.hs:60:36: Warning: Use concatMap
+Found:
+  concat $ map fst back
+Why not:
+  concatMap fst back
+
+.\~expand.hs:23:1: Suggestion: Use camelCase
+Found:
+  check_length sents = ...
+Why not:
+  checkLength sents = ...
+
+.\~expand.hs:25:10: Suggestion: Redundant $
+Found:
+  Left $
+    E{errNum = 3,
+      errStr =
+        "mismatched number of concrete terms in left- and right-hand side of "
+          ++
+          intercalate ", "
+            ["{" ++ toSource (Conversion os ps) ++ "}" | (os, ps) <- arr]}
+Why not:
+  Left
+    E{errNum = 3,
+      errStr =
+        "mismatched number of concrete terms in left- and right-hand side of "
+          ++
+          intercalate ", "
+            ["{" ++ toSource (Conversion os ps) ++ "}" | (os, ps) <- arr]}
+
+.\~expand.hs:50:15: Suggestion: Redundant $
+Found:
+  Left $
+    E{errNum = 4, errStr = "unresolved identifier {" ++ i ++ "}"}
+Why not:
+  Left E{errNum = 4, errStr = "unresolved identifier {" ++ i ++ "}"}
+
+.\~expand.hs:83:9: Suggestion: Redundant $
+Found:
+  Left $
+    E{errNum = 0,
+      errStr = "duplicate definition of identifier {" ++ i ++ "}"}
+Why not:
+  Left
+    E{errNum = 0,
+      errStr = "duplicate definition of identifier {" ++ i ++ "}"}
+
+.\~normalize.hs:10:1: Suggestion: Use newtype instead of data
+Found:
+  data Conv3 = C3{unC3 :: Array (Orthography', Phoneme)}
+             deriving (Eq, Show, Ord)
+Why not:
+  newtype Conv3 = C3{unC3 :: Array (Orthography', Phoneme)}
+                deriving (Eq, Show, Ord)
+Note: decreases laziness
+
+.\~normalize.hs:13:1: Suggestion: Use camelCase
+Found:
+  two_to_three (Conv [] []) = ...
+Why not:
+  twoToThree (Conv [] []) = ...
+
+.\~resolve_definitions.hs:35:14: Suggestion: Redundant $
+Found:
+  Left $
+    E{errNum = 1, errStr = "unresolved identifier {" ++ i ++ "}"}
+Why not:
+  Left E{errNum = 1, errStr = "unresolved identifier {" ++ i ++ "}"}
+
+.\~resolve_definitions.hs:38:8: Suggestion: Redundant $
+Found:
+  Left $
+    E{errNum = 2,
+      errStr = "recursive definition regarding identifier {" ++ i ++ "}"}
+Why not:
+  Left
+    E{errNum = 2,
+      errStr = "recursive definition regarding identifier {" ++ i ++ "}"}
+
+.\~resolve_definitions.hs:53:1: Suggestion: Use camelCase
+Found:
+  replace_candids_list x resos_list candids_list = ...
+Why not:
+  replaceCandidsList x resos_list candids_list = ...
+
+.\~resolve_definitions.hs:77:1: Suggestion: Use camelCase
+Found:
+  candids_to_quotes old_map = ...
+Why not:
+  candidsToQuotes old_map = ...
+
+13 hints
