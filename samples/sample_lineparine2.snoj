@@ -6,6 +6,10 @@ vowel = "a" | "i" | "u" | "e" | "o" | "y"
 palat = "X" | "x" | "ch" | "sh"
 PUNCTUATION = "." | "," | "!" | "?"
 
+^ "-" -> /-/
+"-" ^ -> /-/
+"-" -> //
+
 ^ "edioll" ^ -> /edjol/
 ^ "wioll" ^ -> /wjol/
 ^ "woll" ^ -> /wol/
@@ -78,4 +82,12 @@ vowel "r" -> $ /ː/
 # "l" !vowel -> /ʟ/
 }
 
-%% font_transcription => IPA;
+% normal_transcription => font_transcription {
+@FALL_THROUGH;
+	"fh" -> /F/
+	"vh" -> /V/
+	"dz" -> /X/
+	# does not handle r, since it will be correctly handled in the next module
+}
+
+%% normal_transcription => font_transcription => IPA;

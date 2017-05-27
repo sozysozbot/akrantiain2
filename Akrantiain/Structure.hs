@@ -12,6 +12,7 @@ module Akrantiain.Structure
 ,Choose(..)
 ,Conversion(..)
 ,Define(..)
+,toBraces
 ) where
 import Prelude hiding (undefined)
 import Data.List(intercalate)
@@ -22,8 +23,8 @@ data Phoneme = Dollar | Slash String deriving(Show, Eq, Ord)
 data Select = Boundary2 | Iden Identifier | Pipe (Choose Quote) deriving(Show, Eq, Ord)
 newtype Quote = Quote{unQ::String} deriving(Show, Eq, Ord)
 newtype Identifier = Id{unId::String} deriving(Show, Eq, Ord)
-data Sentence = Left' Conversion | Middle' Identifier | Right' Define deriving(Show, Eq, Ord) 
-data Conversion = Conversion {mid::Array Select, phons:: Array Phoneme, lneg ::Maybe Select, rneg::Maybe Select} deriving(Show, Eq, Ord) 
+data Sentence = Left' Conversion | Middle' Identifier | Right' Define deriving(Show, Eq, Ord)
+data Conversion = Conversion {mid::Array Select, phons:: Array Phoneme, lneg ::Maybe Select, rneg::Maybe Select} deriving(Show, Eq, Ord)
 data Define = Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
 
 
@@ -54,3 +55,7 @@ instance ToSource Conversion where
    fromMaybe Nothing = ""
 instance ToSource Define where
  toSource (Define ide options) = toSource ide ++ " = " ++ toSource options ++ ";\n"
+
+
+toBraces :: ToSource a => [a] -> String
+toBraces list = "{" ++ intercalate "}, {" (map toSource list)++ "}"

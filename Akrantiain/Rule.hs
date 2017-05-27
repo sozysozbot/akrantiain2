@@ -8,24 +8,36 @@ module Akrantiain.Rule
 ,no
 ,Environment(..)
 ,Rules
-,unCond
 ,no'
+,isSpPunct
+,SettingSpecifier(..)
+,Settings
+,toSettingSpecifier
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
-import qualified Data.Map as M
+import qualified Data.Set as S
+import Data.Char(isSpace)
 
 data Rule = R{leftneg :: Maybe Condition, middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe Condition} deriving (Show, Eq, Ord)
 data W = W String | Dollar_  deriving (Show, Eq, Ord)
 type Boundary_ = ()
-data Condition = Negation (Choose String)  deriving (Show, Eq, Ord) 
+data Condition = Negation (Choose String) | NegBoundary deriving (Show, Eq, Ord)
 type Punctuation = [Char]
-data Environment = Env{pun :: Punctuation, bools :: M.Map Identifier ()} deriving (Show, Eq, Ord)
+data Environment = Env{pun :: Punctuation, bools :: Settings} deriving (Show, Eq, Ord)
 type Rules = (Environment,[Rule])
 
-unCond :: Condition -> (String -> Bool)
-unCond (Negation c) = no c
+data SettingSpecifier = CASE_SENSITIVE | FALL_THROUGH | USE_NFD deriving (Show, Eq, Ord)
+type Settings = S.Set SettingSpecifier
 
+toSettingSpecifier :: Identifier -> Maybe SettingSpecifier
+toSettingSpecifier (Id "CASE_SENSITIVE") = Just CASE_SENSITIVE
+toSettingSpecifier (Id "FALL_THROUGH") = Just FALL_THROUGH
+toSettingSpecifier (Id "USE_NFD") = Just USE_NFD
+toSettingSpecifier _ = Nothing
+
+isSpPunct :: Punctuation -> String -> Bool
+isSpPunct punct = all (\x -> isSpace x || x `elem` punct)
 
 no :: Choose String -> (String -> Bool)
 no (Ch foo) str
@@ -35,4 +47,4 @@ no (Ch foo) str
 
 no' :: Either Boundary_ (Choose String) -> Condition
 no' (Right c) = Negation c
--- FIXME
+no' (Left ()) = NegBoundary

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Twitterで飛んできたQ&amp;A</title>
+</head>
+<body>
+<div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
+akrantiain2のQ&amp;Aまとめ。作り終わった後に、「Togetterでよかったのでは？」と気づいた。
+<hr>
+
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> 識別子とSELECTの定義において、マニュアルでは「1個以上の文字列リテラル」を必ず3個書かなければいけないように見えるのですが、2個だったり4個だったりしても良いんですよね?</p>&mdash; Ziphil Shaleiras (@Ziphil) <a href="https://twitter.com/Ziphil/status/844535113497006080">2017年3月22日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> あっそこ補足し忘れてますね…何個でもOKです</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/844535859726594048">2017年3月22日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> 修正しました。片方を4個にしました。（根本的な解決になっていないが、自然言語を1行でも増やすとリパライン訳の負担がFafs氏にかかるので）</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/844538517225013248">2017年3月22日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<hr>
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">識別子とかの定義のところ、「1個以上の文字列リテラル」だった…。1個限定だと勝手に思っていた。</p>&mdash; Ziphil Shaleiras (@Ziphil) <a href="https://twitter.com/Ziphil/status/846396796716761088">2017年3月27日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> 今のところただ単に（Cのように）連結されるだけです。将来の仕様拡張を可能にするためだけに現状のような仕様となっています。</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/846397047427149824">2017年3月27日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> なるほど。では、「ident = &quot;a&quot; &quot;b&quot;」と定義された上での「ident &quot;c&quot; -&gt; /x/ /c/」も「&quot;ab&quot; &quot;c&quot; -&gt; /x/ /c/」と等価ですか?</p>&mdash; Ziphil Shaleiras (@Ziphil) <a href="https://twitter.com/Ziphil/status/846397249777119232">2017年3月27日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> はい。変数を使わない場合、それは(&quot;a&quot; &quot;b&quot;) &quot;c&quot; -&gt; /x/ /c/と書けます。一方、変換文で括弧外に直に書かれた文字列は結合されないので、&quot;a&quot; &quot;b&quot; &quot;c&quot; -&gt; /x/ /c/は数不一致エラーとなります。</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/846397697481326592">2017年3月27日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> 分かりました。ありがとうございます。</p>&mdash; Ziphil Shaleiras (@Ziphil) <a href="https://twitter.com/Ziphil/status/846397932634947584">2017年3月27日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<hr>
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> リンク先ツイートのように、選択肢の中に文字列リテラルだけでなく識別子が書けると便利だと思うんですが、実装の予定はありますか? ループ参照が怖いですが…。 <a href="https://t.co/wj0EKzyAtl">https://t.co/wj0EKzyAtl</a></p>&mdash; Ziphil Shaleiras (@Ziphil) <a href="https://twitter.com/Ziphil/status/847441230661156872">2017年3月30日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> 選択肢に識別子を許すというののみの変更ということですね。実装は昔したので特に問題はありません。<br>ループ参照は当然明示的にエラーを吐かせましょう。（というか昔のコードはちゃんと検出して吐いています）<br><br>さて、そのほかに、一つ決めておきたいことがあります。（続く）</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/847456692493205506">2017年3月30日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+「さて、そのほかに、一つ決めておきたいことがあります。（続く）」以降は未定の仕様についてなのでどうでもいい
+
+
+<hr>
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> 「abc」という文字列に「(&quot;a&quot; | &quot;ab&quot;) -&gt; /x/」を施す場合のように、カッコ内や識別子にマッチする部分が複数あり得る場合はどうなりますか?</p>&mdash; Ziphil Shaleiras (@Ziphil) <a href="https://twitter.com/Ziphil/status/846583233206661120">2017年3月28日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> 長くなるので順を追って説明します。</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/846583785613287424">2017年3月28日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> まず、これを変換するときには【4-4-2-2.「『文字列の集合とPHONEMEの対』のリスト」のとき】が適用されます。通過前のStat対配列をarrと書くと、「arrと[&quot;ab&quot;, &quot;a&quot;]という二つのリストを用いての二重ループ」が行われます。</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/846584528990756865">2017年3月28日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> それぞれの組み合わせについて変換関数が嚙まされ、新たなStat対配列が生まれますが、4-3.の2によりこのうちリストの後の方にある方が採用されます。つまり、(&quot;ab&quot; | &quot;a&quot;)と書くか(&quot;a&quot; | &quot;ab&quot;)と書くかによって挙動が変わってきます。</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/846585230693609472">2017年3月28日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> 意図してはいませんでしたが、仕様を見る限りそう解釈せざるを得ません。これは確かに非常に分かりにくいので、仕様書で具体例として解説しようと思います。的確な指摘、ありがとうございました。</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/846585531454566400">2017年3月28日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> なるほど、ありがとうございます。基本的に右側から調べるってことで大丈夫ですか?</p>&mdash; Ziphil Shaleiras (@Ziphil) <a href="https://twitter.com/Ziphil/status/846587761452756992">2017年3月28日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> 結論から言うとそうなりますね。</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/846589439673430016">2017年3月28日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<hr>
+
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> 変換規則の ( | )で1つ以上の文字列となってますが、いまのところひとつの繋げた文字列を指定するのと同じ効果ですかね？</p>&mdash; 炭酸ソーダ (@na2co3_ftw) <a href="https://twitter.com/na2co3_ftw/status/848898787133108224">2017年4月3日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/na2co3_ftw">@na2co3_ftw</a> はい、「そこは」その通りです。もちろん、&quot;a&quot; &quot;bc&quot; &quot;d&quot; -&gt; /a/ /bc/ /d/;では&quot;bc&quot;と&quot;d&quot;を繋げることができません。『しかし、』&quot;a&quot; (&quot;b&quot; &quot;c&quot;) &quot;d&quot; -&gt; /a/ /bc/ /d/;は可能で、bとcをつなげたものと同じです。</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/848899542204334081">2017年4月3日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> 左辺と右辺をばらばらに書いてる弊害って感じですねー</p>&mdash; 炭酸ソーダ (@na2co3_ftw) <a href="https://twitter.com/na2co3_ftw/status/848899735255564288">2017年4月3日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/na2co3_ftw">@na2co3_ftw</a> 実際、Haskellのコード内ではわざわざ左辺と右辺を対応させる処理があります。snoj jsonではまとめて書く表記にしようと考えています</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/848900182389383169">2017年4月3日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<hr>
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> akrantiain変換部解説の4-3.3 は「aの後ろに『bと変換規則をmatchに渡し返ってきたStat」を結合し、返す。」の間違いですか？</p>&mdash; 炭酸ソーダ (@na2co3_ftw) <a href="https://twitter.com/na2co3_ftw/status/849618546967560192">2017年4月5日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> あ、そんなことないですね合ってますね。</p>&mdash; 炭酸ソーダ (@na2co3_ftw) <a href="https://twitter.com/na2co3_ftw/status/849621246560018436">2017年4月5日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/na2co3_ftw">@na2co3_ftw</a> 仕様書の説明で合ってますね。 <a href="https://t.co/o5qwdK7fW8">pic.twitter.com/o5qwdK7fW8</a></p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/849621781694382081">2017年4月5日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<hr>
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">明示した方が良さそう <a href="https://t.co/MpxaaMz8FW">https://t.co/MpxaaMz8FW</a></p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/851776333285908480">2017年4月11日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> CASE_SENSITIVEのような環境指定文も有効範囲はそのモジュール内だけですか?</p>&mdash; Ziphil Shaleiras (@Ziphil) <a href="https://twitter.com/Ziphil/status/851776805350416384">2017年4月11日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/Ziphil">@Ziphil</a> はい。</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/851777183018176512">2017年4月11日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+  
+<hr>
+
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/sosoBOTpi">@sosoBOTpi</a> &quot;a&quot; -&gt; /A/; のようにセミコロンは不要なんですか？</p>&mdash; Ritchan(りっちゃん) (@aios_ciao) <a href="https://twitter.com/aios_ciao/status/851791122019909633">2017年4月11日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet" data-conversation="none" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/aios_ciao">@aios_ciao</a> 仕様書にある通り、改行が後続する場合はセミコロンを省略できます。</p>&mdash; .sozysozbot.@n足のわらじ (@sosoBOTpi) <a href="https://twitter.com/sosoBOTpi/status/851792895887556608">2017年4月11日</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+</body>
+</html>
+

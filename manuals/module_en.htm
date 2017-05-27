@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>akrantiain manual about modules (English)</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<style>
+</style>
+</head>
+<body>
+<div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
+<pre>
+Module definition:
+% foo { ... }
+% A =&gt; B { ... }
+
+&quot;...&quot; can be either:
+ - %% followed by a sequence of module followed by a semicolon
+    ex. %% foo &gt;&gt; (A =&gt; B =&gt; C) &gt;&gt; bar;
+ - normal sentences
+    ex. @CASE_SENSITIVE; a = &quot;a&quot; | &quot;A&quot;; a -&gt; /a/;
+
+<!--* a semicolon can be omitted if immediately followed by a } -->
+
+
+data Module = Module {moduleName :: ModuleName, insideModule :: InsideModule}
+data ModuleName = Arrow {before :: Identifier, after :: Identifier} | ModuleName Identifier
+data InsideModule = Sents [Sentence] | ModuleChain [ModuleName]
+
+Anything written outside the module definition syntax is regarded as the component of the implicit module, which is called &quot;_Main&quot; in, for example, error messages.
+(Note that users are forbidden by the lexer to start an identifier with an _)
+</pre>
+</body>
+</html>

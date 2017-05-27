@@ -1,4 +1,12 @@
 *.bat
+!make.bat
+!make_debug.bat
 *.hi
 *.o
 *.exe
+*.tmp
+debug1
+debug2
+akrantiain2
+debug3
+tester

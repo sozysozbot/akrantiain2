@@ -1,0 +1,9 @@
+.slash{color:#00aa44; font-family:monospace;}
+.string{color:#cc6600; font-family:monospace;}
+.identifier{color:#0000aa; font-family:monospace;}
+pre{line-height: 170%}
+div{padding: 0px 0px 0px 30px;}
+code{background-color:#f5f7f9; font-family:monospace;}
+code{padding:3px;margin:2px;}
+.untranslated{ background-color: #ffeeee; }
+.FIXME{ background-color: #ffeeee; }
