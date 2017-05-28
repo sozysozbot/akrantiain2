@@ -1,0 +1,14 @@
+Runtime error (error code #210)
+no rules that can handle character(s) {ü}, {ë}, {ä}, {é}, {á}
+Runtime error (error code #210)
+no rules that can handle character(s) {ï}, {í}, {'}, {é}, {š}, {é}, {ă}, {á}
+Runtime error (error code #210)
+no rules that can handle character(s) {ü}, {é}, {é}, {'}, {ï}, {é}
+Runtime error (error code #210)
+no rules that can handle character(s) {ë}, {ä}, {'}, {é}, {í}, {'}, {é}, {š}, {ä}, {í}, {'}, {é}, {š}, {ä}
+Runtime error (error code #210)
+no rules that can handle character(s) {é}, {é}, {ĭ}, {í}, {'}, {é}, {š}, {'}, {é}, {ö}
+Runtime error (error code #210)
+no rules that can handle character(s) {é}, {ó}, {é}, {ö}, {ú}, {ä}, {ú}, {'}, {ë}, {ë}
+Runtime error (error code #210)
+no rules that can handle character(s) {h}, {š}, {á}, {ä}, {á}
