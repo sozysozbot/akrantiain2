@@ -1,14 +1,21 @@
+[Right " ",Left "\252",Right " ",Right "m",Left "\235",Right "",Right "\626",Left "\228",Right "m",Right " ",Right "b\737",Left "\233",Right "",Right "j",Right "\643",Right "\601",Right "t\865s",Right "a",Right "\771",Right "t\865s",Right "a",Right "\771",Right "t\865s",Left "\225",Right " ",Right " "]
 Runtime error (error code #210)
 no rules that can handle character(s) {ü}, {ë}, {ä}, {é}, {á}
+[Right " ",Right "",Right "l",Left "\239",Right "p\737",Right "\601",Right "r",Left "\237",Left "'",Right "",Left "\233",Right "",Left "\353",Left "\233",Right "m",Right " ",Right "s",Right "a",Right "w",Left "\259",Right "p",Right "\601",Right "t\865s",Left "\225",Right "l",Right " ",Right " "]
 Runtime error (error code #210)
 no rules that can handle character(s) {ï}, {í}, {'}, {é}, {š}, {é}, {ă}, {á}
+[Right " ",Left "\252",Right " ",Right "s",Left "\233",Right "",Right "t\865s",Right "i",Right "\771",Right "t\865s",Right "a",Right "\771",Right " ",Right "k",Right "u",Right "\643",Left "\233",Right " ",Right "k",Right "u",Left "'",Right "r",Right "\601",Right "t\865s",Left "\239",Right "t\865s",Right "a",Right "\771",Right " ",Right "s",Left "\233",Right "",Right " ",Right " "]
 Runtime error (error code #210)
 no rules that can handle character(s) {ü}, {é}, {é}, {'}, {ï}, {é}
+[Right " ",Right "m",Left "\235",Right "",Right "\626",Left "\228",Right "t\865\643",Left "'",Right " ",Right "s",Left "\233",Right "",Right "t\865s",Right "a",Right "\771",Right "",Right " ",Right "l",Left "\237",Left "'",Right "",Left "\233",Right "",Left "\353",Right "\601",Right "t\865s",Left "\228",Right " ",Right "i",Right "\643",Right "k",Right "\720",Right "r",Left "\237",Left "'",Right "",Left "\233",Right "",Left "\353",Left "\228",Right "k",Right " ",Right " "]
 Runtime error (error code #210)
 no rules that can handle character(s) {ë}, {ä}, {'}, {é}, {í}, {'}, {é}, {š}, {ä}, {í}, {'}, {é}, {š}, {ä}
+[Right " ",Right "k",Right "u",Right "\643",Left "\233",Right " ",Right "b",Left "\233",Right "g",Right "r",Right "\601",Right "t\865s",Left "\301",Right " ",Right "i",Right "\643",Right "k",Right "\720",Right "r",Left "\237",Left "'",Right "",Left "\233",Right "",Left "\353",Right "t\865\643",Left "'",Right " ",Right "b",Right "a",Right "j",Right "\720",Right "t",Right "w",Right "\601",Right "t\865s",Left "\233",Right "t",Left "\246",Right " ",Right " "]
 Runtime error (error code #210)
 no rules that can handle character(s) {é}, {é}, {ĭ}, {í}, {'}, {é}, {š}, {'}, {é}, {ö}
+[Right " ",Left "\233",Right "\643",Right "\643",Left "\243",Right "t\865s",Left "\233",Right "t",Left "\246",Right " ",Left "\250",Right "",Right "",Right "d\865zn",Left "\228",Left "\250",Right "t\865\643",Left "'",Right " ",Right "m",Left "\235",Right "",Right "\626",Left "\235",Right "",Right " ",Right " "]
 Runtime error (error code #210)
 no rules that can handle character(s) {é}, {ó}, {é}, {ö}, {ú}, {ä}, {ú}, {'}, {ë}, {ë}
+[Right " ",Right "",Right "",Right "d",Right "o",Left "h",Right "o",Left "\353",Right "\601",Right "t\865s",Left "\225",Right "t\865s",Left "\228",Right "t\865s",Left "\225",Right " ",Right " "]
 Runtime error (error code #210)
 no rules that can handle character(s) {h}, {š}, {á}, {ä}, {á}
