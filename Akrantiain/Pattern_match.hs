@@ -15,6 +15,7 @@ import Akrantiain.NFD
 import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
+import Debug.Trace
 
 type StatElem = (String, Maybe String)
 type Stat = [StatElem]
@@ -46,7 +47,7 @@ cook (env,rls') str_ = do
        else (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " "))
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
- case lefts eitherList of
+ trace (show eitherList) $ case lefts eitherList of
   [] -> do
    let ans = dropTwo $ concat $ rights eitherList
    if USE_NFD `S.member` bools env then return $ nfc ans else return ans
