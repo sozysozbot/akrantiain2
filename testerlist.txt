@@ -4,3 +4,4 @@ zyepheng
 emptystring1
 asciiprintable_to_charcode
 base10_to_base2
+base3_to_base2
