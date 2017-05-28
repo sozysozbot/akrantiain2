@@ -7,3 +7,4 @@ base10_to_base2
 base3_to_base2
 emptystring2
 emptystring3
+module
