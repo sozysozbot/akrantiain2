@@ -40,6 +40,7 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls') str_ = do
+ trace ("rls':\n" ++ show rls')$ return "" 
  let str = if S.member USE_NFD (bools env) then nfd str_ else str_
  let (rls,stat) = 
       if CASE_SENSITIVE `S.member` bools env 
