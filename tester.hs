@@ -28,7 +28,7 @@ main = do
  args <- getArgs
  if "--verbose" `elem` args
   then f (filter (/="--verbose") args) `runReaderT` True
-  else f args `runReaderT` False
+  else f args `runReaderT` ("--create" `elem` args)
 
 f :: [String] -> ReaderT Bool IO ()
 f [] = lift $ do
@@ -36,10 +36,11 @@ f [] = lift $ do
     "Usage: ",
     "\t./tester --create [sample_names]",
     "\t./tester --check [sample_names]",
-    "\t./tester --check_from [file_name]"]
+    "\t./tester --check_from [file_name]",
+    "\t./tester --verbose (other options)",
+    "Note that --create automatically adds --verbose."]
    void getLine
 f ("--create":arr) = do
- bool <- ask
  forM_ arr $ \name -> do
    tell' $ "Creating the output sample for {" ++ name ++ "}..."
    call' $ 
@@ -52,7 +53,6 @@ f ["--check_from",filename] = do
 
 check :: [String] -> ReaderT Bool IO ()  
 check arr = do
- bool <- ask
  forM_ arr $ \name -> do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
    call' $ 
