@@ -181,7 +181,7 @@ quoted_string = do
   char '"'
   str <- many(noneOf "\\\"\n" <|> escapeSequence)
   char '"'
-  return $ Quote $ nfd str
+  return $ Quote $ nfd str 
 
 sentence :: Parser Sentence
 sentence = conversion <|> define <|> atsignOption
