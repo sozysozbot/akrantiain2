@@ -15,7 +15,6 @@ import Akrantiain.NFD
 import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
-import Debug.Trace
 
 type StatElem = (String, Maybe String)
 type Stat = [StatElem]
@@ -41,7 +40,6 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls'') str_ = do
  let rls' = if S.member USE_NFD (bools env) then map apply_nfds rls'' else rls''
- trace ("rls':\n" ++ show rls')$ return "" 
  let str = if S.member USE_NFD (bools env) then nfd str_ else str_
  let (rls,stat) = 
       if CASE_SENSITIVE `S.member` bools env 
@@ -49,7 +47,7 @@ cook (env,rls'') str_ = do
        else (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " "))
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
- trace (show eitherList) $ case lefts eitherList of
+ case lefts eitherList of
   [] -> do
    let ans = dropTwo $ concat $ rights eitherList
    if USE_NFD `S.member` bools env then return $ nfc ans else return ans
