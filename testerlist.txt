@@ -1,0 +1,11 @@
+lineparine
+lineparine2
+zyepheng
+emptystring1
+asciiprintable_to_charcode
+base10_to_base2
+base3_to_base2
+emptystring2
+emptystring3
+module
+diaresis

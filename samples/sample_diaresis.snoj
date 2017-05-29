@@ -1,0 +1,5 @@
+# single character
+("ë" | "ä") -> /b/;
+
+# combining diaresis
+("ë" | "ä") -> /c/;
