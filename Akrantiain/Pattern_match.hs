@@ -37,9 +37,12 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
  h (Ch arr) = Ch . map (map toLower) $ arr
 -- R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
 
+apply_nfds :: a -> a
+apply_nfds = id -- FIXME
 
 cook :: Rules -> String -> Either RuntimeError String
-cook (env,rls') str_ = do
+cook (env,rls'') str_ = do
+ let rls' = if S.member USE_NFD (bools env) then apply_nfds rls'' else rls''
  trace ("rls':\n" ++ show rls')$ return "" 
  let str = if S.member USE_NFD (bools env) then nfd str_ else str_
  let (rls,stat) = 
