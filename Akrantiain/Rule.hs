@@ -41,13 +41,14 @@ type Punctuation = [Char]
 data Environment = Env{pun :: Punctuation, bools :: Settings} deriving (Show, Eq, Ord)
 type Rules = (Environment,[Rule])
 
-data SettingSpecifier = CASE_SENSITIVE | FALL_THROUGH | USE_NFD deriving (Show, Eq, Ord)
+data SettingSpecifier = CASE_SENSITIVE | FALL_THROUGH | USE_NFD | PRESERVE_CASE deriving (Show, Eq, Ord)
 type Settings = S.Set SettingSpecifier
 
 toSettingSpecifier :: Identifier -> Maybe SettingSpecifier
 toSettingSpecifier (Id "CASE_SENSITIVE") = Just CASE_SENSITIVE
 toSettingSpecifier (Id "FALL_THROUGH") = Just FALL_THROUGH
 toSettingSpecifier (Id "USE_NFD") = Just USE_NFD
+toSettingSpecifier (Id "PRESERVE_CASE") = Just PRESERVE_CASE
 toSettingSpecifier _ = Nothing
 
 isSpPunct :: Punctuation -> String -> Bool
