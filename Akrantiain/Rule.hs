@@ -13,11 +13,15 @@ module Akrantiain.Rule
 ,SettingSpecifier(..)
 ,Settings
 ,toSettingSpecifier
+,apply_nfds
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
 import qualified Data.Set as S
 import Data.Char(isSpace)
+
+apply_nfds :: Rule -> Rule
+apply_nfds = id -- FIXME
 
 data Rule = R{leftneg :: Maybe Condition, middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe Condition} deriving (Show, Eq, Ord)
 data W = W String | Dollar_  deriving (Show, Eq, Ord)
