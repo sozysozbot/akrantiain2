@@ -27,6 +27,8 @@ data Sentence = Left' Conversion | Middle' Identifier | Right' Define deriving(S
 data Conversion = Conversion {mid::Array Select, phons:: Array Phoneme, lneg ::Maybe Select, rneg::Maybe Select} deriving(Show, Eq, Ord)
 data Define = Define Identifier (Choose Quote) deriving(Show, Eq, Ord)
 
+instance (Functor Choose) where
+ fmap f (Ch list) = Ch(map f list)
 
 class ToSource a where
  toSource :: a -> String

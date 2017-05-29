@@ -13,7 +13,6 @@ import Data.Maybe (catMaybes)
 import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Akrantiain.Modules
-import Akrantiain.NFD
 import Numeric
 
 ---- parsing modules -----
@@ -102,7 +101,7 @@ slash_string = do
   char '/'
   str <- many(noneOf "\\/\n" <|> escapeSequence)
   char '/'
-  return $ Slash $ nfd str
+  return $ Slash str
 
 identifier :: Parser Identifier
 identifier = fmap Id $ (:) <$> letter <*> many (alphaNum <|> char '_')
@@ -181,7 +180,7 @@ quoted_string = do
   char '"'
   str <- many(noneOf "\\\"\n" <|> escapeSequence)
   char '"'
-  return $ Quote $ nfd str
+  return $ Quote str 
 
 sentence :: Parser Sentence
 sentence = conversion <|> define <|> atsignOption

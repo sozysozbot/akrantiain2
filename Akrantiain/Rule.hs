@@ -13,11 +13,25 @@ module Akrantiain.Rule
 ,SettingSpecifier(..)
 ,Settings
 ,toSettingSpecifier
+,apply_nfds
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
 import qualified Data.Set as S
 import Data.Char(isSpace)
+import Akrantiain.NFD
+
+apply_nfds :: Rule -> Rule
+apply_nfds R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map (fmap g) m, rightneg=fmap f r} 
+ where
+  f :: Condition -> Condition
+  f NegBoundary = NegBoundary
+  f (Negation cs) = Negation (h cs)
+  g :: (Choose String, W) -> (Choose String, W)
+  g (a,b) = (h a,b')
+   where b' = case b of{Dollar_ -> Dollar_; W str -> W (nfd str);}
+  h :: Choose String -> Choose String
+  h = fmap nfd
 
 data Rule = R{leftneg :: Maybe Condition, middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe Condition} deriving (Show, Eq, Ord)
 data W = W String | Dollar_  deriving (Show, Eq, Ord)
