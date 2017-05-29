@@ -13,6 +13,8 @@ table.stat td { border-color : orange;
      text-align:center;
 }
 
+table.foobar td { border: 1px solid gray; padding: 5px; }
+
 </style>
 </head>
 <body>
@@ -36,8 +38,11 @@ table.stat td { border-color : orange;
 <!-- ソースコード中の`cook` -->
 <ol style="font-family:monospace; line-height: 170%" start="0">
 <li>環境指定識別子<code><span class="identifier">USE_NFD</span></code>が指定されていれば、変換規則の入力部・変換規則の出力部・入力文字列をUnicode正規化形式のNFDで分解する。</li>
-<li>
-        環境指定識別子<code><span class="identifier">CASE_SENSITIVE</span></code>が指定されていなければ、変換規則の入力部と入力文字列を小文字に変換する。
+<li><table class="foobar">
+<tr><td></td><td><code><span class="identifier">CASE_SENSITIVE</span></code>あり</td><td><code><span class="identifier">CASE_SENSITIVE</span></code>なし</td></tr>
+<tr><td><code><span class="identifier">PRESERVE_CASE</span></code>あり</td><td rowspan="2">特に何もしない</td><td><span class="FIXME"><strong style="font-size:300%;">FIXME</strong></span></td></tr>
+<tr><td><code><span class="identifier">PRESERVE_CASE</span></code>なし</td><td>変換規則の入力部と入力文字列を小文字に変換する</td></tr>
+</table>
 </li>
 <li>
         入力文字列の先頭と末尾にスペースを付加し、1文字ずつ分割し（1文字と未定義値の対）のリストとしてStatに変換する

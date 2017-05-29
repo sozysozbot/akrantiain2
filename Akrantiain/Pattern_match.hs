@@ -2,7 +2,7 @@
 module Akrantiain.Pattern_match
 (cook
 ) where
-import Prelude hiding (undefined)
+import Prelude 
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(toLower)
@@ -44,7 +44,9 @@ cook (env,rls'') str_ = do
  let (rls,stat) = 
       if CASE_SENSITIVE `S.member` bools env 
        then (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " "))-- extra spaces required for handling word boundary
-       else (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " "))
+       else if PRESERVE_CASE `S.member` bools env 
+        then undefined -- FIXME
+        else (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " "))
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
