@@ -1,0 +1,3 @@
+rls':
+[R {leftneg = Nothing, middle = [Right (Ch ["e\776","a\776"],W "b")], rightneg = Nothing},R {leftneg = Nothing, middle = [Right (Ch ["e\776","a\776"],W "c")], rightneg = Nothing}]
+[Right " ",Right " "]
