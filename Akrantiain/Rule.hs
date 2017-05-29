@@ -21,7 +21,12 @@ import qualified Data.Set as S
 import Data.Char(isSpace)
 
 apply_nfds :: Rule -> Rule
-apply_nfds = id -- FIXME
+apply_nfds R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map (fmap g) m, rightneg=fmap f r} 
+ where
+  f :: Condition -> Condition
+  f = id -- FIXME
+  g :: (Choose String, W) -> (Choose String, W)
+  g = id -- FIXME
 
 data Rule = R{leftneg :: Maybe Condition, middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe Condition} deriving (Show, Eq, Ord)
 data W = W String | Dollar_  deriving (Show, Eq, Ord)
