@@ -36,8 +36,8 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
  h (Ch arr) = Ch . map (map toLower) $ arr
 -- R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
 
-convertAndSplit :: (Char -> t) -> [Char] -> [([t], Maybe a)]
-convertAndSplit f str = map (\x -> ([f x], Nothing)) (" " ++ str ++ " ") -- extra spaces required for handling word boundary
+convertAndSplit :: (String -> [t]) -> String -> [([t], Maybe a)]
+convertAndSplit f str = map (\x -> ([x], Nothing)) $ f (" " ++ str ++ " ") -- extra spaces required for handling word boundary
 
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls'') str_ = do
@@ -48,7 +48,7 @@ cook (env,rls'') str_ = do
        then (rls', convertAndSplit id str)
        else if PRESERVE_CASE `S.member` bools env 
         then undefined -- FIXME
-        else (map insensitive rls', convertAndSplit toLower str)
+        else (map insensitive rls', convertAndSplit (map toLower) str)
  let cooked = cook' rls stat `runReader` env
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
