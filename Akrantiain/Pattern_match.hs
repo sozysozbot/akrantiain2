@@ -16,7 +16,7 @@ import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
 
-data Environment' = Identity{getEnv :: Environment} deriving(Ord,Eq,Show)
+data Environment' = Wrap{sensitivity :: Bool, getEnv :: Environment} deriving(Ord,Eq,Show)
 
 
 type StatElem = (String, Maybe String)
@@ -47,13 +47,13 @@ cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls'') str_ = do
  let rls' = if S.member USE_NFD (bools env) then map apply_nfds rls'' else rls''
  let str = if S.member USE_NFD (bools env) then nfd str_ else str_
- let (rls,stat) = 
+ let (sensitive_match,rls,stat) = 
       if CASE_SENSITIVE `S.member` bools env 
-       then (rls', convertAndSplit id str)
+       then (True, rls', convertAndSplit id str)
        else if PRESERVE_CASE `S.member` bools env 
-        then undefined -- FIXME
-        else (map insensitive rls', convertAndSplit (map toLower) str)
- let cooked = cook' rls stat `runReader` (Identity env)
+        then (False, undefined, undefined) -- FIXME
+        else (True, map insensitive rls', convertAndSplit (map toLower) str)
+ let cooked = cook' rls stat `runReader` (Wrap sensitive_match env)
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
   [] -> do
