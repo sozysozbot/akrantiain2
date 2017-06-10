@@ -146,10 +146,17 @@ testPattern w (front, back) pat = do
    return (rev2 $ drop(length taken')front', (pat,Just w') : back)
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
--- String -> Stat -> Maybe Stat
-takeTill :: (Eq b) => [b] -> [([b],a)] -> Maybe [([b], a)]
+takeTill :: String -> Stat -> Maybe Stat
 takeTill [] _ = Just []
 takeTill _ [] = Nothing
 takeTill str (x@(s,_):xs)
- | s `isPrefixOf` str = (x:) <$> takeTill (drop(length s)str) xs
+ | (isPrefixOf2 True) s str = (x:) <$> takeTill (drop(length s)str) xs
  | otherwise = Nothing
+
+-- bool: true if case sensitive
+isPrefixOf2 :: Bool -> String -> String -> Bool
+isPrefixOf2 True  = isPrefixOf
+isPrefixOf2 False = \a b -> (map toLower a) `isPrefixOf` (map toLower b)
+
+
+
