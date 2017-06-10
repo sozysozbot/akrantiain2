@@ -115,8 +115,9 @@ match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = do
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
 
 match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
+ sensitive <- sensitivity <$> ask
  newMatch <- match k{middle=xs} stat
- return $ catMaybes [testPattern w fb pat | fb <- newMatch, pat <- pats]
+ return $ catMaybes [testPattern sensitive w fb pat | fb <- newMatch, pat <- pats]
 match k@R{leftneg=Nothing, middle=Left():xs} stat = do
  newMatch <- match k{middle=xs} stat
  env <- getEnv <$> ask
@@ -138,11 +139,11 @@ match k@R{leftneg=Just condition} stat = do
 
 
 
-testPattern :: W -> StatPair -> String -> Maybe StatPair
-testPattern w (front, back) pat = do
+testPattern :: Bool -> W -> StatPair -> String -> Maybe StatPair
+testPattern sensitive w (front, back) pat = do
  let front' = rev2 front
  let pat' = reverse pat
- taken <- takeTill pat' front'
+ taken <- (takeTill sensitive) pat' front'
  let taken' = rev2 taken
  case w of
   W w' -> do
@@ -150,11 +151,11 @@ testPattern w (front, back) pat = do
    return (rev2 $ drop(length taken')front', (pat,Just w') : back)
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
-takeTill :: String -> Stat -> Maybe Stat
-takeTill [] _ = Just []
-takeTill _ [] = Nothing
-takeTill str (x@(s,_):xs)
- | (isPrefixOf2 True) s str = (x:) <$> takeTill (drop(length s)str) xs
+takeTill :: Bool -> String -> Stat -> Maybe Stat
+takeTill _ [] _ = Just []
+takeTill _ _ [] = Nothing
+takeTill sensitive str (x@(s,_):xs)
+ | (isPrefixOf2 sensitive) s str = (x:) <$> (takeTill sensitive) (drop(length s)str) xs
  | otherwise = Nothing
 
 -- bool: true if case sensitive
