@@ -16,13 +16,13 @@ import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
 
-newtype Identity a = Identity{runIdentity :: a} deriving(Ord,Eq,Show)
+data Environment' = Identity{getEnv :: Environment} deriving(Ord,Eq,Show)
 
 
 type StatElem = (String, Maybe String)
 type Stat = [StatElem]
 type StatPair = (Stat, Stat)
-type Environment' = Identity Environment
+
 
 resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
@@ -109,7 +109,7 @@ match :: Rule -> Stat -> Reader Environment' [StatPair]
 match R{leftneg=Nothing, middle =[], rightneg=Nothing} stat = return $ cutlist stat
 
 match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = do
- env <- runIdentity <$> ask
+ env <- getEnv <$> ask
  let punct = pun env
  return $ filter (f punct) $ cutlist stat where
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
@@ -119,7 +119,7 @@ match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
  return $ catMaybes [testPattern w fb pat | fb <- newMatch, pat <- pats]
 match k@R{leftneg=Nothing, middle=Left():xs} stat = do
  newMatch <- match k{middle=xs} stat
- env <- runIdentity <$> ask
+ env <- getEnv <$> ask
  return $ mapMaybe (h env) newMatch where
  h env (front, back) = do
   let front' = reverse front
@@ -131,7 +131,7 @@ match k@R{leftneg=Nothing, middle=Left():xs} stat = do
 
 match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat
- env <- runIdentity <$> ask
+ env <- getEnv <$> ask
  let punct = pun env
  let f (front, _) = upgrade2 (unCond condition punct) $ concatMap fst front
  return $ filter f newMatch
