@@ -16,9 +16,13 @@ import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
 
+newtype Identity a = Identity{runIdentity :: a} deriving(Ord,Eq,Show)
+
+
 type StatElem = (String, Maybe String)
 type Stat = [StatElem]
 type StatPair = (Stat, Stat)
+type Environment' = Identity Environment
 
 resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
@@ -49,7 +53,7 @@ cook (env,rls'') str_ = do
        else if PRESERVE_CASE `S.member` bools env 
         then undefined -- FIXME
         else (map insensitive rls', convertAndSplit (map toLower) str)
- let cooked = cook' rls stat `runReader` env
+ let cooked = cook' rls stat `runReader` (Identity env)
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
   [] -> do
@@ -63,11 +67,11 @@ dropTwo :: String -> String
 dropTwo = dropOne . reverse . dropOne . reverse
  where dropOne = \(' ':xs) -> xs -- GUARANTEED TO BE SAFE
 
-cook' :: [Rule] -> Stat -> Reader Environment Stat
+cook' :: [Rule] -> Stat -> Reader Environment' Stat
 cook' rls stat = foldM apply stat rls
 
 -- merge is allowed, split is not
-apply :: Stat -> Rule -> Reader Environment Stat
+apply :: Stat -> Rule -> Reader Environment' Stat
 apply stat rule = do
  frontback_array <- match rule stat
  case frontback_array of
@@ -100,12 +104,12 @@ unCond (Negation c) = \_ -> no c
 unCond NegBoundary = \punct str -> not(isSpPunct punct str)
 
 
-match :: Rule -> Stat -> Reader Environment [StatPair]
+match :: Rule -> Stat -> Reader Environment' [StatPair]
 
 match R{leftneg=Nothing, middle =[], rightneg=Nothing} stat = return $ cutlist stat
 
 match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = do
- env <- ask
+ env <- runIdentity <$> ask
  let punct = pun env
  return $ filter (f punct) $ cutlist stat where
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
@@ -115,7 +119,7 @@ match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
  return $ catMaybes [testPattern w fb pat | fb <- newMatch, pat <- pats]
 match k@R{leftneg=Nothing, middle=Left():xs} stat = do
  newMatch <- match k{middle=xs} stat
- env <- ask
+ env <- runIdentity <$> ask
  return $ mapMaybe (h env) newMatch where
  h env (front, back) = do
   let front' = reverse front
@@ -127,7 +131,7 @@ match k@R{leftneg=Nothing, middle=Left():xs} stat = do
 
 match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat
- env <- ask
+ env <- runIdentity <$> ask
  let punct = pun env
  let f (front, _) = upgrade2 (unCond condition punct) $ concatMap fst front
  return $ filter f newMatch
