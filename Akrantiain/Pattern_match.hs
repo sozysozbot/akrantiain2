@@ -51,8 +51,8 @@ cook (env,rls'') str_ = do
       if CASE_SENSITIVE `S.member` bools env 
        then (True, rls', convertAndSplit id str)
        else if PRESERVE_CASE `S.member` bools env 
-        then (False, undefined, undefined) -- FIXME
-        else (True, map insensitive rls', convertAndSplit (map toLower) str)
+        then (False, rls', convertAndSplit id str)
+        else (False, map insensitive rls', convertAndSplit (map toLower) str)
  let cooked = cook' rls stat `runReader` (Wrap sensitive_match env)
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
