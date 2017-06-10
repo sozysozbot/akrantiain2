@@ -1,0 +1,69 @@
+# RR transcription (reverse)
+# only handles single hanja syllable
+# URL: https://en.wikipedia.org/wiki/Revised_Romanization_of_Korean
+
+% jamo => ja2 {
+	v = "a" | "e" | "i" | "o" | "u" | "y" | "w";
+
+@USE_NFD;
+	# choseong
+	"kk" v -> /ᄁ/ $
+	"tt" v -> /ᄄ/ $
+	"pp" v -> /ᄈ/ $
+	"ss" v -> /ᄊ/ $
+	"jj" v -> /ᄍ/ $
+	"ch" v -> /ᄎ/ $
+	"g"  v -> /ᄀ/ $
+	"n"  v -> /ᄂ/ $
+	"d"  v -> /ᄃ/ $
+	"r"  v -> /ᄅ/ $
+	"m"  v -> /ᄆ/ $
+	"b"  v -> /ᄇ/ $
+	"s"  v -> /ᄉ/ $
+	"j"  v -> /ᄌ/ $
+	"k"  v -> /ᄏ/ $
+	"t"  v -> /ᄐ/ $
+	"p"  v -> /ᄑ/ $
+	"h"  v -> /ᄒ/ $
+	^ ""   v -> /ᄋ/ $
+
+
+	v "ng"-> $ /ᆼ/
+	v "k" -> $ /ᆨ/
+	v "n" -> $ /ᆫ/
+	v "l" -> $ /ᆯ/
+	v "m" -> $ /ᆷ/
+	v "p" -> $ /ᆸ/
+	v "j" -> $ /ᆽ/
+	
+
+	# jungseong
+	"yae"-> /ᅤ/
+	"wae"-> /ᅫ/
+	"ae" -> /ᅢ/
+	"ya" -> /ᅣ/
+	"wa" -> /ᅪ/
+	
+	"yeo"-> /ᅧ/
+	"ye" -> /ᅨ/
+	"yo" -> /ᅭ/
+	"eo" -> /ᅥ/
+	"oe" -> /ᅬ/
+	
+	"wo" -> /ᅯ/
+	"we" -> /ᅰ/
+	"wi" -> /ᅱ/
+	"yu" -> /ᅲ/
+	"eu" -> /ᅳ/
+	"ui" -> /ᅴ/
+
+	"a"  -> /ᅡ/
+	"e"  -> /ᅦ/
+	"i"  -> /ᅵ/
+	"o"  -> /ᅩ/
+	"u"  -> /ᅮ/
+
+
+}
+
+%% jamo => ja2;
