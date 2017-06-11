@@ -2,7 +2,7 @@
 module Akrantiain.Pattern_match
 (cook
 ) where
-import Prelude 
+import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(toLower)
@@ -22,7 +22,6 @@ data Environment' = Wrap{sensitivity :: Bool, getEnv :: Environment} deriving(Or
 type StatElem = (String, Maybe String)
 type Stat = [StatElem]
 type StatPair = (Stat, Stat)
-
 
 resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
