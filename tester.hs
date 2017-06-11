@@ -40,8 +40,7 @@ f [] = lift $ do
     "\t./tester --verbose (other options)",
     "Note that --create automatically adds --verbose."]
    void getLine
-f ("--create":arr) = do
- forM_ arr $ \name -> do
+f ("--create":arr) = forM_ arr $ \name -> do
    tell' $ "Creating the output sample for {" ++ name ++ "}..."
    call' $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
@@ -59,7 +58,7 @@ check arr = do
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
    lift $ callCommand ("diff samples/.output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
    tell' $ "Finished checking the output of sample {" ++ name ++ "}."
- lift $ hPutStrLn stderr $ "Finished checking all cases."
+ lift $ hPutStrLn stderr "Finished checking all cases."
 
 foo :: String -> E.IOException -> IO a
 foo name e = do
