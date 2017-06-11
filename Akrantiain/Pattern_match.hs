@@ -2,7 +2,7 @@
 module Akrantiain.Pattern_match
 (cook
 ) where
-import Prelude hiding (undefined)
+import Prelude 
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(toLower)
@@ -16,9 +16,13 @@ import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
 
+data Environment' = Wrap{sensitivity :: Bool, getEnv :: Environment} deriving(Ord,Eq,Show)
+
+
 type StatElem = (String, Maybe String)
 type Stat = [StatElem]
 type StatPair = (Stat, Stat)
+
 
 resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
@@ -36,16 +40,20 @@ insensitive R{leftneg=l, middle=m, rightneg=r} = R{leftneg=fmap f l, middle=map(
  h (Ch arr) = Ch . map (map toLower) $ arr
 -- R{leftneg :: Maybe(Condition), middle :: [ Either Boundary_ (Choose String, W)], rightneg :: Maybe(Condition)}
 
+convertAndSplit :: (String -> [t]) -> String -> [([t], Maybe a)]
+convertAndSplit f str = map (\x -> ([x], Nothing)) $ f (" " ++ str ++ " ") -- extra spaces required for handling word boundary
 
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls'') str_ = do
  let rls' = if S.member USE_NFD (bools env) then map apply_nfds rls'' else rls''
  let str = if S.member USE_NFD (bools env) then nfd str_ else str_
- let (rls,stat) = 
+ let (sensitive_match,rls,stat) = 
       if CASE_SENSITIVE `S.member` bools env 
-       then (rls', map (\x -> ([x], Nothing)) (" " ++ str ++ " "))-- extra spaces required for handling word boundary
-       else (map insensitive rls', map (\x -> ([toLower x], Nothing)) (" " ++ str ++ " "))
- let cooked = cook' rls stat `runReader` env
+       then (True, rls', convertAndSplit id str)
+       else if PRESERVE_CASE `S.member` bools env 
+        then (False, rls', convertAndSplit id str)
+        else (False, map insensitive rls', convertAndSplit (map toLower) str)
+ let cooked = cook' rls stat `runReader` (Wrap sensitive_match env)
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
   [] -> do
@@ -59,11 +67,11 @@ dropTwo :: String -> String
 dropTwo = dropOne . reverse . dropOne . reverse
  where dropOne = \(' ':xs) -> xs -- GUARANTEED TO BE SAFE
 
-cook' :: [Rule] -> Stat -> Reader Environment Stat
+cook' :: [Rule] -> Stat -> Reader Environment' Stat
 cook' rls stat = foldM apply stat rls
 
 -- merge is allowed, split is not
-apply :: Stat -> Rule -> Reader Environment Stat
+apply :: Stat -> Rule -> Reader Environment' Stat
 apply stat rule = do
  frontback_array <- match rule stat
  case frontback_array of
@@ -96,22 +104,23 @@ unCond (Negation c) = \_ -> no c
 unCond NegBoundary = \punct str -> not(isSpPunct punct str)
 
 
-match :: Rule -> Stat -> Reader Environment [StatPair]
+match :: Rule -> Stat -> Reader Environment' [StatPair]
 
 match R{leftneg=Nothing, middle =[], rightneg=Nothing} stat = return $ cutlist stat
 
 match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = do
- env <- ask
+ env <- getEnv <$> ask
  let punct = pun env
  return $ filter (f punct) $ cutlist stat where
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
 
 match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
+ sensitive <- sensitivity <$> ask
  newMatch <- match k{middle=xs} stat
- return $ catMaybes [testPattern w fb pat | fb <- newMatch, pat <- pats]
+ return $ catMaybes [testPattern sensitive w fb pat | fb <- newMatch, pat <- pats]
 match k@R{leftneg=Nothing, middle=Left():xs} stat = do
  newMatch <- match k{middle=xs} stat
- env <- ask
+ env <- getEnv <$> ask
  return $ mapMaybe (h env) newMatch where
  h env (front, back) = do
   let front' = reverse front
@@ -123,18 +132,18 @@ match k@R{leftneg=Nothing, middle=Left():xs} stat = do
 
 match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat
- env <- ask
+ env <- getEnv <$> ask
  let punct = pun env
  let f (front, _) = upgrade2 (unCond condition punct) $ concatMap fst front
  return $ filter f newMatch
 
 
 
-testPattern :: W -> StatPair -> String -> Maybe StatPair
-testPattern w (front, back) pat = do
+testPattern :: Bool -> W -> StatPair -> String -> Maybe StatPair
+testPattern sensitive w (front, back) pat = do
  let front' = rev2 front
  let pat' = reverse pat
- taken <- takeTill pat' front'
+ taken <- (takeTill sensitive) pat' front'
  let taken' = rev2 taken
  case w of
   W w' -> do
@@ -142,10 +151,17 @@ testPattern w (front, back) pat = do
    return (rev2 $ drop(length taken')front', (pat,Just w') : back)
   Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
--- String -> Stat -> Maybe Stat
-takeTill :: (Eq b) => [b] -> [([b],a)] -> Maybe [([b], a)]
-takeTill [] _ = Just []
-takeTill _ [] = Nothing
-takeTill str (x@(s,_):xs)
- | s `isPrefixOf` str = (x:) <$> takeTill (drop(length s)str) xs
+takeTill :: Bool -> String -> Stat -> Maybe Stat
+takeTill _ [] _ = Just []
+takeTill _ _ [] = Nothing
+takeTill sensitive str (x@(s,_):xs)
+ | (isPrefixOf2 sensitive) s str = (x:) <$> (takeTill sensitive) (drop(length s)str) xs
  | otherwise = Nothing
+
+-- bool: true if case sensitive
+isPrefixOf2 :: Bool -> String -> String -> Bool
+isPrefixOf2 True  = isPrefixOf
+isPrefixOf2 False = \a b -> (map toLower a) `isPrefixOf` (map toLower b)
+
+
+
