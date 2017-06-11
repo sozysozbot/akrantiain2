@@ -1,0 +1,12 @@
+% bar {
+@FALL_THROUGH; @PRESERVE_CASE;
+        "z" -> /a/;
+}
+% A => B {@FALL_THROUGH; @PRESERVE_CASE;"a" -> /b/;}
+% B => C {@FALL_THROUGH; @PRESERVE_CASE;"b" -> /c/;}
+% foo {@FALL_THROUGH; @PRESERVE_CASE;"c" -> /d/;}
+% foobaz {
+        %% foo >> baz;
+}
+% baz {@FALL_THROUGH; @PRESERVE_CASE;"d" -> /e/;}
+%% bar >> (A => B => C) >> foobaz;
