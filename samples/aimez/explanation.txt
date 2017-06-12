@@ -3,3 +3,6 @@ latin.txt    =======RRreverse1.snoj======>        hangul.txt
 latin.txt    =======RRreverse2.snoj======> ideal: hangul.txt    reality: foo4.txt
 latin.txt    =======RRreverse3.snoj======>        head_cut.txt
 latin.txt    =======RRreverse4.snoj======> ideal: head_cut.txt  reality: foo2.txt
+
+aimez.txt    ========sample_aimez========>        aimez_res.txt
+aimez.txt    =====sample_aimez_buggy=====> ideal: aimez_res.txt reality: (2>) aimez_buggy_err.txt
