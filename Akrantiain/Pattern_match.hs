@@ -103,15 +103,35 @@ unCond (Negation c) = \_ -> no c
 unCond NegBoundary = \punct str -> not(isSpPunct punct str)
 
 
+hoo :: Environment -> StatPair -> Maybe StatPair
+hoo env (front, back) = do
+  let front' = reverse front
+  let punct = pun env
+  let tmp = map(isSpPunct punct) $ filter (/="") $ map fst front'
+  guard $ null tmp || head tmp
+  let (b', f'') = span (isSpPunct punct . fst) front'
+  return (reverse f'', reverse b' ++ back)
+
 match :: Rule -> Stat -> Reader Environment' [StatPair]
 
-match R{leftneg=Nothing, middle =[], rightneg=Nothing} stat = return $ cutlist stat
+match R{leftneg=Nothing, middle =[], rightdollar=[], rightneg=Nothing} stat = return $ cutlist stat
 
-match R{leftneg=Nothing, middle=[], rightneg=Just condition} stat = do
+match R{leftneg=Nothing, middle=[], rightdollar=[], rightneg=Just condition} stat = do
  env <- getEnv <$> ask
  let punct = pun env
  return $ filter (f punct) $ cutlist stat where
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
+
+match k@R{leftneg=Nothing, middle=[], rightdollar = Right(Ch pats,w):xs} stat =  do
+ sensitive <- sensitivity <$> ask
+ newMatch <- match k{rightdollar=xs} stat
+ return $ catMaybes [testPattern sensitive w fb pat | fb <- newMatch, pat <- pats]
+match k@R{leftneg=Nothing, middle=[], rightdollar = Left():xs} stat = do
+ newMatch <- match k{rightdollar=xs} stat
+ env <- getEnv <$> ask
+ return $ mapMaybe (hoo env) newMatch
+
+
 
 match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
  sensitive <- sensitivity <$> ask
@@ -120,14 +140,7 @@ match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
 match k@R{leftneg=Nothing, middle=Left():xs} stat = do
  newMatch <- match k{middle=xs} stat
  env <- getEnv <$> ask
- return $ mapMaybe (h env) newMatch where
- h env (front, back) = do
-  let front' = reverse front
-  let punct = pun env
-  let tmp = map(isSpPunct punct) $ filter (/="") $ map fst front'
-  guard $ null tmp || head tmp
-  let (b', f'') = span (isSpPunct punct . fst) front'
-  return (reverse f'', reverse b' ++ back)
+ return $ mapMaybe (hoo env) newMatch
 
 match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat
