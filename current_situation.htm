@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>akrantiain変換部の仕様</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<style>
+table.stat { border-spacing: 7px 1px; }
+table.stat td { border-color : orange;
+     border-width : 2px;
+     border-style : solid;
+     padding : 4px;
+     text-align:center;
+}
+
+table.foobar td { border: 1px solid gray; padding: 5px; }
+
+.quote { background-color:#dddddd; margin: 0 0 0 35px; padding: 0 15px;}
+</style>
+</head>
+<body>
+
+
+<pre>
+現状:
+    non-dollar要求 (errNum 336)
+      => 最左端・最右端の$については特殊な判定を行えば良い
+      => Condition風の判定をすればよい
+
+    aimezバグの原因は？
+      => sample_aimez_buggyにおいて、2行目の`"ez" ^ -> /e/;`によって "ez"というStat素が構成されているので、それが4行目 ` "m" ("a" | "e" | "i" | "o" | "u" | "y") -> /m/ $` の判定に引っかからない
+    なぜ引っかからない？
+      => 仕様書の4-4-2-2.を見てみよう。
+</pre>
+
+<div class="quote">
+
+<h5>4-4-2-2.「『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」のとき</h5>
+<pre>まず、「変換関数」<!-- ソースコード中の`testPattern` -->を定義する。変換関数は、「<code><u>PHONEME</u></code>」「パターン文字列」「Stat対」を受け取り、「Stat対」を返したり返さなかったりする関数である。（「Stat対または未定義値」を返す、と言ってもよい）
+「Stat対のfstの後ろからk個のStat素を削り落とすと、その削り落としたところのconcatがパターン文字列と一致する」となるようなkが存在しないなら未定義値を返す。
+<span class="FIXME" title="空文字列があって、kが複数ありうる場合は？">存在するならば</span>、
+</pre>
+<ul style="font-family:monospace; line-height:170%">
+<li><code><u>PHONEME</u></code>が<code>$</code>である場合
+<ul><li>Stat対のfstの後ろからk個のStat素を削り落とし、Stat対のsndの先頭にくっつける。そしてそれを返す。</li></ul></li>
+<li><code><u>PHONEME</u></code>が文字列である場合
+<ol><li>Stat対のfstの後ろからk個のStat素を削り落とす。</li>
+<li>そのk個のStat素のそれぞれのsndが全て未定義値である場合、Stat対のsndの先頭に「パターン文字列と<code><u>PHONEME</u></code>の対」をくっつけ、それを返す。さもなくば未定義値を返す。</li>
+</ol>
+</li>
+</ul>
+
+<pre>
+具体例を見てみよう。
+まず、<code><u>PHONEME</u></code>が<code>$</code>である場合。パターン文字列が<code><span class="string">"a"</span></code>、Stat対が次のようなものであるときを考える。
+</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"c"</td> <td>"a"</td> <td>"n"</td> <td>"a"</td> </tr>
+        <tr><td>null</td><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"l"</td></tr>
+        <tr><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>
+この時、Stat対のfstの後ろから1個のStat素を削り落とすと、その削り落としたところのconcatは"a"であり、パターン文字列と一致する。
+ゆえに、変換関数は以下のStat対を返す。
+</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"c"</td> <td>"a"</td> <td>"n"</td> </tr>
+        <tr><td>null</td><td>null</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"a"</td> <td>"l"</td></tr>
+        <tr><td>null</td><td>null</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+
+</div>
+
+<pre>
+要するに、 <code>"m" ("a" | "e" | "i" | "o" | "u" | "y") -> /m/ $</code> の<code>$</code>通過後に、
+</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"ai"</td> <td>"m"</td> </tr>
+        <tr><td>"ɛ"</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"ez"</td></tr>
+        <tr><td>"e"</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>があってほしい。ただ、<code>"m" ("a" | "e" | "i" | "o" | "u" | "y") !"q" -> /m/ $</code> の<code>$</code>通過後にも</pre>
+</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"ai"</td> <td>"m"</td> </tr>
+        <tr><td>"ɛ"</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"ez"</td></tr>
+        <tr><td>"e"</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>があってほしいし、逆に<code>"m" ("a" | "e" | "i" | "o" | "u" | "y") !"z" -> /m/ $</code> の<code>$</code>通過後には</pre>
+</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"ai"</td> <td>"m"</td> </tr>
+        <tr><td>"ɛ"</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"ez"</td></tr>
+        <tr><td>"e"</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>があってほしくない。</pre>
+</body>
+</html>
+
+
+
