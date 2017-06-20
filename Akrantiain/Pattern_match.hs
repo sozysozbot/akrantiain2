@@ -114,31 +114,40 @@ handleBoundary env (front, back) = do
 
 match :: Rule -> Stat -> Reader Environment' [StatPair]
 
-match R{leftneg=Nothing, middle =[], rightdollar=[], rightneg=Nothing} stat = return $ cutlist stat
+match R{leftneg=Nothing, leftdollar=[], middle =[], rightdollar=[], rightneg=Nothing} stat = return $ cutlist stat
 
-match R{leftneg=Nothing, middle=[], rightdollar=[], rightneg=Just condition} stat = do
+match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar=[], rightneg=Just condition} stat = do
  env <- getEnv <$> ask
  let punct = pun env
  return $ filter (f punct) $ cutlist stat where
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
 
-match k@R{leftneg=Nothing, middle=[], rightdollar = Right(Ch pats,w):xs} stat =  do
+match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Right(Ch pats,w):xs} stat =  do
  sensitive <- sensitivity <$> ask
  newMatch <- match k{rightdollar=xs} stat
  return $ catMaybes [testPattern sensitive w fb pat | fb <- newMatch, pat <- pats]
-match k@R{leftneg=Nothing, middle=[], rightdollar = Left():xs} stat = do
+match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Left():xs} stat = do
  newMatch <- match k{rightdollar=xs} stat
  env <- getEnv <$> ask
  return $ mapMaybe (handleBoundary env) newMatch
 
 
 
-match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
+match k@R{leftneg=Nothing, leftdollar=[], middle=Right(Ch pats,w):xs} stat =  do
  sensitive <- sensitivity <$> ask
  newMatch <- match k{middle=xs} stat
  return $ catMaybes [testPattern sensitive w fb pat | fb <- newMatch, pat <- pats]
-match k@R{leftneg=Nothing, middle=Left():xs} stat = do
+match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
  newMatch <- match k{middle=xs} stat
+ env <- getEnv <$> ask
+ return $ mapMaybe (handleBoundary env) newMatch
+
+match k@R{leftneg=Nothing, leftdollar=Right(Ch pats,w):xs} stat =  do
+ sensitive <- sensitivity <$> ask
+ newMatch <- match k{leftdollar=xs} stat
+ return $ catMaybes [testPattern sensitive w fb pat | fb <- newMatch, pat <- pats]
+match k@R{leftneg=Nothing, leftdollar=Left():xs} stat = do
+ newMatch <- match k{leftdollar=xs} stat
  env <- getEnv <$> ask
  return $ mapMaybe (handleBoundary env) newMatch
 
