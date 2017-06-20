@@ -64,8 +64,13 @@ handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes
   case zipEither midd' (map phonToW phonemes) of
    Nothing -> Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv ++ "\nleft: " ++ show(length[()|Right _ <- midd']) ++ "; right: " ++ show(length phonemes)}
    Just newmidd -> do
-    return R{leftneg = fmap no' left', leftdollar = [], middle = newmidd, rightdollar= [], rightneg = fmap no' right'}
+    let (l_,mr_) = span isDollar' newmidd
+    return R{leftneg = fmap no' left', leftdollar = l_, middle = mr_, rightdollar= [], rightneg = fmap no' right'}
 
+isDollar' :: Either Boundary_ (Choose String,W) -> Bool
+isDollar' (Left ()) = False
+isDollar' (Right (_,W _)) = False
+isDollar' (Right (_,Dollar_)) = True
 
 -- throw nothing if (# of Right in first arg) /= (# of second arg)
 zipEither :: [Either a b] -> [c] -> Maybe [Either a (b,c)]
