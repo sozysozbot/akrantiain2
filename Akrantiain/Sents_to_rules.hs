@@ -63,10 +63,11 @@ handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes
   when (all isDollar phonemes) $ Left E{errNum = 336, errStr = "right-hand side of the following sentence consists solely of dollar(s):\n" ++ toSource conv}
   case zipEither midd' (map phonToW phonemes) of
    Nothing -> Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv ++ "\nleft: " ++ show(length[()|Right _ <- midd']) ++ "; right: " ++ show(length phonemes)}
-   Just newmidd -> return R{leftneg = fmap no' left', middle = newmidd, rightneg = fmap no' right'}
+   Just newmidd -> do
+   	return R{leftneg = fmap no' left', middle = newmidd, rightneg = fmap no' right'}
 
 
-
+-- throw nothing if (# of Right in first arg) /= (# of second arg)
 zipEither :: [Either a b] -> [c] -> Maybe [Either a (b,c)]
 zipEither [] [] = Just []
 zipEither [] _ = Nothing
