@@ -103,8 +103,8 @@ unCond (Negation c) = \_ -> no c
 unCond NegBoundary = \punct str -> not(isSpPunct punct str)
 
 
-hoo :: Environment -> StatPair -> Maybe StatPair
-hoo env (front, back) = do
+handleBoundary :: Environment -> StatPair -> Maybe StatPair
+handleBoundary env (front, back) = do
   let front' = reverse front
   let punct = pun env
   let tmp = map(isSpPunct punct) $ filter (/="") $ map fst front'
@@ -129,7 +129,7 @@ match k@R{leftneg=Nothing, middle=[], rightdollar = Right(Ch pats,w):xs} stat = 
 match k@R{leftneg=Nothing, middle=[], rightdollar = Left():xs} stat = do
  newMatch <- match k{rightdollar=xs} stat
  env <- getEnv <$> ask
- return $ mapMaybe (hoo env) newMatch
+ return $ mapMaybe (handleBoundary env) newMatch
 
 
 
@@ -140,7 +140,7 @@ match k@R{leftneg=Nothing, middle=Right(Ch pats,w):xs} stat =  do
 match k@R{leftneg=Nothing, middle=Left():xs} stat = do
  newMatch <- match k{middle=xs} stat
  env <- getEnv <$> ask
- return $ mapMaybe (hoo env) newMatch
+ return $ mapMaybe (handleBoundary env) newMatch
 
 match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat
