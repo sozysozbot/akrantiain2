@@ -64,7 +64,7 @@ handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes
   case zipEither midd' (map phonToW phonemes) of
    Nothing -> Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv ++ "\nleft: " ++ show(length[()|Right _ <- midd']) ++ "; right: " ++ show(length phonemes)}
    Just newmidd -> do
-   	return R{leftneg = fmap no' left', middle = newmidd, rightneg = fmap no' right'}
+    return R{leftneg = fmap no' left', leftdollar = [], middle = newmidd, rightdollar= [], rightneg = fmap no' right'}
 
 
 -- throw nothing if (# of Right in first arg) /= (# of second arg)
