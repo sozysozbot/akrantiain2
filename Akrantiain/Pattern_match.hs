@@ -125,7 +125,7 @@ match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar=[], rightneg=Just
 match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Right(Ch pats,w):xs} stat =  do
  sensitive <- sensitivity <$> ask
  newMatch <- match k{rightdollar=xs} stat
- return $ catMaybes [testPattern sensitive w fb pat | fb <- newMatch, pat <- pats]
+ return $ catMaybes [testPattern2 sensitive w fb pat | fb <- newMatch, pat <- pats]
 match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Left():xs} stat = do
  newMatch <- match k{rightdollar=xs} stat
  env <- getEnv <$> ask
@@ -145,7 +145,7 @@ match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
 match k@R{leftneg=Nothing, leftdollar=Right(Ch pats,w):xs} stat =  do
  sensitive <- sensitivity <$> ask
  newMatch <- match k{leftdollar=xs} stat
- return $ catMaybes [testPattern sensitive w fb pat | fb <- newMatch, pat <- pats]
+ return $ catMaybes [testPattern2 sensitive w fb pat | fb <- newMatch, pat <- pats]
 match k@R{leftneg=Nothing, leftdollar=Left():xs} stat = do
  newMatch <- match k{leftdollar=xs} stat
  env <- getEnv <$> ask
@@ -159,6 +159,14 @@ match k@R{leftneg=Just condition} stat = do
  return $ filter f newMatch
 
 
+testPattern2 :: Bool -> W2 -> StatPair -> String -> Maybe StatPair
+testPattern2 sensitive w (front, back) pat = do
+ let front' = rev2 front
+ let pat' = reverse pat
+ taken <- (takeTill sensitive) pat' front'
+ let taken' = rev2 taken
+ case w of
+  () -> return (rev2 $ drop(length taken')front', taken' ++ back)
 
 testPattern :: Bool -> W -> StatPair -> String -> Maybe StatPair
 testPattern sensitive w (front, back) pat = do
