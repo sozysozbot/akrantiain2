@@ -23,7 +23,7 @@ main = do
  cook (env,rls) "akrantiain"    >>>= putStrLn
  cook (env,rls) "aus"           >>>= putStrLn
  cook (env,rls) "panqa'dy"      >>>= putStrLn
- cook (env,rls) "Fankaon kaccaon lex ta safes elx wioll ycax elx pojiv Zarhalo gasluifesj farkzirVion befivagRi'i qacemal xadlumirfa mol niv."      >>>= putStrLn
+ cook (env,rls) "Fankaon kaccaon lex ta safes elx wioll ycax elx pojiv Xarhalo gasluifesj farkzirVion befivagRi'i qacemal xadlumirfa mol niv."      >>>= putStrLn
  cook (env,rls) "lkurftlesse'd linepyrine"      >>>= putStrLn
  cook (env,rls) "lkurftlesse'd linepurine"      >>>= putStrLn
  cook (env,rls) "lkurftlesse'd lineporine"      >>>= putStrLn
@@ -76,7 +76,7 @@ getrls foo = [
  lift[Right(c"f",W"f")],
  lift[Right(c"F",W"ɸ")],
  lift[Right(c"V",W"β")],
- lift[Right(c"Z",W"d͡ʑ")],
+ lift[Right(c"X",W"d͡ʑ")],
  lift[Right(c"x",W"ʃ")],
  lift[Right(c"c",W"s")],
  lift[Right(c"j",W"j")],
