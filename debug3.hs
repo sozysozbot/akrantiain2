@@ -1,13 +1,7 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 import Prelude hiding (undefined)
-import Akrantiain.Pattern_match
-import Akrantiain.Structure
-import Akrantiain.Rule
-import System.IO
-import qualified Data.Set as S
+import Debugs
 
-env :: Environment
-env = Env{pun=punct, bools=S.fromList[CASE_SENSITIVE]}
 
 main :: IO ()
 main = do
@@ -18,14 +12,8 @@ main = do
  cook (env,rls) "lkurftlesse'd lineperine"      >>>= putStrLn
  cook (env,rls) "lkurftlesse'd lineparine"      >>>= putStrLn
 
-(>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
-Left  a >>>= _  = hPrint stderr a
-Right b >>>= f  = f b
-
-c :: a -> Choose a
-c = Ch . (:[])
-
-lift a = R{leftneg = Nothing, middle = a, rightneg = Nothing}
+env :: Environment
+env = makeEnv punct
 
 punct :: Punctuation
 punct = ",.!?"
