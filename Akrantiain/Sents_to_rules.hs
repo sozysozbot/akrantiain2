@@ -64,8 +64,8 @@ handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes
   case zipEither midd' (map phonToW phonemes) of
    Nothing -> Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv ++ "\nleft: " ++ show(length[()|Right _ <- midd']) ++ "; right: " ++ show(length phonemes)}
    Just newmidd -> do
-    let (l_,mr_) = span isDollar' newmidd
-    let (m_,r_) = spanRight isDollar' mr_
+    let (l_,mr_) = spanAndConvert isDollar'' newmidd
+    let (m_,r_) = spanAndConvertRight isDollar'' mr_
     return R{leftneg = fmap no' left', leftdollar = l_, middle = m_, rightdollar= r_, rightneg = fmap no' right'}
 
 spanAndConvert :: (a -> Maybe b) -> [a] -> ([b],[a])
@@ -77,10 +77,18 @@ spanAndConvert p xs@(x:xs') = case p x of
 spanRight :: (a -> Bool) -> [a] -> ([a], [a])
 spanRight f arr = let (a,b) = span f (reverse arr) in (reverse b, reverse a)
 
+spanAndConvertRight :: (a -> Maybe b) -> [a] -> ([a], [b])
+spanAndConvertRight f arr = let (a,b) = spanAndConvert f (reverse arr) in (reverse b, reverse a)
+
 isDollar' :: Foo -> Bool
 isDollar' (Left ()) = False
 isDollar' (Right (_,W _)) = False
 isDollar' (Right (_,Dollar_)) = True
+
+isDollar'' :: Foo -> Maybe Foo2
+isDollar'' (Left ()) = Nothing
+isDollar'' (Right (_,W _)) = Nothing
+isDollar'' a@(Right (_,Dollar_)) = Just a
 
 -- throw nothing if (# of Right in first arg) /= (# of second arg)
 zipEither :: [Either a b] -> [c] -> Maybe [Either a (b,c)]
