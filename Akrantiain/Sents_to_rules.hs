@@ -88,7 +88,7 @@ isDollar' (Right (_,Dollar_)) = True
 isDollar'' :: Foo -> Maybe Foo2
 isDollar'' (Left ()) = Nothing
 isDollar'' (Right (_,W _)) = Nothing
-isDollar'' (Right (b,Dollar_)) = Just (Right (b,()))
+isDollar'' (Right (b,Dollar_)) = Just (Right (Identity b))
 
 -- throw nothing if (# of Right in first arg) /= (# of second arg)
 zipEither :: [Either a b] -> [c] -> Maybe [Either a (b,c)]

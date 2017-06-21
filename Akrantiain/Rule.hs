@@ -17,6 +17,8 @@ module Akrantiain.Rule
 ,Foo
 ,Foo2
 ,W2
+,rI
+,ide,Identity(..)
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
@@ -33,13 +35,24 @@ apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R
   g :: (Choose String, W) -> (Choose String, W)
   g (a,b) = (h a,b')
    where b' = case b of{Dollar_ -> Dollar_; W str -> W (nfd str);}
-  g2 :: (Choose String, W2) -> (Choose String, W2)
-  g2 (a,()) = (h a,())
+  g2 :: Identity(Choose String) -> Identity(Choose String)
+  g2  = fmap h
   h :: Choose String -> Choose String
   h = fmap nfd
 
 type Foo = Either Boundary_ (Choose String, W)
-type Foo2 = Either Boundary_ (Choose String, W2)
+type Foo2 = Either Boundary_ (Identity(Choose String))
+
+newtype Identity a = Identity{runIdentity:: a}  deriving(Show,Eq,Ord)
+
+instance Functor Identity where
+ fmap f (Identity a) = Identity(f a)
+
+rI :: Identity a -> (a,())
+rI (Identity a) = (a,())
+
+ide ::  (a,()) -> Identity a 
+ide (a,()) = (Identity a)
 
 data Rule = R{leftneg :: Maybe Condition, leftdollar :: [Foo2], middle :: [Foo], rightdollar :: [Foo2], rightneg :: Maybe Condition} deriving (Show, Eq, Ord)
 data W = W String | Dollar_  deriving (Show, Eq, Ord)
