@@ -71,7 +71,7 @@ handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes
 spanRight :: (a -> Bool) -> [a] -> ([a], [a])
 spanRight f arr = let (a,b) = span f (reverse arr) in (reverse b, reverse a)
 
-isDollar' :: Foo2 -> Bool
+isDollar' :: Foo -> Bool
 isDollar' (Left ()) = False
 isDollar' (Right (_,W _)) = False
 isDollar' (Right (_,Dollar_)) = True
