@@ -31,7 +31,7 @@ resolvePunctuation env (a, Nothing)
  | otherwise = Left a
 
 insensitive :: Rule -> Rule
-insensitive R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map(first h<$>) ld, middle=map(first h<$>) m, rightdollar=map(first h<$>) rd, rightneg=fmap f r} where
+insensitive R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map(fmap h) ld, middle=map(first h<$>) m, rightdollar=map(fmap h) rd, rightneg=fmap f r} where
  f :: Condition -> Condition
  f (Negation c) = Negation $ h c
  f NegBoundary = NegBoundary
@@ -46,13 +46,11 @@ cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls'') str_ = do
  let rls' = if S.member USE_NFD (bools env) then map apply_nfds rls'' else rls''
  let str = if S.member USE_NFD (bools env) then nfd str_ else str_
- let (sensitive_match,rls,stat) = 
-      if CASE_SENSITIVE `S.member` bools env 
-       then (True, rls', convertAndSplit id str)
-       else if PRESERVE_CASE `S.member` bools env 
-        then (False, rls', convertAndSplit id str)
-        else (False, map insensitive rls', convertAndSplit (map toLower) str)
- let cooked = cook' rls stat `runReader` (Wrap sensitive_match env)
+ let (sensitive_match,rls,stat) 
+      | CASE_SENSITIVE `S.member` bools env = (True, rls', convertAndSplit id str)
+      | PRESERVE_CASE `S.member` bools env = (False, rls', convertAndSplit id str)
+      | otherwise = (False, map insensitive rls', convertAndSplit (map toLower) str)
+ let cooked = cook' rls stat `runReader` Wrap sensitive_match env
  let eitherList = map (resolvePunctuation env) cooked
  case lefts eitherList of
   [] -> do
@@ -122,10 +120,10 @@ match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar=[], rightneg=Just
  return $ filter (f punct) $ cutlist stat where
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
 
-match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Right(Ch pats,w):xs} stat =  do
+match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Right(Ch pats):xs} stat =  do
  sensitive <- sensitivity <$> ask
  newMatch <- match k{rightdollar=xs} stat
- return $ catMaybes [testPattern sensitive w fb pat | fb <- newMatch, pat <- pats]
+ return $ catMaybes [testPattern2 sensitive fb pat | fb <- newMatch, pat <- pats]
 match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Left():xs} stat = do
  newMatch <- match k{rightdollar=xs} stat
  env <- getEnv <$> ask
@@ -142,10 +140,10 @@ match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
  env <- getEnv <$> ask
  return $ mapMaybe (handleBoundary env) newMatch
 
-match k@R{leftneg=Nothing, leftdollar=Right(Ch pats,w):xs} stat =  do
+match k@R{leftneg=Nothing, leftdollar=Right(Ch pats):xs} stat =  do
  sensitive <- sensitivity <$> ask
  newMatch <- match k{leftdollar=xs} stat
- return $ catMaybes [testPattern sensitive w fb pat | fb <- newMatch, pat <- pats]
+ return $ catMaybes [testPattern2 sensitive fb pat | fb <- newMatch, pat <- pats]
 match k@R{leftneg=Nothing, leftdollar=Left():xs} stat = do
  newMatch <- match k{leftdollar=xs} stat
  env <- getEnv <$> ask
@@ -159,12 +157,19 @@ match k@R{leftneg=Just condition} stat = do
  return $ filter f newMatch
 
 
+testPattern2 :: Bool -> StatPair -> String -> Maybe StatPair
+testPattern2 sensitive (front, back) pat = do
+ let front' = rev2 front
+ let pat' = reverse pat
+ taken <- takeTill sensitive pat' front'
+ let taken' = rev2 taken
+ return (rev2 $ drop(length taken')front', taken' ++ back)
 
 testPattern :: Bool -> W -> StatPair -> String -> Maybe StatPair
 testPattern sensitive w (front, back) pat = do
  let front' = rev2 front
  let pat' = reverse pat
- taken <- (takeTill sensitive) pat' front'
+ taken <- takeTill sensitive pat' front'
  let taken' = rev2 taken
  case w of
   W w' -> do
@@ -176,13 +181,13 @@ takeTill :: Bool -> String -> Stat -> Maybe Stat
 takeTill _ [] _ = Just []
 takeTill _ _ [] = Nothing
 takeTill sensitive str (x@(s,_):xs)
- | (isPrefixOf2 sensitive) s str = (x:) <$> (takeTill sensitive) (drop(length s)str) xs
+ | isPrefixOf2 sensitive s str = (x:) <$> takeTill sensitive (drop(length s)str) xs
  | otherwise = Nothing
 
 -- bool: true if case sensitive
 isPrefixOf2 :: Bool -> String -> String -> Bool
 isPrefixOf2 True  = isPrefixOf
-isPrefixOf2 False = \a b -> (map toLower a) `isPrefixOf` (map toLower b)
+isPrefixOf2 False = \a b -> map toLower a `isPrefixOf` map toLower b
 
 
 

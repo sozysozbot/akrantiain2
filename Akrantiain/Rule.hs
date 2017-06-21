@@ -16,6 +16,8 @@ module Akrantiain.Rule
 ,apply_nfds
 ,Foo
 ,Foo2
+,W2
+,Identity(..)
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
@@ -24,7 +26,7 @@ import Data.Char(isSpace)
 import Akrantiain.NFD
 
 apply_nfds :: Rule -> Rule
-apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map (fmap g) ld, middle=map (fmap g) m, rightdollar=map (fmap g) rd, rightneg=fmap f r} 
+apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map (fmap g2) ld, middle=map (fmap g) m, rightdollar=map (fmap g2) rd, rightneg=fmap f r} 
  where
   f :: Condition -> Condition
   f NegBoundary = NegBoundary
@@ -32,14 +34,22 @@ apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R
   g :: (Choose String, W) -> (Choose String, W)
   g (a,b) = (h a,b')
    where b' = case b of{Dollar_ -> Dollar_; W str -> W (nfd str);}
+  g2 :: Choose String -> Choose String
+  g2  = h
   h :: Choose String -> Choose String
   h = fmap nfd
 
 type Foo = Either Boundary_ (Choose String, W)
-type Foo2 = Either Boundary_ (Choose String, W)
+type Foo2 = Either Boundary_ (Choose String)
+
+newtype Identity a = Identity{runIdentity:: a}  deriving(Show,Eq,Ord)
+
+instance Functor Identity where
+ fmap f (Identity a) = Identity(f a)
 
 data Rule = R{leftneg :: Maybe Condition, leftdollar :: [Foo2], middle :: [Foo], rightdollar :: [Foo2], rightneg :: Maybe Condition} deriving (Show, Eq, Ord)
 data W = W String | Dollar_  deriving (Show, Eq, Ord)
+type W2 = ()
 type Boundary_ = ()
 data Condition = Negation (Choose String) | NegBoundary deriving (Show, Eq, Ord)
 type Punctuation = [Char]
