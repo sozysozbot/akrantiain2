@@ -24,6 +24,18 @@ main = do
  cook (env,rls) "aus"           >>>= putStrLn
  cook (env,rls) "panqa'dy"      >>>= putStrLn
  cook (env,rls) "Fankaon kaccaon lex ta safes elx wioll ycax elx pojiv Zarhalo gasluifesj farkzirVion befivagRi'i qacemal xadlumirfa mol niv."      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd linepyrine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd linepurine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd lineporine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd linepirine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd lineperine"      >>>= putStrLn
+ cook (env,rls) "lkurftlesse'd lineparine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd linepyrine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd linepurine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd lineporine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd linepirine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd lineperine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd lineparine"      >>>= putStrLn
 
 
 
@@ -33,8 +45,10 @@ punct = ",.!?"
 palat :: Choose String
 palat = Ch["z","x","ch","sh"]
 
-rls :: [Rule]
-rls = [
+rls = getrls vowel
+rls2 = getrls vowel2
+-- getrls  :: [Rule]
+getrls foo = [
  lift[Left(), Right(c"wioll", W"wjol"), Left ()],
  lift[Right(c"sh", W"ʃ")],
  lift[Right(palat,Dollar_),Right(c"i", W""),Right(vowel,Dollar_)],
@@ -47,7 +61,7 @@ rls = [
  (lift[Right(c"j",W"i")]){rightneg = Just(Negation vowel)},
  (lift[Right(vowel,Dollar_),Right(c"y",W"ɥ")]){rightneg = Just(Negation vowel)},
  (lift[Right(Ch["r","R"],W"r")]){leftneg = Just (Negation vowel)},
- lift[Right(vowel,Dollar_), Right(c"r",W"ː")],
+ lift[Right(foo,Dollar_), Right(c"r",W"ː")],
  lift[Right(c"t",W"t")],
  lift[Right(c"s",W"z")],
  lift[Right(c"y",W"y")],
@@ -82,3 +96,7 @@ rls = [
 
 vowel :: Choose String
 vowel = Ch ["a","e","i","o","u","y"]
+
+vowel2 :: Choose String
+vowel2 = Ch ["e","a","i","o","u","y"]
+
