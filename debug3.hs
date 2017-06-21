@@ -5,12 +5,12 @@ import Debugs
 
 main :: IO ()
 main = do
- cook (env,rls) "lkurftlesse'd linepyrine"      >>>= putStrLn
- cook (env,rls) "lkurftlesse'd linepurine"      >>>= putStrLn
- cook (env,rls) "lkurftlesse'd lineporine"      >>>= putStrLn
- cook (env,rls) "lkurftlesse'd linepirine"      >>>= putStrLn
- cook (env,rls) "lkurftlesse'd lineperine"      >>>= putStrLn
- cook (env,rls) "lkurftlesse'd lineparine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd linepyrine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd linepurine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd lineporine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd linepirine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd lineperine"      >>>= putStrLn
+ cook (env,rls2) "lkurftlesse'd lineparine"      >>>= putStrLn
 
 env :: Environment
 env = makeEnv punct
@@ -21,8 +21,8 @@ punct = ",.!?"
 palat :: Choose String
 palat = Ch["z","x","ch","sh"]
 
-rls :: [Rule]
-rls = [
+rls2 :: [Rule]
+rls2 = [
  lift[Left(), Right(c"wioll", W"wjol"), Left ()],
  lift[Right(c"sh", W"ʃ")],
  lift[Right(palat,Dollar_),Right(c"i", W""),Right(vowel,Dollar_)],
