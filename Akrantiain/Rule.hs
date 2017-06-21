@@ -34,8 +34,7 @@ apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R
   g (a,b) = (h a,b')
    where b' = case b of{Dollar_ -> Dollar_; W str -> W (nfd str);}
   g2 :: (Choose String, W2) -> (Choose String, W2)
-  g2 (a,b) = (h a,b')
-   where b' = case b of{()-> ()}
+  g2 (a,()) = (h a,())
   h :: Choose String -> Choose String
   h = fmap nfd
 
