@@ -34,13 +34,13 @@ apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R
   g :: (Choose String, W) -> (Choose String, W)
   g (a,b) = (h a,b')
    where b' = case b of{Dollar_ -> Dollar_; W str -> W (nfd str);}
-  g2 :: Identity(Choose String) -> Identity(Choose String)
-  g2  = fmap h
+  g2 :: Choose String -> Choose String
+  g2  = h
   h :: Choose String -> Choose String
   h = fmap nfd
 
 type Foo = Either Boundary_ (Choose String, W)
-type Foo2 = Either Boundary_ (Identity(Choose String))
+type Foo2 = Either Boundary_ (Choose String)
 
 newtype Identity a = Identity{runIdentity:: a}  deriving(Show,Eq,Ord)
 
