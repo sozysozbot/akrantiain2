@@ -17,8 +17,7 @@ module Akrantiain.Rule
 ,Foo
 ,Foo2
 ,W2
-,rI
-,ide,Identity(..)
+,Identity(..)
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
@@ -47,12 +46,6 @@ newtype Identity a = Identity{runIdentity:: a}  deriving(Show,Eq,Ord)
 
 instance Functor Identity where
  fmap f (Identity a) = Identity(f a)
-
-rI :: Identity a -> (a,())
-rI (Identity a) = (a,())
-
-ide ::  (a,()) -> Identity a 
-ide (a,()) = (Identity a)
 
 data Rule = R{leftneg :: Maybe Condition, leftdollar :: [Foo2], middle :: [Foo], rightdollar :: [Foo2], rightneg :: Maybe Condition} deriving (Show, Eq, Ord)
 data W = W String | Dollar_  deriving (Show, Eq, Ord)

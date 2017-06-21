@@ -74,16 +74,11 @@ spanAndConvert p xs@(x:xs') = case p x of
   Just y ->  let (ys,zs) = spanAndConvert p xs' in (y:ys,zs)
   Nothing -> ([],xs)
 
-spanRight :: (a -> Bool) -> [a] -> ([a], [a])
-spanRight f arr = let (a,b) = span f (reverse arr) in (reverse b, reverse a)
 
 spanAndConvertRight :: (a -> Maybe b) -> [a] -> ([a], [b])
 spanAndConvertRight f arr = let (a,b) = spanAndConvert f (reverse arr) in (reverse b, reverse a)
 
-isDollar' :: Foo -> Bool
-isDollar' (Left ()) = False
-isDollar' (Right (_,W _)) = False
-isDollar' (Right (_,Dollar_)) = True
+
 
 isDollar'' :: Foo -> Maybe Foo2
 isDollar'' (Left ()) = Nothing
