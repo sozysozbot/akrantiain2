@@ -68,6 +68,12 @@ handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes
     let (m_,r_) = spanRight isDollar' mr_
     return R{leftneg = fmap no' left', leftdollar = l_, middle = m_, rightdollar= r_, rightneg = fmap no' right'}
 
+spanAndConvert :: (a -> Maybe b) -> [a] -> ([b],[a])
+spanAndConvert _ xs@[]            =  ([], xs)
+spanAndConvert p xs@(x:xs') = case p x of
+  Just y ->  let (ys,zs) = spanAndConvert p xs' in (y:ys,zs)
+  Nothing -> ([],xs)
+
 spanRight :: (a -> Bool) -> [a] -> ([a], [a])
 spanRight f arr = let (a,b) = span f (reverse arr) in (reverse b, reverse a)
 
