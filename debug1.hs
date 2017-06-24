@@ -45,23 +45,25 @@ punct = ",.!?"
 palat :: Choose String
 palat = Ch["z","x","ch","sh"]
 
+rls, rls2 :: [Rule]
 rls = getrls vowel
 rls2 = getrls vowel2
--- getrls  :: [Rule]
+
+getrls :: Choose String -> [Rule]
 getrls foo = [
  lift[Left(), Right(c"wioll", W"wjol"), Left ()],
  lift[Right(c"sh", W"ʃ")],
- lift[Right(palat,Dollar_),Right(c"i", W""),Right(vowel,Dollar_)],
- (lift[Right(vowel,Dollar_),Right(c"i",W"j")]){rightneg =Just(Negation$c"r")},
- lift[Right(palat,Dollar_),Right(c"i",Dollar_),Right(c"u",W"u")],
- (lift[Right(vowel,Dollar_),Right(c"u",W"w")]){rightneg =Just(Negation$c"r")},
- (lift[Right(c"s",W"z"),Right(c"j",Dollar_)]){rightneg = Just(Negation vowel)},
- lift[Right(c"i",W"j"),Right(vowel,Dollar_)],
+ lift2[Right(palat)][Right(c"i", W"")][Right(vowel)],
+ (lift2[Right(vowel)][Right(c"i",W"j")][]){rightneg =Just(Negation$c"r")},
+ lift2[Right(palat),Right(c"i")][Right(c"u",W"u")][],
+ (lift2[Right(vowel)][Right(c"u",W"w")][]){rightneg =Just(Negation$c"r")},
+ (lift2[][Right(c"s",W"z")][Right(c"j")]){rightneg = Just(Negation vowel)},
+ lift2[][Right(c"i",W"j")][Right(vowel)],
  (lift[Right(c"s",W"s")]){rightneg = Just(Negation vowel)},
  (lift[Right(c"j",W"i")]){rightneg = Just(Negation vowel)},
- (lift[Right(vowel,Dollar_),Right(c"y",W"ɥ")]){rightneg = Just(Negation vowel)},
+ (lift2[Right(vowel)][Right(c"y",W"ɥ")][]){rightneg = Just(Negation vowel)},
  (lift[Right(Ch["r","R"],W"r")]){leftneg = Just (Negation vowel)},
- lift[Right(foo,Dollar_), Right(c"r",W"ː")],
+ lift2[Right(foo)][Right(c"r",W"ː")][],
  lift[Right(c"t",W"t")],
  lift[Right(c"s",W"z")],
  lift[Right(c"y",W"y")],
