@@ -1,5 +1,6 @@
-# RR transliteration
-# URL: https://en.wikipedia.org/wiki/Revised_Romanization_of_Hangeul
+# RR transcription
+# only handles single hanja syllable
+# URL: https://en.wikipedia.org/wiki/Revised_Romanization_of_Korean
 
 % ja2 => jamo {
 	choseong = "ᄀ" | "ᄁ" | "ᄂ" | "ᄃ" | "ᄄ" | "ᄅ" | "ᄆ" | "ᄇ" | "ᄈ" | "ᄉ" | "ᄊ" | "ᄋ" | "ᄌ" | "ᄍ" | "ᄎ" | "ᄏ" | "ᄐ" | "ᄑ" | "ᄒ";
@@ -8,20 +9,19 @@
 
 	jongseong = "ᆨ" | "ᆩ" | "ᆪ" | "ᆫ" | "ᆬ" | "ᆭ" | "ᆮ" | "ᆯ" | "ᆰ" | "ᆱ" | "ᆲ" | "ᆳ" | "ᆴ" | "ᆵ" | "ᆶ" | "ᆷ" | "ᆸ" | "ᆹ" | "ᆺ" | "ᆻ" | "ᆼ" | "ᆽ" | "ᆾ" | "ᆿ" | "ᇀ" | "ᇁ" | "ᇂ";
 
-	jungseong jongseong "" -> $ $ /./;
-	jungseong "" !jongseong -> $ /./;
+	
 
 @USE_NFD;
 	# choseong
 	"ᄀ" -> /g/; 
-	"ᄁ" -> /gg/;
+	"ᄁ" -> /kk/;
 	"ᄂ" -> /n/;
 	"ᄃ" -> /d/;
-	"ᄄ" -> /dd/;
+	"ᄄ" -> /tt/;
 	"ᄅ" -> /r/;
 	"ᄆ" -> /m/;
 	"ᄇ" -> /b/;
-	"ᄈ" -> /bb/;
+	"ᄈ" -> /pp/;
 	"ᄉ" -> /s/;
 	"ᄊ" -> /ss/;
 	"ᄋ" -> //;
@@ -43,47 +43,28 @@
 	"ᅧ" -> /yeo/;
 	"ᅨ" -> /ye/;
 	"ᅩ" -> /o/;
-	"ᅪ" -> /oa/;
-	"ᅫ" -> /oae/;
-	"ᅬ" -> /oi/;
+	"ᅪ" -> /wa/;
+	"ᅫ" -> /wae/;
+	"ᅬ" -> /oe/;
 	"ᅭ" -> /yo/;
 	"ᅮ" -> /u/;
-	"ᅯ" -> /ueo/;
-	"ᅰ" -> /ue/;
-	"ᅱ" -> /ui/;
+	"ᅯ" -> /wo/;
+	"ᅰ" -> /we/;
+	"ᅱ" -> /wi/;
 	"ᅲ" -> /yu/;
 	"ᅳ" -> /eu/;
-	"ᅴ" -> /eui/;
+	"ᅴ" -> /ui/;
 	"ᅵ" -> /i/;
 
 	# jongseong
-	"ᆨ" -> /g/;
-	"ᆩ" -> /gg/;
-	"ᆪ" -> /gs/;
+	# this part does not conform to RR transcription
+	"ᆨ" -> /k/;
 	"ᆫ" -> /n/;
-	"ᆬ" -> /nj/;
-	"ᆭ" -> /nh/;
-	"ᆮ" -> /d/;
 	"ᆯ" -> /l/;
-	"ᆰ" -> /lg/;
-	"ᆱ" -> /lm/;
-	"ᆲ" -> /lb/;
-	"ᆳ" -> /ls/;
-	"ᆴ" -> /lt/;
-	"ᆵ" -> /lp/;
-	"ᆶ" -> /lh/;
 	"ᆷ" -> /m/;
-	"ᆸ" -> /b/;
-	"ᆹ" -> /bs/;
-	"ᆺ" -> /s/;
-	"ᆻ" -> /ss/;
+	"ᆸ" -> /p/;
 	"ᆼ" -> /ng/;
 	"ᆽ" -> /j/;
-	"ᆾ" -> /ch/;
-	"ᆿ" -> /k/;
-	"ᇀ" -> /t/;
-	"ᇁ" -> /p/;
-	"ᇂ" -> /h/;
 }
 
 %% ja2 => jamo;

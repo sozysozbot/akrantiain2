@@ -63,10 +63,29 @@ handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes
   when (all isDollar phonemes) $ Left E{errNum = 336, errStr = "right-hand side of the following sentence consists solely of dollar(s):\n" ++ toSource conv}
   case zipEither midd' (map phonToW phonemes) of
    Nothing -> Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv ++ "\nleft: " ++ show(length[()|Right _ <- midd']) ++ "; right: " ++ show(length phonemes)}
-   Just newmidd -> return R{leftneg = fmap no' left', middle = newmidd, rightneg = fmap no' right'}
+   Just newmidd -> do
+    let (l_,mr_) = spanAndConvert toFoo2 newmidd
+    let (m_,r_) = spanAndConvertRight toFoo2 mr_
+    return R{leftneg = fmap no' left', leftdollar = l_, middle = m_, rightdollar= r_, rightneg = fmap no' right'}
+
+spanAndConvert :: (a -> Maybe b) -> [a] -> ([b],[a])
+spanAndConvert _ xs@[]            =  ([], xs)
+spanAndConvert p xs@(x:xs') = case p x of
+  Just y ->  let (ys,zs) = spanAndConvert p xs' in (y:ys,zs)
+  Nothing -> ([],xs)
+
+
+spanAndConvertRight :: (a -> Maybe b) -> [a] -> ([a], [b])
+spanAndConvertRight f arr = let (a,b) = spanAndConvert f (reverse arr) in (reverse b, reverse a)
 
 
 
+toFoo2 :: Foo -> Maybe Foo2
+toFoo2 (Left ()) = Nothing
+toFoo2 (Right (_,W _)) = Nothing
+toFoo2 (Right (b,Dollar_)) = Just (Right b)
+
+-- throw nothing if (# of Right in first arg) /= (# of second arg)
 zipEither :: [Either a b] -> [c] -> Maybe [Either a (b,c)]
 zipEither [] [] = Just []
 zipEither [] _ = Nothing
