@@ -118,9 +118,11 @@ handle_recursion (x:xs) f a = do
  return $ catMaybes [f fb pat | fb <- newMatch, pat <- x]
 
 -- check if the right-hand side can be analyzed as if it has *already* passed thru the rightdollar and cond
-fooFilter :: (Punctuation,[Choose String],Maybe Condition,Bool) -> StatPair -> Bool
-fooFilter (p,arr,cond,sensitive) (_,b) = newFunc arr rightstr
+fooFilter :: (Environment',[Choose String],Maybe Condition) -> StatPair -> Bool
+fooFilter (env',arr,cond) (_,b) = newFunc arr rightstr
  where
+  sensitive = sensitivity env'
+  p = (pun . getEnv) env'
   newFunc :: [Choose String] -> String -> Bool
   newFunc [] str = case cond of 
    Nothing -> True
@@ -131,10 +133,8 @@ fooFilter (p,arr,cond,sensitive) (_,b) = newFunc arr rightstr
 match :: Rule -> Stat -> Reader Environment' [StatPair]
 
 match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = arr, rightneg=cond} stat = do
- sensitive <- sensitivity <$> ask
- env <- getEnv <$> ask
- let punct = pun env
- return $ filter (fooFilter (punct,arr,cond,sensitive)) $ cutlist stat
+ env2 <- ask
+ return $ filter (fooFilter (env2,arr,cond)) $ cutlist stat
 
 
 match k@R{leftneg=Nothing, leftdollar=[], middle=Right(Ch pats,w):xs} stat =  do
