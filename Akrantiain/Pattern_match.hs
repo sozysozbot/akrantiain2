@@ -142,10 +142,9 @@ match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
  env <- getEnv <$> ask
  return $ mapMaybe (handleBoundary env) newMatch
 
-match k@R{leftneg=Nothing, leftdollar=(Ch pats):xs} stat =  do
+match k@R{leftneg=Nothing, leftdollar=arr} stat =  do
  sensitive <- sensitivity <$> ask
- newMatch <- match k{leftdollar=xs} stat
- return $ catMaybes [testPattern2 sensitive fb pat | fb <- newMatch, pat <- pats]
+ handle_recursion (map unCh arr) (testPattern2 sensitive) (match k{leftdollar=[]} stat)
 
 match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat
