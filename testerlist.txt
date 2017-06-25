@@ -10,4 +10,6 @@ emptystring2
 emptystring3
 module
 diaresis
+aimez
+aimez2
 RR_transcription
