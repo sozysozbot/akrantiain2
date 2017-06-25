@@ -69,15 +69,21 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 </table>
 <pre>fstをつなげてできる文字列（この例では"spaghetti"）を、Statのconcatと呼ぶ。</pre>
 <h3 id="convert">4-2. 変換規則</h3>
-<pre>変換規則は、以下の3要素からなる。<!-- ソースコード中の`data Rule` --><code><u>PHONEME</u></code>の定義については<a href="manuals_ja.htm">2章</a>を参照のこと。
+<pre>変換規則は、以下の5要素からなる。<!-- ソースコード中の`data Rule` --><code><u>PHONEME</u></code>の定義については<a href="manuals_ja.htm">2章</a>を参照のこと。
 <code><u>Negation</u></code><!-- ソースコード中の`data Condition` -->は「文字列の集合または語境界」を要素として持ち、それらが登場しない時に限り変換を行うことを表す。
 </pre>
 <ol style="font-family:monospace; line-height:170%">
 <li>左条件（省略可能）
         <ul><li><code><u>Negation</u></code></li></ul>
 </li>
+<li>左$リスト
+        <ul><li>「『文字列の集合と<code><u>$</u></code>の対』」のリスト。「変換元と変換先の対応」のうち、スラッシュリテラルが登場するまでの<code><u>$</u></code>はここに配置される。</li></ul>
+</li>
 <li>変換元と変換先の対応
         <ul><li>「『語境界』または『文字列の集合と<code><u>PHONEME</u></code>の対』」のリスト</li></ul>
+</li>
+<li>右$リスト
+        <ul><li>「『文字列の集合と<code><u>$</u></code>の対』」のリスト。「変換元と変換先の対応」のうち、右から数えてスラッシュリテラルが登場するまでの<code><u>$</u></code>はここに配置される。</li></ul>
 </li>
 <li>右条件（省略可能）
         <ul><li><code><u>Negation</u></code></li></ul>
@@ -155,9 +161,9 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
         </table></td><td>,</td><td>空リスト</td>
         <td>)</td></tr>
 </table>
-<h4>4-4-1. 右条件の処理</h4>
-<pre>右条件gが在るなら、Statの対のうち、「sndのconcatの接頭辞<span class="FIXME" title="自身が空文字列である場合は？">（空文字列を含まない。自身を含む。）</span>が全て、右条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。
-sensitivityがfalseであるとき、この「接頭辞」判定は大文字と小文字を同一視する。</pre>
+<h4>4-4-1. 右$リストと右条件の処理</h4>
+<pre>右$リストfと右条件gの少なくとも一方が在るなら、<span class="FIXME">Statの対のうち、「sndのconcatの接頭辞<span class="FIXME" title="自身が空文字列である場合は？">（空文字列を含まない。自身を含む。）</span>が全て、右条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。
+sensitivityがfalseであるとき、この「接頭辞」判定は大文字と小文字を同一視する。</span></pre>
 <pre>
 具体例を見てみよう。右条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
 </pre>

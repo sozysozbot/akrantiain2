@@ -130,14 +130,6 @@ fooFilter (p,arr,cond,sensitive) (_,b) = newFunc arr rightstr
 
 match :: Rule -> Stat -> Reader Environment' [StatPair]
 
-match R{leftneg=Nothing, leftdollar=[], middle =[], rightdollar=[], rightneg=Nothing} stat = return $ cutlist stat
-
-match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar=[], rightneg=Just condition} stat = do
- env <- getEnv <$> ask
- let punct = pun env
- return $ filter (f punct) $ cutlist stat where
-  f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
-
 match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = arr, rightneg=cond} stat = do
  sensitive <- sensitivity <$> ask
  env <- getEnv <$> ask
