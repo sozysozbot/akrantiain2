@@ -120,14 +120,10 @@ match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar=[], rightneg=Just
  return $ filter (f punct) $ cutlist stat where
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
 
-match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Right(Ch pats):xs} stat =  do
+match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Identity(Ch pats):xs} stat =  do
  sensitive <- sensitivity <$> ask
  newMatch <- match k{rightdollar=xs} stat
  return $ catMaybes [testPattern2 sensitive fb pat | fb <- newMatch, pat <- pats]
-match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Left():xs} stat = do
- newMatch <- match k{rightdollar=xs} stat
- env <- getEnv <$> ask
- return $ mapMaybe (handleBoundary env) newMatch
 
 
 
@@ -140,14 +136,10 @@ match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
  env <- getEnv <$> ask
  return $ mapMaybe (handleBoundary env) newMatch
 
-match k@R{leftneg=Nothing, leftdollar=Right(Ch pats):xs} stat =  do
+match k@R{leftneg=Nothing, leftdollar=Identity(Ch pats):xs} stat =  do
  sensitive <- sensitivity <$> ask
  newMatch <- match k{leftdollar=xs} stat
  return $ catMaybes [testPattern2 sensitive fb pat | fb <- newMatch, pat <- pats]
-match k@R{leftneg=Nothing, leftdollar=Left():xs} stat = do
- newMatch <- match k{leftdollar=xs} stat
- env <- getEnv <$> ask
- return $ mapMaybe (handleBoundary env) newMatch
 
 match k@R{leftneg=Just condition} stat = do
  newMatch <- match k{leftneg=Nothing} stat

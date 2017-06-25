@@ -83,7 +83,7 @@ spanAndConvertRight f arr = let (a,b) = spanAndConvert f (reverse arr) in (rever
 toFoo2 :: Foo -> Maybe Foo2
 toFoo2 (Left ()) = Nothing
 toFoo2 (Right (_,W _)) = Nothing
-toFoo2 (Right (b,Dollar_)) = Just (Right b)
+toFoo2 (Right (b,Dollar_)) = Just (Identity b)
 
 -- throw nothing if (# of Right in first arg) /= (# of second arg)
 zipEither :: [Either a b] -> [c] -> Maybe [Either a (b,c)]

@@ -40,7 +40,7 @@ apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R
   h = fmap nfd
 
 type Foo = Either Boundary_ (Choose String, W)
-type Foo2 = Either Boundary_ (Choose String)
+type Foo2 = Identity(Choose String)
 
 newtype Identity a = Identity{runIdentity:: a}  deriving(Show,Eq,Ord)
 
