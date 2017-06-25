@@ -117,8 +117,15 @@ handle_recursion (x:xs) f a = do
  return $ catMaybes [f fb pat | fb <- newMatch, pat <- x]
 
 -- check if the right-hand side can be analyzed as if it has *already* passed thru the rightdollar and cond
-fooFilter :: ([Choose String],Maybe Condition,Bool) -> StatPair -> Bool
-fooFilter (arr,cond,sensitive) (_,b) = undefined
+fooFilter :: (Punctuation,[Choose String],Maybe Condition,Bool) -> StatPair -> Bool
+fooFilter (p,arr,cond,sensitive) (_,b) = newFunc arr rightstr
+ where
+  newFunc :: [Choose String] -> String -> Bool
+  newFunc [] str = case cond of 
+   Nothing -> True
+   Just condition -> upgrade (unCond condition p) str
+  newFunc (Ch x:xs) str = any id [newFunc xs newStr | newStr <- catMaybes [droppingPrefix2 sensitive u str | u <- x]]
+  rightstr = concatMap fst b :: String
 
 match :: Rule -> Stat -> Reader Environment' [StatPair]
 
@@ -132,7 +139,9 @@ match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar=[], rightneg=Just
 
 match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = arr, rightneg=cond} stat = do
  sensitive <- sensitivity <$> ask
- return $ filter (fooFilter (arr,cond,sensitive)) $ cutlist stat
+ env <- getEnv <$> ask
+ let punct = pun env
+ return $ filter (fooFilter (punct,arr,cond,sensitive)) $ cutlist stat
 
 
 match k@R{leftneg=Nothing, leftdollar=[], middle=Right(Ch pats,w):xs} stat =  do
@@ -189,4 +198,9 @@ isPrefixOf2 True  = isPrefixOf
 isPrefixOf2 False = \a b -> map toLower a `isPrefixOf` map toLower b
 
 
+-- drop `a` from `b` if `a` isPrefixOf2 `b`
+droppingPrefix2 :: Bool -> String -> String -> Maybe String
+droppingPrefix2 sens a b
+ | (isPrefixOf2 sens) a b = Just(drop (length a)b)
+ | otherwise = Nothing
 
