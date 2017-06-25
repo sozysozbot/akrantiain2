@@ -106,10 +106,16 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 <pre>match関数は、「Stat」と「変換規則」を受け取り、「『Statの対』のリスト」を返す。</pre>
 <ol style="font-family:monospace; line-height:170%">
 <li> 「Statを二分したもの」の一覧を用意する。</li>
-<li>変換規則を右から、つまり「右条件→『変換元と変換先の対応』→左条件」の順に辿っていき、一覧の中のうちパターンにマッチするもののみを残しながら、変換先を書き込んでいく</li>
+<li>変換規則を右から、つまり「右条件→右$リスト→『変換元と変換先の対応』→左$リスト→左条件」の順に辿っていき、一覧の中のうちパターンにマッチするもののみを残しながら、変換先を書き込んでいく</li>
 </ol>
 <pre>
-というのが大まかな流れである。
+というのが大まかな流れであっ<strong>た。</strong>
+しかし、いわゆる<a href="https://github.com/sozysozbot/akrantiain2/issues/21">aimezバグ</a>の解決を図るため、少々処理が変更され、次のような流れとなった。</pre>
+<ol style="font-family:monospace; line-height:170%">
+<li> 「Statを二分したもの」の一覧のうち、「右条件→右$リスト」の条件を既に満たしているものを用意する。</li>
+<li>残る変換規則を右から、つまり「『変換元と変換先の対応』→左$リスト→左条件」の順に辿っていき、一覧の中のうちパターンにマッチするもののみを残しながら、変換先を書き込んでいく</li>
+</ol>
+<pre>
 以下、辿っていくときに行われることを具体的に説明していく。
 </pre>
 
@@ -161,11 +167,15 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
         </table></td><td>,</td><td>空リスト</td>
         <td>)</td></tr>
 </table>
-<h4>4-4-1. 右$リストと右条件の処理</h4>
-<pre>右$リストfと右条件gの少なくとも一方が在るなら、<span class="FIXME">Statの対のうち、「sndのconcatの接頭辞<span class="FIXME" title="自身が空文字列である場合は？">（空文字列を含まない。自身を含む。）</span>が全て、右条件gを満たす」もののみを残す。Stat対自体に変更は一切加えない。
-sensitivityがfalseであるとき、この「接頭辞」判定は大文字と小文字を同一視する。</span></pre>
-<pre>
-具体例を見てみよう。右条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
+<pre>この中で、右$リストfと右条件gという2つの制約を（結果的に）<strong>既に</strong>くぐり抜けているもののみが次の段階に渡される。
+これはどういう風に判定されるかというと、「sndのconcatが、以下の2条件を共に満たす2つの文字列AとBの結合であるかどうか」として判定される。</pre><!-- ソースコード中の`fooFilter` -->
+<ul style="font-family:monospace; line-height:170%">
+<li>「Aは、『右$リストの各要素のfst（これは文字列の集合である）からうまく文字列を選び、選んだ文字列を結合したもの』と一致する」（sensitivityがfalseであるとき、この「一致」判定は大文字と小文字を同一視する。）</li>
+<li>「Bの接頭辞<span class="FIXME" title="自身が空文字列である場合は？">（空文字列を含まない。自身を含む。）</span>は全て、右条件gを満たす」（sensitivityがfalseであるとき、この「接頭辞」判定は大文字と小文字を同一視する。）</li>
+</ul>
+<pre>右条件が存在しない場合は、右条件として恒真関数を用いればよい。
+
+具体例を見てみよう。まず、右$リストfが空リストであり、右条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
 </pre>
 <table>
 <tr><td>(</td><td>空リスト</td><td>,</td><td><table class="stat">
@@ -212,7 +222,7 @@ sensitivityがfalseであるとき、この「接頭辞」判定は大文字と�
 </table>
 <pre>なぜなら、このStat対のsndのconcatである"ant"の接頭辞の一つ"an"は、条件「"an", "en", "in", "on", "un"のどれでもない」を満たさないからである。</pre>
 
-<pre>条件が「語境界の否定」という場合についても見てみよう。
+<pre>右$リストfが空リストであり、かつ右条件が「語境界の否定」という場合についても見てみよう。
 この時、例えば、以下のStat対は通過する。
 </pre>
 
@@ -269,6 +279,35 @@ sensitivityがfalseであるとき、この「接頭辞」判定は大文字と�
         <td>)</td></tr>
 </table>
 <pre>なぜなら、このStat対のsndのconcatである" cat"の接頭辞の一つ" "は、条件「スペースまたは句読点のみで構成される文字列ではない」を満たさないからである。</pre>
+<pre>右$リストfが空リストでない場合についても見てみよう。
+右$リストfが「集合{<code>"a"</code>, <code>"e"</code>, <code>"i"</code>, <code>"o"</code>, <code>"u"</code>, <code>"y"</code>}のみからなるリストと<code>$</code>の対」、右条件gが不存在（=恒真関数）である場合、</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"ai"</td> <td>"m"</td> </tr>
+        <tr><td>"ɛ"</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"ez"</td></tr>
+        <tr><td>"e"</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>は通過する。なぜなら、sndのconcatは"ez"であるが、これは「右$リスト中の各要素からうまく文字列を選んで結合させると作れる"e"」と「恒真関数を満たす文字列"z"」の結合とみなせるからである。
+一方で、右$リストfが「集合{<code>"a"</code>, <code>"e"</code>, <code>"i"</code>, <code>"o"</code>, <code>"u"</code>, <code>"y"</code>}のみからなるリストと<code>$</code>の対」、右条件gが「<code>"z"</code>でない」である場合、</pre>
+</pre>
+<table>
+<tr><td>(</td><td>
+        <table class="stat">
+        <tr><td>"ai"</td> <td>"m"</td> </tr>
+        <tr><td>"ɛ"</td><td>null</td></tr>
+        </table></td><td>,</td><td><table class="stat">
+        <tr><td>"ez"</td></tr>
+        <tr><td>"e"</td></tr>
+        </table></td>
+        <td>)</td></tr>
+</table>
+<pre>は通過しない。なぜなら、sndのconcatである"ez"をどこで分割しても、
+「fからうまく選んで作れる文字列」と「接頭辞が<code>"z"</code>と等しくなることがない、言い換えれば、"z"で始まらない、文字列」に分かれることがないからである。</pre>
 
 <h4>4-4-2. 「変換元と変換先の対応」の処理</h4>
 <pre>「『語境界』または『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」を右から辿っていき、条件を満たすもののみを通過させながら、Stat内の適切な『変換先』のところに情報を記入していく。</pre>
