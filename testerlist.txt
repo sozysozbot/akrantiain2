@@ -12,4 +12,5 @@ module
 diaresis
 aimez
 aimez2
+zemia
 RR_transcription

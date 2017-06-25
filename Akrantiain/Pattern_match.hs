@@ -4,7 +4,7 @@ module Akrantiain.Pattern_match
 ) where
 -- import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
-import Data.List(isPrefixOf, inits, tails, intercalate)
+import Data.List(isPrefixOf, isSuffixOf, inits, tails, intercalate)
 import Data.Char(toLower)
 import Data.Either(lefts, rights)
 import Control.Monad(guard)
@@ -146,17 +146,23 @@ match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
  env <- getEnv <$> ask
  return $ mapMaybe (handleBoundary env) newMatch
 
-match k@R{leftneg=Nothing, leftdollar=arr} stat =  do
- sensitive <- sensitivity <$> ask
- handle_recursion (map unCh arr) (testPattern2 sensitive) (match k{leftdollar=[]} stat)
+match k@R{leftneg=cond, leftdollar=arr} stat = do
+ env2 <- ask
+ newMatch <- match k{leftneg=Nothing, leftdollar=[]} stat
+ return $ filter (fooFilter2 (env2,cond,arr)) $ newMatch
 
-match k@R{leftneg=Just condition} stat = do
- newMatch <- match k{leftneg=Nothing} stat
- env <- getEnv <$> ask
- let punct = pun env
- let f (front, _) = upgrade2 (unCond condition punct) $ concatMap fst front
- return $ filter f newMatch
-
+-- check if the left-hand side can be analyzed as if it *would* (in the future) passed thru the rightdollar and cond
+fooFilter2  :: (Environment',Maybe Condition,[Choose String]) -> StatPair -> Bool
+fooFilter2 (env',cond,arr) (a,_) = newFunc2 (reverse arr) leftstr
+ where
+  sensitive = sensitivity env'
+  p = (pun . getEnv) env'
+  newFunc2 :: [Choose String] -> String -> Bool
+  newFunc2 [] str = case cond of 
+   Nothing -> True
+   Just condition -> upgrade2 (unCond condition p) str
+  newFunc2 (Ch x:xs) str = or [newFunc2 xs newStr | newStr <- catMaybes [droppingSuffix2 sensitive u str | u <- x]]
+  leftstr = concatMap fst a :: String
 
 testPattern2 :: Bool -> StatPair -> String -> Maybe StatPair
 testPattern2 sensitive (front, back) pat = do
@@ -190,6 +196,10 @@ isPrefixOf2 :: Bool -> String -> String -> Bool
 isPrefixOf2 True  = isPrefixOf
 isPrefixOf2 False = \a b -> map toLower a `isPrefixOf` map toLower b
 
+-- bool: true if case sensitive
+isSuffixOf2 :: Bool -> String -> String -> Bool
+isSuffixOf2 True  = isSuffixOf
+isSuffixOf2 False = \a b -> map toLower a `isSuffixOf` map toLower b
 
 -- drop `a` from `b` if `a` isPrefixOf2 `b`
 droppingPrefix2 :: Bool -> String -> String -> Maybe String
@@ -197,3 +207,8 @@ droppingPrefix2 sens a b
  | (isPrefixOf2 sens) a b = Just(drop (length a)b)
  | otherwise = Nothing
 
+-- drop `a` from `b` if `a` isSuffixOf2 `b`
+droppingSuffix2 :: Bool -> String -> String -> Maybe String
+droppingSuffix2 sens a b
+ | (isSuffixOf2 sens) a b = Just . reverse . drop(length a) . reverse $ b
+ | otherwise = Nothing
