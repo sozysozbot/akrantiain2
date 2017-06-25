@@ -31,7 +31,7 @@ resolvePunctuation env (a, Nothing)
  | otherwise = Left a
 
 insensitive :: Rule -> Rule
-insensitive R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map(fmap h) ld, middle=map(first h<$>) m, rightdollar=map(fmap h) rd, rightneg=fmap f r} where
+insensitive R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map( h) ld, middle=map(first h<$>) m, rightdollar=map( h) rd, rightneg=fmap f r} where
  f :: Condition -> Condition
  f (Negation c) = Negation $ h c
  f NegBoundary = NegBoundary
@@ -120,7 +120,7 @@ match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar=[], rightneg=Just
  return $ filter (f punct) $ cutlist stat where
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
 
-match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Identity(Ch pats):xs} stat =  do
+match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = (Ch pats):xs} stat =  do
  sensitive <- sensitivity <$> ask
  newMatch <- match k{rightdollar=xs} stat
  return $ catMaybes [testPattern2 sensitive fb pat | fb <- newMatch, pat <- pats]
@@ -136,7 +136,7 @@ match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
  env <- getEnv <$> ask
  return $ mapMaybe (handleBoundary env) newMatch
 
-match k@R{leftneg=Nothing, leftdollar=Identity(Ch pats):xs} stat =  do
+match k@R{leftneg=Nothing, leftdollar=(Ch pats):xs} stat =  do
  sensitive <- sensitivity <$> ask
  newMatch <- match k{leftdollar=xs} stat
  return $ catMaybes [testPattern2 sensitive fb pat | fb <- newMatch, pat <- pats]
