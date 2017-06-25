@@ -2,7 +2,7 @@
 module Akrantiain.Pattern_match
 (cook
 ) where
-import Prelude hiding (undefined)
+-- import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, inits, tails, intercalate)
 import Data.Char(toLower)
@@ -115,7 +115,10 @@ handle_recursion []     _ a = a
 handle_recursion (x:xs) f a = do
  newMatch <- handle_recursion xs f a
  return $ catMaybes [f fb pat | fb <- newMatch, pat <- x]
- 
+
+-- check if the right-hand side can be analyzed as if it has *already* passed thru the rightdollar and cond
+fooFilter :: ([Choose String],Maybe Condition,Bool) -> StatPair -> Bool
+fooFilter (arr,cond,sensitive) (_,b) = undefined
 
 match :: Rule -> Stat -> Reader Environment' [StatPair]
 
@@ -127,10 +130,9 @@ match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar=[], rightneg=Just
  return $ filter (f punct) $ cutlist stat where
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
 
-match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = arr} stat = do
+match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = arr, rightneg=cond} stat = do
  sensitive <- sensitivity <$> ask
- handle_recursion (map unCh arr) (testPattern2 sensitive) (match k{rightdollar=[]} stat)
-
+ return $ filter (fooFilter (arr,cond,sensitive)) $ cutlist stat
 
 
 match k@R{leftneg=Nothing, leftdollar=[], middle=Right(Ch pats,w):xs} stat =  do
