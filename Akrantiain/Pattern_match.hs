@@ -146,16 +146,10 @@ match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
  env <- getEnv <$> ask
  return $ mapMaybe (handleBoundary env) newMatch
 
-match k@R{leftneg=Nothing, leftdollar=arr} stat =  do
- sensitive <- sensitivity <$> ask
- handle_recursion (map unCh arr) (testPattern2 sensitive) (match k{leftdollar=[]} stat)
-
-match k@R{leftneg=Just condition} stat = do
- newMatch <- match k{leftneg=Nothing} stat
- env <- getEnv <$> ask
- let punct = pun env
- let f (front, _) = upgrade2 (unCond condition punct) $ concatMap fst front
- return $ filter f newMatch
+match k@R{leftneg=cond, leftdollar=arr} stat = do
+ env2 <- ask
+ newMatch <- match k{leftneg=Nothing, leftdollar=[]} stat
+ return $ filter (fooFilter2 (env2,cond,arr)) $ newMatch
 
 -- check if the left-hand side can be analyzed as if it *would* (in the future) passed thru the rightdollar and cond
 fooFilter2  :: (Environment',Maybe Condition,[Choose String]) -> StatPair -> Bool
