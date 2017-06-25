@@ -17,8 +17,8 @@ debug :
 	chmod 755 tester
 	./debug1 > gerhw1.txt
 	diff gerhw1.txt debug1_res.txt
-	./debug2 > gerhw2.txt
-	diff gerhw2.txt debug2_res.txt
+#	./debug2 > gerhw2.txt
+#	diff gerhw2.txt debug2_res.txt
 	./tester --check_from testerlist.txt
 
 
