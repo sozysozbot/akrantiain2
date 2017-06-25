@@ -31,7 +31,8 @@ resolvePunctuation env (a, Nothing)
  | otherwise = Left a
 
 insensitive :: Rule -> Rule
-insensitive R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map( h) ld, middle=map(first h<$>) m, rightdollar=map( h) rd, rightneg=fmap f r} where
+insensitive R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} 
+ = R{leftneg=fmap f l, leftdollar=map h ld, middle=map(first h<$>) m, rightdollar=map h rd, rightneg=fmap f r} where
  f :: Condition -> Condition
  f (Negation c) = Negation $ h c
  f NegBoundary = NegBoundary
@@ -124,7 +125,7 @@ fooFilter (p,arr,cond,sensitive) (_,b) = newFunc arr rightstr
   newFunc [] str = case cond of 
    Nothing -> True
    Just condition -> upgrade (unCond condition p) str
-  newFunc (Ch x:xs) str = any id [newFunc xs newStr | newStr <- catMaybes [droppingPrefix2 sensitive u str | u <- x]]
+  newFunc (Ch x:xs) str = or [newFunc xs newStr | newStr <- catMaybes [droppingPrefix2 sensitive u str | u <- x]]
   rightstr = concatMap fst b :: String
 
 match :: Rule -> Stat -> Reader Environment' [StatPair]

@@ -26,7 +26,7 @@ import Data.Char(isSpace)
 import Akrantiain.NFD
 
 apply_nfds :: Rule -> Rule
-apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map ( g2) ld, middle=map (fmap g) m, rightdollar=map ( g2) rd, rightneg=fmap f r} 
+apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map h ld, middle=map (fmap g) m, rightdollar=map h rd, rightneg=fmap f r} 
  where
   f :: Condition -> Condition
   f NegBoundary = NegBoundary
@@ -34,8 +34,6 @@ apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R
   g :: (Choose String, W) -> (Choose String, W)
   g (a,b) = (h a,b')
    where b' = case b of{Dollar_ -> Dollar_; W str -> W (nfd str);}
-  g2 :: Choose String -> Choose String
-  g2  = h
   h :: Choose String -> Choose String
   h = fmap nfd
 
