@@ -110,6 +110,13 @@ handleBoundary env (front, back) = do
   let (b', f'') = span (isSpPunct punct . fst) front'
   return (reverse f'', reverse b' ++ back)
 
+handle_recursion :: Monad m => [[t1]] -> (t -> t1 -> Maybe t) -> m [t] -> m [t]
+handle_recursion []     _ a = a
+handle_recursion (x:xs) f a = do
+ newMatch <- handle_recursion xs f a
+ return $ catMaybes [f fb pat | fb <- newMatch, pat <- x]
+ 
+
 match :: Rule -> Stat -> Reader Environment' [StatPair]
 
 match R{leftneg=Nothing, leftdollar=[], middle =[], rightdollar=[], rightneg=Nothing} stat = return $ cutlist stat
@@ -120,10 +127,9 @@ match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar=[], rightneg=Just
  return $ filter (f punct) $ cutlist stat where
   f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
 
-match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = (Ch pats):xs} stat =  do
+match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = arr} stat = do
  sensitive <- sensitivity <$> ask
- newMatch <- match k{rightdollar=xs} stat
- return $ catMaybes [testPattern2 sensitive fb pat | fb <- newMatch, pat <- pats]
+ handle_recursion (map unCh arr) (testPattern2 sensitive) (match k{rightdollar=[]} stat)
 
 
 
