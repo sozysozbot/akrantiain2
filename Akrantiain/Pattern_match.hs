@@ -111,12 +111,6 @@ handleBoundary env (front, back) = do
   let (b', f'') = span (isSpPunct punct . fst) front'
   return (reverse f'', reverse b' ++ back)
 
-handle_recursion :: Monad m => [[t1]] -> (t -> t1 -> Maybe t) -> m [t] -> m [t]
-handle_recursion []     _ a = a
-handle_recursion (x:xs) f a = do
- newMatch <- handle_recursion xs f a
- return $ catMaybes [f fb pat | fb <- newMatch, pat <- x]
-
 -- check if the right-hand side can be analyzed as if it has *already* passed thru the rightdollar and cond
 fooFilter :: (Environment',[Choose String],Maybe Condition) -> StatPair -> Bool
 fooFilter (env',arr,cond) (_,b) = newFunc arr rightstr
@@ -164,13 +158,6 @@ fooFilter2 (env',cond,arr) (a,_) = newFunc2 (reverse arr) leftstr
   newFunc2 (Ch x:xs) str = or [newFunc2 xs newStr | newStr <- catMaybes [droppingSuffix2 sensitive u str | u <- x]]
   leftstr = concatMap fst a :: String
 
-testPattern2 :: Bool -> StatPair -> String -> Maybe StatPair
-testPattern2 sensitive (front, back) pat = do
- let front' = rev2 front
- let pat' = reverse pat
- taken <- takeTill sensitive pat' front'
- let taken' = rev2 taken
- return (rev2 $ drop(length taken')front', taken' ++ back)
 
 testPattern :: Bool -> W -> StatPair -> String -> Maybe StatPair
 testPattern sensitive w (front, back) pat = do
