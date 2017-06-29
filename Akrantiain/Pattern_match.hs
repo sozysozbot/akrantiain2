@@ -92,9 +92,11 @@ rev2 ::  [([a], t)] -> [([a], t)]
 rev2 = map (first reverse) . reverse
 
 upgrade :: ([a] -> Bool) -> ([a] -> Bool)
+upgrade f "" = f ""
 upgrade f str = all f $ tail $ inits str
 
 upgrade2 :: ([a] -> Bool) -> ([a] -> Bool)
+upgrade2 f "" = f ""
 upgrade2 f str = all f $ init $ tails str
 
 unCond :: Condition -> (Punctuation -> String -> Bool)
