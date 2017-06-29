@@ -15,6 +15,7 @@ table.stat td { border-color : orange;
 
 table.foobar td { border: 1px solid gray; padding: 5px; }
 
+pre {white-space: normal;}
 </style>
 </head>
 <body>
@@ -25,15 +26,15 @@ table.foobar td { border: 1px solid gray; padding: 5px; }
 <h3 id="define-words">4-(-1). 用語の定義</h3>
 <pre>
 「AとBの対」とは、A1つとB1つを共に要素として持つデータ構造である。
-「AとBの対」のAのことをfstと呼び、Bのことをsndと呼ぶ。
-「空白文字」とは、<span class="FIXME" title="Haskellに依存しない説明をせよ">HaskellのisSpace関数に与えるとTrueを返す任意の文字である。</span>
-「未定義値」とは、失敗・未設定などを表すための特殊な値である。例えば、Cならヌルポインタ、JavaScriptならundefined、HaskellならNothingで表現できる。
+<br>「AとBの対」のAのことをfstと呼び、Bのことをsndと呼ぶ。
+<br>「空白文字」とは、<span class="FIXME" title="Haskellに依存しない説明をせよ">HaskellのisSpace関数に与えるとTrueを返す任意の文字である。</span>
+<br>「未定義値」とは、失敗・未設定などを表すための特殊な値である。例えば、Cならヌルポインタ、JavaScriptならundefined、HaskellならNothingで表現できる。
 </pre>
 <h3 id="conversion-overall">4-0. 概略</h3>
 <pre>
 変換部は、「環境情報(環境指定識別子一覧と句読点情報からなる)」「変換規則のリスト」「入力文字列」を受けとり、「実行時エラー」または「出力文字列」を返す。
-なお、環境情報は大局的な定数であり、変換部の処理を行う任意のタイミングで参照されうる。
-2017/03/22 20:49現在、akrantiain変換部は以下のような流れになっている。
+<br>なお、環境情報は大局的な定数であり、変換部の処理を行う任意のタイミングで参照されうる。
+<br>2017/03/22 20:49現在、akrantiain変換部は以下のような流れになっている。
 </pre>
 <!-- ソースコード中の`cook` -->
 <ol style="font-family:monospace; line-height: 170%" start="0">
@@ -62,7 +63,7 @@ Statと変換規則の仕様は後述。
 <h3 id="stat">4-1. Stat</h3>
 <pre>
 『文字列と文字列の対』で、対のsndが未定義値であり得るものを、『Stat素』<!-- ソースコード中の`StatElem` -->と呼ぶ。
-Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」である。例えば次のようなものである。</pre>
+<br>Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」である。例えば次のようなものである。</pre>
 <table class="stat">
 <tr><td>"s"</td><td>"p"</td><td>"a"</td><td>"gh"</td><td>"e"</td><td>"t"</td><td>"t"</td><td>"i"</td></tr>
 <tr><td>null</td><td>"p"</td><td>null</td><td>"g"</td><td>null</td><td>null</td><td>"t"</td><td>null</td></tr>
@@ -70,7 +71,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 <pre>fstをつなげてできる文字列（この例では"spaghetti"）を、Statのconcatと呼ぶ。</pre>
 <h3 id="convert">4-2. 変換規則</h3>
 <pre>変換規則は、以下の5要素からなる。<!-- ソースコード中の`data Rule` --><code><u>PHONEME</u></code>の定義については<a href="manuals_ja.htm">2章</a>を参照のこと。
-<code><u>Negation</u></code><!-- ソースコード中の`data Condition` -->は「文字列の集合または語境界」を要素として持ち、それらが登場しない時に限り変換を行うことを表す。
+<br><code><u>Negation</u></code><!-- ソースコード中の`data Condition` -->は「文字列の集合または語境界」を要素として持ち、それらが登場しない時に限り変換を行うことを表す。
 </pre>
 <ol style="font-family:monospace; line-height:170%">
 <li>左条件（省略可能）
@@ -93,7 +94,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 <h3 id="apply">4-3. 変換規則の適用</h3>
 <!-- ソースコード中の`apply` -->
 <pre>変換規則適用は、「Stat」と「変換規則」を受け取り、「Stat」を返す。
-2017/03/22 20:49現在、変換規則の適用は以下のような流れで行われている。
+<br>2017/03/22 20:49現在、変換規則の適用は以下のような流れで行われている。
 </pre>
 <ol style="font-family:monospace; line-height:170%">
 <li>受け取ったStatと変換規則をmatchに渡し、「『Statの対』のリスト」hogeを得る。</li>
@@ -110,7 +111,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 </ol>
 <pre>
 というのが大まかな流れであっ<strong>た。</strong>
-しかし、いわゆる<a href="https://github.com/sozysozbot/akrantiain2/issues/21">aimezバグ</a>の解決を図るため、少々処理が変更され、次のような流れとなった。</pre>
+<br>しかし、いわゆる<a href="https://github.com/sozysozbot/akrantiain2/issues/21">aimezバグ</a>の解決を図るため、少々処理が変更され、次のような流れとなった。</pre>
 <ol style="font-family:monospace; line-height:170%">
 <li> 「Statを二分したもの」の一覧のうち、「右条件→右$リスト」の条件を既に満たしているものを用意する。</li>
 <li>『変換元と変換先の対応』を右から辿っていき、一覧の中のうちパターンにマッチするもののみを残しながら、変換先を書き込んでいく。</li>
@@ -169,14 +170,14 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
         <td>)</td></tr>
 </table>
 <pre>この中で、右$リストfと右条件gという2つの制約を（結果的に）<strong>既に</strong>くぐり抜けているもののみが次の段階に渡される。
-これはどういう風に判定されるかというと、「sndのconcatが、以下の2条件を共に満たす2つの文字列AとBの結合であるかどうか」として判定される。</pre><!-- ソースコード中の`fooFilter` -->
+<br>これはどういう風に判定されるかというと、「sndのconcatが、以下の2条件を共に満たす2つの文字列AとBの結合であるかどうか」として判定される。</pre><!-- ソースコード中の`fooFilter` -->
 <ul style="font-family:monospace; line-height:170%">
 <li>「Aは、『右$リストの各要素のfst（これは文字列の集合である）からうまく文字列を選び、選んだ文字列を結合したもの』と一致する」（sensitivityがfalseであるとき、この「一致」判定は大文字と小文字を同一視する。）</li>
 <li>「Bの接頭辞<span class="FIXME" title="自身が空文字列である場合は？">（空文字列を含まない。自身を含む。）</span>は全て、右条件gを満たす」（sensitivityがfalseであるとき、この「接頭辞」判定は大文字と小文字を同一視する。）</li>
 </ul>
 <pre>右条件が存在しない場合は、右条件として恒真関数を用いればよい。
-
-具体例を見てみよう。まず、右$リストfが空リストであり、右条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
+<br>
+<br>具体例を見てみよう。まず、右$リストfが空リストであり、右条件gが「"an", "en", "in", "on", "un"のどれでもない」という条件であるとき、例えば、以下のStat対は通過する。
 </pre>
 <table>
 <tr><td>(</td><td>空リスト</td><td>,</td><td><table class="stat">
@@ -224,7 +225,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 <pre>なぜなら、このStat対のsndのconcatである"ant"の接頭辞の一つ"an"は、条件「"an", "en", "in", "on", "un"のどれでもない」を満たさないからである。</pre>
 
 <pre>右$リストfが空リストであり、かつ右条件が「語境界の否定」という場合についても見てみよう。
-この時、例えば、以下のStat対は通過する。
+<br>この時、例えば、以下のStat対は通過する。
 </pre>
 
 <table>
@@ -281,7 +282,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 </table>
 <pre>なぜなら、このStat対のsndのconcatである" cat"の接頭辞の一つ" "は、条件「スペースまたは句読点のみで構成される文字列ではない」を満たさないからである。</pre>
 <pre>右$リストfが空リストでない場合についても見てみよう。
-右$リストfが「集合{<code>"a"</code>, <code>"e"</code>, <code>"i"</code>, <code>"o"</code>, <code>"u"</code>, <code>"y"</code>}のみからなるリストと<code>$</code>の対」、右条件gが不存在（=恒真関数）である場合、</pre>
+<br>右$リストfが「集合{<code>"a"</code>, <code>"e"</code>, <code>"i"</code>, <code>"o"</code>, <code>"u"</code>, <code>"y"</code>}のみからなるリストと<code>$</code>の対」、右条件gが不存在（=恒真関数）である場合、</pre>
 <table>
 <tr><td>(</td><td>
         <table class="stat">
@@ -294,7 +295,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
         <td>)</td></tr>
 </table>
 <pre>は通過する。なぜなら、sndのconcatは"ez"であるが、これは「右$リスト中の各要素からうまく文字列を選んで結合させると作れる"e"」と「恒真関数を満たす文字列"z"」の結合とみなせるからである。
-一方で、右$リストfが「集合{<code>"a"</code>, <code>"e"</code>, <code>"i"</code>, <code>"o"</code>, <code>"u"</code>, <code>"y"</code>}のみからなるリストと<code>$</code>の対」、右条件gが「<code>"z"</code>でない」である場合、</pre>
+<br>一方で、右$リストfが「集合{<code>"a"</code>, <code>"e"</code>, <code>"i"</code>, <code>"o"</code>, <code>"u"</code>, <code>"y"</code>}のみからなるリストと<code>$</code>の対」、右条件gが「<code>"z"</code>でない」である場合、</pre>
 </pre>
 <table>
 <tr><td>(</td><td>
@@ -308,7 +309,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
         <td>)</td></tr>
 </table>
 <pre>は通過しない。なぜなら、sndのconcatである"ez"をどこで分割しても、
-「fからうまく選んで作れる文字列」と「接頭辞が<code>"z"</code>と等しくなることがない、言い換えれば、"z"で始まらない、文字列」に分かれることがないからである。</pre>
+<br>「fからうまく選んで作れる文字列」と「接頭辞が<code>"z"</code>と等しくなることがない、言い換えれば、"z"で始まらない、文字列」に分かれることがないからである。</pre>
 
 <h4>4-4-2. 「変換元と変換先の対応」の処理</h4>
 <pre>「『語境界』または『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」を右から辿っていき、条件を満たすもののみを通過させながら、Stat内の適切な『変換先』のところに情報を記入していく。</pre>
@@ -345,7 +346,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 </table>
 
 <pre>今回の場合は「このリストから空文字列を全て除いたリスト」はこのリストそのものである。
-このリストの最終要素は空白文字からのみ構成されるので、このStat対は通過し、次のようなStat対となる。</pre>
+<br>このリストの最終要素は空白文字からのみ構成されるので、このStat対は通過し、次のようなStat対となる。</pre>
 <table>
 <tr><td>(</td><td>
         <table class="stat">
@@ -397,7 +398,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 
 <h5>4-4-2-2.「『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」のとき</h5>
 <pre>まず、「変換関数」<!-- ソースコード中の`testPattern` -->を定義する。変換関数は、「<code><u>PHONEME</u></code>」「パターン文字列」「Stat対」を受け取り、「Stat対」を返したり返さなかったりする関数である。（「Stat対または未定義値」を返す、と言ってもよい）
-「Stat対のfstの後ろからk個のStat素を削り落とすと、その削り落としたところのconcatがパターン文字列と一致する」となるようなkが存在しないなら未定義値を返す。
+<br>「Stat対のfstの後ろからk個のStat素を削り落とすと、その削り落としたところのconcatがパターン文字列と一致する」となるようなkが存在しないなら未定義値を返す。
 <span class="FIXME" title="空文字列があって、kが複数ありうる場合は？">存在するならば</span>、
 </pre>
 <ul style="font-family:monospace; line-height:170%">
@@ -412,7 +413,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 
 <pre>
 具体例を見てみよう。
-まず、<code><u>PHONEME</u></code>が<code>$</code>である場合。パターン文字列が<code><span class="string">"a"</span></code>、Stat対が次のようなものであるときを考える。
+<br>まず、<code><u>PHONEME</u></code>が<code>$</code>である場合。パターン文字列が<code><span class="string">"a"</span></code>、Stat対が次のようなものであるときを考える。
 </pre>
 <table>
 <tr><td>(</td><td>
@@ -427,7 +428,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 </table>
 <pre>
 この時、Stat対のfstの後ろから1個のStat素を削り落とすと、その削り落としたところのconcatは"a"であり、パターン文字列と一致する。
-ゆえに、変換関数は以下のStat対を返す。
+<br>ゆえに、変換関数は以下のStat対を返す。
 </pre>
 <table>
 <tr><td>(</td><td>
@@ -442,7 +443,7 @@ Stat<!-- ソースコード中の`Stat` -->は、「『Stat素』のリスト」
 </table>
 <pre>
 次に、<code><u>PHONEME</u></code>が文字列である場合。<code><u>PHONEME</u></code>が<code><span class="slash">/ɛ/</span></code>、パターン文字列が<code><span class="string">"ai"</span></code>であるときを考える。
-Stat対が次のようなものであるとき、
+<br>Stat対が次のようなものであるとき、
 </pre>
 <table>
 <tr><td>(</td><td>
@@ -457,8 +458,8 @@ Stat対が次のようなものであるとき、
 </table>
 <pre>
 Stat対のfstの後ろから2個のStat素を削り落とすと、その削り落としたところのconcatは"ai"であり、パターン文字列と一致する。
-さらに、その2個のStat素は共に「sndが未定義値である」を満たす。
-ゆえに、変換関数は以下のStat対を返す。
+<br>さらに、その2個のStat素は共に「sndが未定義値である」を満たす。
+<br>ゆえに、変換関数は以下のStat対を返す。
 </pre>
 <table>
 <tr><td>(</td><td>空リスト</td><td>,</td><td><table class="stat">
@@ -466,8 +467,7 @@ Stat対のfstの後ろから2個のStat素を削り落とすと、その削り�
         <tr><td>"ɛ"</td><td>null</td><td>"e"</td></tr>
         </table></td>
         <td>)</td></tr></table>
-<pre>一方、Stat対が次のようなものであるとき、
-</pre>
+<pre>一方、Stat対が次のようなものであるとき、</pre>
 <table>
 <tr><td>(</td><td>
         <table class="stat">
@@ -481,9 +481,9 @@ Stat対のfstの後ろから2個のStat素を削り落とすと、その削り�
 </table>
 <pre>
 （補足:左から4つ目のStat素はCOMBINING DIAERESIS (U+0308)である。）
-Stat対のfstの後ろから2個のStat素を削り落とすと、その削り落としたところのconcatは"ai"であり、パターン文字列と一致するが、
-2個のStat素のsndは未定義値ではないので、変換関数は未定義値を返す。 
-
+<br>Stat対のfstの後ろから2個のStat素を削り落とすと、その削り落としたところのconcatは"ai"であり、パターン文字列と一致するが、
+<br>2個のStat素のsndは未定義値ではないので、変換関数は未定義値を返す。 
+<br>
 </pre>
 <pre>
 さて、変換関数が定義できたので、これを用い 「変換元と変換先の対応」が「『文字列の集合と<code><u>PHONEME</u></code>の対』のリスト」のときに行う操作について説明する。
@@ -498,12 +498,12 @@ Stat対のfstの後ろから2個のStat素を削り落とすと、その削り�
 
 <pre>
 4-4-2-2.は、あくまで「『Stat対を通過させる』という操作を繰り返す」という見方で説明した4-4-1.や4-4-2-1.や4-4-3.と違い、
-「Stat対のリスト」から二重ループを経て別の「Stat対のリスト」を返すという見方で説明していることに留意せよ。
+<br>「Stat対のリスト」から二重ループを経て別の「Stat対のリスト」を返すという見方で説明していることに留意せよ。
 </pre>
 <h4>4-4-3. 左$リストと左条件の処理</h4><!-- ソースコード中の`fooFilter2` -->
 <pre>
 左条件gと左$リストfという2つの制約を「これから」くぐり抜けると考慮できるもののみが最終的に通過する。
-これはどういう風に判定されるかというと、「fstのconcatが、以下の2条件を共に満たす2つの文字列BとAの結合であるかどうか」として判定される。
+<br>これはどういう風に判定されるかというと、「fstのconcatが、以下の2条件を共に満たす2つの文字列BとAの結合であるかどうか」として判定される。
 </pre>
 <ul style="font-family:monospace; line-height:170%">
 <li>「Bの接尾辞<span class="FIXME" title="自身が空文字列である場合は？">（空文字列を含まない。自身を含む。）</span>は全て、左条件gを満たす」（sensitivityがfalseであるとき、この「接尾辞」判定は大文字と小文字を同一視する。）</li>
@@ -559,7 +559,7 @@ Stat対のfstの後ろから2個のStat素を削り落とすと、その削り�
 <pre>なぜなら、このStat対のfstのconcatである"wan"の接尾辞の一つ"an"は、条件「"an", "en", "in", "on", "un"のどれでもない」を満たさないからである。</pre>
 
 <pre>条件が「語境界の否定」という場合についても見てみよう。この時も左$リストが空リストであるとする。
-この時、例えば、以下のStat対は通過する。
+<br>この時、例えば、以下のStat対は通過する。
 </pre>
 
 <table>
@@ -617,7 +617,7 @@ Stat対のfstの後ろから2個のStat素を削り落とすと、その削り�
 <pre>なぜなら、このStat対のfstのconcatである"a "の接尾辞の一つ" "は、条件「スペースまたは句読点のみで構成される文字列ではない」を満たさないからである。</pre>
 <pre>
 左$リストが空リストでない時についても見てみよう。 
-左条件gが不存在（=恒真関数）、左$リストfが「集合{<code>"a"</code>, <code>"e"</code>, <code>"i"</code>, <code>"o"</code>, <code>"u"</code>, <code>"y"</code>}のみからなるリストと<code>$</code>の対」である場合、</pre>
+<br>左条件gが不存在（=恒真関数）、左$リストfが「集合{<code>"a"</code>, <code>"e"</code>, <code>"i"</code>, <code>"o"</code>, <code>"u"</code>, <code>"y"</code>}のみからなるリストと<code>$</code>の対」である場合、</pre>
 <table>
 <tr><td>(</td><td><table class="stat">
         <tr><td>"ze"</td></tr>
@@ -630,7 +630,7 @@ Stat対のfstの後ろから2個のStat素を削り落とすと、その削り�
         <td>)</td></tr>
 </table>
 <pre>は通過する。なぜなら、fstのconcatは"ze"であるが、これは「恒真関数を満たす文字列"z"」と「左$リスト中の各要素からうまく文字列を選んで結合させると作れる"e"」との結合とみなせるからである。
-一方で、左条件gが「<code>"z"</code>でない」、左$リストfが「集合{<code>"a"</code>, <code>"e"</code>, <code>"i"</code>, <code>"o"</code>, <code>"u"</code>, <code>"y"</code>}のみからなるリストと<code>$</code>の対」である場合、</pre>
+<br>一方で、左条件gが「<code>"z"</code>でない」、左$リストfが「集合{<code>"a"</code>, <code>"e"</code>, <code>"i"</code>, <code>"o"</code>, <code>"u"</code>, <code>"y"</code>}のみからなるリストと<code>$</code>の対」である場合、</pre>
 </pre>
 <table>
 <tr><td>(</td><td><table class="stat">
@@ -644,6 +644,6 @@ Stat対のfstの後ろから2個のStat素を削り落とすと、その削り�
         <td>)</td></tr>
 </table>
 <pre>は通過しない。なぜなら、fstのconcatである"ze"をどこで分割しても、
-「接尾辞が<code>"z"</code>と等しくなることがない、言い換えれば、"z"で終わらない、文字列」と「fからうまく選んで作れる文字列」に分かれることがないからである。</pre>
+<br>「接尾辞が<code>"z"</code>と等しくなることがない、言い換えれば、"z"で終わらない、文字列」と「fからうまく選んで作れる文字列」に分かれることがないからである。</pre>
 </body>
 </html>
