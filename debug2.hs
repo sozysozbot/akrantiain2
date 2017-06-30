@@ -24,7 +24,7 @@ punct = ""
 
 rls :: [Rule]
 rls = [
- lift2[(c"n"),(c"a")][Right(c"",W"")][],
+ lift2[c"n",c"a"][Right(c"",W"")][],
  lift[Right(c"a",W"a")],
  lift[Right(c"n",W"")]
  ]
