@@ -87,9 +87,7 @@ recursive f stat = do
  ttt <- f stat
  case ttt of
   Right stat' -> return [stat']
-  Left (a,b) -> do
-   newStat <- recursive f a 
-   return $ b : newStat 
+  Left (a,b) -> (b:) <$> recursive f a 
 
 
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
