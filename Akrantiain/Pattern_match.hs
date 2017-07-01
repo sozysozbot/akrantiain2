@@ -75,8 +75,9 @@ apply stat rule = do
  case frontback_array of
   [] -> return stat
   c -> let (a,b) = last c in do
-   newStat <- apply a rule
-   return $ newStat ++ b
+   if a == stat then undefined else do
+    newStat <- apply a rule
+    return $ newStat ++ b
 
 
 
