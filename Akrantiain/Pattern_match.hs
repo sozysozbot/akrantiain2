@@ -78,7 +78,7 @@ apply2 stat rule = do
    let (a,b) = last c 
    fbarr <- match rule a
    if not(null fbarr) && fst(last fbarr) == a
-    then return (Just (init a), last a : b)
+    then if null a then undefined else return (Just (init a), last a : b)
     else return (Just a,b)
 
 -- merge is allowed, split is not
