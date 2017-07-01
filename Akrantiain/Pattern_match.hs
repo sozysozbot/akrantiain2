@@ -74,10 +74,12 @@ apply2 stat rule = do
  frontback_array <- match rule stat
  case frontback_array of
   [] -> return (Nothing, stat)
-  c -> case last c of 
-    (a,b)
-     | a == stat -> undefined
-     | otherwise -> return (Just a,b)
+  c -> do
+   let (a,b) = last c 
+   fbarr <- match rule a
+   if not(null fbarr) && fst(last fbarr) == a
+    then return (Just (init a), last a : b)
+    else return (Just a,b)
 
 -- merge is allowed, split is not
 apply4 :: Stat -> Rule -> Reader Environment' [Stat]
