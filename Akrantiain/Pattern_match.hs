@@ -78,9 +78,11 @@ apply stat rule = do
    let (a,b) = last c
    frontback_array' <- match rule a
    if not(null frontback_array') && fst(last frontback_array') == a
-    then do -- move one statelem
-     newStat' <- apply (init a) rule  -- What if `a` was empty?
-     return $ newStat' ++(last a : b)
+    then if null a 
+     then undefined --emptystring0
+     else do -- move one statelem
+      newStat' <- apply (init a) rule
+      return $ newStat' ++(last a : b)
     else do {newStat <- apply a rule;return $ newStat ++ b}
 
 
