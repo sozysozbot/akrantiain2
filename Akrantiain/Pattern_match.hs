@@ -86,10 +86,10 @@ apply4 stat rule = recursive (`apply2` rule) stat
 
 recursive :: Monad m => (t1 -> m (Maybe t1, t)) -> t1 -> m [t]
 recursive f stat = do
- ttt <- f stat
- case ttt of
-  (Nothing, stat') -> return [stat']
-  (Just a,b) -> (b:) <$> recursive f a 
+ (ttt,b) <- f stat
+ (b:) <$> case ttt of
+  Nothing -> return []
+  Just a -> recursive f a 
 
 
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
