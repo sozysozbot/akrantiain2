@@ -1,1 +1,0 @@
-latin.txt    =======RRreverse4.snoj======> ideal: head_cut.txt  reality: foo2.txt
