@@ -68,6 +68,13 @@ dropTwo = dropOne . reverse . dropOne . reverse
 cook' :: [Rule] -> Stat -> Reader Environment' Stat
 cook' rls stat = foldM apply stat rls
 
+apply2 :: Stat -> Rule -> Reader Environment' StatPair
+apply2 stat rule = do
+ frontback_array <- match rule stat
+ case frontback_array of
+  [] -> return ([],stat)
+  c -> return (last c)
+
 -- merge is allowed, split is not
 apply :: Stat -> Rule -> Reader Environment' Stat
 apply stat rule = do
