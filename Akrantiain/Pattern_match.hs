@@ -66,25 +66,24 @@ dropTwo = dropOne . reverse . dropOne . reverse
  where dropOne = \(' ':xs) -> xs -- GUARANTEED TO BE SAFE
 
 cook' :: [Rule] -> Stat -> Reader Environment' Stat
-cook' rls stat = foldM apply stat rls
+cook' rls stat = foldM apply4 stat rls
 
-apply2 :: Stat -> Rule -> Reader Environment' StatPair
+apply2 :: Stat -> Rule -> Reader Environment' (Either StatPair Stat)
 apply2 stat rule = do
  frontback_array <- match rule stat
  case frontback_array of
-  [] -> return ([],stat)
-  c -> return (last c)
+  [] -> return (Right stat)
+  c -> return (Left$last c)
 
 -- merge is allowed, split is not
-apply :: Stat -> Rule -> Reader Environment' Stat
-apply stat rule = do
- frontback_array <- match rule stat
- case frontback_array of
-  [] -> return stat
-  c -> let (a,b) = last c in do
-   if a == stat then undefined else do
-    newStat <- apply a rule
-    return $ newStat ++ b
+apply4 :: Stat -> Rule -> Reader Environment' Stat
+apply4 stat rule = do
+ ttt <- apply2 stat rule
+ case ttt of
+  Right stat' -> return stat'
+  Left (a,b) -> if a == stat then undefined else do
+   newStat <- apply4 a rule
+   return $ newStat ++ b
 
 
 
