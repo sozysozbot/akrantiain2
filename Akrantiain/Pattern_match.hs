@@ -69,25 +69,27 @@ cook' :: [Rule] -> Stat -> Reader Environment' Stat
 cook' rls stat = foldM apply stat rls
  where apply a b = (concat . reverse) <$> apply4 a b 
 
-apply2 :: Stat -> Rule -> Reader Environment' (Either StatPair Stat)
+apply2 :: Stat -> Rule -> Reader Environment' ((Maybe Stat,Stat))
 apply2 stat rule = do
  frontback_array <- match rule stat
  case frontback_array of
-  [] -> return (Right stat)
+  [] -> return (Nothing, stat)
   c -> case last c of 
     (a,b)
      | a == stat -> undefined
-     | otherwise -> return (Left(a,b))
+     | otherwise -> return (Just a,b)
 
 -- merge is allowed, split is not
 apply4 :: Stat -> Rule -> Reader Environment' [Stat]
 apply4 stat rule = recursive (`apply2` rule) stat
 
+
+recursive :: Monad m => (t1 -> m (Maybe t1, t)) -> t1 -> m [t]
 recursive f stat = do
  ttt <- f stat
  case ttt of
-  Right stat' -> return [stat']
-  Left (a,b) -> (b:) <$> recursive f a 
+  (Nothing, stat') -> return [stat']
+  (Just a,b) -> (b:) <$> recursive f a 
 
 
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
