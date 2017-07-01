@@ -74,10 +74,14 @@ apply stat rule = do
  frontback_array <- match rule stat
  case frontback_array of
   [] -> return stat
-  c -> let (a,b) = last c in do
-   if a == stat then undefined else do
-    newStat <- apply a rule
-    return $ newStat ++ b
+  c -> do
+   let (a,b) = last c
+   frontback_array' <- match rule a
+   if not(null frontback_array') && fst(last frontback_array') == a
+    then do -- move one statelem
+     newStat' <- apply (init a) rule  -- What if `a` was empty?
+     return $ newStat' ++(last a : b)
+    else do {newStat <- apply a rule;return $ newStat ++ b}
 
 
 
