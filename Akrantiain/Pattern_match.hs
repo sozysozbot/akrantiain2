@@ -69,7 +69,7 @@ cook' :: [Rule] -> Stat -> Reader Environment' Stat
 cook' rls stat = foldM apply stat rls
  where apply a b = (concat . reverse) <$> apply4 a b 
 
-apply2 :: Stat -> Rule -> Reader Environment' ((Maybe Stat,Stat))
+apply2 :: Stat -> Rule -> Reader Environment' (Maybe Stat,Stat)
 apply2 stat rule = do
  frontback_array <- match rule stat
  case frontback_array of
@@ -156,7 +156,7 @@ match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
 match k@R{leftneg=cond, leftdollar=arr} stat = do
  env2 <- ask
  newMatch <- match k{leftneg=Nothing, leftdollar=[]} stat
- return $ filter (fooFilter2 (env2,cond,arr)) $ newMatch
+ return $ filter (fooFilter2 (env2,cond,arr)) newMatch
 
 -- check if the left-hand side can be analyzed as if it *would* (in the future) passed thru the rightdollar and cond
 fooFilter2  :: (Environment',Maybe Condition,[Choose String]) -> StatPair -> Bool
