@@ -81,15 +81,15 @@ apply2 stat rule = do
 
 -- merge is allowed, split is not
 apply4 :: Stat -> Rule -> Reader Environment' [Stat]
-apply4 stat rule = do
- ttt <- apply2 stat rule
+apply4 stat rule = recursive (`apply2` rule) stat
+
+recursive f stat = do
+ ttt <- f stat
  case ttt of
   Right stat' -> return [stat']
   Left (a,b) -> do
-   newStat <- apply4 a rule
-   return $ b : newStat
-
-
+   newStat <- recursive f a 
+   return $ b : newStat 
 
 
 -- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
