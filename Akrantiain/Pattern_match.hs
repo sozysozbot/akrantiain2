@@ -67,7 +67,7 @@ dropTwo = dropOne . reverse . dropOne . reverse
 
 cook' :: [Rule] -> Stat -> Reader Environment' Stat
 cook' rls stat = foldM apply stat rls
- where apply a b = concat <$> apply4 a b 
+ where apply a b = (concat . reverse) <$> apply4 a b 
 
 apply2 :: Stat -> Rule -> Reader Environment' (Either StatPair Stat)
 apply2 stat rule = do
@@ -84,7 +84,7 @@ apply4 stat rule = do
   Right stat' -> return [stat']
   Left (a,b) -> if a == stat then undefined else do
    newStat <- apply4 a rule
-   return $ newStat ++ [b]
+   return $ b : newStat
 
 
 
