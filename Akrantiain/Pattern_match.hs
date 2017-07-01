@@ -74,7 +74,10 @@ apply2 stat rule = do
  frontback_array <- match rule stat
  case frontback_array of
   [] -> return (Right stat)
-  c -> return (Left$last c)
+  c -> case last c of 
+    (a,b)
+     | a == stat -> undefined
+     | otherwise -> return (Left(a,b))
 
 -- merge is allowed, split is not
 apply4 :: Stat -> Rule -> Reader Environment' [Stat]
@@ -82,7 +85,7 @@ apply4 stat rule = do
  ttt <- apply2 stat rule
  case ttt of
   Right stat' -> return [stat']
-  Left (a,b) -> if a == stat then undefined else do
+  Left (a,b) -> do
    newStat <- apply4 a rule
    return $ b : newStat
 
