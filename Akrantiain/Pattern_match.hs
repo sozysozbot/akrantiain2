@@ -66,7 +66,8 @@ dropTwo = dropOne . reverse . dropOne . reverse
  where dropOne = \(' ':xs) -> xs -- GUARANTEED TO BE SAFE
 
 cook' :: [Rule] -> Stat -> Reader Environment' Stat
-cook' rls stat = foldM apply4 stat rls
+cook' rls stat = foldM apply stat rls
+ where apply a b = concat <$> apply4 a b 
 
 apply2 :: Stat -> Rule -> Reader Environment' (Either StatPair Stat)
 apply2 stat rule = do
@@ -76,14 +77,14 @@ apply2 stat rule = do
   c -> return (Left$last c)
 
 -- merge is allowed, split is not
-apply4 :: Stat -> Rule -> Reader Environment' Stat
+apply4 :: Stat -> Rule -> Reader Environment' [Stat]
 apply4 stat rule = do
  ttt <- apply2 stat rule
  case ttt of
-  Right stat' -> return stat'
+  Right stat' -> return [stat']
   Left (a,b) -> if a == stat then undefined else do
    newStat <- apply4 a rule
-   return $ newStat ++ b
+   return $ newStat ++ [b]
 
 
 
