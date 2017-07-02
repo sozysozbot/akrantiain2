@@ -1,0 +1,80 @@
+MacBook-Pro-de-admin:akrantiain2 admin$ echo 100
+100
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m0.077s
+user	0m0.065s
+sys	0m0.007s
+MacBook-Pro-de-admin:akrantiain2 admin$ echo 200
+200
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m0.524s
+user	0m0.505s
+sys	0m0.011s
+MacBook-Pro-de-admin:akrantiain2 admin$ echo 300
+300
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m1.524s
+user	0m1.492s
+sys	0m0.023s
+MacBook-Pro-de-admin:akrantiain2 admin$ echo 400
+400
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m2.978s
+user	0m2.925s
+sys	0m0.041s
+MacBook-Pro-de-admin:akrantiain2 admin$ echo 500
+500
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m5.211s
+user	0m5.126s
+sys	0m0.066s
+MacBook-Pro-de-admin:akrantiain2 admin$ echo 600
+600
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m5.211s
+user	0m5.113s
+sys	0m0.073s
+MacBook-Pro-de-admin:akrantiain2 admin$ echo THE ABOVE IS FOR 500
+THE ABOVE IS FOR 500
+MacBook-Pro-de-admin:akrantiain2 admin$ echo really 600
+really 600
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m8.339s
+user	0m8.213s
+sys	0m0.106s
+MacBook-Pro-de-admin:akrantiain2 admin$ echo 700
+700
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m12.866s
+user	0m12.664s
+sys	0m0.168s
+MacBook-Pro-de-admin:akrantiain2 admin$ echo 800
+800
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m19.019s
+user	0m18.732s
+sys	0m0.240s
+MacBook-Pro-de-admin:akrantiain2 admin$ echo 900
+900
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m29.843s
+user	0m28.832s
+sys	0m0.554s
+MacBook-Pro-de-admin:akrantiain2 admin$ echo 1000
+1000
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m41.051s
+user	0m39.568s
+sys	0m0.752s
+MacBook-Pro-de-admin:akrantiain2 admin$ 
