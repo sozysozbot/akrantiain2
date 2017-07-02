@@ -78,3 +78,57 @@ real	0m41.051s
 user	0m39.568s
 sys	0m0.752s
 MacBook-Pro-de-admin:akrantiain2 admin$ 
+MacBook-Pro-de-admin:akrantiain2 admin$ yes "z" | head -n 1100 | tr -d '\n' > samples/time.txt 
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m53.857s
+user	0m52.913s
+sys	0m0.702s
+MacBook-Pro-de-admin:akrantiain2 admin$ yes "z" | head -n 1200 | tr -d '\n' > samples/time.txt 
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	1m10.033s
+user	1m8.417s
+sys	0m1.049s
+MacBook-Pro-de-admin:akrantiain2 admin$ yes "z" | head -n 1300 | tr -d '\n' > samples/time.txt 
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	1m32.399s
+user	1m29.330s
+sys	0m1.549s
+MacBook-Pro-de-admin:akrantiain2 admin$ yes "z" | head -n 1400 | tr -d '\n' > samples/time.txt 
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	1m55.037s
+user	1m51.579s
+sys	0m1.878s
+MacBook-Pro-de-admin:akrantiain2 admin$ yes "z" | head -n 1500 | tr -d '\n' > samples/time.txt 
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	2m18.791s
+user	2m15.360s
+sys	0m2.076s
+MacBook-Pro-de-admin:akrantiain2 admin$ yes "z" | head -n 1600 | tr -d '\n' > samples/time.txt 
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	2m53.047s
+user	2m48.881s
+sys	0m2.618s
+MacBook-Pro-de-admin:akrantiain2 admin$ yes "z" | head -n 1700 | tr -d '\n' > samples/time.txt 
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	3m32.920s
+user	3m26.882s
+sys	0m3.394s
+MacBook-Pro-de-admin:akrantiain2 admin$ yes "z" | head -n 1800 | tr -d '\n' > samples/time.txt 
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	4m8.955s
+user	4m3.053s
+sys	0m3.600s
+MacBook-Pro-de-admin:akrantiain2 admin$ yes "z" | head -n 1900 | tr -d '\n' > samples/time.txt  
+MacBook-Pro-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	4m56.006s
+user	4m49.974s
+sys	0m4.039s
