@@ -2,9 +2,9 @@
 module Akrantiain.Pattern_match
 (cook
 ) where
-import Prelude hiding (undefined)
+-- import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
-import Data.List(isPrefixOf, inits, tails, intercalate)
+import Data.List(isPrefixOf, isSuffixOf, inits, tails, intercalate)
 import Data.Char(toLower)
 import Data.Either(lefts, rights)
 import Control.Monad(guard)
@@ -31,7 +31,8 @@ resolvePunctuation env (a, Nothing)
  | otherwise = Left a
 
 insensitive :: Rule -> Rule
-insensitive R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map(fmap h) ld, middle=map(first h<$>) m, rightdollar=map(fmap h) rd, rightneg=fmap f r} where
+insensitive R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} 
+ = R{leftneg=fmap f l, leftdollar=map h ld, middle=map(first h<$>) m, rightdollar=map h rd, rightneg=fmap f r} where
  f :: Condition -> Condition
  f (Negation c) = Negation $ h c
  f NegBoundary = NegBoundary
@@ -74,8 +75,9 @@ apply stat rule = do
  case frontback_array of
   [] -> return stat
   c -> let (a,b) = last c in do
-   newStat <- apply a rule
-   return $ newStat ++ b
+   if a == stat then undefined else do
+    newStat <- apply a rule
+    return $ newStat ++ b
 
 
 
@@ -110,25 +112,24 @@ handleBoundary env (front, back) = do
   let (b', f'') = span (isSpPunct punct . fst) front'
   return (reverse f'', reverse b' ++ back)
 
+-- check if the right-hand side can be analyzed as if it has *already* passed thru the rightdollar and cond
+fooFilter :: (Environment',[Choose String],Maybe Condition) -> StatPair -> Bool
+fooFilter (env',arr,cond) (_,b) = newFunc arr rightstr
+ where
+  sensitive = sensitivity env'
+  p = (pun . getEnv) env'
+  newFunc :: [Choose String] -> String -> Bool
+  newFunc [] str = case cond of 
+   Nothing -> True
+   Just condition -> upgrade (unCond condition p) str
+  newFunc (Ch x:xs) str = or [newFunc xs newStr | newStr <- catMaybes [droppingPrefix2 sensitive u str | u <- x]]
+  rightstr = concatMap fst b :: String
+
 match :: Rule -> Stat -> Reader Environment' [StatPair]
 
-match R{leftneg=Nothing, leftdollar=[], middle =[], rightdollar=[], rightneg=Nothing} stat = return $ cutlist stat
-
-match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar=[], rightneg=Just condition} stat = do
- env <- getEnv <$> ask
- let punct = pun env
- return $ filter (f punct) $ cutlist stat where
-  f p (_, back) = upgrade (unCond condition p) $ concatMap fst back
-
-match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Right(Ch pats):xs} stat =  do
- sensitive <- sensitivity <$> ask
- newMatch <- match k{rightdollar=xs} stat
- return $ catMaybes [testPattern2 sensitive fb pat | fb <- newMatch, pat <- pats]
-match k@R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = Left():xs} stat = do
- newMatch <- match k{rightdollar=xs} stat
- env <- getEnv <$> ask
- return $ mapMaybe (handleBoundary env) newMatch
-
+match R{leftneg=Nothing, leftdollar=[], middle=[], rightdollar = arr, rightneg=cond} stat = do
+ env2 <- ask
+ return $ filter (fooFilter (env2,arr,cond)) $ cutlist stat
 
 
 match k@R{leftneg=Nothing, leftdollar=[], middle=Right(Ch pats,w):xs} stat =  do
@@ -140,30 +141,24 @@ match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
  env <- getEnv <$> ask
  return $ mapMaybe (handleBoundary env) newMatch
 
-match k@R{leftneg=Nothing, leftdollar=Right(Ch pats):xs} stat =  do
- sensitive <- sensitivity <$> ask
- newMatch <- match k{leftdollar=xs} stat
- return $ catMaybes [testPattern2 sensitive fb pat | fb <- newMatch, pat <- pats]
-match k@R{leftneg=Nothing, leftdollar=Left():xs} stat = do
- newMatch <- match k{leftdollar=xs} stat
- env <- getEnv <$> ask
- return $ mapMaybe (handleBoundary env) newMatch
+match k@R{leftneg=cond, leftdollar=arr} stat = do
+ env2 <- ask
+ newMatch <- match k{leftneg=Nothing, leftdollar=[]} stat
+ return $ filter (fooFilter2 (env2,cond,arr)) $ newMatch
 
-match k@R{leftneg=Just condition} stat = do
- newMatch <- match k{leftneg=Nothing} stat
- env <- getEnv <$> ask
- let punct = pun env
- let f (front, _) = upgrade2 (unCond condition punct) $ concatMap fst front
- return $ filter f newMatch
+-- check if the left-hand side can be analyzed as if it *would* (in the future) passed thru the rightdollar and cond
+fooFilter2  :: (Environment',Maybe Condition,[Choose String]) -> StatPair -> Bool
+fooFilter2 (env',cond,arr) (a,_) = newFunc2 (reverse arr) leftstr
+ where
+  sensitive = sensitivity env'
+  p = (pun . getEnv) env'
+  newFunc2 :: [Choose String] -> String -> Bool
+  newFunc2 [] str = case cond of 
+   Nothing -> True
+   Just condition -> upgrade2 (unCond condition p) str
+  newFunc2 (Ch x:xs) str = or [newFunc2 xs newStr | newStr <- catMaybes [droppingSuffix2 sensitive u str | u <- x]]
+  leftstr = concatMap fst a :: String
 
-
-testPattern2 :: Bool -> StatPair -> String -> Maybe StatPair
-testPattern2 sensitive (front, back) pat = do
- let front' = rev2 front
- let pat' = reverse pat
- taken <- takeTill sensitive pat' front'
- let taken' = rev2 taken
- return (rev2 $ drop(length taken')front', taken' ++ back)
 
 testPattern :: Bool -> W -> StatPair -> String -> Maybe StatPair
 testPattern sensitive w (front, back) pat = do
@@ -189,5 +184,19 @@ isPrefixOf2 :: Bool -> String -> String -> Bool
 isPrefixOf2 True  = isPrefixOf
 isPrefixOf2 False = \a b -> map toLower a `isPrefixOf` map toLower b
 
+-- bool: true if case sensitive
+isSuffixOf2 :: Bool -> String -> String -> Bool
+isSuffixOf2 True  = isSuffixOf
+isSuffixOf2 False = \a b -> map toLower a `isSuffixOf` map toLower b
 
+-- drop `a` from `b` if `a` isPrefixOf2 `b`
+droppingPrefix2 :: Bool -> String -> String -> Maybe String
+droppingPrefix2 sens a b
+ | (isPrefixOf2 sens) a b = Just(drop (length a)b)
+ | otherwise = Nothing
 
+-- drop `a` from `b` if `a` isSuffixOf2 `b`
+droppingSuffix2 :: Bool -> String -> String -> Maybe String
+droppingSuffix2 sens a b
+ | (isSuffixOf2 sens) a b = Just . reverse . drop(length a) . reverse $ b
+ | otherwise = Nothing

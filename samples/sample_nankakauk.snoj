@@ -1,0 +1,43 @@
+# https://drive.google.com/file/d/0BxTLM3ZkGePNMi1oRDlIbUQ5NWM/view
+
+PUNCTUATION = "." | "," | "!" | "?" | "’" | "'";
+
+
+"ae"	->/e:/
+"au"	->/o/
+"eu"	->/u:/
+"ei"	->/e/
+"iu"	->/a:/
+"oo" 	->/o:/
+"ui" 	->/i:/
+
+"a"	->/a/
+"e"	->/i/
+"u"	->/u/
+"i"	->/ai/
+
+^ "o" ^ ->/o/
+"o"	->//
+
+"ng" ^	->/ŋ/
+"ng"	->/ŋg/
+"nk"	->/ŋk/
+
+
+"b"	->/b/
+"c"	->/θ/
+"d"	->/d/
+"f"	->/f/
+"g"	->/g/
+("h"|"x")->/x/
+"j"	->/ʤ/
+"k"	->/k/
+("l"|"r")->/l/
+"m"	->/m/
+"n"	->/n/
+"p"	->/p/
+"s"	->/s/
+"t"	->/t/
+"v"	->/v/
+"w"	->/w/
+"y"	->/j/

@@ -1,4 +1,4 @@
-# buggy
+# used to be buggy
 "ez" ^ -> /e/;
 "ai" -> /ɛ/;
 "m" ("a" | "e" | "i" | "o" | "u" | "y") -> /m/ $

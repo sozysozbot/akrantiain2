@@ -18,7 +18,7 @@ import Prelude hiding (undefined)
 import Data.List(intercalate)
 import Akrantiain.Global
 
-newtype Choose a = Ch [a] deriving(Show, Eq, Ord)
+newtype Choose a = Ch{unCh::[a]} deriving(Show, Eq, Ord)
 data Phoneme = Dollar | Slash String deriving(Show, Eq, Ord)
 data Select = Boundary2 | Iden Identifier | Pipe (Choose Quote) deriving(Show, Eq, Ord)
 newtype Quote = Quote{unQ::String} deriving(Show, Eq, Ord)
