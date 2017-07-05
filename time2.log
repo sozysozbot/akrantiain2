@@ -4,3 +4,22 @@ MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < 
 real	0m5.405s
 user	0m5.338s
 sys	0m0.053s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1000 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m2.439s
+user	0m2.371s
+sys	0m0.033s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 2000 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m10.485s
+user	0m10.145s
+sys	0m0.140s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 500 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m0.605s
+user	0m0.582s
+sys	0m0.014s
+MBP-de-admin:akrantiain2 admin$ 
