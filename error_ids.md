@@ -7,6 +7,7 @@ errNum | errStr
 `334`|`"duplicate definition regarding identifier(s) {" ++ intercalate "}, {" (map unId duplicates) ++ "}"`   
 `335`|`"unresolved identifier {" ++ unId iden ++ "}"`  
 `336`|`"right-hand side of the following sentence consists solely of dollar(s):\n" ++ toSource conv`
+`337`|`"a punctuation or space found inside a pattern string(s) "++toBraces (map Quote illegals)`
 
 ## SemanticWarning
 warnNum | warnStr
