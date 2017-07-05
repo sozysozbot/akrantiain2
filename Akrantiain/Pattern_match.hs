@@ -15,6 +15,7 @@ import Akrantiain.NFD
 import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
+import Debug.Trace
 
 data Environment' = Wrap{sensitivity :: Bool, getEnv :: Environment} deriving(Ord,Eq,Show)
 
@@ -78,7 +79,7 @@ apply2 stat rule = do
    let (a,b) = last c 
    fbarr <- match rule a
    if not(null fbarr) && fst(last fbarr) == a
-    then if null a then undefined else return (Just (init a), last a : b)
+    then if null a then show("stat",stat,";frontback_array",frontback_array,";fbarr",fbarr) `trace` undefined else return (Just (init a), last a : b)
     else return (Just a,b)
 
 -- merge is allowed, split is not
