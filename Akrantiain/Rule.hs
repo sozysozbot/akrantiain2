@@ -61,6 +61,9 @@ toSettingSpecifier :: Identifier -> Maybe SettingSpecifier
 toSettingSpecifier (Id a)
  | map toUpper a == "CASE_SENSITIVE" = Just CASE_SENSITIVE
  | map toUpper a == "FALL_THROUGH" = Just FALL_THROUGH
+ | map toUpper a == "FALL_THRU" = Just FALL_THROUGH
+ | map toUpper a == "FALLTHROUGH" = Just FALL_THROUGH
+ | map toUpper a == "FALLTHRU" = Just FALL_THROUGH
  | map toUpper a == "USE_NFD" = Just USE_NFD
  | map toUpper a == "PRESERVE_CASE" = Just PRESERVE_CASE
  | otherwise = Nothing
