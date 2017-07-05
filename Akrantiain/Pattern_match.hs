@@ -79,7 +79,8 @@ apply2 stat rule = do
    let (a,b) = last c 
    fbarr <- match rule a
    if not(null fbarr) && fst(last fbarr) == a
-    then if null a then show("stat",stat,";frontback_array",frontback_array,";fbarr",fbarr) `trace` undefined else return (Just (init a), last a : b)
+    then if null a then {- a=[], b=[("",Just "X")]; returning (Nothing,b) means that the space is eaten, so it fails -}
+      show("stat",stat,";frontback_array",frontback_array,";fbarr",fbarr) `trace` undefined else return (Just (init a), last a : b)
     else return (Just a,b)
 
 -- merge is allowed, split is not
