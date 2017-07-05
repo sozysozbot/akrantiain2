@@ -15,6 +15,7 @@ import Akrantiain.NFD
 import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
+import Akrantiain.RevList
 
 data Environment' = Wrap{sensitivity :: Bool, getEnv :: Environment} deriving(Ord,Eq,Show)
 
