@@ -16,6 +16,7 @@ import qualified Data.Set as S
 import qualified Data.Map as M
 import Data.Either(lefts, rights)
 import Control.Arrow((&&&))
+import Data.Maybe(mapMaybe,maybeToList)
 
 type Input = String
 type Output = Either RuntimeError String
@@ -24,7 +25,8 @@ type Output = Either RuntimeError String
 
 sentsToFunc :: Set Sentence -> SemanticMsg (Input -> Output)
 sentsToFunc sents = do
- (env,rules) <- sentencesToRules sents
+ (env',rules') <- sentencesToRules sents
+ (env,rules) <- forbidExplicitSpacepunctMatching (env',rules')
  return $ cook (env,rules)
 
 split3 :: [Sentence] -> ([Conversion],[Identifier],[Define])
@@ -38,6 +40,31 @@ toSettingSpecifier' :: Identifier -> Either Identifier SettingSpecifier
 toSettingSpecifier' i = case toSettingSpecifier i of
  Nothing -> Left i
  Just a -> Right a
+
+forbidExplicitSpacepunctMatching :: (Environment,[Rule]) -> SemanticMsg (Environment,[Rule])
+forbidExplicitSpacepunctMatching (env,rules) = do
+ let puncts = pun env
+ let illegals = concatMap (searchPunct puncts) rules
+ if null illegals
+  then return (env,rules)
+  else lift $ Left E{errNum=337, errStr = "a punctuation or space found inside a pattern string(s) "++toBraces (map Quote illegals)}
+
+searchPunct :: Punctuation -> Rule -> [String]
+searchPunct p R{leftneg =ln, leftdollar =ld, middle =m, rightdollar =rd, rightneg =rn} = 
+ s3 ln ++ concatMap s2 ld ++ concatMap s1 m ++ concatMap s2 rd ++ s3 rn
+ where
+  s1 :: Foo -> [String]
+  s1 (Left ()) = []
+  s1 (Right (ch,_)) = s2 ch
+  s2 :: Foo2 -> [String]
+  s2 (Ch arr) = mapMaybe s5 arr
+  s5 :: String -> Maybe String
+  s5 str = if any (isSpPunct p . (:[])) $ str then Just str else Nothing
+  s3 :: Maybe Condition -> [String]
+  s3 mc = maybeToList mc >>= s4 where
+   s4 NegBoundary = []
+   s4 (Negation ch) = s2 ch
+
 
 sentencesToRules :: [Sentence] -> SemanticMsg (Environment,[Rule])
 sentencesToRules sents = do

@@ -10,6 +10,7 @@ errNum | errStr | 意味
 `334`|`"duplicate definition regarding identifier(s) {" ++ intercalate "}, {" (map unId duplicates) ++ "}"` | 同一名の識別子が複数回、識別子定義文で定義されている 
 `335`|`"unresolved identifier {" ++ unId iden ++ "}"` | 識別子定義文で定義されていない識別子が使用されている
 `336`|`"right-hand side of the following sentence consists solely of dollar(s):\n" ++ toSource conv` | 変換規則定義文で、右側が全て`$`である
+`337`|`"a punctuation or space found inside a pattern string(s) "++toBraces (map Quote illegals)`|パターン文字列の中にスペースか句読点が入っている（注：語境界にマッチするには`^`を用いなければならない）
 
 ## 意味論的警告
 warnNum | warnStr | 意味
