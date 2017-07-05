@@ -1,0 +1,6 @@
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1500 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m5.405s
+user	0m5.338s
+sys	0m0.053s
