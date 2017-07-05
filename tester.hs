@@ -53,6 +53,7 @@ f ["--check_from",filename] = do
 check :: [String] -> ReaderT Bool IO ()  
 check arr = do
  forM_ arr $ \name -> do
+  unless (null name || head name == '#') $ do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
    call' $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
