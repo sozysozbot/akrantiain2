@@ -22,7 +22,7 @@ module Akrantiain.Rule
 import Prelude hiding (undefined)
 import Akrantiain.Structure
 import qualified Data.Set as S
-import Data.Char(isSpace)
+import Data.Char(isSpace,toUpper)
 import Akrantiain.NFD
 
 apply_nfds :: Rule -> Rule
@@ -58,11 +58,15 @@ data SettingSpecifier = CASE_SENSITIVE | FALL_THROUGH | USE_NFD | PRESERVE_CASE 
 type Settings = S.Set SettingSpecifier
 
 toSettingSpecifier :: Identifier -> Maybe SettingSpecifier
-toSettingSpecifier (Id "CASE_SENSITIVE") = Just CASE_SENSITIVE
-toSettingSpecifier (Id "FALL_THROUGH") = Just FALL_THROUGH
-toSettingSpecifier (Id "USE_NFD") = Just USE_NFD
-toSettingSpecifier (Id "PRESERVE_CASE") = Just PRESERVE_CASE
-toSettingSpecifier _ = Nothing
+toSettingSpecifier (Id a)
+ | map toUpper a == "CASE_SENSITIVE" = Just CASE_SENSITIVE
+ | map toUpper a == "FALL_THROUGH" = Just FALL_THROUGH
+ | map toUpper a == "FALL_THRU" = Just FALL_THROUGH
+ | map toUpper a == "FALLTHROUGH" = Just FALL_THROUGH
+ | map toUpper a == "FALLTHRU" = Just FALL_THROUGH
+ | map toUpper a == "USE_NFD" = Just USE_NFD
+ | map toUpper a == "PRESERVE_CASE" = Just PRESERVE_CASE
+ | otherwise = Nothing
 
 isSpPunct :: Punctuation -> String -> Bool
 isSpPunct punct = all (\x -> isSpace x || x `elem` punct)

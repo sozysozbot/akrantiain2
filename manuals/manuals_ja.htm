@@ -88,11 +88,14 @@
 </pre><div class="pre">
 <code>@ <u>識別子</u> ;</code></div><pre>
 この文は、akrantiainの挙動を、<code><u>識別子</u></code>により指定された挙動に変更することを示す文である。同一の環境指定が複数あってもエラーではない。
+
+環境指定識別子自体には大文字と小文字の区別はない。<code>@ <span class="identifier">uSe_NFd</span> ;</code> は <code>@ <span class="identifier">USE_NFD</span> ;</code>と完全に等価である。
+
 現状で挙動が定義されている環境指定識別子の一覧は、次の通りである。
 </pre><table class="pre">
 <tr><td>環境指定識別子</td><td>意味</td></tr>
 <tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>変換元において大文字と小文字を区別する</td></tr>
-<tr><td><code><span class="identifier">FALL_THROUGH</span></code></td><td>入力文字列の中で変換規則に消費されなかったものをエラーとせず素通りさせる</td></tr>
+<tr><td><code><span class="identifier">FALL_THROUGH</span></code> <code><span class="identifier">FALLTHROUGH</span></code> <code><span class="identifier">FALL_THRU</span></code> <code><span class="identifier">FALLTHRU</span></code></td><td>入力文字列の中で変換規則に消費されなかったものをエラーとせず素通りさせる</td></tr>
 <tr><td><code><span class="identifier">USE_NFD</span></code></td><td>アクセント付き文字を、「アクセント無しの文字+アクセント記号」として処理することなどができるようになる</td></tr>
 </table>
 <h3 id="literal">2-5. 文字列リテラル</h3>
