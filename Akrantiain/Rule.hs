@@ -22,7 +22,7 @@ module Akrantiain.Rule
 import Prelude hiding (undefined)
 import Akrantiain.Structure
 import qualified Data.Set as S
-import Data.Char(isSpace)
+import Data.Char(isSpace,toUpper)
 import Akrantiain.NFD
 
 apply_nfds :: Rule -> Rule
@@ -59,10 +59,10 @@ type Settings = S.Set SettingSpecifier
 
 toSettingSpecifier :: Identifier -> Maybe SettingSpecifier
 toSettingSpecifier (Id a)
- | a == "CASE_SENSITIVE" = Just CASE_SENSITIVE
- | a == "FALL_THROUGH" = Just FALL_THROUGH
- | a == "USE_NFD" = Just USE_NFD
- | a == "PRESERVE_CASE" = Just PRESERVE_CASE
+ | map toUpper a == "CASE_SENSITIVE" = Just CASE_SENSITIVE
+ | map toUpper a == "FALL_THROUGH" = Just FALL_THROUGH
+ | map toUpper a == "USE_NFD" = Just USE_NFD
+ | map toUpper a == "PRESERVE_CASE" = Just PRESERVE_CASE
  | otherwise = Nothing
 
 isSpPunct :: Punctuation -> String -> Bool
