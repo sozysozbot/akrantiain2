@@ -22,7 +22,7 @@ data Environment' = Wrap{sensitivity :: Bool, getEnv :: Environment} deriving(Or
 
 type StatElem = (String, Maybe String)
 type Stat = [StatElem]
-type StatPair = (Stat, Stat)
+type StatPair = (RevList StatElem, Stat)
 
 resolvePunctuation :: Environment -> StatElem -> Either String String
 resolvePunctuation _ (_, Just b) = Right b
@@ -76,22 +76,37 @@ apply stat rule = do
  case frontback_array of
   [] -> return stat
   c -> let (a,b) = last c in do
-   if a == stat then undefined else do
-    newStat <- apply a rule
+   if toList a == stat then undefined else do
+    newStat <- apply (toList a) rule
     return $ newStat ++ b
 
 
 
 
--- cutlist [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
-cutlist :: [a] -> [([a],[a])]
-cutlist [] = [([],[])]
-cutlist u@(x:xs) =  ([],u): map f (cutlist xs) where f(a,b) = (x:a,b)
+-- cutlist_old [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
+cutlist_old :: [a] -> [([a],[a])]
+cutlist_old [] = [([],[])]
+cutlist_old u@(x:xs) =  ([],u): map f (cutlist_old xs) where f(a,b) = (x:a,b)
 
-
+cutlist :: [a] -> [(RevList a,[a])]
+cutlist xs = iterate' move_one (Reverse[],xs)
+ where
+  iterate' :: (a -> Maybe a) -> a -> [a]
+  iterate' f x = x : case f x of
+   Nothing -> []
+   Just a -> iterate' f a
+  move_one :: (RevList a,[a]) -> Maybe(RevList a,[a])
+  move_one (_,[]) = Nothing
+  move_one (Reverse bs,c:cs) = Just(Reverse(c:bs),cs)
 
 rev2 ::  [([a], t)] -> [([a], t)]
 rev2 = map (first reverse) . reverse
+
+rev2_ ::  [([a], t)] -> RevList ([a], t)
+rev2_ = fmap (first reverse) . Reverse
+
+rev2__ ::  RevList([a], t) -> [([a], t)]
+rev2__ = map (first reverse) . unReverse
 
 upgrade :: ([a] -> Bool) -> ([a] -> Bool)
 upgrade f str = all f $ tail $ inits str
@@ -106,12 +121,12 @@ unCond NegBoundary = \punct str -> not(isSpPunct punct str)
 
 handleBoundary :: Environment -> StatPair -> Maybe StatPair
 handleBoundary env (front, back) = do
-  let front' = reverse front
+  let front' = unReverse front
   let punct = pun env
   let tmp = map(isSpPunct punct) $ filter (/="") $ map fst front'
   guard $ null tmp || head tmp
   let (b', f'') = span (isSpPunct punct . fst) front'
-  return (reverse f'', reverse b' ++ back)
+  return (Reverse f'', reverse b' ++ back)
 
 -- check if the right-hand side can be analyzed as if it has *already* passed thru the rightdollar and cond
 fooFilter :: (Environment',[Choose String],Maybe Condition) -> StatPair -> Bool
@@ -158,20 +173,20 @@ fooFilter2 (env',cond,arr) (a,_) = newFunc2 (reverse arr) leftstr
    Nothing -> True
    Just condition -> upgrade2 (unCond condition p) str
   newFunc2 (Ch x:xs) str = or [newFunc2 xs newStr | newStr <- catMaybes [droppingSuffix2 sensitive u str | u <- x]]
-  leftstr = concatMap fst a :: String
+  leftstr = concatMap fst (toList a) :: String
 
 
 testPattern :: Bool -> W -> StatPair -> String -> Maybe StatPair
 testPattern sensitive w (front, back) pat = do
- let front' = rev2 front
+ let front' = rev2__ front
  let pat' = reverse pat
  taken <- takeTill sensitive pat' front'
  let taken' = rev2 taken
  case w of
   W w' -> do
    guard $ all (isNothing . snd) taken'
-   return (rev2 $ drop(length taken')front', (pat,Just w') : back)
-  Dollar_ -> return (rev2 $ drop(length taken')front', taken' ++ back)
+   return (rev2_ $ drop(length taken')front', (pat,Just w') : back)
+  Dollar_ -> return (rev2_ $ drop(length taken')front', taken' ++ back)
 
 takeTill :: Bool -> String -> Stat -> Maybe Stat
 takeTill _ [] _ = Just []
