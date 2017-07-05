@@ -58,11 +58,12 @@ data SettingSpecifier = CASE_SENSITIVE | FALL_THROUGH | USE_NFD | PRESERVE_CASE 
 type Settings = S.Set SettingSpecifier
 
 toSettingSpecifier :: Identifier -> Maybe SettingSpecifier
-toSettingSpecifier (Id "CASE_SENSITIVE") = Just CASE_SENSITIVE
-toSettingSpecifier (Id "FALL_THROUGH") = Just FALL_THROUGH
-toSettingSpecifier (Id "USE_NFD") = Just USE_NFD
-toSettingSpecifier (Id "PRESERVE_CASE") = Just PRESERVE_CASE
-toSettingSpecifier _ = Nothing
+toSettingSpecifier (Id a)
+ | a == "CASE_SENSITIVE" = Just CASE_SENSITIVE
+ | a == "FALL_THROUGH" = Just FALL_THROUGH
+ | a == "USE_NFD" = Just USE_NFD
+ | a == "PRESERVE_CASE" = Just PRESERVE_CASE
+ | otherwise = Nothing
 
 isSpPunct :: Punctuation -> String -> Bool
 isSpPunct punct = all (\x -> isSpace x || x `elem` punct)
