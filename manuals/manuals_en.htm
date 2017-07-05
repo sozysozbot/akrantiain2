@@ -85,6 +85,10 @@ This defines a rule that says:
   replace <code><span class="string">"n"</span></code> into <span class="slash">/m/</span>; what is matched to <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code> should be left to other rules that follows this rule."
 
 An error occurs when an identifier used inside the definition of a conversion rule is not defined.
+
+
+It is forbidden to directly or indirectly (through identifiers) use a string literal containing punctuations (i.e. characters used in the definition of <code><span class="identifier">PUNCTUATION</span></code>) or spaces inside conversion rule definitions. 
+An error occurs when you try to do so.
 </pre>
 <h3 id="atmark">2-4. Specifying settings</h3>
 <pre>

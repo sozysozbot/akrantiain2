@@ -77,6 +77,10 @@
 <code><span class="string">"n"</span></code>を<span class="slash">/m/</span>に置き換え、<code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>にマッチした文字列については保留し、後に登場する規則に委ねる」という規則が定義される。
 
 変換規則定義文内で用いている識別子がどの識別子定義文でも定義されていない場合は、エラーが発生する。
+
+
+<code><span class="identifier">PUNCTUATION</span></code>の定義に用いられた文字列リテラル内の文字、および空白文字を含んでいる文字列リテラルを変換規則定義文で直接的または（定義された識別子を通じて）間接的に使用することは禁じられている。
+使おうとすると、エラーが発生する。
 </pre>
 <h3 id="atmark">2-4. 環境指定文</h3>
 <pre>
@@ -100,6 +104,7 @@ Unicodeの基本多言語面にある文字は、文字列リテラル内で表�
 
 デフォルトでは、文字列リテラル内の大文字と小文字は区別されない。
 区別させるには、<a href="#atmark">環境指定文</a>で環境指定識別子<code><span class="identifier">CASE_SENSITIVE</span></code>を指定する必要がある。
+
 </pre>
 <h3 id="slash">2-6. スラッシュリテラル</h3>
 <pre>
