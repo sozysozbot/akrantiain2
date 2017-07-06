@@ -1,0 +1,164 @@
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 100 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m0.066s
+user	0m0.027s
+sys	0m0.012s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 200 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m0.103s
+user	0m0.091s
+sys	0m0.007s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 300 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m0.216s
+user	0m0.201s
+sys	0m0.008s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 400 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m0.373s
+user	0m0.354s
+sys	0m0.013s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 500 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m0.591s
+user	0m0.569s
+sys	0m0.015s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 600 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m0.830s
+user	0m0.810s
+sys	0m0.013s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 700 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m1.163s
+user	0m1.137s
+sys	0m0.017s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 800 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m1.536s
+user	0m1.505s
+sys	0m0.020s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 900 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m1.953s
+user	0m1.914s
+sys	0m0.025s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1000 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m2.413s
+user	0m2.370s
+sys	0m0.029s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1100 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m2.922s
+user	0m2.877s
+sys	0m0.033s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1200 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m3.502s
+user	0m3.437s
+sys	0m0.040s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1300 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m4.114s
+user	0m4.047s
+sys	0m0.044s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1400 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m4.786s
+user	0m4.706s
+sys	0m0.052s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1500 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m5.488s
+user	0m5.424s
+sys	0m0.052s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1600 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m6.284s
+user	0m6.204s
+sys	0m0.061s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1700 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m7.072s
+user	0m6.971s
+sys	0m0.071s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1800 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m7.914s
+user	0m7.815s
+sys	0m0.076s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 1900 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m8.865s
+user	0m8.753s
+sys	0m0.084s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 2000 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m9.926s
+user	0m9.789s
+sys	0m0.096s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 2100 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m11.021s
+user	0m10.854s
+sys	0m0.112s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 2200 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m12.097s
+user	0m11.912s
+sys	0m0.120s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 2300 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m13.130s
+user	0m12.964s
+sys	0m0.118s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 2400 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m14.647s
+user	0m14.341s
+sys	0m0.146s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 2500 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m15.496s
+user	0m15.326s
+sys	0m0.137s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 2600 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m16.839s
+user	0m16.647s
+sys	0m0.154s
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 2600 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ yes "z" | head -n 2700 | tr -d '\n' > samples/time.txt 
+MBP-de-admin:akrantiain2 admin$ time ./akrantiain2 samples/sample_module.snoj < samples/time.txt > /dev/null
+
+real	0m18.940s
+user	0m18.473s
+sys	0m0.261s
+MBP-de-admin:akrantiain2 admin$ 
