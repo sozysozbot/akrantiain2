@@ -83,11 +83,8 @@ apply stat rule = do
 
 
 
--- cutlist_old [1,2,3] = [([],[1,2,3]),([1],[2,3]),([1,2],[3]),([1,2,3],[])]
-cutlist_old :: [a] -> [([a],[a])]
-cutlist_old [] = [([],[])]
-cutlist_old u@(x:xs) =  ([],u): map f (cutlist_old xs) where f(a,b) = (x:a,b)
 
+-- cutlist [1,2,3] = [(Reverse[],[1,2,3]),(Reverse[1],[2,3]),(Reverse[2,1],[3]),(Reverse[3,2,1],[])]
 cutlist :: [a] -> [(RevList a,[a])]
 cutlist xs = iterate' move_one (Reverse[],xs)
  where
