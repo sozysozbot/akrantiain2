@@ -7,8 +7,12 @@ A domain-specific language designed to describe conlangs' orthographies
 [文列についての日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/manuals_ja.htm) (未完)  
 [akrantiain変換部についての日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/conversions_ja.htm)   
 [Twitterで飛んできたQ&A](https://sozysozbot.github.io/akrantiain2/manuals/FAQ_ja.htm)(未完)  
-[メッセージと番号と内容の対応表](https://github.com/sozysozbot/akrantiain2/blob/master/error_ids_ja.md)(未完)  
+[メッセージと番号と内容の対応表](https://github.com/sozysozbot/akrantiain2/blob/master/error_ids_ja.md)  
 ny lirsesen [kanteluescosti virle lineparine](https://sozysozbot.github.io/akrantiain2/manuals/manuals_conlang_lpa.htm)  
+
+## Dreams and Reality
+[現状](https://sozysozbot.github.io/akrantiain2/samples/current_situation.htm)
+
 ## Getting Started
 
 All files handled by akrantiain must be in UTF-8.
