@@ -4,7 +4,7 @@ module Akrantiain.Pattern_match
 ) where
 -- import Prelude hiding (undefined)
 import Data.Maybe(mapMaybe, isNothing, catMaybes)
-import Data.List(isPrefixOf, isSuffixOf, inits, tails, intercalate)
+import Data.List(isPrefixOf, isSuffixOf, inits, tails, intercalate, unfoldr)
 import Data.Char(toLower)
 import Data.Either(lefts, rights)
 import Control.Monad(guard)
@@ -16,6 +16,7 @@ import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
 import Akrantiain.RevList
+import Control.Arrow((&&&))
 
 data Environment' = Wrap{sensitivity :: Bool, getEnv :: Environment} deriving(Ord,Eq,Show)
 
@@ -82,16 +83,16 @@ apply stat rule = do
 
 
 
+-- let g a = if even a then Just(a `div` 2) else Nothing
+-- iterate' g 10000 == [10000,5000,2500,1250,625]
+iterate' :: (a -> Maybe a) -> a -> [a]
+iterate' f x = x : unfoldr (\k -> (id &&& id) <$> f k) x
 
 
 -- cutlist [1,2,3] = [(Reverse[],[1,2,3]),(Reverse[1],[2,3]),(Reverse[2,1],[3]),(Reverse[3,2,1],[])]
 cutlist :: [a] -> [(RevList a,[a])]
 cutlist xs = iterate' move_one (Reverse[],xs)
  where
-  iterate' :: (a -> Maybe a) -> a -> [a]
-  iterate' f x = x : case f x of
-   Nothing -> []
-   Just a -> iterate' f a
   move_one :: (RevList a,[a]) -> Maybe(RevList a,[a])
   move_one (_,[]) = Nothing
   move_one (Reverse bs,c:cs) = Just(Reverse(c:bs),cs)
