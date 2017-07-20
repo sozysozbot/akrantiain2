@@ -24,7 +24,7 @@ toSettingSpecifier' i = case toSettingSpecifier i of
  Nothing -> Left i
  Just a -> Right a
 
-sanitizeSentences :: [Sentence] -> SemanticMsg (Environment,[Conversion],M.Map Identifier (Choose Quote))
+sanitizeSentences :: [Sentence] -> SemanticMsg (S.Set SettingSpecifier,[Conversion],M.Map Identifier (Choose Quote))
 sanitizeSentences sents = do
  let (convs, vars_pre, defs_pre) = split3 sents
  let defs = map (\(Define a b) -> (a,b)) defs_pre
@@ -34,6 +34,4 @@ sanitizeSentences sents = do
  let duplicates = (map head . filter (\x -> length x > 1) . group . sort . map fst) defs
  unless (null duplicates) $ lift $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) " ++ toBraces duplicates}
  let defs_ = M.fromList defs
- let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
-  Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (, though, at least it is explicitly explained in manual)
- return(Env{pun=punct, bools=vars},convs,defs_)
+ return(vars,convs,defs_)

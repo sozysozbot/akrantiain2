@@ -57,9 +57,11 @@ searchPunct p R{leftneg =ln, leftdollar =ld, middle =m, rightdollar =rd, rightne
 
 sentencesToRules :: [Sentence] -> SemanticMsg (Environment,[Rule])
 sentencesToRules sents = do
- (env, convs, defs_) <- sanitizeSentences sents
+ (vars, convs, defs_) <- sanitizeSentences sents
+ let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
+  Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (, though, at least it is explicitly explained in manual)
  rules <- lift $ forM convs $ handleConv defs_
- return(env,rules)
+ return(Env{pun=punct, bools=vars},rules)
 
 handleConv :: M.Map Identifier (Choose Quote) -> Conversion -> Either SemanticError Rule
 handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} = do
