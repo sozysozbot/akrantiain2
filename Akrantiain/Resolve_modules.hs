@@ -8,7 +8,7 @@ import Prelude hiding (undefined)
 import Data.List(sort, group)
 import Akrantiain.Modules
 import Akrantiain.Structure
-import Akrantiain.Sents_to_rules
+import Akrantiain.Sents_to_func
 import Akrantiain.Errors
 import qualified Data.Map as M
 import qualified Data.Set as S

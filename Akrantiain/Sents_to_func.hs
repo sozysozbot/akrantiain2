@@ -1,6 +1,6 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
-module Akrantiain.Sents_to_rules
+module Akrantiain.Sents_to_func
 (sentsToFunc
 ,Input
 ,Output
