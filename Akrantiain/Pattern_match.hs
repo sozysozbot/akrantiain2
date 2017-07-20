@@ -16,7 +16,6 @@ import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
 import Akrantiain.RevList
-import Control.Arrow((&&&))
 
 data Environment' = Wrap{sensitivity :: Bool, getEnv :: Environment} deriving(Ord,Eq,Show)
 
@@ -86,7 +85,7 @@ apply stat rule = do
 -- let g a = if even a then Just(a `div` 2) else Nothing
 -- iterate' g 10000 == [10000,5000,2500,1250,625]
 iterate' :: (a -> Maybe a) -> a -> [a]
-iterate' f x = x : unfoldr (\k -> (id &&& id) <$> f k) x
+iterate' f x = x : unfoldr (\k -> f k >>= \u -> return(u,u)) x
 
 
 -- cutlist [1,2,3] = [(Reverse[],[1,2,3]),(Reverse[1],[2,3]),(Reverse[2,1],[3]),(Reverse[3,2,1],[])]
