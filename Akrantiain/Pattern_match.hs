@@ -7,7 +7,7 @@ import Data.Maybe(mapMaybe, isNothing, catMaybes)
 import Data.List(isPrefixOf, isSuffixOf, inits, tails, intercalate, unfoldr)
 import Data.Char(toLower)
 import Data.Either(lefts, rights)
-import Control.Monad(guard)
+import Control.Monad(guard, (>=>))
 import Akrantiain.Errors
 import Akrantiain.Rule
 import Akrantiain.Structure(Choose(..))
@@ -75,7 +75,7 @@ apply stat rule = do
  frontback_array <- match rule stat
  case frontback_array of
   [] -> return stat
-  c -> let (a,b) = last c in do
+  c -> let (a,b) = last c in
    if toList a == stat then undefined else do
     newStat <- apply (toList a) rule
     return $ newStat ++ b
@@ -85,7 +85,7 @@ apply stat rule = do
 -- let g a = if even a then Just(a `div` 2) else Nothing
 -- iterate' g 10000 == [10000,5000,2500,1250,625]
 iterate' :: (a -> Maybe a) -> a -> [a]
-iterate' f x = x : unfoldr (\k -> f k >>= \u -> return(u,u)) x
+iterate' f x = x : unfoldr (f >=> \u -> return(u,u)) x
 
 
 -- cutlist [1,2,3] = [(Reverse[],[1,2,3]),(Reverse[1],[2,3]),(Reverse[2,1],[3]),(Reverse[3,2,1],[])]
@@ -157,7 +157,7 @@ match k@R{leftneg=Nothing, leftdollar=[], middle=Left():xs} stat = do
 match k@R{leftneg=cond, leftdollar=arr} stat = do
  env2 <- ask
  newMatch <- match k{leftneg=Nothing, leftdollar=[]} stat
- return $ filter (fooFilter2 (env2,cond,arr)) $ newMatch
+ return $ filter (fooFilter2 (env2,cond,arr)) newMatch
 
 -- check if the left-hand side can be analyzed as if it *would* (in the future) passed thru the rightdollar and cond
 fooFilter2  :: (Environment',Maybe Condition,[Choose String]) -> StatPair -> Bool

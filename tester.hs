@@ -52,7 +52,7 @@ f ["--check_from",filename] = do
 
 check :: [String] -> ReaderT Bool IO ()  
 check arr = do
- forM_ arr $ \name -> do
+ forM_ arr $ \name -> 
   unless (null name || head name == '#') $ do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
    call' $ 

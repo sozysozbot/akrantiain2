@@ -59,7 +59,7 @@ searchPunct p R{leftneg =ln, leftdollar =ld, middle =m, rightdollar =rd, rightne
   s2 :: Foo2 -> [String]
   s2 (Ch arr) = mapMaybe s5 arr
   s5 :: String -> Maybe String
-  s5 str = if any (isSpPunct p . (:[])) $ str then Just str else Nothing
+  s5 str = if any (isSpPunct p . (:[])) str then Just str else Nothing
   s3 :: Maybe Condition -> [String]
   s3 mc = maybeToList mc >>= s4 where
    s4 NegBoundary = []
