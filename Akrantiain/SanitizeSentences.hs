@@ -5,14 +5,12 @@ import Prelude hiding (undefined)
 import Akrantiain.Structure
 import Akrantiain.Errors
 import Akrantiain.Rule
-import Control.Monad(forM,unless,when)
-import Akrantiain.Pattern_match
+import Control.Monad(unless)
 import Data.List(group, sort)
 import qualified Data.Set as S
 import qualified Data.Map as M
 import Data.Either(lefts, rights)
 import Control.Arrow((&&&))
-import Data.Maybe(mapMaybe,maybeToList)
 
 split3 :: [Sentence] -> ([Conversion],[Identifier],[Define])
 split3 [] = ([],[],[])
