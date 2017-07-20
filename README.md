@@ -2,10 +2,13 @@
 A domain-specific language designed to describe conlangs' orthographies
 
 ## Documentations
-[English manual about sentence sequences](https://sozysozbot.github.io/akrantiain2/manuals/manuals_en.htm) (Incomplete)  
-[.snojファイルとモジュールについての日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/modules_ja.htm)   
-[文列についての日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/manuals_ja.htm) (未完)  
-[akrantiain変換部についての日本語マニュアル](https://sozysozbot.github.io/akrantiain2/manuals/conversions_ja.htm)   
+[English manual about sentence sequences](https://sozysozbot.github.io/akrantiain2/manuals/manuals_en.htm) (Incomplete) 
+
+[仕様書トップページ](https://sozysozbot.github.io/akrantiain2/manuals/main_ja.htm)
+- [.snojファイルとモジュールについての仕様書](https://sozysozbot.github.io/akrantiain2/manuals/modules_ja.htm)   
+- [文列についての仕様書](https://sozysozbot.github.io/akrantiain2/manuals/manuals_ja.htm) (未完)  
+- [akrantiain変換部についての仕様書](https://sozysozbot.github.io/akrantiain2/manuals/conversions_ja.htm)  
+
 [Twitterで飛んできたQ&A](https://sozysozbot.github.io/akrantiain2/manuals/FAQ_ja.htm)(未完)  
 [メッセージと番号と内容の対応表](https://github.com/sozysozbot/akrantiain2/blob/master/manuals/error_ids_ja.md)  
 ny lirsesen [kanteluescosti virle lineparine](https://sozysozbot.github.io/akrantiain2/manuals/manuals_conlang_lpa.htm)  
