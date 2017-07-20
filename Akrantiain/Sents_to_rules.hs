@@ -66,8 +66,8 @@ searchPunct p R{leftneg =ln, leftdollar =ld, middle =m, rightdollar =rd, rightne
    s4 (Negation ch) = s2 ch
 
 
-sentencesToRules :: [Sentence] -> SemanticMsg (Environment,[Rule])
-sentencesToRules sents = do
+sanitizeSentences :: [Sentence] -> SemanticMsg (Environment,[Conversion],M.Map Identifier (Choose Quote))
+sanitizeSentences sents = do
  let (convs, vars_pre, defs_pre) = split3 sents
  let defs = map (\(Define a b) -> (a,b)) defs_pre
  let (unknowns, vars') = lefts &&& rights $ map toSettingSpecifier' vars_pre
@@ -78,8 +78,13 @@ sentencesToRules sents = do
  let defs_ = M.fromList defs
  let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
   Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (, though, at least it is explicitly explained in manual)
+ return(Env{pun=punct, bools=vars},convs,defs_)
+
+sentencesToRules :: [Sentence] -> SemanticMsg (Environment,[Rule])
+sentencesToRules sents = do
+ (env, convs, defs_) <- sanitizeSentences sents
  rules <- lift $ forM convs $ handleConv defs_
- return(Env{pun=punct, bools=vars},rules)
+ return(env,rules)
 
 handleConv :: M.Map Identifier (Choose Quote) -> Conversion -> Either SemanticError Rule
 handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} = do
