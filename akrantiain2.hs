@@ -12,15 +12,18 @@ import Akrantiain.MtoM4
 import Control.Monad.Writer
 import Akrantiain.Errors
 import Data.Aeson
-
+import qualified Data.ByteString.Lazy.Char8 as B
 
 
 main :: IO ()
-main = do
- args <- getArgs
- case args of
-  []    -> explain
-  (fname:xs) -> do
+main = getArgs >>= main' False
+
+-- Bool :: trigger toJSON
+main' :: Bool -> [String] -> IO ()
+main' _ []    = explain
+main' _ xs
+ | "--toJSON" `elem` xs = main' True $ filter (/="--toJSON") xs
+main' False (fname:xs) = do
    when (os == "mingw32" && (null xs || head xs /= "--file") ) $ callCommand "chcp 65001 > nul"
    handle <- openFile fname ReadMode
    hSetEncoding handle utf8
@@ -29,7 +32,11 @@ main = do
     mapM3 moduleToModule4 mods >>== \mod4s -> -- handles SemanticError and SemanticWarning
     module4sToFunc' mod4s >>== \func -> -- handles ModuleError and ModuleWarning
     interact' func
-
+main' True (fname:_) = do
+   handle <- openFile fname ReadMode
+   hSetEncoding handle utf8
+   input <- hGetContents handle
+   runParser modules () fname input >>>= \mods -> B.putStrLn $ encode mods
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
 Left  a >>>= _  = do
