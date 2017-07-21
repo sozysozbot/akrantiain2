@@ -9,6 +9,7 @@ import Akrantiain.Sents_to_func
 import Akrantiain.Errors
 import Akrantiain.Structure
 import Control.Monad.Writer
+import Akrantiain.SanitizeSentences
 
 data Module4 = Module4 {moduleName4 :: ModuleName, insideModule4 :: InsideModule4}
 data InsideModule4 = Func4 (Input -> Output) | ModuleChain4 [ModuleName]
@@ -21,9 +22,9 @@ liftLeft2 :: (a -> c) -> (WriterT d (Either a) b -> WriterT d (Either c) b)
 liftLeft2 f = WriterT . liftLeft f . runWriterT
 
 moduleToModule4 :: Module -> SemanticMsg Module4
-moduleToModule4 Module {moduleName = name, insideModule = Sents sents}
- = do
- func <- liftLeft2 f $ sentsToFunc sents
+moduleToModule4 Module {moduleName = name, insideModule = Sents sents} = do
+ sanitized <- liftLeft2 f $ sanitizeSentences sents
+ func <- liftLeft2 f $ sanitizedSentsToFunc sanitized
  return Module4{moduleName4 = name, insideModule4 = Func4 func} where
   f :: SemanticError -> SemanticError
   f e = e{errStr = "Inside module "++ toSource name ++ ":\n"++ errStr e}
