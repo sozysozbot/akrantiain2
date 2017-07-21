@@ -35,20 +35,7 @@ mToM _ Module {moduleName = name, insideModule = ModuleChain chain}
  = return Module{moduleName = name, insideModule = ModuleChain chain}
 
 moduleToModule2 :: Module -> SemanticMsg Module2
-moduleToModule2 Module {moduleName = name, insideModule = Sents sents} = do
- sanitized <- liftLeft2 f $ sanitizeSentences sents
- return Module{moduleName = name, insideModule = Sents sanitized} where
-  f :: SemanticError -> SemanticError
-  f e = e{errStr = "Inside module "++ toSource name ++ ":\n"++ errStr e}
-moduleToModule2 Module {moduleName = name, insideModule = ModuleChain chain}
- = return Module{moduleName = name, insideModule = ModuleChain chain}
+moduleToModule2 = mToM sanitizeSentences
 
 moduleToModule4 :: Module -> SemanticMsg Module4
-moduleToModule4 Module {moduleName = name, insideModule = Sents sents} = do
- sanitized <- liftLeft2 f $ sanitizeSentences sents
- func <- liftLeft2 f $ sanitizedSentsToFunc sanitized
- return Module{moduleName = name, insideModule = Sents func} where
-  f :: SemanticError -> SemanticError
-  f e = e{errStr = "Inside module "++ toSource name ++ ":\n"++ errStr e}
-moduleToModule4 Module {moduleName = name, insideModule = ModuleChain chain}
- = return Module{moduleName = name, insideModule = ModuleChain chain}
+moduleToModule4 = mToM sentsToFunc 
