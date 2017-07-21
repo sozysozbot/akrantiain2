@@ -13,14 +13,9 @@ import qualified Data.Map as M
 import Data.Aeson
 import Data.Text(pack)
 import Control.Monad.Writer
+import Data.Maybe
 
-{-
-data Module = Module {moduleName :: ModuleName, insideModule :: InsideModule}
-data ModuleName = Arrow {before :: Identifier, after :: Identifier} | ModuleName Identifier | HiddenModule deriving(Show, Eq, Ord)
-data InsideModule = Sents [Sentence] | ModuleChain ModChain
-type ModChain = [ModuleName]
- 
--}
+
 instance ToJSON Module where
  toJSON (Module modName inside) =
   object ["moduleName" .= modName, "content" .= inside]
@@ -44,14 +39,29 @@ instance ToJSON InsideModule where
    f :: M.Map Identifier (Choose Quote) -> Value
    f k = object . map (uncurry q) $ M.toList k    
    -- q :: Identifier -> Choose Quote -> Pair
-   q (Id i) (Ch qs) = pack i .= toJSON qs
+    where q (Id i) (Ch qs) = pack i .= toJSON qs
+   h :: S.Set SettingSpecifier -> Value
+   h k = object . map r $ S.toList k
+    where r setting = pack (toSource setting) .= toJSON True
 
 instance ToJSON Quote where
  toJSON (Quote str) = toJSON str
 
+-- data Conversion = Conversion {mid::Array Select, phons:: Array Phoneme, lneg ::Maybe Select, rneg::Maybe Select} deriving(Show, Eq, Ord)
 instance ToJSON Conversion where
- toJSON = undefined
+ toJSON Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r} 
+  = object [ "selects" .= arr1, "phonemes" .= toJSON phonemes] where
+   arr1 = f l ++ map toJSON selects ++ f r `asTypeOf` [Null]
+   f ma = maybeToList $ do
+    a <- ma
+    return $ object ["not" .= a]
 
-h :: S.Set SettingSpecifier -> Value
-h k = undefined `asTypeOf` Null
+instance ToJSON Phoneme where
+ toJSON Dollar = Null 
+ toJSON (Slash str) = toJSON str
+
+instance ToJSON Select where
+ toJSON Boundary2 = object ["bound" .= True]
+ toJSON (Iden i) = object ["id" .= i]
+ toJSON (Pipe (Ch qs)) = object ["or" .= toJSON qs]
 
