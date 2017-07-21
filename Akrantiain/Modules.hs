@@ -2,12 +2,14 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Akrantiain.Modules
-(Module(..)
+(Module_(..)
+,Module
 ,ModuleName(..)
-,InsideModule(..)
+,InsideModule_(..)
+,InsideModule
 ,ModChain
 ) where
-import Prelude hiding (undefined)
+-- import Prelude hiding (undefined)
 import Akrantiain.Structure
 import Akrantiain.Rule
 import Akrantiain.SanitizeSentences
@@ -17,9 +19,12 @@ import qualified Data.Set as S
 import qualified Data.Map as M
 import Control.Monad.Writer
 
-data Module = Module {moduleName :: ModuleName, insideModule :: InsideModule}
+type Module = Module_ [Sentence]
+
+data Module_ a = Module {moduleName :: ModuleName, insideModule :: InsideModule_ a}
 data ModuleName = Arrow {before :: Identifier, after :: Identifier} | ModuleName Identifier | HiddenModule deriving(Show, Eq, Ord)
-data InsideModule = Sents [Sentence] | ModuleChain ModChain
+data InsideModule_ a = Sents a | ModuleChain ModChain
+type InsideModule = InsideModule_ [Sentence]
 type ModChain = [ModuleName]
 
 instance ToSource ModuleName where
@@ -27,7 +32,7 @@ instance ToSource ModuleName where
  toSource (Arrow bef aft) = "(" ++ toSource bef ++ " => " ++ toSource aft ++ ")"
  toSource HiddenModule = toSource (Id "_Main")
 
-instance ToJSON Module where
+instance (ToJSON a) => ToJSON (Module_ a) where
  toJSON (Module modName inside) =
   object ["moduleName" .= modName, "content" .= inside]
 
@@ -36,14 +41,13 @@ instance ToJSON ModuleName where
  toJSON (ModuleName i) = toJSON i
  toJSON (Arrow i j) = toJSON [i,j]
 
-instance ToJSON InsideModule where
+instance (ToJSON a) => ToJSON (InsideModule_ a) where
  toJSON (ModuleChain mods) = toJSON mods
  toJSON (Sents arr) = case a of
   Left _ -> Null
   Right (SanitizedSentences vars convs defs_,_) -> object [ "define" .= f defs_, "conversions" .= convs, "option" .= h vars]
   where 
-   -- a :: (Either SemanticError) (LONGTUPLE,[SemanticWarning])
-   a = runWriterT $ sanitizeSentences arr -- 
+   a = undefined -- runWriterT $ sanitizeSentences arr -- 
    f :: M.Map Identifier (Choose Quote) -> Value
    f k = object . map (uncurry q) $ M.toList k    
    -- q :: Identifier -> Choose Quote -> Pair
