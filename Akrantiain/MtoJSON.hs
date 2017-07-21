@@ -5,12 +5,11 @@ module Akrantiain.MtoJSON
 ) where
 --import Prelude hiding (undefined)
 import Akrantiain.Structure
-import Akrantiain.Errors
 import Akrantiain.Rule
-import Control.Monad(forM,unless,when)
-import Akrantiain.Pattern_match
 import Akrantiain.Modules
 import Akrantiain.SanitizeSentences
+import qualified Data.Set as S
+import qualified Data.Map as M
 import Data.Aeson
 import Data.Text(pack)
 import Control.Monad.Writer
@@ -38,10 +37,21 @@ instance ToJSON InsideModule where
  toJSON (ModuleChain mods) = toJSON mods
  toJSON (Sents arr) = case a of
   Left _ -> Null
-  Right ((vars,convs,defs_),_) -> object [ "define" .= f defs_, "conversions" .= g convs, "option" .= h vars]
+  Right ((vars,convs,defs_),_) -> object [ "define" .= f defs_, "conversions" .= convs, "option" .= h vars]
   where 
-   a = runWriterT $ sanitizeSentences arr -- (Either SemanticError) (a,[SemanticWarning])
-   f k = undefined `asTypeOf` Null 
-   g k = undefined `asTypeOf` Null
-   h k = undefined `asTypeOf` Null
+   -- a :: (Either SemanticError) (LONGTUPLE,[SemanticWarning])
+   a = runWriterT $ sanitizeSentences arr -- 
+   f :: M.Map Identifier (Choose Quote) -> Value
+   f k = object . map (uncurry q) $ M.toList k    
+   -- q :: Identifier -> Choose Quote -> Pair
+   q (Id i) (Ch qs) = pack i .= toJSON qs
+
+instance ToJSON Quote where
+ toJSON (Quote str) = toJSON str
+
+instance ToJSON Conversion where
+ toJSON = undefined
+
+h :: S.Set SettingSpecifier -> Value
+h k = undefined `asTypeOf` Null
 
