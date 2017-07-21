@@ -2,6 +2,7 @@
 
 module Akrantiain.Sents_to_func
 (sentsToFunc
+,sanitizedSentsToFunc
 ,Input
 ,Output
 ) where
@@ -23,6 +24,10 @@ type Output = Either RuntimeError String
 sentsToFunc :: Set Sentence -> SemanticMsg (Input -> Output)
 sentsToFunc sents = do
  SanitizedSentences vars convs defs_ <- sanitizeSentences sents
+ sanitizedSentsToFunc (SanitizedSentences vars convs defs_)
+
+sanitizedSentsToFunc :: SanitizedSentences -> SemanticMsg (Input -> Output)
+sanitizedSentsToFunc (SanitizedSentences vars convs defs_) = do
  let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
   Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (, though, at least it is explicitly explained in manual)
  rules' <- lift $ forM convs $ handleConv defs_
