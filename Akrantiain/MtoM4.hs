@@ -5,7 +5,7 @@ module Akrantiain.MtoM4
 ,InsideModule4(..)
 ) where
 import Akrantiain.Modules
-import Akrantiain.Sents_to_rules
+import Akrantiain.Sents_to_func
 import Akrantiain.Errors
 import Akrantiain.Structure
 import Control.Monad.Writer
