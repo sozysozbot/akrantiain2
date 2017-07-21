@@ -36,7 +36,8 @@ main' True (fname:_) = do
    handle <- openFile fname ReadMode
    hSetEncoding handle utf8
    input <- hGetContents handle
-   runParser modules () fname input >>>= \mods -> return () -- B.putStrLn $ encode mods
+   runParser modules () fname input >>>= \mods ->
+    mapM3 moduleToModule2 mods >>== \mod2s -> B.putStrLn $ encode mod2s
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
 Left  a >>>= _  = do

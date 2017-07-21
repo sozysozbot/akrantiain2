@@ -16,7 +16,6 @@ type Module4 = Module_ (Input -> Output)
 -- data Module4 = Module4 {moduleName4 :: ModuleName, insideModule4 :: InsideModule4}
 type InsideModule4 = InsideModule_ (Input -> Output) 
 
-type Module2 = Module_ SanitizedSentences
 
 liftLeft :: (a -> c) -> (Either a b -> Either c b)
 liftLeft f (Left a) = Left $ f a
