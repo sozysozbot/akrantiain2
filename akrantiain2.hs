@@ -11,7 +11,7 @@ import System.Info
 import Akrantiain.MtoM4
 import Control.Monad.Writer
 import Akrantiain.Errors
-import Akrantiain.MtoJSON
+import Data.Aeson
 
 
 
