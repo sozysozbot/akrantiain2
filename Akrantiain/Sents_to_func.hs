@@ -22,7 +22,11 @@ type Output = Either RuntimeError String
 
 sentsToFunc :: Set Sentence -> SemanticMsg (Input -> Output)
 sentsToFunc sents = do
- (env',rules') <- sentencesToRules sents
+ SanitizeSentences(vars, convs, defs_) <- sanitizeSentences sents
+ let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
+  Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (, though, at least it is explicitly explained in manual)
+ rules' <- lift $ forM convs $ handleConv defs_
+ let env' = Env{pun=punct, bools=vars}
  (env,rules) <- forbidExplicitSpacepunctMatching (env',rules')
  return $ cook (env,rules)
 
@@ -54,14 +58,6 @@ searchPunct p R{leftneg =ln, leftdollar =ld, middle =m, rightdollar =rd, rightne
    s4 (Negation ch) = s2 ch
 
 
-
-sentencesToRules :: [Sentence] -> SemanticMsg (Environment,[Rule])
-sentencesToRules sents = do
- (vars, convs, defs_) <- sanitizeSentences sents
- let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
-  Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (, though, at least it is explicitly explained in manual)
- rules <- lift $ forM convs $ handleConv defs_
- return(Env{pun=punct, bools=vars},rules)
 
 handleConv :: M.Map Identifier (Choose Quote) -> Conversion -> Either SemanticError Rule
 handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} = do

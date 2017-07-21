@@ -40,7 +40,7 @@ instance ToJSON InsideModule where
  toJSON (ModuleChain mods) = toJSON mods
  toJSON (Sents arr) = case a of
   Left _ -> Null
-  Right ((vars,convs,defs_),_) -> object [ "define" .= f defs_, "conversions" .= convs, "option" .= h vars]
+  Right (SanitizeSentences(vars,convs,defs_),_) -> object [ "define" .= f defs_, "conversions" .= convs, "option" .= h vars]
   where 
    -- a :: (Either SemanticError) (LONGTUPLE,[SemanticWarning])
    a = runWriterT $ sanitizeSentences arr -- 
