@@ -68,6 +68,12 @@ toSettingSpecifier (Id a)
  | map toUpper a == "PRESERVE_CASE" = Just PRESERVE_CASE
  | otherwise = Nothing
 
+instance ToSource SettingSpecifier where
+ toSource CASE_SENSITIVE = "CASE_SENSITIVE"
+ toSource FALL_THROUGH =" FALL_THROUGH"
+ toSource USE_NFD = "USE_NFD"
+ toSource PRESERVE_CASE = "PRESERVE_CASE"
+
 isSpPunct :: Punctuation -> String -> Bool
 isSpPunct punct = all (\x -> isSpace x || x `elem` punct)
 

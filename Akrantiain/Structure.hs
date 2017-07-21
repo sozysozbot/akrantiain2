@@ -1,4 +1,5 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Akrantiain.Structure
 (Sentence(..)
@@ -17,6 +18,9 @@ module Akrantiain.Structure
 import Prelude hiding (undefined)
 import Data.List(intercalate)
 import Akrantiain.Global
+import Data.Aeson hiding (Array)
+import Data.Text(pack)
+import Data.Maybe(maybeToList)
 
 newtype Choose a = Ch{unCh::[a]} deriving(Show, Eq, Ord)
 data Phoneme = Dollar | Slash String deriving(Show, Eq, Ord)
@@ -61,3 +65,32 @@ instance ToSource Define where
 
 toBraces :: ToSource a => [a] -> String
 toBraces list = "{" ++ intercalate "}, {" (map toSource list)++ "}"
+
+
+instance ToJSON Identifier where
+ toJSON (Id i) = String (pack i)
+
+instance ToJSON Quote where
+ toJSON (Quote str) = toJSON str
+
+-- data Conversion = Conversion {mid::Array Select, phons:: Array Phoneme, lneg ::Maybe Select, rneg::Maybe Select} deriving(Show, Eq, Ord)
+instance ToJSON Conversion where
+ toJSON Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r} 
+  = object [ "selects" .= arr1, "phonemes" .= toJSON phonemes] where
+   arr1 = f l ++ map toJSON selects ++ f r `asTypeOf` [Null]
+   f ma = maybeToList $ do
+    a <- ma
+    return $ object ["not" .= a]
+
+instance ToJSON Phoneme where
+ toJSON Dollar = Null 
+ toJSON (Slash str) = toJSON str
+
+instance ToJSON Select where
+ toJSON Boundary2 = object ["bound" .= True]
+ toJSON (Iden i) = object ["id" .= i]
+ toJSON (Pipe (Ch qs)) = object ["or" .= toJSON qs]
+
+
+
+
