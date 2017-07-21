@@ -22,7 +22,7 @@ type Output = Either RuntimeError String
 
 sentsToFunc :: Set Sentence -> SemanticMsg (Input -> Output)
 sentsToFunc sents = do
- SanitizeSentences vars convs defs_ <- sanitizeSentences sents
+ SanitizedSentences vars convs defs_ <- sanitizeSentences sents
  let punct = case Id "PUNCTUATION" `M.lookup` defs_ of{Nothing -> "";
   Just (Ch arr) -> arr >>= unQ} -- FIXME: THIS CONCAT ISN'T RIGHT (, though, at least it is explicitly explained in manual)
  rules' <- lift $ forM convs $ handleConv defs_

@@ -1,6 +1,6 @@
 module Akrantiain.SanitizeSentences
 (sanitizeSentences
-,SanitizeSentences(..)
+,SanitizedSentences(..)
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
@@ -19,14 +19,14 @@ split3 (Left'   c:xs) = let (cs,is,ds) = split3 xs in (c:cs,is,ds)
 split3 (Middle' i:xs) = let (cs,is,ds) = split3 xs in (cs,i:is,ds)
 split3 (Right'  d:xs) = let (cs,is,ds) = split3 xs in (cs,is,d:ds)
 
-data SanitizeSentences = SanitizeSentences (S.Set SettingSpecifier) [Conversion] (M.Map Identifier (Choose Quote))
+data SanitizedSentences = SanitizedSentences (S.Set SettingSpecifier) [Conversion] (M.Map Identifier (Choose Quote))
 
 toSettingSpecifier' :: Identifier -> Either Identifier SettingSpecifier
 toSettingSpecifier' i = case toSettingSpecifier i of
  Nothing -> Left i
  Just a -> Right a
 
-sanitizeSentences :: [Sentence] -> SemanticMsg SanitizeSentences
+sanitizeSentences :: [Sentence] -> SemanticMsg SanitizedSentences
 sanitizeSentences sents = do
  let (convs, vars_pre, defs_pre) = split3 sents
  let defs = map (\(Define a b) -> (a,b)) defs_pre
@@ -36,4 +36,4 @@ sanitizeSentences sents = do
  let duplicates = (map head . filter (\x -> length x > 1) . group . sort . map fst) defs
  unless (null duplicates) $ lift $ Left E{errNum = 334, errStr = "duplicate definition regarding identifier(s) " ++ toBraces duplicates}
  let defs_ = M.fromList defs
- return $ SanitizeSentences vars convs defs_
+ return $ SanitizedSentences vars convs defs_
