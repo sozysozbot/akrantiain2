@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>.snojファイルのjsonダンプの仕様</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<style>
+@font-face {
+    font-family: "Cirlipa";
+    src: url("./cirlxarli_liparxe_1.woff");  format('woff');
+}
+
+p {
+	display: block;
+    font-family: monospace;
+}
+.pre {
+	font-family: monospace;
+}
+</style>
+</head>
+<body>
+<div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
+<h1>akrantiain仕様書 &mdash; .snojファイルのjsonダンプの仕様</h1>
+<a href="main_ja.htm">トップに戻る</a><br>
+
+<h2>6. .snojファイルのjsonダンプの仕様</h2>
+<h3 id="structure">6-0. 構造</h3>
+<p>.snojファイルはモジュールの集まりであるので、ダンプされるJSONは「『名前』と『値』のペア」として「<a href="#mod_name">モジュール名を文字列化したもの</a>と、<a href="#inside">モジュールの中身をJSON化したもの</a>のペア」をとったオブジェクトである。暗黙モジュールには名前がないので、仮の名前として<code><span class="string">_Main</span></code>を用いる。</p>
+
+<h3 id="mod_name">6-1. モジュール名の文字列化</h3>
+<p>モジュール名には、2種類の形がある。</p>
+<table class="pre">
+<tr><td>単独型</td><td><code><u>識別子</u></code></td></tr>	
+<tr><td>推移型</td><td><code><u>識別子</u> =&gt; <u>識別子</u></code></td></tr>
+</table>
+
+<p>なお、識別子は、アルファベットの後に、（アルファベット・数字・<code>_</code>）が0個以上続いたものである。</p>
+
+<p>単独型はモジュール名をそのまま、推移型については<code><u>識別子</u>=&gt;<u>識別子</u></code>を、モジュール名を表す文字列とする。また、前述の通り、暗黙モジュールには名前がないので、仮の名前として<code><span class="string">_Main</span></code>という文字列で表す。</p>
+
+<h3 id="inside">6-2. 「モジュールの中身」のJSON化</h3>
+<p>モジュールの中身には、2種類の形がある。片方は、<span class="chapter_name">2章</span>で説明されている「文列」であり、もう片方は「モジュールの合成」である。</p>
+<p>モジュールの合成の場合、中身をJSON化したものとして「中に含まれるモジュールを文字列化したものの配列」を用いる。</p>
+<p>「文列」の場合、以下の要素からなるオブジェクトを用いる。</p>
+<table class="pre">
+<tr><td>名前</td><td>値</td></tr>
+<tr><td>conversions</td><td>Aの配列</td></tr>
+<tr><td>define</td><td>『名前』を識別子、『値』を「候補の文字列からなる配列」としたペアからなるオブジェクト</td></tr>
+<tr><td>option</td><td>『名前』を環境指定識別子、『値』をtrueとしたペアからなるオブジェクト</td></tr>
+</table>
+
+<pre>
+A:
+toJSON Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r} 
+  = object [ "selects" .= arr1, "phonemes" .= toJSON phonemes] where
+   arr1 = f l ++ map toJSON selects ++ f r `asTypeOf` [Null]
+   f ma = maybeToList $ do
+    a <- ma
+    return $ object ["not" .= a]
+</pre>
+
+</body>
+</html>
