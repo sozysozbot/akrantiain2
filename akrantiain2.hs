@@ -12,6 +12,7 @@ import Akrantiain.MtoM4
 import Control.Monad.Writer
 import Akrantiain.Errors
 import Data.Aeson
+import Akrantiain.Modules(Module2s(..))
 import qualified Data.ByteString.Lazy.Char8 as B
 
 
@@ -37,7 +38,7 @@ main' True (fname:_) = do
    hSetEncoding handle utf8
    input <- hGetContents handle
    runParser modules () fname input >>>= \mods ->
-    mapM3 moduleToModule2 mods >>== \mod2s -> B.putStrLn $ encode mod2s
+    mapM3 moduleToModule2 mods >>== \mod2s -> B.putStrLn . encode $ Module2s mod2s
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
 Left  a >>>= _  = do

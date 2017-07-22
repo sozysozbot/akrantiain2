@@ -8,6 +8,7 @@ module Akrantiain.Modules
 ,InsideModule_(..)
 ,InsideModule
 ,ModChain
+,Module2s(..)
 ) where
 -- import Prelude hiding (undefined)
 import Akrantiain.Structure
@@ -28,19 +29,27 @@ type ModChain = [ModuleName]
 type Module2 = Module_ SanitizedSentences
 type InsideModule2 = InsideModule_ SanitizedSentences
 
+newtype Module2s = Module2s{unModule2s :: [Module2]}
+
 instance ToSource ModuleName where
  toSource (ModuleName i) = toSource i
  toSource (Arrow bef aft) = "(" ++ toSource bef ++ " => " ++ toSource aft ++ ")"
  toSource HiddenModule = toSource (Id "_Main")
 
+instance ToJSON Module2s where --  TypeSynonymInstances, FlexibleInstances
+ toJSON ms = object [ pack(toStr modName) .= toJSON inside | Module modName inside <- unModule2s ms ] 
+
+toStr :: ModuleName -> String
+toStr HiddenModule =  "_Main"
+toStr (ModuleName i) = unId i
+toStr (Arrow i j) = (unId i) ++ "=>" ++ (unId j)
+{-
 instance ToJSON Module2 where -- TypeSynonymInstances, FlexibleInstances
  toJSON (Module modName inside) =
   object ["moduleName" .= modName, "content" .= inside]
-
+-}
 instance ToJSON ModuleName where
- toJSON HiddenModule = String "_Main"
- toJSON (ModuleName i) = toJSON i
- toJSON (Arrow i j) = toJSON [i,j]
+ toJSON mn = String . pack $ toStr mn 
 
 instance ToJSON InsideModule2  where -- TypeSynonymInstances, FlexibleInstances
  toJSON (ModuleChain mods) = toJSON mods
