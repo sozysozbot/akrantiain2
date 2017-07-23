@@ -45,20 +45,22 @@ p {
 <p>「文列」の場合、以下の要素からなるオブジェクトを用いる。</p>
 <table class="pre">
 <tr><td>名前</td><td>値</td></tr>
-<tr><td>conversions</td><td>Aの配列</td></tr>
+<tr><td>conversions</td><td>変換規則定義文をJSON化したものの配列</td></tr>
 <tr><td>define</td><td>『名前』を識別子、『値』を「候補の文字列からなる配列」としたペアからなるオブジェクト</td></tr>
 <tr><td>option</td><td>『名前』を環境指定識別子、『値』をtrueとしたペアからなるオブジェクト</td></tr>
 </table>
 
-<pre>
-A:
-toJSON Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r} 
-  = object [ "selects" .= arr1, "phonemes" .= toJSON phonemes] where
-   arr1 = f l ++ map toJSON selects ++ f r `asTypeOf` [Null]
-   f ma = maybeToList $ do
-    a <- ma
-    return $ object ["not" .= a]
-</pre>
+<h3 id="convert">6-3. 変換規則定義文のJSON化</h3>
+<p>変換規則定義文は、次のような構造を持つ
+</p><div class="pre">
+<code><u>0または1個のCONDITION</u> <u>1個以上のSELECT</u> <u>0または1個のCONDITION</u> -&gt; <u>1個以上のPHONEME</u>;</code>
+</div><p>
+ので、<code>selects</code>として左辺をJSON化したものを持ち、<code>phonemes</code>として右辺を<code><u>PHONEME</u></code>の配列としてJSON化したものを持つオブジェクトとして、変換規則定義文を表現する。
+</p>
+<p><code><u>PHONEME</u></code>については、<code>$</code>ならnull、そうでなければスラッシュリテラルの文字列値をそのまま用いる。</p>
+<p><code><u>SELECT</u></code>については、語境界であれば<code>{"bound":true}</code>、識別子であれば<code>{"id":<u>識別子</u>}</code>、<code>( <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> )</code>のような場合は<code>{"or":<u>文字列の配列</u></code>として表現する。</p>
+<p><code><u>CONDITION</u></code>は{"not":<u>中のSELECT</u>}としてJSON化する。</p>
+<p>左辺のJSON化は、<u>0または1個のCONDITION</u> → <u>1個以上のSELECT</u> → <u>0または1個のCONDITION</u>を順に並べた配列として表現する。</p>
 
 </body>
 </html>
