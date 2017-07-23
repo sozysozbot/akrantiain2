@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>.snojファイルのjsonダンプの仕様</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<style>
+@font-face {
+    font-family: "Cirlipa";
+    src: url("./cirlxarli_liparxe_1.woff");  format('woff');
+}
+
+p {
+	display: block;
+    font-family: monospace;
+    line-height: 170%;
+}
+.pre {
+	font-family: monospace;
+}
+</style>
+</head>
+<body>
+<div><a href="https://github.com/sozysozbot/akrantiain2">View on Github</a></div>
+<h1>akrantiain仕様書 &mdash; .snojファイルのjsonダンプの仕様</h1>
+<a href="main_ja.htm">トップに戻る</a><br>
+
+<h2>6. .snojファイルのjsonダンプの仕様</h2>
+<h3 id="structure">6-0. 構造</h3>
+<p>.snojファイルはモジュールの集まりであるので、ダンプされるJSONは「『名前』と『値』のペア」として「<a href="#mod_name">モジュール名を文字列化したもの</a>と、<a href="#inside">モジュールの中身をJSON化したもの</a>のペア」をとったオブジェクトである。暗黙モジュールには名前がないので、仮の名前として<code><span class="string">_Main</span></code>を用いる。</p>
+
+<h3 id="mod_name">6-1. モジュール名の文字列化</h3>
+<p>モジュール名には、2種類の形がある。</p>
+<table class="pre">
+<tr><td>単独型</td><td><code><u>識別子</u></code></td></tr>	
+<tr><td>推移型</td><td><code><u>識別子</u> =&gt; <u>識別子</u></code></td></tr>
+</table>
+
+<p>なお、識別子は、アルファベットの後に、（アルファベット・数字・<code>_</code>）が0個以上続いたものである。</p>
+
+<p>単独型はモジュール名をそのまま、推移型については<code><u>識別子</u>=&gt;<u>識別子</u></code>を、モジュール名を表す文字列とする。また、前述の通り、暗黙モジュールには名前がないので、仮の名前として<code><span class="string">_Main</span></code>という文字列で表す。</p>
+
+<h3 id="inside">6-2. 「モジュールの中身」のJSON化</h3>
+<p>モジュールの中身には、2種類の形がある。片方は、<span class="chapter_name">2章</span>で説明されている「文列」であり、もう片方は「モジュールの合成」である。</p>
+<p>モジュールの合成の場合、中身をJSON化したものとして「中に含まれるモジュールを文字列化したものの配列」を用いる。</p>
+<p>「文列」の場合、以下の要素からなるオブジェクトを用いる。</p>
+<table class="pre">
+<tr><td>名前</td><td>値</td></tr>
+<tr><td>conversions</td><td>変換規則定義文をJSON化したものの配列</td></tr>
+<tr><td>define</td><td>『名前』を識別子、『値』を「候補の文字列からなる配列」としたペアからなるオブジェクト</td></tr>
+<tr><td>option</td><td>『名前』を環境指定識別子、『値』をtrueとしたペアからなるオブジェクト</td></tr>
+</table>
+
+<h3 id="convert">6-3. 変換規則定義文のJSON化</h3>
+<p>変換規則定義文は、次のような構造を持つ
+</p><div class="pre">
+<code><u>0または1個のCONDITION</u> <u>1個以上のSELECT</u> <u>0または1個のCONDITION</u> -&gt; <u>1個以上のPHONEME</u>;</code>
+</div><p>
+ので、<code>selects</code>として左辺をJSON化したものを持ち、<code>phonemes</code>として右辺を<code><u>PHONEME</u></code>の配列としてJSON化したものを持つオブジェクトとして、変換規則定義文を表現する。左辺は<u>0または1個のCONDITION</u> → <u>1個以上のSELECT</u> → <u>0または1個のCONDITION</u>を順に並べた配列として表現する。</p>
+<p><code><u>PHONEME</u></code>については、<code>$</code>ならnull、そうでなければスラッシュリテラルの文字列値をそのまま用いる。</p>
+<p><code><u>SELECT</u></code>については、語境界であれば<code>{"bound":true}</code>、識別子であれば<code>{"id":<u>識別子</u>}</code>、<code>( <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> )</code>のような場合は<code>{"or":<u>文字列の配列</u></code>として表現する。</p>
+<p><code><u>CONDITION</u></code>は{"not":<u>中のSELECT</u>}としてJSON化する。</p>
+
+<h3 id="example">6-4. 具体例</h3>
+<h4>snoj</h4>
+<pre>% baz { %% foobar >> (foo) >> (A => B => C) ; }
+
+%foobar {
+	@FALL_THRU;
+	"a" -> /\u3042/
+}
+
+% foo {
+	@CASE_SENSITIVE; 
+	"\u3042" -> /a/
+	sample = "foo" | "bar" "baz" | "foobar";
+	PUNCTUATION = "." | "," | "!" | "?";
+	"n" ^ ("m"|"p") -> /m/ $
+	"m" -> /m/
+	"p" -> /p/
+	"n" -> /n/
+	"a" -> /a/
+	"i" -> /i/;
+	"u" -> /u/
+	"g" -> /g/
+}
+
+% A=>B {
+	@FALLTHRU;
+	vowel = "a" | "i";
+	"u" "g" !vowel -> /u/ /u/;
+}
+
+% B=>C {
+	@FALL_THROUGH;
+	"a" -> /aa/;
+}
+
+
+%% baz;</pre>
+<h4>JSON</h4>
+<p>{&quot;foobar&quot;:{&quot;conversions&quot;:[{&quot;selects&quot;:[{&quot;or&quot;:[&quot;a&quot;]}],&quot;phonemes&quot;:[&quot;あ&quot;]}],&quot;define&quot;:{},&quot;option&quot;:{&quot;FALL_THROUGH&quot;:true}},&quot;foo&quot;:{&quot;conversions&quot;:[{&quot;selects&quot;:[{&quot;or&quot;:[&quot;あ&quot;]}],&quot;phonemes&quot;:[&quot;a&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;n&quot;]},{&quot;bound&quot;:true},{&quot;or&quot;:[&quot;m&quot;,&quot;p&quot;]}],&quot;phonemes&quot;:[&quot;m&quot;,null]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;m&quot;]}],&quot;phonemes&quot;:[&quot;m&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;p&quot;]}],&quot;phonemes&quot;:[&quot;p&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;n&quot;]}],&quot;phonemes&quot;:[&quot;n&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;a&quot;]}],&quot;phonemes&quot;:[&quot;a&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;i&quot;]}],&quot;phonemes&quot;:[&quot;i&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;u&quot;]}],&quot;phonemes&quot;:[&quot;u&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;g&quot;]}],&quot;phonemes&quot;:[&quot;g&quot;]}],&quot;define&quot;:{&quot;PUNCTUATION&quot;:[&quot;.&quot;,&quot;,&quot;,&quot;!&quot;,&quot;?&quot;],&quot;sample&quot;:[&quot;foo&quot;,&quot;barbaz&quot;,&quot;foobar&quot;]},&quot;option&quot;:{&quot;CASE_SENSITIVE&quot;:true}},&quot;baz&quot;:[&quot;foobar&quot;,&quot;foo&quot;,&quot;A=&gt;B&quot;,&quot;B=&gt;C&quot;],&quot;_Main&quot;:[&quot;baz&quot;],&quot;B=&gt;C&quot;:{&quot;conversions&quot;:[{&quot;selects&quot;:[{&quot;or&quot;:[&quot;a&quot;]}],&quot;phonemes&quot;:[&quot;aa&quot;]}],&quot;define&quot;:{},&quot;option&quot;:{&quot;FALL_THROUGH&quot;:true}},&quot;A=&gt;B&quot;:{&quot;conversions&quot;:[{&quot;selects&quot;:[{&quot;or&quot;:[&quot;u&quot;]},{&quot;or&quot;:[&quot;g&quot;]},{&quot;not&quot;:{&quot;id&quot;:&quot;vowel&quot;}}],&quot;phonemes&quot;:[&quot;u&quot;,&quot;u&quot;]}],&quot;define&quot;:{&quot;vowel&quot;:[&quot;a&quot;,&quot;i&quot;]},&quot;option&quot;:{&quot;FALL_THROUGH&quot;:true}}}
+</p>
+
+</body>
+</html>

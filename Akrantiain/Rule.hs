@@ -70,7 +70,7 @@ toSettingSpecifier (Id a)
 
 instance ToSource SettingSpecifier where
  toSource CASE_SENSITIVE = "CASE_SENSITIVE"
- toSource FALL_THROUGH =" FALL_THROUGH"
+ toSource FALL_THROUGH = "FALL_THROUGH"
  toSource USE_NFD = "USE_NFD"
  toSource PRESERVE_CASE = "PRESERVE_CASE"
 

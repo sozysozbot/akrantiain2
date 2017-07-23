@@ -1,0 +1,35 @@
+% baz { %% foobar >> (foo) >> (A => B => C) ; }
+
+%foobar {
+	@FALL_THRU;
+	"a" -> /\u3042/
+}
+
+% foo {
+	@CASE_SENSITIVE; 
+	"\u3042" -> /a/
+	sample = "foo" | "bar" "baz" | "foobar";
+	PUNCTUATION = "." | "," | "!" | "?";
+	"n" ^ ("m"|"p") -> /m/ $
+	"m" -> /m/
+	"p" -> /p/
+	"n" -> /n/
+	"a" -> /a/
+	"i" -> /i/;
+	"u" -> /u/
+	"g" -> /g/
+}
+
+% A=>B {
+	@FALLTHRU;
+	vowel = "a" | "i";
+	"u" "g" !vowel -> /u/ /u/;
+}
+
+% B=>C {
+	@FALL_THROUGH;
+	"a" -> /aa/;
+}
+
+
+%% baz;
