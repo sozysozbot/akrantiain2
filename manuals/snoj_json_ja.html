@@ -13,6 +13,7 @@
 p {
 	display: block;
     font-family: monospace;
+    line-height: 170%;
 }
 .pre {
 	font-family: monospace;
@@ -59,6 +60,47 @@ p {
 <p><code><u>PHONEME</u></code>については、<code>$</code>ならnull、そうでなければスラッシュリテラルの文字列値をそのまま用いる。</p>
 <p><code><u>SELECT</u></code>については、語境界であれば<code>{"bound":true}</code>、識別子であれば<code>{"id":<u>識別子</u>}</code>、<code>( <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> )</code>のような場合は<code>{"or":<u>文字列の配列</u></code>として表現する。</p>
 <p><code><u>CONDITION</u></code>は{"not":<u>中のSELECT</u>}としてJSON化する。</p>
+
+<h3 id="example">6-4. 具体例</h3>
+<h4>snoj</h4>
+<pre>% baz { %% foobar >> (foo) >> (A => B => C) ; }
+
+%foobar {
+	@FALL_THRU;
+	"a" -> /\u3042/
+}
+
+% foo {
+	@CASE_SENSITIVE; 
+	"\u3042" -> /a/
+	sample = "foo" | "bar" "baz" | "foobar";
+	PUNCTUATION = "." | "," | "!" | "?";
+	"n" ^ ("m"|"p") -> /m/ $
+	"m" -> /m/
+	"p" -> /p/
+	"n" -> /n/
+	"a" -> /a/
+	"i" -> /i/;
+	"u" -> /u/
+	"g" -> /g/
+}
+
+% A=>B {
+	@FALLTHRU;
+	vowel = "a" | "i";
+	"u" "g" !vowel -> /u/ /u/;
+}
+
+% B=>C {
+	@FALL_THROUGH;
+	"a" -> /aa/;
+}
+
+
+%% baz;</pre>
+<h4>JSON</h4>
+<p>{&quot;foobar&quot;:{&quot;conversions&quot;:[{&quot;selects&quot;:[{&quot;or&quot;:[&quot;a&quot;]}],&quot;phonemes&quot;:[&quot;あ&quot;]}],&quot;define&quot;:{},&quot;option&quot;:{&quot;FALL_THROUGH&quot;:true}},&quot;foo&quot;:{&quot;conversions&quot;:[{&quot;selects&quot;:[{&quot;or&quot;:[&quot;あ&quot;]}],&quot;phonemes&quot;:[&quot;a&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;n&quot;]},{&quot;bound&quot;:true},{&quot;or&quot;:[&quot;m&quot;,&quot;p&quot;]}],&quot;phonemes&quot;:[&quot;m&quot;,null]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;m&quot;]}],&quot;phonemes&quot;:[&quot;m&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;p&quot;]}],&quot;phonemes&quot;:[&quot;p&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;n&quot;]}],&quot;phonemes&quot;:[&quot;n&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;a&quot;]}],&quot;phonemes&quot;:[&quot;a&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;i&quot;]}],&quot;phonemes&quot;:[&quot;i&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;u&quot;]}],&quot;phonemes&quot;:[&quot;u&quot;]},{&quot;selects&quot;:[{&quot;or&quot;:[&quot;g&quot;]}],&quot;phonemes&quot;:[&quot;g&quot;]}],&quot;define&quot;:{&quot;PUNCTUATION&quot;:[&quot;.&quot;,&quot;,&quot;,&quot;!&quot;,&quot;?&quot;],&quot;sample&quot;:[&quot;foo&quot;,&quot;barbaz&quot;,&quot;foobar&quot;]},&quot;option&quot;:{&quot;CASE_SENSITIVE&quot;:true}},&quot;baz&quot;:[&quot;foobar&quot;,&quot;foo&quot;,&quot;A=&gt;B&quot;,&quot;B=&gt;C&quot;],&quot;_Main&quot;:[&quot;baz&quot;],&quot;B=&gt;C&quot;:{&quot;conversions&quot;:[{&quot;selects&quot;:[{&quot;or&quot;:[&quot;a&quot;]}],&quot;phonemes&quot;:[&quot;aa&quot;]}],&quot;define&quot;:{},&quot;option&quot;:{&quot;FALL_THROUGH&quot;:true}},&quot;A=&gt;B&quot;:{&quot;conversions&quot;:[{&quot;selects&quot;:[{&quot;or&quot;:[&quot;u&quot;]},{&quot;or&quot;:[&quot;g&quot;]},{&quot;not&quot;:{&quot;id&quot;:&quot;vowel&quot;}}],&quot;phonemes&quot;:[&quot;u&quot;,&quot;u&quot;]}],&quot;define&quot;:{&quot;vowel&quot;:[&quot;a&quot;,&quot;i&quot;]},&quot;option&quot;:{&quot;FALL_THROUGH&quot;:true}}}
+</p>
 
 </body>
 </html>
