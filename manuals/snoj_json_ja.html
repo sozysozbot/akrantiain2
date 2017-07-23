@@ -55,12 +55,10 @@ p {
 </p><div class="pre">
 <code><u>0または1個のCONDITION</u> <u>1個以上のSELECT</u> <u>0または1個のCONDITION</u> -&gt; <u>1個以上のPHONEME</u>;</code>
 </div><p>
-ので、<code>selects</code>として左辺をJSON化したものを持ち、<code>phonemes</code>として右辺を<code><u>PHONEME</u></code>の配列としてJSON化したものを持つオブジェクトとして、変換規則定義文を表現する。
-</p>
+ので、<code>selects</code>として左辺をJSON化したものを持ち、<code>phonemes</code>として右辺を<code><u>PHONEME</u></code>の配列としてJSON化したものを持つオブジェクトとして、変換規則定義文を表現する。左辺は<u>0または1個のCONDITION</u> → <u>1個以上のSELECT</u> → <u>0または1個のCONDITION</u>を順に並べた配列として表現する。</p>
 <p><code><u>PHONEME</u></code>については、<code>$</code>ならnull、そうでなければスラッシュリテラルの文字列値をそのまま用いる。</p>
 <p><code><u>SELECT</u></code>については、語境界であれば<code>{"bound":true}</code>、識別子であれば<code>{"id":<u>識別子</u>}</code>、<code>( <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> )</code>のような場合は<code>{"or":<u>文字列の配列</u></code>として表現する。</p>
 <p><code><u>CONDITION</u></code>は{"not":<u>中のSELECT</u>}としてJSON化する。</p>
-<p>左辺のJSON化は、<u>0または1個のCONDITION</u> → <u>1個以上のSELECT</u> → <u>0または1個のCONDITION</u>を順に並べた配列として表現する。</p>
 
 </body>
 </html>
