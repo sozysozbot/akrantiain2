@@ -10,6 +10,7 @@
     src: url("./cirlxarli_liparxe_1.woff");  format('woff');
 }
 
+.pre_{font-family: monospace; line-height: 170%}
 </style>
 </head>
 <body>
@@ -21,22 +22,22 @@
 <a href="./manuals_conlang_lpa.htm" class="lang" style="font-family:'Cirlipa'">kanteluescosti virle lineparine</a>
 <h2>2. 「文列」の構文規則</h2>
 <h3 id="structure">2-0. 構造</h3>
-<pre>
+<article class="pre_">
 「文列」とは、文の集まりである。文には<a href="#ident">識別子定義文</a>と<a href="#convert">変換規則定義文</a>、そして<a href="#atmark">環境指定文</a>がある。
-変換規則定義文を上から辿っていき、順に変換規則を適用することによりakrantiainは動作する。
-故に、変換規則定義文の順番を入れ替えると動作が変わる可能性があるが、一方識別子定義文や環境指定文の位置や順序はakrantiainの動作に一切影響を与えない。
-行末は文の境目である。行をまたいで1文を定義することはできない。
-逆に、文末のセミコロンは、行の最後および行コメントの直前では省略できる。
-</pre>
+<br>変換規則定義文を上から辿っていき、順に変換規則を適用することによりakrantiainは動作する。
+<br>故に、変換規則定義文の順番を入れ替えると動作が変わる可能性があるが、一方識別子定義文や環境指定文の位置や順序はakrantiainの動作に一切影響を与えない。
+<br>行末は文の境目である。行をまたいで1文を定義することはできない。
+<br>逆に、文末のセミコロンは、行の最後および行コメントの直前では省略できる。
+</article>
 <h3 id="comment">2-1. コメント</h3>
-<pre>
+<article class="pre_">
 <code>#</code>から行末までに書かれたものは無視される。ただし、<a href="#literal">文字列リテラル</a>および<a href="#slash">スラッシュリテラル</a>内の<code>#</code>はコメントを意味しない。
-複数行コメントは存在しない。
-</pre>
+<br>複数行コメントは存在しない。
+</article>
 <h3 id="ident">2-2. 識別子定義文</h3>
-<pre>
+<article class="pre_">
 識別子定義文は、次のような構造を持つ。
-</pre><div class="pre">
+</article><div class="pre">
 <code><u>識別子</u> = <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u>;</code></div><pre>
 例としては、こんな感じである。
 </pre><div class="pre">
