@@ -96,14 +96,14 @@ An error occurs when an identifier used inside the definition of a conversion ru
 <article class="pre_">
 A setting specifier has the following structure.
 </article><div class="pre">
-<code>@ <u>identifier</u> ;</code></div><pre>
+<code>@ <u>identifier</u> ;</code></div><article class="pre_">
 This sentence tells akrantiain to behave differently from what it normally does.
-It is legal to specify the same setting multiple times.
-
-Setting specifier itself is case insensitive; <code>@ <span class="identifier">uSe_NFd</span> ;</code> behaves exactly the same as <code>@ <span class="identifier">USE_NFD</span> ;</code>.
-
-The following is the list of identifiers that currently have settings accompanied to them.
-</pre><table class="pre">
+<br>It is legal to specify the same setting multiple times.
+<br>
+<br>Setting specifier itself is case insensitive; <code>@ <span class="identifier">uSe_NFd</span> ;</code> behaves exactly the same as <code>@ <span class="identifier">USE_NFD</span> ;</code>.
+<br>
+<br>The following is the list of identifiers that currently have settings accompanied to them.
+</article><table class="pre">
 <tr><td>Identifiers</td><td>Meaning</td></tr>
 <tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>Make string literals case-sensitive</td></tr>
 <tr><td><code><span class="identifier">FALL_THROUGH</span></code> <code><span class="identifier">FALLTHROUGH</span></code> <code><span class="identifier">FALL_THRU</span></code> <code><span class="identifier">FALLTHRU</span></code></td><td>When parts of the input isn't consumed by the conversion rules, make them fall through instead of throwing an error</td></tr>
