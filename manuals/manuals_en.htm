@@ -10,6 +10,7 @@
     src: url("./cirlxarli_liparxe_1.woff");  format('woff');
 }
 u{font-style: italic;}
+.pre_{font-family: monospace; line-height: 170%}
 </style>
 </head>
 <body>
@@ -20,48 +21,48 @@ u{font-style: italic;}
 <a href="./manuals_conlang_lpa.htm" class="lang" style="font-family:'Cirlipa'">kanteluescosti virle lineparine</a>
 <h2>2. The syntactic structure of a sentence sequence</h2>
 <h3 id="structure">2-0. Structure</h3>
-<pre>
+<article class="pre_">
 A sentence sequence is made up of sentences. A sentence either <a href="#ident">defines an identifier</a>, <a href="#convert">defines a conversion rule</a> or <a href="#atmark">specify a setting</a>.
-Akrantiain works by applying the conversion rules (in the order it is written in the .snoj file) to the input.
-Thus, while the order of conversion rules' definition does matter, the order and positions of identifier definitions or setting specifiers never affect akrantiain's behavior.
-A semicolon or a newline terminates a sentence; thus, a single sentence cannot span multiple lines.
-In other words, a semicolon that terminates a sentence can be omitted when it is at the end of the line or is followed by a single-line comment.
-</pre>
+<br>Akrantiain works by applying the conversion rules (in the order it is written in the .snoj file) to the input.
+<br>Thus, while the order of conversion rules' definition does matter, the order and positions of identifier definitions or setting specifiers never affect akrantiain's behavior.
+<br>A semicolon or a newline terminates a sentence; thus, a single sentence cannot span multiple lines.
+<br>In other words, a semicolon that terminates a sentence can be omitted when it is at the end of the line or is followed by a single-line comment.
+</article>
 <h3 id="comment">2-1. Comments</h3>
-<pre>
+<article class="pre_">
 Anything written after a <code>#</code> till the end of the line is ignored, except for the <code>#</code> inside a <a href="#literal">string literal</a> or a <a href="#slash">slash literal</a>.
-Multiple-line comments do not exist.
-</pre>
+<br>Multiple-line comments do not exist.
+</article>
 <h3 id="ident">2-2. Defining identifiers</h3>
-<pre>
+<article class="pre_">
 Identifers are defined using the following syntax:
-</pre><div class="pre">
+</article><div class="pre">
 <code><u>identifier</u> = <u>1 or more string literal</u> | <u>1 or more string literal</u> | <u>1 or more string literal</u> | <u>1 or more string literal</u>;</code></div>
-<pre>
+<article class="pre_">
 For example,
-</pre><div class="pre">
+</article><div class="pre">
 <code><span class="identifier">sample</span> = <span class="string">"foo"</span> | <span class="string">"bar"</span> <span class="string">"baz"</span> | <span class="string">"foobar"</span>;</code></div>
-<pre>
+<article class="pre_">
 defines the identifier <code><span class="identifier">sample</span></code> as a pattern that matches either <code><span class="string">"foo"</span></code>, <code><span class="string">"bar" "baz"</span></code>, or <code><span class="string">"foobar"</span></code>.
-An identifier is an alphabet followed by 0 or more of {either an alphabet, a digit, or an <code>_</code>}. <strong>An identifier cannot start with a digit or a <code>_</code>.</strong>
-
-An error occurs when you define a single identifier multiple times.
-
-A special identifier named <code><span class="identifier">PUNCTUATION</span></code> exists. For example, when you define <code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>, akrantiain recognizes these characters as punctuations.
-This is necessary to, for example, let akrantiain know that character <code>n</code> inside the input <code>This is a pen.</code> terminates a word.
-<span class="FIXME">Currently, using a string literal whose length is longer than 1 (ex. <code><span class="string">"foo"</span></code>) inside the definition of <code><span class="identifier">PUNCTUATION</span></code> may result in unintended behavior.
-This is a bug, and is intended to be fixed in the future.</span>
-</pre>
+<br>An identifier is an alphabet followed by 0 or more of {either an alphabet, a digit, or an <code>_</code>}. <strong>An identifier cannot start with a digit or a <code>_</code>.</strong>
+<br>
+<br>An error occurs when you define a single identifier multiple times.
+<br>
+<br>A special identifier named <code><span class="identifier">PUNCTUATION</span></code> exists. For example, when you define <code><span class="identifier">PUNCTUATION</span> = <span class="string">"."</span> | <span class="string">","</span> | <span class="string">"!"</span> | <span class="string">"?";</span></code>, akrantiain recognizes these characters as punctuations.
+<br>This is necessary to, for example, let akrantiain know that character <code>n</code> inside the input <code>This is a pen.</code> terminates a word.
+<br><span class="FIXME">Currently, using a string literal whose length is longer than 1 (ex. <code><span class="string">"foo"</span></code>) inside the definition of <code><span class="identifier">PUNCTUATION</span></code> may result in unintended behavior.
+<br>This is a bug, and is intended to be fixed in the future.</span>
+</article>
 <h3 id="convert">2-3. Defining conversion rules</h3>
-<pre>
+<article class="pre_">
 Let <code><u>SELECT</u></code> be <code>^</code>, a single identifier, a single string literal or <code>( <u>1 or more string literal</u> | <u>1 or more string literal</u> | <u>1 or more string literal</u> )</code>.
-Let <code><u>CONDITION</u></code> be <code>!</code> followed by a <code><u>SELECT</u></code>.
-Let <code><u>PHONEME</u></code> be either <code>$</code> or a slash literal.
-conversion rules are defined using the following syntax:
-</pre><div class="pre">
+<br>Let <code><u>CONDITION</u></code> be <code>!</code> followed by a <code><u>SELECT</u></code>.
+<br>Let <code><u>PHONEME</u></code> be either <code>$</code> or a slash literal.
+<br>conversion rules are defined using the following syntax:
+</article><div class="pre">
 <code><u>0 or 1 CONDITION</u> <u>1 or more SELECT</u> <u>0 or 1 CONDITION</u> -&gt; <u>1 or more PHONEME</u>;</code>
-</div><pre>
-There are two restrictions:</pre>
+</div><article class="pre_">
+There are two restrictions:</article>
 <ul style="font-family: monospace">
 <li>The number of {<code><u>SELECT</u></code>s (excluding <code>^</code>) that make up <code><u>1 or more SELECT</u></code>} must be equal to the number of {<code><u>PHONEME</u></code>s that make up <code><u>1 or more PHONEME</u></code>}; if not, an error occurs.</li>
 <li>The <code><u>1 or more PHONEME</u></code> part cannot consist fully of <code>$</code>s. Violating this also results in an error.</li>
@@ -72,36 +73,37 @@ For example,
 <code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div><pre>
 defines a rule which tells akrantiain to do the following:
  "When a <code><span class="string">"u"</span></code> is followed by a <code><span class="string">"g"</span></code>, which in turn is NOT followed by something that matches the pattern <code><span class="identifier">vowel</span></code>,
-  convert the <code><span class="string">"u"</span></code> into <code><span class="slash">/u/</span></code> and the <code><span class="string">"g"</span></code> into <code><span class="slash">/u/</span></code>."
-
+  convert the <code><span class="string">"u"</span></code> into <code><span class="slash">/u/</span></code> and the <code><span class="string">"g"</span></code> into <code><span class="slash">/u/</span></code>."</pre>
+<article class="pre_">
 Whitespace characters are not allowed inside <code>-&gt;</code>; you cannot split a <code>-&gt;</code> into a <code>-</code> and a <code>&gt;</code>.
-
-A <code>^</code> is a pattern than matches a word boundary. A <code>$</code> says: "This rule does not convert the corresponding left-hand side; let other rules written below handle it."
-The following is an example which uses a <code>^</code> and a <code>$</code>:
-</pre><div class="pre">
+<br>
+<br>A <code>^</code> is a pattern than matches a word boundary. A <code>$</code> says: "This rule does not convert the corresponding left-hand side; let other rules written below handle it."
+<br>The following is an example which uses a <code>^</code> and a <code>$</code>:
+</article>
+<div class="pre">
 <code><span class="string">"n"</span> ^ (<span class="string">"m"</span>|<span class="string">"p"</span>) -&gt; <span class="slash">/m/</span> $</code></div><pre>
 This defines a rule that says:
  "When <code><span class="string">"n"</span></code> is followed by a word boundary, which in turn is followed by something that matches pattern <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code>,
-  replace <code><span class="string">"n"</span></code> into <span class="slash">/m/</span>; what is matched to <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code> should be left to other rules that follows this rule."
-
+  replace <code><span class="string">"n"</span></code> into <span class="slash">/m/</span>; what is matched to <code>(<span class="string">"m"</span>|<span class="string">"p"</span>)</code> should be left to other rules that follows this rule."</pre>
+<article class="pre_">
 An error occurs when an identifier used inside the definition of a conversion rule is not defined.
-
-
-It is forbidden to directly or indirectly (through identifiers) use a string literal containing punctuations (i.e. characters used in the definition of <code><span class="identifier">PUNCTUATION</span></code>) or spaces inside conversion rule definitions. 
-An error occurs when you try to do so.
-</pre>
+<br>
+<br>
+<br>It is forbidden to directly or indirectly (through identifiers) use a string literal containing punctuations (i.e. characters used in the definition of <code><span class="identifier">PUNCTUATION</span></code>) or spaces inside conversion rule definitions. 
+<br>An error occurs when you try to do so.
+</article>
 <h3 id="atmark">2-4. Specifying settings</h3>
-<pre>
+<article class="pre_">
 A setting specifier has the following structure.
-</pre><div class="pre">
-<code>@ <u>identifier</u> ;</code></div><pre>
+</article><div class="pre">
+<code>@ <u>identifier</u> ;</code></div><article class="pre_">
 This sentence tells akrantiain to behave differently from what it normally does.
-It is legal to specify the same setting multiple times.
-
-Setting specifier itself is case insensitive; <code>@ <span class="identifier">uSe_NFd</span> ;</code> behaves exactly the same as <code>@ <span class="identifier">USE_NFD</span> ;</code>.
-
-The following is the list of identifiers that currently have settings accompanied to them.
-</pre><table class="pre">
+<br>It is legal to specify the same setting multiple times.
+<br>
+<br>Setting specifier itself is case insensitive; <code>@ <span class="identifier">uSe_NFd</span> ;</code> behaves exactly the same as <code>@ <span class="identifier">USE_NFD</span> ;</code>.
+<br>
+<br>The following is the list of identifiers that currently have settings accompanied to them.
+</article><table class="pre">
 <tr><td>Identifiers</td><td>Meaning</td></tr>
 <tr><td><code><span class="identifier">CASE_SENSITIVE</span></code></td><td>Make string literals case-sensitive</td></tr>
 <tr><td><code><span class="identifier">FALL_THROUGH</span></code> <code><span class="identifier">FALLTHROUGH</span></code> <code><span class="identifier">FALL_THRU</span></code> <code><span class="identifier">FALLTHRU</span></code></td><td>When parts of the input isn't consumed by the conversion rules, make them fall through instead of throwing an error</td></tr>
@@ -109,21 +111,21 @@ The following is the list of identifiers that currently have settings accompanie
 </table>
 
 <h3 id="literal">2-5. String literal</h3>
-<pre>
+<article class="pre_">
 A string literal is a literal that describes a string to be converted from. A string literal begins with a <code><span class="string">"</span></code> and ends with a <code><span class="string">"</span></code>, and it does not contain a newline within itself.
-In order to express the character <code>"</code> inside a string literal, you must write <code><span class="string">\"</span></code>.
-In order to express the character <code>\</code> inside a string literal, you must write <code><span class="string">\\</span></code>.
-A character in Unicode's Basic Multilingual Plane can also be represented inside a string literal by writing <code><span class="string">\u</span></code> followed by the character's code point in four hexadecimal digits. (<code>0</code>~<code>9</code>, <code>A</code>~<code>F</code>, <code>a</code>~<code>f</code>)
-
-By default, string literals are case-insensitive.
-You need to <a href="#atmark">specify the setting</a> <code><span class="identifier">CASE_SENSITIVE</span></code> to make string literals case-sensitive.
-</pre>
+<br>In order to express the character <code>"</code> inside a string literal, you must write <code><span class="string">\"</span></code>.
+<br>In order to express the character <code>\</code> inside a string literal, you must write <code><span class="string">\\</span></code>.
+<br>A character in Unicode's Basic Multilingual Plane can also be represented inside a string literal by writing <code><span class="string">\u</span></code> followed by the character's code point in four hexadecimal digits. (<code>0</code>~<code>9</code>, <code>A</code>~<code>F</code>, <code>a</code>~<code>f</code>)
+<br>
+<br>By default, string literals are case-insensitive.
+<br>You need to <a href="#atmark">specify the setting</a> <code><span class="identifier">CASE_SENSITIVE</span></code> to make string literals case-sensitive.
+</article>
 <h3 id="slash">2-6. Slash literal</h3>
-<pre>
+<article class="pre_">
 A slash literal is a literal that describes a string to be converted to. A slash literal begins with a <code><span class="slash">/</span></code> and ends with a <code><span class="slash">/</span></code>, and it does not contain a newline within itself.
-In order to express the character <code>/</code> inside a slash literal, you must write <code><span class="slash">\/</span></code>.
-In order to express the character <code>\</code> inside a slash literal, you must write <code><span class="slash">\\</span></code>.
-A character in Unicode's Basic Multilingual Plane can also be represented inside a slash literal by writing <code><span class="slash">\u</span></code> followed by the character's code point in four hexadecimal digits. (<code>0</code>~<code>9</code>, <code>A</code>~<code>F</code>, <code>a</code>~<code>f</code>)
-</pre>
+<br>In order to express the character <code>/</code> inside a slash literal, you must write <code><span class="slash">\/</span></code>.
+<br>In order to express the character <code>\</code> inside a slash literal, you must write <code><span class="slash">\\</span></code>.
+<br>A character in Unicode's Basic Multilingual Plane can also be represented inside a slash literal by writing <code><span class="slash">\u</span></code> followed by the character's code point in four hexadecimal digits. (<code>0</code>~<code>9</code>, <code>A</code>~<code>F</code>, <code>a</code>~<code>f</code>)
+</article>
 </body>
 </html>
