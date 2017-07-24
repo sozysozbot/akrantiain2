@@ -52,19 +52,19 @@
 <span class="FIXME">現状、複数文字の文字列リテラル（例：<code><span class="string">"foo"</span></code>）を<code><span class="identifier">PUNCTUATION</span></code>の定義で用いた時の挙動は未定義である。これは不具合であり、後のバージョンで修正される予定である。</span>
 </pre>
 <h3 id="convert">2-3. 変換規則定義文</h3>
-<pre>
+<article class="pre_">
 <code><u>SELECT</u></code>を<code>^</code>または「1つの識別子」または「1個の文字列リテラル」または<code>( <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> | <u>1個以上の文字列リテラル</u> )</code>とし、
-<code><u>CONDITION</u></code>は<code><u>SELECT</u></code>に<code>!</code>を前置したものとする。
-<code><u>PHONEME</u></code>は<code>$</code>か<code><u>スラッシュリテラル</u></code>とする。
-このとき、変換規則定義文は、次のような構造を持つ。
-</pre><div class="pre">
+<br><code><u>CONDITION</u></code>は<code><u>SELECT</u></code>に<code>!</code>を前置したものとする。
+<br><code><u>PHONEME</u></code>は<code>$</code>か<code><u>スラッシュリテラル</u></code>とする。
+<br>このとき、変換規則定義文は、次のような構造を持つ。
+</article><div class="pre">
 <code><u>0または1個のCONDITION</u> <u>1個以上のSELECT</u> <u>0または1個のCONDITION</u> -&gt; <u>1個以上のPHONEME</u>;</code>
-</div><pre>
+</div><article class="pre_">
 ここで、「1個以上の<code><u>SELECT</u></code>」を構成する<code><u>SELECT</u></code>のうち<code>^</code>以外のものの個数と、「1個以上の<code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>の個数は一致している必要がある。不一致の場合エラーが発生する。
-また、「1個以上の<code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>が全て<code>$</code>であると、エラーが発生する。
-
-例としては、こんな感じである。
-</pre><div class="pre">
+<br>また、「1個以上の<code><u>PHONEME</u></code>」を構成する<code><u>PHONEME</u></code>が全て<code>$</code>であると、エラーが発生する。
+<br>
+<br>例としては、こんな感じである。
+</article><div class="pre">
 <code><span class="string">"u"</span> <span class="string">"g"</span> !<span class="identifier">vowel</span> -&gt; <span class="slash">/u/</span> <span class="slash">/u/</span>;</code></div><pre>
 こう書くと、「文字列<code><span class="string">"u"</span></code>の後に文字列<code><span class="string">"g"</span></code>があり、直後がパターン<code><span class="identifier">vowel</span></code>にマッチしないとき、<code><span class="string">"u"</span></code>を<code><span class="slash">/u/</span></code>に、<code><span class="string">"g"</span></code>も<code><span class="slash">/u/</span></code>に変換する」という規則が定義される。
 
