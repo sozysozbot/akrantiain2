@@ -13,7 +13,7 @@ A domain-specific language designed to describe conlangs' orthographies
 - [.snojファイルのjsonダンプの仕様](https://sozysozbot.github.io/akrantiain2/manuals/snoj_json_ja.html)
 
 [Twitterで飛んできたQ&A](https://sozysozbot.github.io/akrantiain2/manuals/FAQ_ja.htm)(未完)  
-[Togetter(外部サイト)](https://togetter.com/li/1131468)
+[Togetter(外部サイト)](https://togetter.com/li/1131468)  
 [メッセージと番号と内容の対応表](https://github.com/sozysozbot/akrantiain2/blob/master/manuals/error_ids_ja.md)  
 ny lirsesen [kanteluescosti virle lineparine](https://sozysozbot.github.io/akrantiain2/manuals/manuals_conlang_lpa.htm)  
 
