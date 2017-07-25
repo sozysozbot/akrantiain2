@@ -4,6 +4,8 @@ A domain-specific language designed to describe conlangs' orthographies
 ## Documentations
 [English manual about sentence sequences](https://sozysozbot.github.io/akrantiain2/manuals/manuals_en.htm) (Incomplete) 
 
+[概略(外部サイト)](http://ja.conlinguistics.wikia.com/wiki/Akrantiain)  
+
 [仕様書トップページ](https://sozysozbot.github.io/akrantiain2/manuals/main_ja.htm)
 - [.snojファイルとモジュールについての仕様書](https://sozysozbot.github.io/akrantiain2/manuals/modules_ja.htm)   
 - [文列についての仕様書](https://sozysozbot.github.io/akrantiain2/manuals/manuals_ja.htm) (未完)  
