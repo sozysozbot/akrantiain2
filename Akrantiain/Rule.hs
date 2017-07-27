@@ -13,7 +13,7 @@ module Akrantiain.Rule
 ,SettingSpecifier(..)
 ,Settings
 ,toSettingSpecifier
-,apply_nfds
+,applyNfds
 ,Foo
 ,Foo2
 ,W2
@@ -25,8 +25,8 @@ import qualified Data.Set as S
 import Data.Char(isSpace,toUpper)
 import Akrantiain.NFD
 
-apply_nfds :: Rule -> Rule
-apply_nfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map h ld, middle=map (fmap g) m, rightdollar=map h rd, rightneg=fmap f r} 
+applyNfds :: Rule -> Rule
+applyNfds R{leftneg=l, leftdollar=ld, middle=m, rightdollar=rd, rightneg=r} = R{leftneg=fmap f l, leftdollar=map h ld, middle=map (fmap g) m, rightdollar=map h rd, rightneg=fmap f r} 
  where
   f :: Condition -> Condition
   f NegBoundary = NegBoundary

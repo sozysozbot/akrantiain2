@@ -42,7 +42,7 @@ instance ToJSON Module2s where --  TypeSynonymInstances, FlexibleInstances
 toStr :: ModuleName -> String
 toStr HiddenModule =  "_Main"
 toStr (ModuleName i) = unId i
-toStr (Arrow i j) = (unId i) ++ "=>" ++ (unId j)
+toStr (Arrow i j) = unId i ++ "=>" ++ unId j
 {-
 instance ToJSON Module2 where -- TypeSynonymInstances, FlexibleInstances
  toJSON (Module modName inside) =

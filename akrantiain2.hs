@@ -26,19 +26,21 @@ main' _ xs
  | "--toJSON" `elem` xs = main' True $ filter (/="--toJSON") xs
 main' False (fname:xs) = do
    when (os == "mingw32" && (null xs || head xs /= "--file") ) $ callCommand "chcp 65001 > nul"
-   handle <- openFile fname ReadMode
-   hSetEncoding handle utf8
-   input <- hGetContents handle
+   input <- readFrom fname
    runParser modules () fname input >>>= \mods -> -- handles ParseError
     mapM3 moduleToModule4 mods >>== \mod4s -> -- handles SemanticError and SemanticWarning
     module4sToFunc' mod4s >>== \func -> -- handles ModuleError and ModuleWarning
     interact' func
 main' True (fname:_) = do
-   handle <- openFile fname ReadMode
-   hSetEncoding handle utf8
-   input <- hGetContents handle
+   input <- readFrom fname
    runParser modules () fname input >>>= \mods ->
     mapM3 moduleToModule2 mods >>== \mod2s -> B.putStrLn . encode $ Module2s mod2s
+
+readFrom :: FilePath -> IO String
+readFrom fname = do
+   handle <- openFile fname ReadMode
+   hSetEncoding handle utf8
+   hGetContents handle
 
 (>>>=) :: (Show a) => Either a b -> ( b -> IO ()) -> IO ()
 Left  a >>>= _  = do

@@ -46,7 +46,7 @@ convertAndSplit f str = map (\x -> ([x], Nothing)) $ f (" " ++ str ++ " ") -- ex
 
 cook :: Rules -> String -> Either RuntimeError String
 cook (env,rls'') str_ = do
- let rls' = if S.member USE_NFD (bools env) then map apply_nfds rls'' else rls''
+ let rls' = if S.member USE_NFD (bools env) then map applyNfds rls'' else rls''
  let str = if S.member USE_NFD (bools env) then nfd str_ else str_
  let (sensitive_match,rls,stat) 
       | CASE_SENSITIVE `S.member` bools env = (True, rls', convertAndSplit id str)
