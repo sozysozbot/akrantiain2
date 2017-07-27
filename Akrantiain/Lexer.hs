@@ -62,7 +62,7 @@ execModules = do
  try $ string "%%"
  spaces'
  mods <- modChain
- sent_terminate
+ sentTerminate
  return $ ModuleChain mods
 
 parseModule :: Parser Module
@@ -96,8 +96,8 @@ dollar :: Parser Phoneme
 dollar = char '$' >> return Dollar
 
 
-slash_string :: Parser Phoneme
-slash_string = do
+slashString :: Parser Phoneme
+slashString = do
   char '/'
   str <- many(noneOf "\\/\n" <|> escapeSequence)
   char '/'
@@ -109,18 +109,18 @@ identifier = fmap Id $ (:) <$> letter <*> many (alphaNum <|> char '_')
 
 select :: Parser Select
 select = (char '^' >> return Boundary2) <|> fmap Iden identifier <|> try single <|> try mult  where
- single = (Pipe . Ch . (:[])) <$> quoted_string
+ single = (Pipe . Ch . (:[])) <$> quotedString
  mult = do
   char '('
   spaces'
-  strings <- strings_sepBy_pipe
+  strings <- stringsSepByPipe
   spaces'
   char ')'
   return $ Pipe strings
 
-strings_sepBy_pipe :: Parser (Choose Quote)
-strings_sepBy_pipe = fmap Ch $ strs `sepBy1` try(char '|' >> spaces')
- where strs = concat' <$> many1(quoted_string <* spaces')
+stringsSepByPipe :: Parser (Choose Quote)
+stringsSepByPipe = fmap Ch $ strs `sepBy1` try(char '|' >> spaces')
+ where strs = concat' <$> many1(quotedString <* spaces')
 
 -- consonant = "a" | "b" "d" | cons2 | co "c" co
 define :: Parser Sentence
@@ -132,15 +132,15 @@ define = do
    char '='
    return ident'
   spaces'
-  ch_quote <- strings_sepBy_pipe
-  sent_terminate
+  ch_quote <- stringsSepByPipe
+  sentTerminate
   return $ Right'$Define ident ch_quote
 
 spaces' :: Parser ()
 spaces' = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
 
-sent_terminate :: Parser ()
-sent_terminate = eof <|> comment
+sentTerminate :: Parser ()
+sentTerminate = eof <|> comment
 
 conversion :: Parser Sentence
 conversion = do
@@ -155,9 +155,9 @@ conversion = do
    string "->"
    return (selects',left,right)
   spaces'
-  let phoneme = dollar <|> slash_string
+  let phoneme = dollar <|> slashString
   phonemes <- many1(try$phoneme <* spaces')
-  sent_terminate
+  sentTerminate
   return $ Left' Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r}
    where
     neg_select = try $ fmap Just $ char '!' >> spaces' >> select
@@ -175,8 +175,8 @@ escapeSequence =
 
 
 
-quoted_string :: Parser Quote
-quoted_string = do
+quotedString :: Parser Quote
+quotedString = do
   char '"'
   str <- many(noneOf "\\\"\n" <|> escapeSequence)
   char '"'
@@ -191,7 +191,7 @@ atsignOption = do
  spaces'
  ide <- identifier
  spaces'
- sent_terminate
+ sentTerminate
  return $ Middle' ide
 
 
