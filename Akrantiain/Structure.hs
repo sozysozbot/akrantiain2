@@ -13,7 +13,6 @@ module Akrantiain.Structure
 ,Choose(..)
 ,Conversion(..)
 ,Define(..)
-,toBraces
 ) where
 import Prelude hiding (undefined)
 import Data.List(intercalate)
@@ -40,6 +39,8 @@ instance (Functor Choose) where
 
 class ToSource a where
  toSource :: a -> String
+ toBraces :: [a] -> String
+ toBraces list = "{" ++ intercalate "}, {" (map toSource list)++ "}"
 instance ToSource Phoneme where
  toSource Dollar = "$"
  toSource (Slash str) = '/':str++"/"
@@ -67,8 +68,6 @@ instance ToSource Define where
  toSource (Define ide options) = toSource ide ++ " = " ++ toSource options ++ ";\n"
 
 
-toBraces :: ToSource a => [a] -> String
-toBraces list = "{" ++ intercalate "}, {" (map toSource list)++ "}"
 
 
 instance ToJSON Identifier where
