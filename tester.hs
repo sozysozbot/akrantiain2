@@ -28,13 +28,14 @@ main = do
  args <- getArgs
  if "--verbose" `elem` args
   then f (filter (/="--verbose") args) `runReaderT` True
-  else f args `runReaderT` ("--create" `elem` args)
+  else f args `runReaderT` ("--create" `elem` args || "--createJSON" `elem` args)
 
 f :: [String] -> ReaderT Bool IO ()
 f [] = lift $ do
    hPutStrLn stderr $ unlines[
     "Usage: ",
     "\t./tester --create [sample_names]",
+    "\t./tester --createJSON [sample_names]",
     "\t./tester --check [sample_names]",
     "\t./tester --check_from [file_name]",
     "\t./tester --verbose (other options)",
@@ -45,6 +46,11 @@ f ("--create":arr) = forM_ arr $ \name -> do
    call' $ 
     "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
    tell' $ "Created the output sample for {" ++ name ++ "}."
+f ("--createJSON":arr) = forM_ arr $ \name -> do
+   tell' $ "Creating the JSON dump for {" ++ name ++ "}..."
+   call' $ 
+    "./akrantiain2 --toJSON samples/sample_" ++ name ++ ".snoj > samples/jsample_" ++ name ++ ".json"
+   tell' $ "Created the JSON dump for {" ++ name ++ "}."
 f ("--check":arr) = check arr 
 f ["--check_from",filename] = do
  arr <- lift $ (filter (/="") . lines) <$> readFile filename 
