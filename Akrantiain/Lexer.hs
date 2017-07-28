@@ -13,7 +13,7 @@ import Data.Maybe (catMaybes)
 import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Akrantiain.Modules
-import Numeric
+import Numeric(readHex)
 
 ---- parsing modules -----
 
