@@ -12,8 +12,7 @@ module Akrantiain.Modules
 ) where
 import Prelude hiding (undefined)
 import Akrantiain.Structure
-import Akrantiain.Rule
-import Akrantiain.SanitizeSentences
+import Akrantiain.SanitizeSentences(SanitizedSentences(..))
 import Data.Aeson
 import Data.Text(pack)
 import qualified Data.Set as S
@@ -60,6 +59,6 @@ instance ToJSON InsideModule2  where -- TypeSynonymInstances, FlexibleInstances
    f k = object . map (uncurry q) $ M.toList k    
    -- q :: Identifier -> Choose Quote -> Pair
     where q (Id i) (Ch qs) = pack i .= toJSON qs
-   h :: S.Set SettingSpecifier -> Value
+   -- h :: S.Set SettingSpecifier -> Value
    h k = object . map r $ S.toList k
     where r setting = pack (toSource setting) .= toJSON True
