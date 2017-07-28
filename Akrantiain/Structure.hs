@@ -17,10 +17,14 @@ module Akrantiain.Structure
 ) where
 import Prelude hiding (undefined)
 import Data.List(intercalate)
-import Akrantiain.Global
 import Data.Aeson hiding (Array)
 import Data.Text(pack)
 import Data.Maybe(maybeToList)
+
+
+type Set a = [a]
+type Array a = [a]
+
 
 newtype Choose a = Ch{unCh::[a]} deriving(Show, Eq, Ord)
 data Phoneme = Dollar | Slash String deriving(Show, Eq, Ord)
