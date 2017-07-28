@@ -10,9 +10,8 @@ module Akrantiain.Errors
 ,SemanticMsg
 ,RuntimeMsg
 ,ModuleMsg
-,mapM2
 ,mapM3
-,lift,tell
+,lift,tell -- from Control.Monad.Writer
 ) where
 import Prelude hiding (undefined)
 import Data.Either(lefts,rights)
