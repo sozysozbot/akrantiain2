@@ -10,7 +10,7 @@ module Akrantiain.Modules
 ,ModChain
 ,Module2s(..)
 ) where
--- import Prelude hiding (undefined)
+import Prelude hiding (undefined)
 import Akrantiain.Structure
 import Akrantiain.Rule
 import Akrantiain.SanitizeSentences

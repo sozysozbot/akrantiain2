@@ -2,6 +2,7 @@ module Akrantiain.RevList
 (RevList(..)
 ,toList,fromList
 ) where
+import Prelude hiding (undefined)
 
 newtype RevList a = Reverse{unReverse :: [a]} deriving(Show,Eq,Ord)
 
