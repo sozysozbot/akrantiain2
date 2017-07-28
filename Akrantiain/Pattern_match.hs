@@ -16,6 +16,7 @@ import qualified Data.Set as S
 import Control.Arrow(first)
 import Control.Monad.Reader
 import Akrantiain.RevList
+import Data.Foldable(toList) -- used for RevList
 
 data Environment' = Wrap{sensitivity :: Bool, getEnv :: Environment} deriving(Ord,Eq,Show)
 
