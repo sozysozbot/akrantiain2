@@ -10,7 +10,7 @@ import System.Process
 import System.Info
 import Akrantiain.MtoM4
 import Control.Monad.Writer
-import Akrantiain.Errors
+import Akrantiain.Errors2
 import Data.Aeson
 import Akrantiain.Modules(Module2s(..))
 import qualified Data.ByteString.Lazy.Char8 as B
