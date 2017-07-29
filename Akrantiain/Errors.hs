@@ -10,12 +10,9 @@ module Akrantiain.Errors
 ,SemanticMsg
 ,RuntimeMsg
 ,ModuleMsg
-,mapM2
-,mapM3
-,lift,tell
+,lift,tell -- from Control.Monad.Writer
 ) where
 import Prelude hiding (undefined)
-import Data.Either(lefts,rights)
 import Control.Monad.Writer
 
 data SemanticError = E {errNum :: Int, errStr :: String} deriving(Eq, Ord)
@@ -30,19 +27,6 @@ data ModuleError = ME{errorNo :: Int, errorMsg :: String} deriving(Eq, Ord)
 instance Show ModuleError where
  show ME{errorNo = n, errorMsg = str} = "Module error (error code #" ++ show n ++ ")\n" ++ str
 
--- similar to mapM but keeps track of all errors
-mapM2 :: (d -> Either c b) -> [d] -> Either [c] [b]
-mapM2 f ds = let{es = map f ds; (ls,rs) = (lefts es, rights es)} in
- case ls of
-  [] -> Right rs
-  _ -> Left ls
-
--- similar to mapM but keeps track of all warnings
-mapM3 :: (Monoid e) => (d -> WriterT e (Either c) b) -> [d] -> WriterT e (Either [c]) [b]
-mapM3 f ds = WriterT tmp where 
- tmp = do -- Either [c] ([b], e)
-  bes <- mapM2 (runWriterT . f) ds -- Either [c] [(b,e)]
-  return (map fst bes, mconcat $ map snd bes)
  
  
 

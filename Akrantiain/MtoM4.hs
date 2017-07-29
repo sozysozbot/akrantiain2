@@ -6,6 +6,7 @@ module Akrantiain.MtoM4
 ,Module4
 ,InsideModule4
 ) where
+import Prelude hiding (undefined)
 import Akrantiain.Modules
 import Akrantiain.Sents_to_func
 import Akrantiain.Errors
