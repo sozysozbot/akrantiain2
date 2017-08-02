@@ -20,6 +20,7 @@ debug :
 #	./debug2 > gerhw2.txt
 #	diff gerhw2.txt debug2_res.txt
 	./tester --check_from testerlist.txt
+	./tester --checkJSON_from testerlist2.txt
 
 
 clean:
