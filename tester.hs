@@ -77,7 +77,7 @@ checkJSON :: [String] -> ReaderT Bool IO ()
 checkJSON arr = do
  forM_ arr $ \name -> 
   unless (null name || head name == '#') $ do
-   tell' $ "Checking the output of sample {" ++ name ++ "}..."
+   tell' $ "Checking the JSON dump of sample {" ++ name ++ "}..."
    call' $ concat' ["./akrantiain2", "--toJSON", getSnojPath name, ">", getJSampleTmpPath name]
    lift $ callCommand (concat' ["diff", getJSampleTmpPath name, getJSamplePath name]) `E.catch` foo name
    tell' $ "Finished checking the JSON dump of sample {" ++ name ++ "}."
