@@ -49,12 +49,12 @@ f [] = lift $ do
 f ("--create":arr) = forM_ arr $ \name -> do
    tell' $ "Creating the output sample for {" ++ name ++ "}..."
    call' $ 
-    "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/output_sample_" ++ name ++ ".txt"
+    "./akrantiain2 "++getSnojPath name++" < "++getInputSamplePath name++" > "++ getOutputSamplePath name 
    tell' $ "Created the output sample for {" ++ name ++ "}."
 f ("--createJSON":arr) = forM_ arr $ \name -> do
    tell' $ "Creating the JSON dump for {" ++ name ++ "}..."
    call' $ 
-    "./akrantiain2 --toJSON samples/sample_" ++ name ++ ".snoj > " ++ getJSamplePath name
+    "./akrantiain2 --toJSON "++getSnojPath name++" > " ++ getJSamplePath name
    tell' $ "Created the JSON dump for {" ++ name ++ "}."
 f ("--check":arr) = check arr 
 f ("--checkJSON":arr) = checkJSON arr 
@@ -71,8 +71,8 @@ check arr = do
   unless (null name || head name == '#') $ do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
    call' $ 
-    "./akrantiain2 samples/sample_" ++ name ++ ".snoj < samples/input_sample_" ++ name ++ ".txt > samples/.output_sample_" ++ name ++ ".tmp"
-   lift $ callCommand ("diff samples/.output_sample_" ++ name ++ ".tmp samples/output_sample_" ++ name ++ ".txt") `E.catch` foo name
+    "./akrantiain2 "++getSnojPath name++" < "++ getInputSamplePath name ++" > "++getOSampleTmpPath name
+   lift $ callCommand (concat ["diff ", getOSampleTmpPath name, " ", getOutputSamplePath name]) `E.catch` foo name
    tell' $ "Finished checking the output of sample {" ++ name ++ "}."
  lift $ hPutStrLn stderr "Finished checking all cases."
 
@@ -81,9 +81,8 @@ checkJSON arr = do
  forM_ arr $ \name -> 
   unless (null name || head name == '#') $ do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
-   call' $ 
-    "./akrantiain2 --toJSON samples/sample_" ++ name ++ ".snoj > samples/.jsample_" ++ name ++ ".tmp"
-   lift $ callCommand ("diff samples/.jsample_" ++ name ++ ".tmp " ++ getJSamplePath name) `E.catch` foo name
+   call' $ concat ["./akrantiain2 --toJSON ", getSnojPath name, " > ", getJSampleTmpPath name]
+   lift $ callCommand (concat ["diff ", getJSampleTmpPath name, " ", getJSamplePath name]) `E.catch` foo name
    tell' $ "Finished checking the JSON dump of sample {" ++ name ++ "}."
  lift $ hPutStrLn stderr "Finished checking all cases."
 
@@ -95,4 +94,17 @@ foo name e = do
 getJSamplePath :: String -> String
 getJSamplePath name = "samples/jsample/jsample_" ++ name ++ ".json"
 
+getSnojPath :: String -> String
+getSnojPath name = "samples/sample_" ++ name ++ ".snoj"
 
+getInputSamplePath :: String -> String
+getInputSamplePath name = "samples/input_sample_" ++ name ++ ".txt" 
+
+getOutputSamplePath :: String -> String
+getOutputSamplePath name = "samples/output_sample_" ++ name ++ ".txt" 
+
+getJSampleTmpPath :: String -> String
+getJSampleTmpPath name = "samples/.jsample_" ++ name ++ ".tmp"
+
+getOSampleTmpPath :: String -> String
+getOSampleTmpPath name = "samples/.output_sample_" ++ name ++ ".tmp"
