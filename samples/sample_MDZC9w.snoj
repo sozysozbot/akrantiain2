@@ -1,0 +1,12 @@
+vowel = "a" | "e" | "i" | "o" | "u"
+semivowel = vowel | "w" | "y"
+
+semivowel "k" -> $ /G/
+!(vowel | "h") "d" -> /T/
+
+vowel -> /A/
+semivowel -> /W/
+"k" -> /K/
+"g" -> /G/
+"h" -> /H/
+"d" -> /D/
