@@ -49,11 +49,11 @@ f [] = lift $ do
    void getLine
 f ("--create":arr) = forM_ arr $ \name -> do
    tell' $ "Creating the output sample for {" ++ name ++ "}..."
-   callAkrantiain (getSnojPath name) (getInputSamplePath name) (getOutputSamplePath name)
+   callAkrantiain (getSnojPath name, getInputSamplePath name, getOutputSamplePath name)
    tell' $ "Created the output sample for {" ++ name ++ "}."
 f ("--createJSON":arr) = forM_ arr $ \name -> do
    tell' $ "Creating the JSON dump for {" ++ name ++ "}..."
-   callAkrantiainJSON (getSnojPath name) (getJSamplePath name)
+   callAkrantiainJSON (getSnojPath name, getJSamplePath name)
    tell' $ "Created the JSON dump for {" ++ name ++ "}."
 f ("--check":arr) = check arr 
 f ("--checkJSON":arr) = checkJSON arr 
@@ -64,12 +64,12 @@ f ["--checkJSON_from",filename] = do
  arr <- lift $ (filter (/="") . lines) <$> readFile filename 
  checkJSON arr
 
-callAkrantiain :: String -> String -> String -> ReaderT Bool IO ()
-callAkrantiain snoj inputPath outputPath = 
+callAkrantiain :: (String, String, String) -> ReaderT Bool IO ()
+callAkrantiain (snoj, inputPath, outputPath) = 
   call' $ concat' ["./akrantiain2", snoj, "<", inputPath, ">", outputPath] 
 
-callAkrantiainJSON :: String -> String -> ReaderT Bool IO ()
-callAkrantiainJSON snoj jsonOPath = 
+callAkrantiainJSON :: (String, String) -> ReaderT Bool IO ()
+callAkrantiainJSON (snoj, jsonOPath) = 
  call' $ concat' ["./akrantiain2","--toJSON", snoj, ">", jsonOPath]
 
 check :: [String] -> ReaderT Bool IO ()  
@@ -77,7 +77,7 @@ check arr = do
  forM_ arr $ \name -> 
   unless (null name || head name == '#') $ do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
-   callAkrantiain (getSnojPath name) (getInputSamplePath name) (getOSampleTmpPath name)
+   callAkrantiain (getSnojPath name, getInputSamplePath name, getOSampleTmpPath name)
    lift $ callCommand (concat' ["diff", getOSampleTmpPath name, getOutputSamplePath name]) `E.catch` foo name
    tell' $ "Finished checking the output of sample {" ++ name ++ "}."
  lift $ hPutStrLn stderr "Finished checking all cases."
@@ -87,7 +87,7 @@ checkJSON arr = do
  forM_ arr $ \name -> 
   unless (null name || head name == '#') $ do
    tell' $ "Checking the JSON dump of sample {" ++ name ++ "}..."
-   callAkrantiainJSON (getSnojPath name) (getJSampleTmpPath name)
+   callAkrantiainJSON (getSnojPath name, getJSampleTmpPath name)
    lift $ callCommand (concat' ["diff", getJSampleTmpPath name, getJSamplePath name]) `E.catch` foo name
    tell' $ "Finished checking the JSON dump of sample {" ++ name ++ "}."
  lift $ hPutStrLn stderr "Finished checking all cases."
