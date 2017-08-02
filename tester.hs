@@ -62,8 +62,7 @@ f ["--check_from",filename] = do
 f ["--checkJSON_from",filename] = do
  arr <- lift $ (filter (/="") . lines) <$> readFile filename 
  checkJSON arr
-f (x:_) = lift $ do
- hPutStrLn stderr $ "Unknown command `" ++ x ++ "`"
+f (x:_) = lift $ hPutStrLn stderr $ "Unknown command `" ++ x ++ "`"
 
 callAkrantiain :: (String, String, String) -> ReaderT Bool IO ()
 callAkrantiain (snoj, inputPath, outputPath) = 
