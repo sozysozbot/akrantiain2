@@ -78,7 +78,7 @@ check arr = do
   unless (null name || head name == '#') $ do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
    callAkrantiain (getSnojPath name, getInputSamplePath name, getOSampleTmpPath name)
-   lift $ callCommand (concat' ["diff", getOSampleTmpPath name, getOutputSamplePath name]) `E.catch` foo name
+   lift $ diff (getOSampleTmpPath name) (getOutputSamplePath name) `E.catch` foo name
    tell' $ "Finished checking the output of sample {" ++ name ++ "}."
  lift $ hPutStrLn stderr "Finished checking all cases."
 
@@ -88,9 +88,12 @@ checkJSON arr = do
   unless (null name || head name == '#') $ do
    tell' $ "Checking the JSON dump of sample {" ++ name ++ "}..."
    callAkrantiainJSON (getSnojPath name, getJSampleTmpPath name)
-   lift $ callCommand (concat' ["diff", getJSampleTmpPath name, getJSamplePath name]) `E.catch` foo name
+   lift $ diff (getJSampleTmpPath name) (getJSamplePath name) `E.catch` foo name
    tell' $ "Finished checking the JSON dump of sample {" ++ name ++ "}."
  lift $ hPutStrLn stderr "Finished checking all cases."
+
+diff :: String -> String -> IO ()
+diff a b = callCommand (concat' ["diff", a, b])
 
 concat' :: [String] -> String
 concat' = intercalate " "
