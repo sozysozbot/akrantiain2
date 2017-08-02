@@ -48,13 +48,11 @@ f [] = lift $ do
    void getLine
 f ("--create":arr) = forM_ arr $ \name -> do
    tell' $ "Creating the output sample for {" ++ name ++ "}..."
-   call' $ 
-    "./akrantiain2 "++getSnojPath name++" < "++getInputSamplePath name++" > "++ getOutputSamplePath name 
+   call' $ concat ["./akrantiain2 ", getSnojPath name, " < ", getInputSamplePath name, " > ", getOutputSamplePath name] 
    tell' $ "Created the output sample for {" ++ name ++ "}."
 f ("--createJSON":arr) = forM_ arr $ \name -> do
    tell' $ "Creating the JSON dump for {" ++ name ++ "}..."
-   call' $ 
-    "./akrantiain2 --toJSON "++getSnojPath name++" > " ++ getJSamplePath name
+   call' $ concat ["./akrantiain2 --toJSON ", getSnojPath name, " > ", getJSamplePath name]
    tell' $ "Created the JSON dump for {" ++ name ++ "}."
 f ("--check":arr) = check arr 
 f ("--checkJSON":arr) = checkJSON arr 
@@ -70,8 +68,7 @@ check arr = do
  forM_ arr $ \name -> 
   unless (null name || head name == '#') $ do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
-   call' $ 
-    "./akrantiain2 "++getSnojPath name++" < "++ getInputSamplePath name ++" > "++getOSampleTmpPath name
+   call' $ concat ["./akrantiain2 ", getSnojPath name, " < ", getInputSamplePath name, " > ", getOSampleTmpPath name]
    lift $ callCommand (concat ["diff ", getOSampleTmpPath name, " ", getOutputSamplePath name]) `E.catch` foo name
    tell' $ "Finished checking the output of sample {" ++ name ++ "}."
  lift $ hPutStrLn stderr "Finished checking all cases."
