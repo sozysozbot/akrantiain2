@@ -6,7 +6,6 @@ import System.Info()
 import Control.Monad
 import Control.Exception as E
 import Control.Monad.Reader
-import Data.List(intercalate)
 
 
 tell :: Bool -> String -> IO ()
@@ -63,14 +62,16 @@ f ["--check_from",filename] = do
 f ["--checkJSON_from",filename] = do
  arr <- lift $ (filter (/="") . lines) <$> readFile filename 
  checkJSON arr
+f (x:_) = lift $ do
+ hPutStrLn stderr $ "Unknown command `" ++ x ++ "`"
 
 callAkrantiain :: (String, String, String) -> ReaderT Bool IO ()
 callAkrantiain (snoj, inputPath, outputPath) = 
-  call' $ concat' ["./akrantiain2", snoj, "<", inputPath, ">", outputPath] 
+  call' $ unwords ["./akrantiain2", snoj, "<", inputPath, ">", outputPath] 
 
 callAkrantiainJSON :: (String, String) -> ReaderT Bool IO ()
 callAkrantiainJSON (snoj, jsonOPath) = 
- call' $ concat' ["./akrantiain2","--toJSON", snoj, ">", jsonOPath]
+ call' $ unwords ["./akrantiain2", "--toJSON", snoj, ">", jsonOPath]
 
 check :: [String] -> ReaderT Bool IO ()  
 check arr = do
@@ -93,10 +94,8 @@ checkJSON arr = do
  lift $ hPutStrLn stderr "Finished checking all cases."
 
 diff :: String -> String -> IO ()
-diff a b = callCommand (concat' ["diff", a, b])
+diff a b = callCommand (unwords ["diff", a, b])
 
-concat' :: [String] -> String
-concat' = intercalate " "
 
 foo :: String -> E.IOException -> IO a
 foo name e = do
