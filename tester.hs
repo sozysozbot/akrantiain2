@@ -1,14 +1,16 @@
+{-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 import System.Environment
 import System.IO
 import System.Process
-import System.Info
+import System.Info()
 import Control.Monad
 import Control.Exception as E
 import Control.Monad.Reader
 
 
+tell :: Bool -> String -> IO ()
 tell True str = hPutStrLn stderr str
-tell False str = return ()
+tell False _ = return ()
 
 tell' :: String -> ReaderT Bool IO ()
 tell' str = do
@@ -20,6 +22,7 @@ call' str = do
  bool <- ask
  lift $ call bool str
 
+call :: Bool -> String -> IO ()
 call True str = callCommand str
 call False str = callCommand (str ++ " 2> /dev/null")
 
@@ -51,7 +54,7 @@ f ("--create":arr) = forM_ arr $ \name -> do
 f ("--createJSON":arr) = forM_ arr $ \name -> do
    tell' $ "Creating the JSON dump for {" ++ name ++ "}..."
    call' $ 
-    "./akrantiain2 --toJSON samples/sample_" ++ name ++ ".snoj > samples/jsample/jsample_" ++ name ++ ".json"
+    "./akrantiain2 --toJSON samples/sample_" ++ name ++ ".snoj > " ++ getJSamplePath name
    tell' $ "Created the JSON dump for {" ++ name ++ "}."
 f ("--check":arr) = check arr 
 f ("--checkJSON":arr) = checkJSON arr 
@@ -80,7 +83,7 @@ checkJSON arr = do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
    call' $ 
     "./akrantiain2 --toJSON samples/sample_" ++ name ++ ".snoj > samples/.jsample_" ++ name ++ ".tmp"
-   lift $ callCommand ("diff samples/.jsample_" ++ name ++ ".tmp samples/jsample/jsample_" ++ name ++ ".json") `E.catch` foo name
+   lift $ callCommand ("diff samples/.jsample_" ++ name ++ ".tmp " ++ getJSamplePath name) `E.catch` foo name
    tell' $ "Finished checking the JSON dump of sample {" ++ name ++ "}."
  lift $ hPutStrLn stderr "Finished checking all cases."
 
@@ -88,3 +91,8 @@ foo :: String -> E.IOException -> IO a
 foo name e = do
     hPutStrLn stderr $ "FAILURE WHILE CHECKING THE OUTPUT OF SAMPLE {" ++ name ++ "}."
     throwIO e
+
+getJSamplePath :: String -> String
+getJSamplePath name = "samples/jsample/jsample_" ++ name ++ ".json"
+
+
