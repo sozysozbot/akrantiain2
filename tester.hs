@@ -6,6 +6,7 @@ import System.Info()
 import Control.Monad
 import Control.Exception as E
 import Control.Monad.Reader
+import Data.List(intercalate)
 
 
 tell :: Bool -> String -> IO ()
@@ -84,8 +85,7 @@ checkJSON arr = do
  lift $ hPutStrLn stderr "Finished checking all cases."
 
 concat' :: [String] -> String
-concat' [a] = a
-concat' (x:xs) = x ++ " " ++ concat' xs
+concat' = intercalate " "
 
 foo :: String -> E.IOException -> IO a
 foo name e = do
