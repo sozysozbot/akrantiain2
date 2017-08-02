@@ -1,0 +1,1 @@
+{"_Main":{"conversions":[{"selects":[{"or":["ez"]},{"bound":true}],"phonemes":["e"]},{"selects":[{"or":["ai"]}],"phonemes":["ɛ"]},{"selects":[{"or":["m"]},{"or":["a","e","i","o","u","y"]}],"phonemes":["m",null]}],"define":{},"option":{}}}
