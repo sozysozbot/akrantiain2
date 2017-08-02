@@ -51,7 +51,7 @@ f ("--create":arr) = forM_ arr $ \name -> do
 f ("--createJSON":arr) = forM_ arr $ \name -> do
    tell' $ "Creating the JSON dump for {" ++ name ++ "}..."
    call' $ 
-    "./akrantiain2 --toJSON samples/sample_" ++ name ++ ".snoj > samples/jsample_" ++ name ++ ".json"
+    "./akrantiain2 --toJSON samples/sample_" ++ name ++ ".snoj > samples/jsample/jsample_" ++ name ++ ".json"
    tell' $ "Created the JSON dump for {" ++ name ++ "}."
 f ("--check":arr) = check arr 
 f ("--checkJSON":arr) = checkJSON arr 
@@ -80,7 +80,7 @@ checkJSON arr = do
    tell' $ "Checking the output of sample {" ++ name ++ "}..."
    call' $ 
     "./akrantiain2 --toJSON samples/sample_" ++ name ++ ".snoj > samples/.jsample_" ++ name ++ ".tmp"
-   lift $ callCommand ("diff samples/.jsample_" ++ name ++ ".tmp samples/jsample_" ++ name ++ ".json") `E.catch` foo name
+   lift $ callCommand ("diff samples/.jsample_" ++ name ++ ".tmp samples/jsample/jsample_" ++ name ++ ".json") `E.catch` foo name
    tell' $ "Finished checking the JSON dump of sample {" ++ name ++ "}."
  lift $ hPutStrLn stderr "Finished checking all cases."
 
