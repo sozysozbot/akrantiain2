@@ -4,7 +4,8 @@ module Akrantiain.Lexer
 (modules
 ) where
 import Prelude hiding (undefined)
-import Text.Parsec hiding(spaces)
+import Text.Parsec hiding(spaces,char,string)
+import qualified Text.Parsec as T
 
 import Control.Applicative ((<$>),(<*))
 import Data.Char (isSpace,chr)
