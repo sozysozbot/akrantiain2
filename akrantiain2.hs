@@ -35,7 +35,8 @@ main' False (fname:xs) = do
     interact' func
 main' True (fname:_) = do
    input <- readFrom fname
-   runParser modules () fname input >>>= \mods ->
+   runParser toTokens () fname input >>>= \input2 ->
+    runParser modules () fname input2 >>>= \mods ->
     mapM3 moduleToModule2 mods >>== \mod2s -> B.putStrLn . encode $ Module2s mod2s
 
 readFrom :: FilePath -> IO String

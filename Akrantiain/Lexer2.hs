@@ -4,13 +4,13 @@ module Akrantiain.Lexer2
 (toTokens
 ,Token
 ,char,string
-,escapeSequence
 ,quotedString
 ,identifier
 ,comment
 ,spaces'
+,slashString
 ) where
-import Prelude hiding (undefined)
+--import Prelude hiding (undefined)
 import Text.Parsec hiding(spaces,char,string)
 import qualified Text.Parsec as T
 
@@ -22,29 +22,44 @@ import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Numeric(readHex)
 
-type Token = Char
+type Token = Either () Char
 
 toTokens :: Parser [Token]
-toTokens = many anyChar <* eof
+toTokens = fmap (map Right) (many anyChar) <* eof
 
-char :: Char -> Parsec [Token] () Char
-char = T.char
+char :: Char -> Parsec [Token] () ()
+char a = string [a]
 
-string :: String -> Parsec [Token] () String
-string = T.string
+string :: String -> Parsec [Token] () ()
+string = undefined -- void . T.string
 
-comment :: Parser ()
-comment = void space <|> void(try $ spaces' >> void(oneOf ";\n")) <|> (T.char '#' >> skipMany (noneOf "\n") >> (eof <|> void(T.char '\n')))
+comment :: Parsec [Token] () ()
+comment = undefined
 
 
-spaces' :: Parser ()
-spaces' = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
+spaces' :: Parsec [Token] () ()
+spaces' = undefined
 
-identifier :: Parser Identifier
-identifier = fmap Id $ (:) <$> letter <*> many (alphaNum <|> T.char '_')
+identifier :: Parsec [Token] () Identifier
+identifier = undefined
 
-escapeSequence :: Parser Char
-escapeSequence =
+slashString :: Parsec [Token] () Phoneme
+slashString = undefined
+
+quotedString :: Parsec [Token] () Quote
+quotedString = undefined
+
+comment__ :: Parser ()
+comment__ = void space <|> void(try $ spaces'__ >> void(oneOf ";\n")) <|> (T.char '#' >> skipMany (noneOf "\n") >> (eof <|> void(T.char '\n')))
+
+spaces'__ :: Parser ()
+spaces'__ = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
+
+identifier__ :: Parser Identifier
+identifier__ = fmap Id $ (:) <$> letter <*> many (alphaNum <|> T.char '_')
+
+escapeSequence__ :: Parser Char
+escapeSequence__ =
  try(T.string "\\\\" >> return '\\') <|>
  try(T.string "\\\"" >> return '"')  <|>
  try(T.string "\\/" >> return '/') <|> try uni where
@@ -54,11 +69,16 @@ escapeSequence =
    let [(num,"")] = readHex hexes 
    return $ chr num
 
+slashString__ :: Parser Phoneme
+slashString__ = do
+  T.char '/'
+  str <- many(noneOf "\\/\n" <|> escapeSequence__)
+  T.char '/'
+  return $ Slash str
 
-
-quotedString :: Parser Quote
-quotedString = do
+quotedString__ :: Parser Quote
+quotedString__ = do
   T.char '"'
-  str <- many(noneOf "\\\"\n" <|> escapeSequence)
+  str <- many(noneOf "\\\"\n" <|> escapeSequence__)
   T.char '"'
   return $ Quote str 

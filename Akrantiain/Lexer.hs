@@ -97,12 +97,6 @@ dollar :: Parser Phoneme
 dollar = char '$' >> return Dollar
 
 
-slashString :: Parser Phoneme
-slashString = do
-  char '/'
-  str <- many(noneOf "\\/\n" <|> escapeSequence)
-  char '/'
-  return $ Slash str
 
 
 
