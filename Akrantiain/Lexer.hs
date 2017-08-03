@@ -14,6 +14,7 @@ import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Akrantiain.Modules
 import Numeric(readHex)
+import Akrantiain.Lexer2
 
 ---- parsing modules -----
 
