@@ -31,7 +31,24 @@ char :: Char -> Parsec [Token] () ()
 char a = string [a]
 
 string :: String -> Parsec [Token] () ()
-string = undefined -- void . T.string
+string ")" = undefined
+string ">>" = undefined
+string "%%" = undefined
+string "%" = undefined
+string "{" = undefined
+string "}" = undefined
+string "$" = undefined
+string "=>" = undefined -- void . T.string
+string "(" = undefined
+string "^" = undefined
+string "(" = undefined
+string ")" = undefined
+string "|" = undefined
+string "=" = undefined
+string "->" = undefined
+string "!" = undefined
+string "@" = undefined
+
 
 comment :: Parsec [Token] () ()
 comment = undefined
