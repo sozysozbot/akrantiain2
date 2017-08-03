@@ -20,10 +20,11 @@ import Text.Parsec.String (Parser)
 import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Numeric(readHex)
+import Text.Parsec.Pos
 
 type Token = Either Tok Char
 
-data Tok = I Identifier | S String | Q String | Op String | NewLine deriving(Show)
+data Tok = I Identifier | S String | Q String | Op String | NewLine deriving(Eq,Ord,Show)
 
 toTokens :: Parser [Token]
 toTokens = fmap (map Left) (optional spaces'__ >> many tok) <* eof
@@ -34,8 +35,14 @@ char :: Char -> Parsec [Token] () ()
 char a = string [a]
 
 string :: String -> Parsec [Token] () ()
-string = undefined
+string str = void $ satisfy' (== Left(Op str))
 
+satisfy' :: (Monad m) => (Token -> Bool) -> ParsecT [Token] u m Token
+satisfy' f = tokenPrim showTok nextPos testTok
+   where
+     showTok x        = undefined x
+     testTok x        = if f x then Just x else Nothing
+     nextPos pos x _  = updatePosString pos (undefined x)
 
 comment :: Parsec [Token] () ()
 comment = return ()
@@ -45,13 +52,28 @@ spaces' :: Parsec [Token] () ()
 spaces' = return ()
 
 identifier :: Parsec [Token] () Identifier
-identifier = undefined
+identifier = do
+  Left(I i) <- satisfy' f
+  return i
+   where
+    f (Left(I _)) = True
+    f _ = False
 
 slashString :: Parsec [Token] () Phoneme
-slashString = undefined
+slashString = do
+  Left(S i) <- satisfy' f
+  return (Slash i)
+   where
+    f (Left(S _)) = True
+    f _ = False
 
 quotedString :: Parsec [Token] () Quote
-quotedString = undefined
+quotedString = do
+  Left(Q i) <- satisfy' f
+  return (Quote i)
+   where
+    f (Left(Q _)) = True
+    f _ = False
 
 operator__ :: Parser Tok
 operator__ = undefined
