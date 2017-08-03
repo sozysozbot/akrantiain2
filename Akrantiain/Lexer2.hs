@@ -14,8 +14,6 @@ import Data.Char (isSpace,chr)
 import Text.Parsec.String (Parser)
 import Data.Maybe (catMaybes)
 import Control.Monad(void,replicateM)
-import Akrantiain.Structure
-import Akrantiain.Modules
 import Numeric(readHex)
 
 type Token = Char
@@ -23,8 +21,8 @@ type Token = Char
 toTokens :: Parser [Token]
 toTokens = many anyChar <* eof
 
-char :: Char -> Parser Char
+char :: Char -> Parsec [Token] () Char
 char = T.char
 
-string :: String -> Parser String
+string :: String -> Parsec [Token] () String
 string = T.string
