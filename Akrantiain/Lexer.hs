@@ -8,13 +8,14 @@ import Text.Parsec hiding(spaces)
 
 import Control.Applicative ((<$>),(<*))
 import Data.Char (isSpace,chr)
-import Text.Parsec.String (Parser)
 import Data.Maybe (catMaybes)
 import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Akrantiain.Modules
 import Numeric(readHex)
 import Akrantiain.Lexer2
+
+type Parser = Parsec [Token] ()
 
 ---- parsing modules -----
 

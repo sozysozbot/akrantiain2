@@ -14,6 +14,7 @@ import Akrantiain.Errors2
 import Data.Aeson
 import Akrantiain.Modules(Module2s(..))
 import qualified Data.ByteString.Lazy.Char8 as B
+import Akrantiain.Lexer2
 
 
 main :: IO ()
@@ -27,7 +28,8 @@ main' _ xs
 main' False (fname:xs) = do
    when (os == "mingw32" && (null xs || head xs /= "--file") ) $ callCommand "chcp 65001 > nul"
    input <- readFrom fname
-   runParser modules () fname input >>>= \mods -> -- handles ParseError
+   runParser toTokens () fname input >>>= \input2 ->
+    runParser modules () fname input2 >>>= \mods -> -- handles ParseError
     mapM3 moduleToModule4 mods >>== \mod4s -> -- handles SemanticError and SemanticWarning
     module4sToFunc' mod4s >>== \func -> -- handles ModuleError and ModuleWarning
     interact' func

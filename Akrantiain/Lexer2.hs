@@ -19,4 +19,4 @@ import Numeric(readHex)
 type Token = Char
 
 toTokens :: Parser [Token]
-toTokens = many anyChar
+toTokens = many anyChar <* eof
