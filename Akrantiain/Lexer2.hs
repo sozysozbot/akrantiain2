@@ -34,7 +34,7 @@ string :: String -> Parsec [Token] () String
 string = T.string
 
 comment :: Parser ()
-comment = void space <|> void(try $ spaces' >> void(oneOf ";\n")) <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
+comment = void space <|> void(try $ spaces' >> void(oneOf ";\n")) <|> (T.char '#' >> skipMany (noneOf "\n") >> (eof <|> void(T.char '\n')))
 
 
 spaces' :: Parser ()
