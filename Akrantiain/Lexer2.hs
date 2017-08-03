@@ -17,45 +17,32 @@ import qualified Text.Parsec as T
 import Control.Applicative ((<$>),(<*))
 import Data.Char (isSpace,chr)
 import Text.Parsec.String (Parser)
-import Data.Maybe (catMaybes)
 import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Numeric(readHex)
 
-type Token = Either () Char
+type Token = Either Tok Char
+
+data Tok = I Identifier | S String | Q String | Op String | NewLine deriving(Show)
 
 toTokens :: Parser [Token]
-toTokens = fmap (map Right) (many anyChar) <* eof
+toTokens = fmap (map Left) (optional spaces'__ >> many tok) <* eof
+ where
+  tok = newline__ <|> identifier__ <|> slashString__ <|> quotedString__ <|> operator__
 
 char :: Char -> Parsec [Token] () ()
 char a = string [a]
 
 string :: String -> Parsec [Token] () ()
-string ")" = undefined
-string ">>" = undefined
-string "%%" = undefined
-string "%" = undefined
-string "{" = undefined
-string "}" = undefined
-string "$" = undefined
-string "=>" = undefined -- void . T.string
-string "(" = undefined
-string "^" = undefined
-string "(" = undefined
-string ")" = undefined
-string "|" = undefined
-string "=" = undefined
-string "->" = undefined
-string "!" = undefined
-string "@" = undefined
+string = undefined
 
 
 comment :: Parsec [Token] () ()
-comment = undefined
+comment = return ()
 
 
 spaces' :: Parsec [Token] () ()
-spaces' = undefined
+spaces' = return ()
 
 identifier :: Parsec [Token] () Identifier
 identifier = undefined
@@ -66,14 +53,21 @@ slashString = undefined
 quotedString :: Parsec [Token] () Quote
 quotedString = undefined
 
+operator__ :: Parser Tok
+operator__ = undefined
+
 comment__ :: Parser ()
-comment__ = void space <|> void(try $ spaces'__ >> void(oneOf ";\n")) <|> (T.char '#' >> skipMany (noneOf "\n") >> (eof <|> void(T.char '\n')))
+comment__ = void space <|> void newline__
+
+newline__ :: Parser Tok
+newline__ = c >> return NewLine
+ where c = void(try $ spaces'__ >> void(oneOf ";\n")) <|> (T.char '#' >> skipMany (noneOf "\n") >> (eof <|> void(T.char '\n')))
 
 spaces'__ :: Parser ()
 spaces'__ = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
 
-identifier__ :: Parser Identifier
-identifier__ = fmap Id $ (:) <$> letter <*> many (alphaNum <|> T.char '_')
+identifier__ :: Parser Tok
+identifier__ = fmap (I . Id) $ (:) <$> letter <*> many (alphaNum <|> T.char '_')
 
 escapeSequence__ :: Parser Char
 escapeSequence__ =
@@ -86,16 +80,16 @@ escapeSequence__ =
    let [(num,"")] = readHex hexes 
    return $ chr num
 
-slashString__ :: Parser Phoneme
+slashString__ :: Parser Tok
 slashString__ = do
   T.char '/'
   str <- many(noneOf "\\/\n" <|> escapeSequence__)
   T.char '/'
-  return $ Slash str
+  return $ S str
 
-quotedString__ :: Parser Quote
+quotedString__ :: Parser Tok
 quotedString__ = do
   T.char '"'
   str <- many(noneOf "\\\"\n" <|> escapeSequence__)
   T.char '"'
-  return $ Quote str 
+  return $ Q str 

@@ -5,15 +5,11 @@ module Akrantiain.Lexer
 ) where
 import Prelude hiding (undefined)
 import Text.Parsec hiding(spaces,char,string)
-import qualified Text.Parsec as T
 
 import Control.Applicative ((<$>),(<*))
-import Data.Char (isSpace,chr)
 import Data.Maybe (catMaybes)
-import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Akrantiain.Modules
-import Numeric(readHex)
 import Akrantiain.Lexer2
 
 type Parser = Parsec [Token] ()
