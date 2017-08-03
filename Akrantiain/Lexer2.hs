@@ -40,9 +40,9 @@ string str = void $ satisfy' (== Left(Op str))
 satisfy' :: (Monad m) => (Token -> Bool) -> ParsecT [Token] u m Token
 satisfy' f = tokenPrim showTok nextPos testTok
    where
-     showTok x        = undefined x
+     showTok x        = show x -- FIXME
      testTok x        = if f x then Just x else Nothing
-     nextPos pos x _  = updatePosString pos (undefined x)
+     nextPos pos x _  = updatePosString pos (show x) -- FIXME
 
 comment :: Parsec [Token] () ()
 comment = return ()
