@@ -76,7 +76,8 @@ quotedString = do
     f _ = False
 
 operator__ :: Parser Tok
-operator__ = undefined
+operator__ = foldr1 (<|>) $ map (fmap Op . try . T.string) ops
+ where ops = [">>","%%", "%", "{", "}", "$", "=>", "(", "^", "(", ")", "|", "=", "->", "!", "@"]
 
 comment__ :: Parser ()
 comment__ = void space <|> void newline__
