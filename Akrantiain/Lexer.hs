@@ -90,8 +90,6 @@ sentences = do
  sents <- many (try(comment >> return Nothing) <|> try(fmap Just sentence))
  return $ catMaybes sents
 
-comment :: Parser ()
-comment = void space <|> void(try $ spaces' >> void(oneOf ";\n")) <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
 
 
 
@@ -106,8 +104,6 @@ slashString = do
   char '/'
   return $ Slash str
 
-identifier :: Parser Identifier
-identifier = fmap Id $ (:) <$> letter <*> many (alphaNum <|> char '_')
 
 
 select :: Parser Select
@@ -139,8 +135,6 @@ define = do
   sentTerminate
   return $ Right'$Define ident ch_quote
 
-spaces' :: Parser ()
-spaces' = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
 
 sentTerminate :: Parser ()
 sentTerminate = eof <|> comment
@@ -165,25 +159,6 @@ conversion = do
    where
     neg_select = try $ fmap Just $ char '!' >> spaces' >> select
 
-escapeSequence :: Parser Char
-escapeSequence =
- try(string "\\\\" >> return '\\') <|>
- try(string "\\\"" >> return '"')  <|>
- try(string "\\/" >> return '/') <|> try uni where
-  uni = do
-   string "\\u"
-   hexes <- replicateM 4 hexDigit
-   let [(num,"")] = readHex hexes 
-   return $ chr num
-
-
-
-quotedString :: Parser Quote
-quotedString = do
-  char '"'
-  str <- many(noneOf "\\\"\n" <|> escapeSequence)
-  char '"'
-  return $ Quote str 
 
 sentence :: Parser Sentence
 sentence = conversion <|> define <|> atsignOption
