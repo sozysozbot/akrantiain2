@@ -17,6 +17,9 @@ import Numeric(readHex)
 import Akrantiain.Tokenizer
 
 -- type Parser = Parsec [Token] ()
+satisfy' :: Monad m => (Token -> Bool) -> ParsecT [Token] u m Token
+satisfy' = undefined
+
 
 op :: String -> Parser ()
 op str = void $ string str
