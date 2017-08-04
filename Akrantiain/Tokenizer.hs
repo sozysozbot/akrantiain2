@@ -6,7 +6,7 @@ module Akrantiain.Tokenizer
 import Prelude hiding (undefined)
 import Text.Parsec hiding(spaces)
 
-import Control.Applicative ((<$>),(<*))
+import Control.Applicative ((<$>))
 import Data.Char (isSpace,chr)
 import Text.Parsec.String (Parser)
 import Control.Monad(void,replicateM)
@@ -17,12 +17,9 @@ data Tok = I Identifier | S String | Q String | Op String | NewLine deriving(Eq,
 type Token = (Tok, SourcePos)
 
 toTokens :: Parser [Token]
-toTokens = many $ try $ try(optional spaces'__) >> try (po tok)
+toTokens = many $ try $ try(optional spaces'__) >> try ( (,) <$> tok <*> getPosition )
  where
   tok = try operator__ <|> try identifier__ <|> try slashString__ <|> try quotedString__ <|> try newline__ 
-
-po :: Parser a -> Parser (a,SourcePos)
-po x = (,) <$> x <*> getPosition 
 
 escapeSequence :: Parser Char
 escapeSequence =
@@ -45,7 +42,6 @@ quotedString__ = do
   str <- many(noneOf "\\\"\n" <|> escapeSequence)
   char '"'
   return $ Q str 
-
 
 newline__ :: Parser Tok
 newline__ = c >> return NewLine
