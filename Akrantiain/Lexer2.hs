@@ -1,27 +1,29 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
 module Akrantiain.Lexer2
-(
+(modules
 ) where
 --import Prelude hiding (undefined)
 import Text.Parsec hiding(spaces)
 
 import Control.Applicative ((<$>),(<*))
-import Data.Char (isSpace,chr)
 import Data.Maybe (catMaybes)
-import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Akrantiain.Modules
-import Numeric(readHex)
 import Akrantiain.Tokenizer
 
 type Parser = Parsec [Token] ()
 satisfy' :: Monad m => (Token -> Bool) -> ParsecT [Token] u m Tok
-satisfy' = undefined
+satisfy' f = undefined
 
 
 op :: String -> Parser ()
-op str = undefined -- void $ string str
+op str = do
+  satisfy' (f . fst)
+  return ()
+   where
+    f (Op a) = str == a
+    f _ = False
 op_ :: Char -> Parser ()
 op_ c = op [c]
 
@@ -187,7 +189,7 @@ quotedString = do
 
 
 spaces' :: Parser ()
-spaces' = undefined
+spaces' = return ()
 
 slashString :: Parser Phoneme
 slashString = do
@@ -207,5 +209,10 @@ identifier = do
 
 
 newLine :: Parser ()
-newLine = undefined
+newLine = do
+  satisfy' (f . fst)
+  return ()
+   where
+    f NewLine = True
+    f _ = False
 

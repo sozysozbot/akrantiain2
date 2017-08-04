@@ -1,6 +1,7 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 import Prelude hiding (undefined)
 import Akrantiain.Lexer
+import qualified Akrantiain.Lexer2 as L2
 import Text.Parsec
 import System.Environment
 import System.IO
