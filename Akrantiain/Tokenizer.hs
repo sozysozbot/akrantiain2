@@ -2,6 +2,7 @@
 
 module Akrantiain.Tokenizer
 (toTokens
+,Tok(..),Token
 ) where
 import Prelude hiding (undefined)
 import Text.Parsec hiding(spaces)
@@ -45,7 +46,7 @@ quotedString__ = do
 
 newline__ :: Parser Tok
 newline__ = c >> return NewLine
- where c = void(try spaces'__ >> void(oneOf ";\n")) <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
+ where c = void(oneOf ";\n") <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
 
 spaces'__ :: Parser ()
 spaces'__ = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
