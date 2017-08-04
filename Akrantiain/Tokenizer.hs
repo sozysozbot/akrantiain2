@@ -25,9 +25,14 @@ instance ToSource Tok where
   toSource NewLine = show "\n"
 
 toTokens :: Parser [Token]
-toTokens = many $ try $ try(optional spaces'__) >> try ( (,) <$> tok <*> getPosition )
+toTokens = do
+  toks <- many $ try $ try(optional spaces'__) >> try ( (,) <$> tok <*> getPosition )
+  return $ toks >>= foo
  where
   tok = try operator__ <|> try identifier__ <|> try slashString__ <|> try quotedString__ <|> try newline__ 
+  foo :: Token -> [Token]
+  foo a@(Op "}", pos) = [(NewLine, pos), a]
+  foo x = [x]
 
 escapeSequence :: Parser Char
 escapeSequence =
