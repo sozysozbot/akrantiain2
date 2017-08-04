@@ -16,10 +16,12 @@ import Akrantiain.Modules
 import Numeric(readHex)
 import Akrantiain.Tokenizer
 
-op :: String -> Parser String
-op str = string str
-op_ :: Char -> Parser Char
-op_ c = char c
+-- type Parser = Parsec [Token] ()
+
+op :: String -> Parser ()
+op str = void $ string str
+op_ :: Char -> Parser ()
+op_ c = op [c]
 
 ---- parsing modules -----
 
