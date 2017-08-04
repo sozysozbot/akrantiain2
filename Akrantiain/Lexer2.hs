@@ -29,9 +29,9 @@ op_ c = op [c]
 
 modules :: Parser (Set Module)
 modules = do
- mods <- many (try(comment >> return Nothing) <|> fmap Just parseModule)
+ mods <- many (try(newLine >> return Nothing) <|> fmap Just parseModule)
  insideMain <- parseInside
- mods2 <- many (try(comment >> return Nothing) <|> fmap Just parseModule)
+ mods2 <- many (try(newLine >> return Nothing) <|> fmap Just parseModule)
  eof
  return $ Module{moduleName = HiddenModule, insideModule = insideMain} : catMaybes mods ++ catMaybes mods2
 
@@ -87,14 +87,14 @@ parseModule = do
 
 parseInside :: Parser InsideModule
 parseInside = try execModules' <|> fmap Sents sentences where
- execModules' = skipMany comment *> execModules <* skipMany comment
+ execModules' = skipMany newLine *> execModules <* skipMany newLine
 
 
 ---- parsing the rest -----
 
 sentences :: Parser (Set Sentence)
 sentences = do
- sents <- many (try(comment >> return Nothing) <|> try(fmap Just sentence))
+ sents <- many (try(newLine >> return Nothing) <|> try(fmap Just sentence))
  return $ catMaybes sents
 
 
@@ -137,7 +137,7 @@ define = do
 
 
 sentTerminate :: Parser ()
-sentTerminate = eof <|> comment
+sentTerminate = eof <|> newLine
 
 conversion :: Parser Sentence
 conversion = do
@@ -178,14 +178,24 @@ concat' arr = Quote(arr >>= \(Quote a) -> a)
 
 
 quotedString :: Parser Quote
-quotedString = undefined
+quotedString = do
+  Q i <- satisfy' (f . fst)
+  return (Quote i)
+   where
+    f (Q _) = True
+    f _ = False
 
 
 spaces' :: Parser ()
 spaces' = undefined
 
 slashString :: Parser Phoneme
-slashString = undefined
+slashString = do
+  S i <- satisfy' (f . fst)
+  return (Slash i)
+   where
+    f (S _) = True
+    f _ = False
 
 identifier :: Parser Identifier
 identifier = do
@@ -196,6 +206,6 @@ identifier = do
     f _ = False
 
 
-comment :: Parser ()
-comment = undefined
+newLine :: Parser ()
+newLine = undefined
 
