@@ -14,6 +14,7 @@ import Akrantiain.Errors2
 import Data.Aeson
 import Akrantiain.Modules(Module2s(..))
 import qualified Data.ByteString.Lazy.Char8 as B
+import Akrantiain.Tokenizer
 
 
 main :: IO ()
@@ -27,6 +28,7 @@ main' _ xs
 main' False (fname:xs) = do
    when (os == "mingw32" && (null xs || head xs /= "--file") ) $ callCommand "chcp 65001 > nul"
    input <- readFrom fname
+   runParser toTokens () fname input >>>= hPrint stderr -- fixme
    runParser modules () fname input >>>= \mods -> -- handles ParseError
     mapM3 moduleToModule4 mods >>== \mod4s -> -- handles SemanticError and SemanticWarning
     module4sToFunc' mod4s >>== \func -> -- handles ModuleError and ModuleWarning
