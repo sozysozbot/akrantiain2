@@ -69,4 +69,4 @@ interact' f = do
    Left a -> hPrint stderr a >> putStrLn ""
 
 explain :: IO ()
-explain = putStrLn "akrantiain (ver 0.6.13)\na domain-specific language designed to describe conlangs' orthographies" -- FIXME: better explanation required
+explain = putStrLn "akrantiain (ver 0.7.0)\na domain-specific language designed to describe conlangs' orthographies" -- FIXME: better explanation required
