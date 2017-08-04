@@ -1,27 +1,42 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 
-module Akrantiain.Lexer
+module Akrantiain.Lexer2
 (modules
 ) where
-import Prelude hiding (undefined)
+--import Prelude hiding (undefined)
 import Text.Parsec hiding(spaces)
 
 import Control.Applicative ((<$>),(<*))
-import Data.Char (isSpace,chr)
-import Text.Parsec.String (Parser)
 import Data.Maybe (catMaybes)
-import Control.Monad(void,replicateM)
 import Akrantiain.Structure
 import Akrantiain.Modules
-import Numeric(readHex)
+import Akrantiain.Tokenizer
+
+type Parser = Parsec [Token] ()
+satisfy' :: (Token -> Bool) -> Parsec [Token] u Tok
+satisfy' f = fst <$> token showTok posFromTok testTok
+   where
+     showTok (t,_)     = toSource t
+     posFromTok  = snd
+     testTok t     = if f t then Just t else Nothing
+
+op :: String -> Parser ()
+op str = do
+  satisfy' (f . fst)
+  return ()
+   where
+    f (Op a) = str == a
+    f _ = False
+op_ :: Char -> Parser ()
+op_ c = op [c]
 
 ---- parsing modules -----
 
 modules :: Parser (Set Module)
 modules = do
- mods <- many (try(comment >> return Nothing) <|> fmap Just parseModule)
+ mods <- many (try(newLine >> return Nothing) <|> fmap Just parseModule)
  insideMain <- parseInside
- mods2 <- many (try(comment >> return Nothing) <|> fmap Just parseModule)
+ mods2 <- many (try(newLine >> return Nothing) <|> fmap Just parseModule)
  eof
  return $ Module{moduleName = HiddenModule, insideModule = insideMain} : catMaybes mods ++ catMaybes mods2
 
@@ -31,7 +46,7 @@ modules = do
  -}
 oneModule :: Parser ModuleName
 oneModule = try foo <|> fmap ModuleName identifier where
- foo = do{x <- identifier; spaces'; string "=>"; spaces'; y <- identifier; return Arrow{before=x, after=y}}
+ foo = do{x <- identifier; spaces'; op "=>"; spaces'; y <- identifier; return Arrow{before=x, after=y}}
 
 {-
  foo
@@ -39,14 +54,14 @@ oneModule = try foo <|> fmap ModuleName identifier where
  A => B => C
  -}
 modChainElem :: Parser [ModuleName]
-modChainElem = try (p <* spaces') <|> try(char '(' *> spaces' *> p <* spaces' <* char ')' <* spaces') where
+modChainElem = try (p <* spaces') <|> try(op_ '(' *> spaces' *> p <* spaces' <* op_ ')' <* spaces') where
  p = fmap f ids
  f :: [Identifier] -> [ModuleName]
  f [] = error "CANNOT HAPPEN"
  f [x] = [ModuleName x]
  f [x,y] = [Arrow{before = x, after = y}]
  f (x:y:zs) = f[x,y] ++ f(y:zs)
- ids = identifier `sepBy1` try(spaces' >> string "=>" >> spaces')
+ ids = identifier `sepBy1` try(spaces' >> op "=>" >> spaces')
 
 {-
  foo >> bar
@@ -54,12 +69,12 @@ modChainElem = try (p <* spaces') <|> try(char '(' *> spaces' *> p <* spaces' <*
  foobar >> (A => B => C) >> barfoo
  -}
 modChain :: Parser [ModuleName]
-modChain = fmap concat $ modChainElem `sepBy1` try(string ">>" >> spaces')
+modChain = fmap concat $ modChainElem `sepBy1` try(op ">>" >> spaces')
 
 
 execModules :: Parser InsideModule
 execModules = do
- try $ string "%%"
+ try $ op "%%"
  spaces'
  mods <- modChain
  sentTerminate
@@ -68,58 +83,47 @@ execModules = do
 parseModule :: Parser Module
 parseModule = do
  modname <- try $ do
-  char '%' >> spaces'
+  op_ '%' >> spaces'
   oneModule
- spaces' >> char '{' >> spaces'
+ spaces' >> op_ '{' >> spaces'
  inside <- parseInside
- spaces' >> char '}' >> spaces'
+ spaces' >> op_ '}' >> spaces'
  return Module{moduleName = modname, insideModule = inside}
 
 parseInside :: Parser InsideModule
 parseInside = try execModules' <|> fmap Sents sentences where
- execModules' = skipMany comment *> execModules <* skipMany comment
+ execModules' = skipMany newLine *> execModules <* skipMany newLine
 
 
 ---- parsing the rest -----
 
 sentences :: Parser (Set Sentence)
 sentences = do
- sents <- many (try(comment >> return Nothing) <|> try(fmap Just sentence))
+ sents <- many (try(newLine >> return Nothing) <|> try(fmap Just sentence))
  return $ catMaybes sents
-
-comment :: Parser ()
-comment = void space <|> void(try $ spaces' >> void(oneOf ";\n")) <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
 
 
 
 dollar :: Parser Phoneme
-dollar = char '$' >> return Dollar
+dollar = op_ '$' >> return Dollar
 
 
-slashString :: Parser Phoneme
-slashString = do
-  char '/'
-  str <- many(noneOf "\\/\n" <|> escapeSequence)
-  char '/'
-  return $ Slash str
 
-identifier :: Parser Identifier
-identifier = fmap Id $ (:) <$> letter <*> many (alphaNum <|> char '_')
 
 
 select :: Parser Select
-select = (char '^' >> return Boundary2) <|> fmap Iden identifier <|> try single <|> try mult  where
+select = (op_ '^' >> return Boundary2) <|> fmap Iden identifier <|> try single <|> try mult  where
  single = (Pipe . Ch . (:[])) <$> quotedString
  mult = do
-  char '('
+  op_ '('
   spaces'
   strings <- stringsSepByPipe
   spaces'
-  char ')'
+  op_ ')'
   return $ Pipe strings
 
 stringsSepByPipe :: Parser (Choose Quote)
-stringsSepByPipe = fmap Ch $ strs `sepBy1` try(char '|' >> spaces')
+stringsSepByPipe = fmap Ch $ strs `sepBy1` try(op_ '|' >> spaces')
  where strs = concat' <$> many1(quotedString <* spaces')
 
 -- consonant = "a" | "b" "d" | cons2 | co "c" co
@@ -129,18 +133,16 @@ define = do
    spaces'
    ident' <- identifier
    spaces'
-   char '='
+   op_ '='
    return ident'
   spaces'
   ch_quote <- stringsSepByPipe
   sentTerminate
   return $ Right'$Define ident ch_quote
 
-spaces' :: Parser ()
-spaces' = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
 
 sentTerminate :: Parser ()
-sentTerminate = eof <|> comment
+sentTerminate = eof <|> newLine
 
 conversion :: Parser Sentence
 conversion = do
@@ -152,7 +154,7 @@ conversion = do
    spaces'
    right <- option Nothing neg_select
    spaces'
-   string "->"
+   op "->"
    return (selects',left,right)
   spaces'
   let phoneme = dollar <|> slashString
@@ -160,42 +162,60 @@ conversion = do
   sentTerminate
   return $ Left' Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r}
    where
-    neg_select = try $ fmap Just $ char '!' >> spaces' >> select
-
-escapeSequence :: Parser Char
-escapeSequence =
- try(string "\\\\" >> return '\\') <|>
- try(string "\\\"" >> return '"')  <|>
- try(string "\\/" >> return '/') <|> try uni where
-  uni = do
-   string "\\u"
-   hexes <- replicateM 4 hexDigit
-   let [(num,"")] = readHex hexes 
-   return $ chr num
-
-
-
-quotedString :: Parser Quote
-quotedString = do
-  char '"'
-  str <- many(noneOf "\\\"\n" <|> escapeSequence)
-  char '"'
-  return $ Quote str 
+    neg_select = try $ fmap Just $ op_ '!' >> spaces' >> select
 
 sentence :: Parser Sentence
 sentence = conversion <|> define <|> atsignOption
 
 atsignOption :: Parser Sentence
 atsignOption = do
- char '@'
+ op_ '@'
  spaces'
  ide <- identifier
  spaces'
  sentTerminate
  return $ Middle' ide
 
-
-
-
 concat' :: [Quote] -> Quote
 concat' arr = Quote(arr >>= \(Quote a) -> a)
+
+
+
+
+quotedString :: Parser Quote
+quotedString = do
+  Q i <- satisfy' (f . fst)
+  return (Quote i)
+   where
+    f (Q _) = True
+    f _ = False
+
+
+spaces' :: Parser ()
+spaces' = return ()
+
+slashString :: Parser Phoneme
+slashString = do
+  S i <- satisfy' (f . fst)
+  return (Slash i)
+   where
+    f (S _) = True
+    f _ = False
+
+identifier :: Parser Identifier
+identifier = do
+  I i <- satisfy' (f . fst)
+  return i
+   where
+    f (I _) = True
+    f _ = False
+
+
+newLine :: Parser ()
+newLine = do
+  satisfy' (f . fst)
+  return ()
+   where
+    f NewLine = True
+    f _ = False
+

@@ -1,6 +1,6 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
 import Prelude hiding (undefined)
-import Akrantiain.Lexer
+import qualified Akrantiain.Lexer2 as L2
 import Text.Parsec
 import System.Environment
 import System.IO
@@ -14,6 +14,7 @@ import Akrantiain.Errors2
 import Data.Aeson
 import Akrantiain.Modules(Module2s(..))
 import qualified Data.ByteString.Lazy.Char8 as B
+import Akrantiain.Tokenizer
 
 
 main :: IO ()
@@ -27,13 +28,15 @@ main' _ xs
 main' False (fname:xs) = do
    when (os == "mingw32" && (null xs || head xs /= "--file") ) $ callCommand "chcp 65001 > nul"
    input <- readFrom fname
-   runParser modules () fname input >>>= \mods -> -- handles ParseError
+   runParser toTokens () fname input >>>= \toks ->
+    runParser L2.modules () fname toks >>>= \mods -> -- handles ParseError
     mapM3 moduleToModule4 mods >>== \mod4s -> -- handles SemanticError and SemanticWarning
     module4sToFunc' mod4s >>== \func -> -- handles ModuleError and ModuleWarning
     interact' func
 main' True (fname:_) = do
    input <- readFrom fname
-   runParser modules () fname input >>>= \mods ->
+   runParser toTokens () fname input >>>= \toks ->
+    runParser L2.modules () fname toks >>>= \mods -> 
     mapM3 moduleToModule2 mods >>== \mod2s -> B.putStrLn . encode $ Module2s mod2s
 
 readFrom :: FilePath -> IO String
