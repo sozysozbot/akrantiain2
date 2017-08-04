@@ -29,8 +29,8 @@ main' _ xs
 main' False (fname:xs) = do
    when (os == "mingw32" && (null xs || head xs /= "--file") ) $ callCommand "chcp 65001 > nul"
    input <- readFrom fname
-   runParser toTokens () fname input >>>= hPrint stderr -- fixme
-   runParser modules () fname input >>>= \mods -> -- handles ParseError
+   runParser toTokens () fname input >>>= \toks ->
+    runParser L2.modules () fname toks >>>= \mods -> -- handles ParseError
     mapM3 moduleToModule4 mods >>== \mod4s -> -- handles SemanticError and SemanticWarning
     module4sToFunc' mod4s >>== \func -> -- handles ModuleError and ModuleWarning
     interact' func
