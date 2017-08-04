@@ -87,24 +87,13 @@ sentences = do
  sents <- many (try(comment >> return Nothing) <|> try(fmap Just sentence))
  return $ catMaybes sents
 
-comment :: Parser ()
-comment = void space <|> void(try $ spaces' >> void(oneOf ";\n")) <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
-
 
 
 dollar :: Parser Phoneme
 dollar = char '$' >> return Dollar
 
 
-slashString :: Parser Phoneme
-slashString = do
-  char '/'
-  str <- many(noneOf "\\/\n" <|> escapeSequence)
-  char '/'
-  return $ Slash str
 
-identifier :: Parser Identifier
-identifier = fmap Id $ (:) <$> letter <*> many (alphaNum <|> char '_')
 
 
 select :: Parser Select
@@ -136,8 +125,6 @@ define = do
   sentTerminate
   return $ Right'$Define ident ch_quote
 
-spaces' :: Parser ()
-spaces' = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
 
 sentTerminate :: Parser ()
 sentTerminate = eof <|> comment
@@ -162,6 +149,26 @@ conversion = do
    where
     neg_select = try $ fmap Just $ char '!' >> spaces' >> select
 
+sentence :: Parser Sentence
+sentence = conversion <|> define <|> atsignOption
+
+atsignOption :: Parser Sentence
+atsignOption = do
+ char '@'
+ spaces'
+ ide <- identifier
+ spaces'
+ sentTerminate
+ return $ Middle' ide
+
+concat' :: [Quote] -> Quote
+concat' arr = Quote(arr >>= \(Quote a) -> a)
+
+
+
+
+
+
 escapeSequence :: Parser Char
 escapeSequence =
  try(string "\\\\" >> return '\\') <|>
@@ -182,20 +189,21 @@ quotedString = do
   char '"'
   return $ Quote str 
 
-sentence :: Parser Sentence
-sentence = conversion <|> define <|> atsignOption
 
-atsignOption :: Parser Sentence
-atsignOption = do
- char '@'
- spaces'
- ide <- identifier
- spaces'
- sentTerminate
- return $ Middle' ide
+spaces' :: Parser ()
+spaces' = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
+
+slashString :: Parser Phoneme
+slashString = do
+  char '/'
+  str <- many(noneOf "\\/\n" <|> escapeSequence)
+  char '/'
+  return $ Slash str
+
+identifier :: Parser Identifier
+identifier = fmap Id $ (:) <$> letter <*> many (alphaNum <|> char '_')
 
 
+comment :: Parser ()
+comment = void space <|> void(try $ spaces' >> void(oneOf ";\n")) <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
 
-
-concat' :: [Quote] -> Quote
-concat' arr = Quote(arr >>= \(Quote a) -> a)
