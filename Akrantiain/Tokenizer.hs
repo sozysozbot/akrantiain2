@@ -17,6 +17,13 @@ import Numeric(readHex)
 data Tok = I Identifier | S String | Q String | Op String | NewLine deriving(Eq,Ord,Show)
 type Token = (Tok, SourcePos)
 
+instance ToSource Tok where
+  toSource (I ide) = toSource ide
+  toSource (S str) = toSource $ Slash str
+  toSource (Q str) = toSource $ Quote str
+  toSource (Op str) = str
+  toSource NewLine = show "\n"
+
 toTokens :: Parser [Token]
 toTokens = many $ try $ try(optional spaces'__) >> try ( (,) <$> tok <*> getPosition )
  where

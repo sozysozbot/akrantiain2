@@ -13,9 +13,12 @@ import Akrantiain.Modules
 import Akrantiain.Tokenizer
 
 type Parser = Parsec [Token] ()
-satisfy' :: Monad m => (Token -> Bool) -> ParsecT [Token] u m Tok
-satisfy' f = undefined
-
+satisfy' :: (Token -> Bool) -> Parsec [Token] u Tok
+satisfy' f = fst <$> token showTok posFromTok testTok
+   where
+     showTok (t,_)     = toSource t
+     posFromTok  = snd
+     testTok t     = if f t then Just t else Nothing
 
 op :: String -> Parser ()
 op str = do
