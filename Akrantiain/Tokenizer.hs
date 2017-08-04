@@ -11,14 +11,13 @@ import Data.Char (isSpace,chr)
 import Text.Parsec.String (Parser)
 import Control.Monad(void,replicateM)
 import Akrantiain.Structure
-import Akrantiain.Modules
 import Numeric(readHex)
 
 data Tok = I Identifier | S String | Q String | Op String | NewLine deriving(Eq,Ord,Show)
 type Token = (Tok, SourcePos)
 
 toTokens :: Parser [Token]
-toTokens = (many (optional (try spaces'__) >> try (po tok))) <* eof
+toTokens = many $ try $ try(optional spaces'__) >> try (po tok)
  where
   tok = try operator__ <|> try identifier__ <|> try slashString__ <|> try quotedString__ <|> try newline__ 
 
@@ -37,7 +36,7 @@ escapeSequence =
    return $ chr num
 
 operator__ :: Parser Tok
-operator__ = try $ foldl1 (<|>) $ map (fmap Op . try . string) ops
+operator__ = foldl1 (<|>) $ map (fmap Op . try . string) ops
  where ops = [">>","%%", "%", "{", "}", "$", "=>", "(", "^", "(", ")", "|", "=", "->", "!", "@"]
 
 quotedString__ :: Parser Tok
@@ -50,10 +49,10 @@ quotedString__ = do
 
 newline__ :: Parser Tok
 newline__ = c >> return NewLine
- where c = void(try $ spaces'__ >> void(oneOf ";\n")) <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
+ where c = void(try spaces'__ >> void(oneOf ";\n")) <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
 
 spaces'__ :: Parser ()
-spaces'__ = try $ skipMany $ satisfy (\a -> isSpace a && a /= '\n')
+spaces'__ = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
 
 slashString__ :: Parser Tok
 slashString__ = do
