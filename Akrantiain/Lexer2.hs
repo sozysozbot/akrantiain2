@@ -8,7 +8,6 @@ import Text.Parsec hiding(spaces)
 
 import Control.Applicative ((<$>),(<*))
 import Data.Char (isSpace,chr)
-import Text.Parsec.String (Parser)
 import Data.Maybe (catMaybes)
 import Control.Monad(void,replicateM)
 import Akrantiain.Structure
@@ -16,13 +15,13 @@ import Akrantiain.Modules
 import Numeric(readHex)
 import Akrantiain.Tokenizer
 
--- type Parser = Parsec [Token] ()
-satisfy' :: Monad m => (Token -> Bool) -> ParsecT [Token] u m Token
+type Parser = Parsec [Token] ()
+satisfy' :: Monad m => (Token -> Bool) -> ParsecT [Token] u m Tok
 satisfy' = undefined
 
 
 op :: String -> Parser ()
-op str = void $ string str
+op str = undefined -- void $ string str
 op_ :: Char -> Parser ()
 op_ c = op [c]
 
@@ -189,7 +188,12 @@ slashString :: Parser Phoneme
 slashString = undefined
 
 identifier :: Parser Identifier
-identifier = undefined
+identifier = do
+  I i <- satisfy' (f . fst)
+  return i
+   where
+    f (I _) = True
+    f _ = False
 
 
 comment :: Parser ()
