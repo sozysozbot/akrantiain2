@@ -24,9 +24,7 @@ sat :: (Tok -> Bool) -> Parsec [Token] u Tok
 sat f = satisfy' (f . fst)
 
 op :: String -> Parser ()
-op str = do
-  sat f
-  return ()
+op str = void $ sat f
    where
     f (Op a) = str == a
     f _ = False
@@ -197,9 +195,7 @@ identifier = do
 
 
 newLine :: Parser ()
-newLine = do
-  sat f
-  return ()
+newLine = void $ sat f
    where
     f NewLine = True
     f _ = False
