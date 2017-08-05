@@ -1,42 +1,42 @@
 @charset "UTF-8";
 body {
-  font-size: 12px;
+  font-size: 15.6px;
   color: #333333;
-  line-height: 18px; }
+  line-height: 23.4px; }
 
 h1 {
-  margin: 10px 0px 5px 0px;
-  padding: 2px 5px;
-  font-size: 16px;
+  margin: 13px 0px 6.5px 0px;
+  padding: 2.6px 6.5px;
+  font-size: 20.8px;
   font-weight: normal;
-  line-height: 22px;
-  border: #c8c8c8 3px double; }
+  line-height: 28.6px;
+  border: #c8c8c8 3.9px double; }
 
 h2 {
-  margin: 8px 0px 4px 0px;
-  padding: 0px 3px;
-  font-size: 14px;
+  margin: 10.4px 0px 5.2px 0px;
+  padding: 0px 3.9px;
+  font-size: 18.2px;
   font-weight: normal;
-  line-height: 20px;
-  border-bottom: #c8c8c8 1px solid; }
+  line-height: 26px;
+  border-bottom: #c8c8c8 1.3px solid; }
 
 h2:before {
-  margin: 0px 3px 0px 0px;
+  margin: 0px 3.9px 0px 0px;
   color: #c8c8c8;
   content: "▶"; }
 
 p {
-  margin: 5px 0px;
+  margin: 6.5px 0px;
   padding: 0px;
-  line-height: 18px; }
+  line-height: 23.4px; }
 
 pre {
   font-family: monospaced;
-  margin: 5px 0px;
-  padding: 1px 3px;
-  line-height: 18px;
-  border-top: #c8c8c8 1px solid;
-  border-bottom: #c8c8c8 1px solid; }
+  margin: 6.5px 0px;
+  padding: 1.3px 3.9px;
+  line-height: 23.4px;
+  border-top: #c8c8c8 1.3px solid;
+  border-bottom: #c8c8c8 1.3px solid; }
 
 span.monospaced {
   font-family: monospaced; }
@@ -45,20 +45,20 @@ a {
   color: #0096c9; }
 
 table {
-  margin: 5px 0px;
+  margin: 6.5px 0px;
   border-collapse: collapse;
-  border-top: #c8c8c8 1px solid;
-  border-bottom: #c8c8c8 1px solid; }
+  border-top: #c8c8c8 1.3px solid;
+  border-bottom: #c8c8c8 1.3px solid; }
 
 table tr td {
   margin: 0px;
-  padding: 1px 8px 1px 3px;
-  font-size: 12px;
-  line-height: 18px;
+  padding: 1.3px 10.4px 1.3px 3.9px;
+  font-size: 15.6px;
+  line-height: 23.4px;
   text-align: left; }
 
 table tr td:last-child {
-  padding: 0px 3px 0px 3px; }
+  padding: 0px 3.9px 0px 3.9px; }
 
 table tr:nth-child(odd) td {
   background-color: white; }
