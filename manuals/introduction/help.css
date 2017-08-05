@@ -2,7 +2,9 @@
 body {
   font-size: 15.6px;
   color: #333333;
-  line-height: 23.4px; }
+  line-height: 23.4px;
+  width: 70%;
+  margin: 0 auto; }
 
 h1 {
   margin: 13px 0px 6.5px 0px;
