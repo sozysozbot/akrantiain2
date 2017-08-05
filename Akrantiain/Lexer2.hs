@@ -54,7 +54,7 @@ oneModule = try foo <|> fmap ModuleName identifier where
  A => B => C
  -}
 modChainElem :: Parser [ModuleName]
-modChainElem = try (p ) <|> try(op_ '(' *>  p  <* op_ ')' ) where
+modChainElem = try p <|> try(op_ '(' *> p <* op_ ')') where
  p = fmap f ids
  f :: [Identifier] -> [ModuleName]
  f [] = error "CANNOT HAPPEN"
@@ -121,7 +121,7 @@ select = (op_ '^' >> return Boundary2) <|> fmap Iden identifier <|> try single <
 
 stringsSepByPipe :: Parser (Choose Quote)
 stringsSepByPipe = fmap Ch $ strs `sepBy1` try(op_ '|')
- where strs = concat' <$> many1(quotedString )
+ where strs = concat' <$> many1 quotedString
 
 -- consonant = "a" | "b" "d" | cons2 | co "c" co
 define :: Parser Sentence
@@ -176,10 +176,6 @@ quotedString = do
    where
     f (Q _) = True
     f _ = False
-
-
-spaces' :: Parser ()
-spaces' = return ()
 
 slashString :: Parser Phoneme
 slashString = do
