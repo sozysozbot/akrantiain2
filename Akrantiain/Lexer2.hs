@@ -11,6 +11,7 @@ import Data.Maybe (catMaybes)
 import Akrantiain.Structure
 import Akrantiain.Modules
 import Akrantiain.Tokenizer
+import Control.Monad
 
 type Parser = Parsec [Token] ()
 satisfy' :: (Token -> Bool) -> Parsec [Token] u Tok
@@ -20,15 +21,14 @@ satisfy' f = fst <$> token showTok posFromTok testTok
      posFromTok  = snd
      testTok t     = if f t then Just t else Nothing
 
+sat :: (Tok -> Bool) -> Parsec [Token] u Tok
+sat f = satisfy' (f . fst)
+
 op :: String -> Parser ()
-op str = do
-  satisfy' (f . fst)
-  return ()
+op str = void $ sat f
    where
     f (Op a) = str == a
     f _ = False
-op_ :: Char -> Parser ()
-op_ c = op [c]
 
 ---- parsing modules -----
 
@@ -54,7 +54,7 @@ oneModule = try foo <|> fmap ModuleName identifier where
  A => B => C
  -}
 modChainElem :: Parser [ModuleName]
-modChainElem = try p <|> try(op_ '(' *> p <* op_ ')') where
+modChainElem = try p <|> try(op "(" *> p <* op ")") where
  p = fmap f ids
  f :: [Identifier] -> [ModuleName]
  f [] = error "CANNOT HAPPEN"
@@ -69,7 +69,7 @@ modChainElem = try p <|> try(op_ '(' *> p <* op_ ')') where
  foobar >> (A => B => C) >> barfoo
  -}
 modChain :: Parser [ModuleName]
-modChain = fmap concat $ modChainElem `sepBy1` try(op ">>" )
+modChain = fmap concat $ modChainElem `sepBy1` try(op ">>")
 
 
 execModules :: Parser InsideModule
@@ -82,11 +82,11 @@ execModules = do
 parseModule :: Parser Module
 parseModule = do
  modname <- try $ do
-  op_ '%' 
+  op "%" 
   oneModule
- op_ '{' 
+ op "{" 
  inside <- parseInside
- op_ '}'
+ op "}"
  return Module{moduleName = modname, insideModule = inside}
 
 parseInside :: Parser InsideModule
@@ -104,23 +104,23 @@ sentences = do
 
 
 dollar :: Parser Phoneme
-dollar = op_ '$' >> return Dollar
+dollar = op "$" >> return Dollar
 
 
 
 
 
 select :: Parser Select
-select = (op_ '^' >> return Boundary2) <|> fmap Iden identifier <|> try single <|> try mult  where
+select = (op "^" >> return Boundary2) <|> fmap Iden identifier <|> try single <|> try mult  where
  single = (Pipe . Ch . (:[])) <$> quotedString
  mult = do
-  op_ '('
+  op "("
   strings <- stringsSepByPipe
-  op_ ')'
+  op ")"
   return $ Pipe strings
 
 stringsSepByPipe :: Parser (Choose Quote)
-stringsSepByPipe = fmap Ch $ strs `sepBy1` try(op_ '|')
+stringsSepByPipe = fmap Ch $ strs `sepBy1` try(op "|")
  where strs = concat' <$> many1 quotedString
 
 -- consonant = "a" | "b" "d" | cons2 | co "c" co
@@ -128,7 +128,7 @@ define :: Parser Sentence
 define = do
   ident <- try $ do
    ident' <- identifier
-   op_ '='
+   op "="
    return ident'
   ch_quote <- stringsSepByPipe
   sentTerminate
@@ -151,14 +151,14 @@ conversion = do
   sentTerminate
   return $ Left' Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r}
    where
-    neg_select = try $ fmap Just $ op_ '!'  >> select
+    neg_select = try $ fmap Just $ op "!"  >> select
 
 sentence :: Parser Sentence
 sentence = conversion <|> define <|> atsignOption
 
 atsignOption :: Parser Sentence
 atsignOption = do
- op_ '@'
+ op "@"
  ide <- identifier
  sentTerminate
  return $ Middle' ide
@@ -168,10 +168,11 @@ concat' arr = Quote(arr >>= \(Quote a) -> a)
 
 
 
+-- simple parser
 
 quotedString :: Parser Quote
 quotedString = do
-  Q i <- satisfy' (f . fst)
+  Q i <- sat f
   return (Quote i)
    where
     f (Q _) = True
@@ -179,7 +180,7 @@ quotedString = do
 
 slashString :: Parser Phoneme
 slashString = do
-  S i <- satisfy' (f . fst)
+  S i <- sat f
   return (Slash i)
    where
     f (S _) = True
@@ -187,7 +188,7 @@ slashString = do
 
 identifier :: Parser Identifier
 identifier = do
-  I i <- satisfy' (f . fst)
+  I i <- sat f
   return i
    where
     f (I _) = True
@@ -195,9 +196,7 @@ identifier = do
 
 
 newLine :: Parser ()
-newLine = do
-  satisfy' (f . fst)
-  return ()
+newLine = void $ sat f
    where
     f NewLine = True
     f _ = False

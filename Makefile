@@ -29,3 +29,7 @@ clean:
 	$(RM) debug2
 	$(RM) debug3
 	$(RM) tester
+
+
+document:
+	scss manuals/introduction/help.scss manuals/introduction/help.css
