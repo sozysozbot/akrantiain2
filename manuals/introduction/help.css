@@ -33,7 +33,7 @@ p {
   line-height: 23.4px; }
 
 pre {
-  font-family: monospaced;
+  font-family: monospace;
   margin: 6.5px 0px;
   padding: 1.3px 3.9px;
   line-height: 23.4px;
@@ -41,7 +41,7 @@ pre {
   border-bottom: #c8c8c8 1.3px solid; }
 
 span.monospaced {
-  font-family: monospaced; }
+  font-family: monospace; }
 
 a {
   color: #0096c9; }
