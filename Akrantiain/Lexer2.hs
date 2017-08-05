@@ -46,7 +46,7 @@ modules = do
  -}
 oneModule :: Parser ModuleName
 oneModule = try foo <|> fmap ModuleName identifier where
- foo = do{x <- identifier; spaces'; op "=>"; spaces'; y <- identifier; return Arrow{before=x, after=y}}
+ foo = do{x <- identifier; op "=>"; y <- identifier; return Arrow{before=x, after=y}}
 
 {-
  foo
@@ -54,14 +54,14 @@ oneModule = try foo <|> fmap ModuleName identifier where
  A => B => C
  -}
 modChainElem :: Parser [ModuleName]
-modChainElem = try (p <* spaces') <|> try(op_ '(' *> spaces' *> p <* spaces' <* op_ ')' <* spaces') where
+modChainElem = try (p ) <|> try(op_ '(' *>  p  <* op_ ')' ) where
  p = fmap f ids
  f :: [Identifier] -> [ModuleName]
  f [] = error "CANNOT HAPPEN"
  f [x] = [ModuleName x]
  f [x,y] = [Arrow{before = x, after = y}]
  f (x:y:zs) = f[x,y] ++ f(y:zs)
- ids = identifier `sepBy1` try(spaces' >> op "=>" >> spaces')
+ ids = identifier `sepBy1` try(op "=>")
 
 {-
  foo >> bar
@@ -69,13 +69,12 @@ modChainElem = try (p <* spaces') <|> try(op_ '(' *> spaces' *> p <* spaces' <* 
  foobar >> (A => B => C) >> barfoo
  -}
 modChain :: Parser [ModuleName]
-modChain = fmap concat $ modChainElem `sepBy1` try(op ">>" >> spaces')
+modChain = fmap concat $ modChainElem `sepBy1` try(op ">>" )
 
 
 execModules :: Parser InsideModule
 execModules = do
  try $ op "%%"
- spaces'
  mods <- modChain
  sentTerminate
  return $ ModuleChain mods
@@ -83,11 +82,11 @@ execModules = do
 parseModule :: Parser Module
 parseModule = do
  modname <- try $ do
-  op_ '%' >> spaces'
+  op_ '%' 
   oneModule
- spaces' >> op_ '{' >> spaces'
+ op_ '{' 
  inside <- parseInside
- spaces' >> op_ '}' >> spaces'
+ op_ '}'
  return Module{moduleName = modname, insideModule = inside}
 
 parseInside :: Parser InsideModule
@@ -116,26 +115,21 @@ select = (op_ '^' >> return Boundary2) <|> fmap Iden identifier <|> try single <
  single = (Pipe . Ch . (:[])) <$> quotedString
  mult = do
   op_ '('
-  spaces'
   strings <- stringsSepByPipe
-  spaces'
   op_ ')'
   return $ Pipe strings
 
 stringsSepByPipe :: Parser (Choose Quote)
-stringsSepByPipe = fmap Ch $ strs `sepBy1` try(op_ '|' >> spaces')
- where strs = concat' <$> many1(quotedString <* spaces')
+stringsSepByPipe = fmap Ch $ strs `sepBy1` try(op_ '|')
+ where strs = concat' <$> many1(quotedString )
 
 -- consonant = "a" | "b" "d" | cons2 | co "c" co
 define :: Parser Sentence
 define = do
   ident <- try $ do
-   spaces'
    ident' <- identifier
-   spaces'
    op_ '='
    return ident'
-  spaces'
   ch_quote <- stringsSepByPipe
   sentTerminate
   return $ Right'$Define ident ch_quote
@@ -147,22 +141,17 @@ sentTerminate = eof <|> newLine
 conversion :: Parser Sentence
 conversion = do
   (selects,l,r) <- try $ do
-   spaces'
    left <- option Nothing neg_select
-   spaces'
-   selects' <- many1(try$select <* spaces')
-   spaces'
+   selects' <- many1(try$select)
    right <- option Nothing neg_select
-   spaces'
    op "->"
    return (selects',left,right)
-  spaces'
   let phoneme = dollar <|> slashString
-  phonemes <- many1(try$phoneme <* spaces')
+  phonemes <- many1(try$phoneme)
   sentTerminate
   return $ Left' Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r}
    where
-    neg_select = try $ fmap Just $ op_ '!' >> spaces' >> select
+    neg_select = try $ fmap Just $ op_ '!'  >> select
 
 sentence :: Parser Sentence
 sentence = conversion <|> define <|> atsignOption
@@ -170,9 +159,7 @@ sentence = conversion <|> define <|> atsignOption
 atsignOption :: Parser Sentence
 atsignOption = do
  op_ '@'
- spaces'
  ide <- identifier
- spaces'
  sentTerminate
  return $ Middle' ide
 
