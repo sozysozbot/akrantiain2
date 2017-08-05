@@ -2,6 +2,7 @@
 A domain-specific language designed to describe conlangs' orthographies
 
 ## Documentations
+[Getting Started](https://github.com/sozysozbot/akrantiain2/blob/master/getting_started.md)  
 [English manual about sentence sequences](https://sozysozbot.github.io/akrantiain2/manuals/manuals_en.htm) (Incomplete) 
 
 [概略](https://sozysozbot.github.io/akrantiain2/manuals/introduction/akrantiain.html)
@@ -20,4 +21,3 @@ ny lirsesen [kanteluescosti virle lineparine](https://sozysozbot.github.io/akran
 
 ## Dreams and Reality
 [現状](https://sozysozbot.github.io/akrantiain2/samples/current_situation.htm)
-
