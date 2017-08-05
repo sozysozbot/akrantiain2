@@ -1,49 +1,50 @@
 @charset "utf-8";
 
+$size: 1px;
 
 body {
-  font-size: 12px;
+  font-size: 12*$size;
   color: rgb(51, 51, 51);
-  line-height: 18px;
+  line-height: 18*$size;
 }
 
 h1 {
-  margin: 10px 0px 5px 0px;
-  padding: 2px 5px;
-  font-size: 16px;
+  margin: 10*$size 0*$size 5*$size 0*$size;
+  padding: 2*$size 5*$size;
+  font-size: 16*$size;
   font-weight: normal;
-  line-height: 22px;
-  border: rgb(200, 200, 200) 3px double;
+  line-height: 22*$size;
+  border: rgb(200, 200, 200) 3*$size double;
 }
 
 h2 {
-  margin: 8px 0px 4px 0px;
-  padding: 0px 3px;
-  font-size: 14px;
+  margin: 8*$size 0*$size 4*$size 0*$size;
+  padding: 0*$size 3*$size;
+  font-size: 14*$size;
   font-weight: normal;
-  line-height: 20px;
-  border-bottom: rgb(200, 200, 200) 1px solid;
+  line-height: 20*$size;
+  border-bottom: rgb(200, 200, 200) 1*$size solid;
 }
 
 h2:before {
-  margin: 0px 3px 0px 0px;
+  margin: 0*$size 3*$size 0*$size 0*$size;
   color: rgb(200, 200, 200);
   content: "▶";
 }
 
 p {
-  margin: 5px 0px;
-  padding: 0px;
-  line-height: 18px;
+  margin: 5*$size 0*$size;
+  padding: 0*$size;
+  line-height: 18*$size;
 }
 
 pre {
   font-family: monospaced;
-  margin: 5px 0px;
-  padding: 1px 3px;
-  line-height: 18px;
-  border-top: rgb(200, 200, 200) 1px solid;
-  border-bottom: rgb(200, 200, 200) 1px solid;
+  margin: 5*$size 0*$size;
+  padding: 1*$size 3*$size;
+  line-height: 18*$size;
+  border-top: rgb(200, 200, 200) 1*$size solid;
+  border-bottom: rgb(200, 200, 200) 1*$size solid;
 }
 
 span.monospaced {
@@ -55,22 +56,22 @@ a {
 }
 
 table {
-  margin: 5px 0px;
+  margin: 5*$size 0*$size;
   border-collapse: collapse;
-  border-top: rgb(200, 200, 200) 1px solid;
-  border-bottom: rgb(200, 200, 200) 1px solid;
+  border-top: rgb(200, 200, 200) 1*$size solid;
+  border-bottom: rgb(200, 200, 200) 1*$size solid;
 }
 
 table tr td {
-  margin: 0px;
-  padding: 1px 8px 1px 3px;
-  font-size: 12px;
-  line-height: 18px;
+  margin: 0*$size;
+  padding: 1*$size 8*$size 1*$size 3*$size;
+  font-size: 12*$size;
+  line-height: 18*$size;
   text-align: left;
 }
 
 table tr td:last-child {
-  padding: 0px 3px 0px 3px;
+  padding: 0*$size 3*$size 0*$size 3*$size;
 }
 
 table tr:nth-child(odd) td {
