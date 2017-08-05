@@ -2,7 +2,7 @@
 A domain-specific language designed to describe conlangs' orthographies
 
 ## Documentations
-[Getting Started](https://github.com/sozysozbot/akrantiain2/blob/master/getting_started.md)  
+[Getting Started](https://github.com/sozysozbot/akrantiain2/blob/master/manuals/getting_started_en.md)  
 [English manual about sentence sequences](https://sozysozbot.github.io/akrantiain2/manuals/manuals_en.htm) (Incomplete) 
 
 [概略](https://sozysozbot.github.io/akrantiain2/manuals/introduction/akrantiain.html)
