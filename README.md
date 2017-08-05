@@ -19,5 +19,4 @@ A domain-specific language designed to describe conlangs' orthographies
 [メッセージと番号と内容の対応表](https://github.com/sozysozbot/akrantiain2/blob/master/manuals/error_ids_ja.md)  
 ny lirsesen [kanteluescosti virle lineparine](https://sozysozbot.github.io/akrantiain2/manuals/manuals_conlang_lpa.htm)  
 
-## Dreams and Reality
-[現状](https://sozysozbot.github.io/akrantiain2/samples/current_situation.htm)
+[空文字列バグなどの現状](https://sozysozbot.github.io/akrantiain2/samples/current_situation.htm)
