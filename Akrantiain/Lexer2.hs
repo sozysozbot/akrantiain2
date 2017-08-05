@@ -27,18 +27,16 @@ op str = do
    where
     f (Op a) = str == a
     f _ = False
-op_ :: Char -> Parser ()
-op_ c = op [c]
 
 ---- parsing modules -----
 
 modules :: Parser (Set Module)
 modules = do
- mods <- many (try(newLine >> return Nothing) <|> fmap Just parseModule)
+ mods <- many (try(optional newLine) >> parseModule)
  insideMain <- parseInside
- mods2 <- many (try(newLine >> return Nothing) <|> fmap Just parseModule)
+ mods2 <- many (try(optional newLine) >> parseModule)
  eof
- return $ Module{moduleName = HiddenModule, insideModule = insideMain} : catMaybes mods ++ catMaybes mods2
+ return $ Module{moduleName = HiddenModule, insideModule = insideMain} : mods ++ mods2
 
 {-
  foo
@@ -54,7 +52,7 @@ oneModule = try foo <|> fmap ModuleName identifier where
  A => B => C
  -}
 modChainElem :: Parser [ModuleName]
-modChainElem = try p <|> try(op_ '(' *> p <* op_ ')') where
+modChainElem = try p <|> try(op "(" *> p <* op ")") where
  p = fmap f ids
  f :: [Identifier] -> [ModuleName]
  f [] = error "CANNOT HAPPEN"
@@ -69,7 +67,7 @@ modChainElem = try p <|> try(op_ '(' *> p <* op_ ')') where
  foobar >> (A => B => C) >> barfoo
  -}
 modChain :: Parser [ModuleName]
-modChain = fmap concat $ modChainElem `sepBy1` try(op ">>" )
+modChain = fmap concat $ modChainElem `sepBy1` try(op ">>")
 
 
 execModules :: Parser InsideModule
@@ -82,11 +80,11 @@ execModules = do
 parseModule :: Parser Module
 parseModule = do
  modname <- try $ do
-  op_ '%' 
+  op "%" 
   oneModule
- op_ '{' 
+ op "{" 
  inside <- parseInside
- op_ '}'
+ op "}"
  return Module{moduleName = modname, insideModule = inside}
 
 parseInside :: Parser InsideModule
@@ -104,23 +102,23 @@ sentences = do
 
 
 dollar :: Parser Phoneme
-dollar = op_ '$' >> return Dollar
+dollar = op "$" >> return Dollar
 
 
 
 
 
 select :: Parser Select
-select = (op_ '^' >> return Boundary2) <|> fmap Iden identifier <|> try single <|> try mult  where
+select = (op "^" >> return Boundary2) <|> fmap Iden identifier <|> try single <|> try mult  where
  single = (Pipe . Ch . (:[])) <$> quotedString
  mult = do
-  op_ '('
+  op "("
   strings <- stringsSepByPipe
-  op_ ')'
+  op ")"
   return $ Pipe strings
 
 stringsSepByPipe :: Parser (Choose Quote)
-stringsSepByPipe = fmap Ch $ strs `sepBy1` try(op_ '|')
+stringsSepByPipe = fmap Ch $ strs `sepBy1` try(op "|")
  where strs = concat' <$> many1 quotedString
 
 -- consonant = "a" | "b" "d" | cons2 | co "c" co
@@ -128,7 +126,7 @@ define :: Parser Sentence
 define = do
   ident <- try $ do
    ident' <- identifier
-   op_ '='
+   op "="
    return ident'
   ch_quote <- stringsSepByPipe
   sentTerminate
@@ -151,14 +149,14 @@ conversion = do
   sentTerminate
   return $ Left' Conversion{mid=selects, phons=phonemes, lneg=l, rneg=r}
    where
-    neg_select = try $ fmap Just $ op_ '!'  >> select
+    neg_select = try $ fmap Just $ op "!"  >> select
 
 sentence :: Parser Sentence
 sentence = conversion <|> define <|> atsignOption
 
 atsignOption :: Parser Sentence
 atsignOption = do
- op_ '@'
+ op "@"
  ide <- identifier
  sentTerminate
  return $ Middle' ide
