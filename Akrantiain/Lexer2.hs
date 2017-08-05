@@ -11,6 +11,7 @@ import Data.Maybe (catMaybes)
 import Akrantiain.Structure
 import Akrantiain.Modules
 import Akrantiain.Tokenizer
+import Control.Monad
 
 type Parser = Parsec [Token] ()
 satisfy' :: (Token -> Bool) -> Parsec [Token] u Tok
@@ -33,11 +34,11 @@ op str = void $ sat f
 
 modules :: Parser (Set Module)
 modules = do
- mods <- many (try(optional newLine) >> parseModule)
+ mods <- many (try(newLine >> return Nothing) <|> fmap Just parseModule)
  insideMain <- parseInside
- mods2 <- many (try(optional newLine) >> parseModule)
+ mods2 <- many (try(newLine >> return Nothing) <|> fmap Just parseModule)
  eof
- return $ Module{moduleName = HiddenModule, insideModule = insideMain} : mods ++ mods2
+ return $ Module{moduleName = HiddenModule, insideModule = insideMain} : catMaybes mods ++ catMaybes mods2
 
 {-
  foo
