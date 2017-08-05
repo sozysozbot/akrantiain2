@@ -20,9 +20,12 @@ satisfy' f = fst <$> token showTok posFromTok testTok
      posFromTok  = snd
      testTok t     = if f t then Just t else Nothing
 
+sat :: (Tok -> Bool) -> Parsec [Token] u Tok
+sat f = satisfy' (f . fst)
+
 op :: String -> Parser ()
 op str = do
-  satisfy' (f . fst)
+  sat f
   return ()
    where
     f (Op a) = str == a
@@ -166,10 +169,11 @@ concat' arr = Quote(arr >>= \(Quote a) -> a)
 
 
 
+-- simple parser
 
 quotedString :: Parser Quote
 quotedString = do
-  Q i <- satisfy' (f . fst)
+  Q i <- sat f
   return (Quote i)
    where
     f (Q _) = True
@@ -177,7 +181,7 @@ quotedString = do
 
 slashString :: Parser Phoneme
 slashString = do
-  S i <- satisfy' (f . fst)
+  S i <- sat f
   return (Slash i)
    where
     f (S _) = True
@@ -185,7 +189,7 @@ slashString = do
 
 identifier :: Parser Identifier
 identifier = do
-  I i <- satisfy' (f . fst)
+  I i <- sat f
   return i
    where
     f (I _) = True
@@ -194,7 +198,7 @@ identifier = do
 
 newLine :: Parser ()
 newLine = do
-  satisfy' (f . fst)
+  sat f
   return ()
    where
     f NewLine = True
