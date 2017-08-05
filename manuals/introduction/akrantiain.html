@@ -6,23 +6,11 @@
 <body>
 <h1>akrantiainについて</h1>
 <p>
-akrantiainは、sozysozbot氏によって開発されている、言語の音韻規則などを記述するためのDSLです。
-オリジナルの実装は、GitHubの<a href="https://github.com/sozysozbot/akrantiain2" class="blank">該当リポジトリ</a>から取得することができます。
-</p>
-<p>
-ZpDIC上で実行できるakrantiainは、オリジナルのver0.6.9に相当します。
-ただし、オリジナルとは完全に異なる方法で実装しているため、細かな仕様が異なる場合があります。
-特にエラーメッセージはほとんど異なります。
-できる限りオリジナルと同じ仕様で動作するようにしたいので、エラーメッセージ以外の違いを発見した場合は、開発者まで連絡していただけると助かります。
+akrantiainは、.sozysozbot.によって開発されている、言語の音韻規則などを記述するためのDSLです。
+実装は、GitHubの<a href="https://github.com/sozysozbot/akrantiain2" class="blank">該当リポジトリ</a>から取得することができます。
 </p>
 <p>
 akrantiainでは、「snojファイル」と呼ばれる音韻規則を記述したファイルを読み込み、それに基づいて入力された単語から発音記号を生成します。
-ZpDIC内のakrantiainは、snojファイルを読み込むこともできますし、snojファイルの中身に相当する部分をZpDIC上で直接入力することもできます。
-</p>
-<h1>埋め込みakrantiain</h1>
-<p>
-OneToMany形式にはsnojデータを埋め込むことができ、単語データを表示する際に発音記号を自動生成して表示させることができます。
-メニューバーから「ツール」→「辞書の個別設定」を選択して個別設定画面を開き、「その他」タブの「snojデータ」欄から埋め込むsnojデータを編集することができます。
 </p>
 <h1>snojファイルの書き方</h1>
 <h2>基本</h2>
@@ -135,7 +123,7 @@ semivow vow -> // $  # 省略
 <h2>その他</h2>
 <p>
 上記で説明した機能以外にも、句読点の設定や、「モジュール」と呼ばれる強力な機能がありますが、ここでは説明を割愛します。
-詳しくは、<a href="https://github.com/sozysozbot/akrantiain2" class="blank">オリジナルのリポジトリ</a>を参照してください。
+詳しくは、<a href="https://github.com/sozysozbot/akrantiain2" class="blank">リポジトリ</a>を参照してください。
 </p>
 </body>
 </html>
