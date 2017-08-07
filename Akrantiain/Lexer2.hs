@@ -171,7 +171,7 @@ concat' arr = Quote(arr >>= \(Quote a) -> a)
 -- simple parser
 
 quotedString :: Parser Quote
-quotedString = do
+quotedString = (<?> "quoted string") $ do
   Q i <- sat f
   return (Quote i)
    where
@@ -179,7 +179,7 @@ quotedString = do
     f _ = False
 
 slashString :: Parser Phoneme
-slashString = do
+slashString = (<?> "slash string") $ do
   S i <- sat f
   return (Slash i)
    where
@@ -187,7 +187,7 @@ slashString = do
     f _ = False
 
 identifier :: Parser Identifier
-identifier = do
+identifier = (<?> "identifier") $ do
   I i <- sat f
   return i
    where
@@ -196,7 +196,7 @@ identifier = do
 
 
 newLine :: Parser ()
-newLine = void $ sat f
+newLine = void (sat f) <?> "newline"
    where
     f NewLine = True
     f _ = False
