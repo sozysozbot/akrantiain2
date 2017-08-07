@@ -46,30 +46,30 @@ escapeSequence =
    return $ chr num
 
 operator__ :: Parser Tok
-operator__ = foldl1 (<|>) $ map (fmap Op . try . string) ops
+operator__ = (<?> "operator") $ foldl1 (<|>) $ map (fmap Op . try . string) ops
  where ops = [">>","%%", "%", "{", "}", "$", "=>", "(", "^", "(", ")", "|", "=", "->", "!", "@"]
 
 quotedString__ :: Parser Tok
-quotedString__ = do
+quotedString__ = (<?> "quoted string") $ do
   char '"'
   str <- many(noneOf "\\\"\n" <|> escapeSequence)
   char '"'
   return $ Q str 
 
 newline__ :: Parser Tok
-newline__ = c >> return NewLine
+newline__ = (<?> "newline") $ c >> return NewLine
  where c = void(oneOf ";\n") <|> (char '#' >> skipMany (noneOf "\n") >> (eof <|> void(char '\n')))
 
 spaces'__ :: Parser ()
-spaces'__ = skipMany $ satisfy (\a -> isSpace a && a /= '\n')
+spaces'__ = (<?> "spaces") $ skipMany $ satisfy (\a -> isSpace a && a /= '\n')
 
 slashString__ :: Parser Tok
-slashString__ = do
+slashString__ = (<?> "slash string") $ do
   char '/'
   str <- many(noneOf "\\/\n" <|> escapeSequence)
   char '/'
   return $ S str
 
 identifier__ :: Parser Tok
-identifier__ = fmap (I . Id) $ (:) <$> letter <*> many (alphaNum <|> char '_')
+identifier__ = (<?> "identifier") $ fmap (I . Id) $ (:) <$> letter <*> many (alphaNum <|> char '_')
 
