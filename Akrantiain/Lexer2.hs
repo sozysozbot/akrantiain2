@@ -198,7 +198,7 @@ sat :: (Tok -> Bool) -> Parsec [Token] u Tok
 sat f = satisfy' (f . fst)
 
 op :: String -> Parser ()
-op str = void $ sat f
+op str = (<?> ("operator `" ++ str ++ "`")) $ void $ sat f
    where
     f (Op a) = str == a
     f _ = False
