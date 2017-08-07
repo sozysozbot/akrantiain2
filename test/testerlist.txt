@@ -5,6 +5,7 @@ base10_to_base2
 base3_to_base2
 diaresis
 # iska
+inagaraisi
 lineparine
 lineparine2
 module
