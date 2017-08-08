@@ -1,5 +1,3 @@
-## Getting Started
-
 All files handled by akrantiain must be in UTF-8.
 
 ### Installing
