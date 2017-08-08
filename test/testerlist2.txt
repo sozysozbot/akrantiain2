@@ -4,7 +4,20 @@ asciiprintable_to_charcode
 base10_to_base2
 base3_to_base2
 diaresis
+emptystring0
+emptystring1
+emptystring2
+emptystring3
+emptystring4
+emptystring5
+emptystring6
+emptystring7
+emptystring8
+emptystring9
+emptystring10
+emptystring11
 # iska
+inagaraisi
 lineparine
 lineparine2
 module

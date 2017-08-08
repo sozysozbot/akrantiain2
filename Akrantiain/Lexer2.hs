@@ -14,21 +14,7 @@ import Akrantiain.Tokenizer
 import Control.Monad
 
 type Parser = Parsec [Token] ()
-satisfy' :: (Token -> Bool) -> Parsec [Token] u Tok
-satisfy' f = fst <$> token showTok posFromTok testTok
-   where
-     showTok (t,_)     = toSource t
-     posFromTok  = snd
-     testTok t     = if f t then Just t else Nothing
 
-sat :: (Tok -> Bool) -> Parsec [Token] u Tok
-sat f = satisfy' (f . fst)
-
-op :: String -> Parser ()
-op str = void $ sat f
-   where
-    f (Op a) = str == a
-    f _ = False
 
 ---- parsing modules -----
 
@@ -171,7 +157,7 @@ concat' arr = Quote(arr >>= \(Quote a) -> a)
 -- simple parser
 
 quotedString :: Parser Quote
-quotedString = do
+quotedString = (<?> "quoted string") $ do
   Q i <- sat f
   return (Quote i)
    where
@@ -179,7 +165,7 @@ quotedString = do
     f _ = False
 
 slashString :: Parser Phoneme
-slashString = do
+slashString = (<?> "slash string") $ do
   S i <- sat f
   return (Slash i)
    where
@@ -187,7 +173,7 @@ slashString = do
     f _ = False
 
 identifier :: Parser Identifier
-identifier = do
+identifier = (<?> "identifier") $ do
   I i <- sat f
   return i
    where
@@ -196,8 +182,24 @@ identifier = do
 
 
 newLine :: Parser ()
-newLine = void $ sat f
+newLine = void (sat f) <?> "newline"
    where
     f NewLine = True
+    f _ = False
+
+satisfy' :: (Token -> Bool) -> Parsec [Token] u Tok
+satisfy' f = fst <$> token showTok posFromTok testTok
+   where
+     showTok (t,_)     = toSource t
+     posFromTok  = snd
+     testTok t     = if f t then Just t else Nothing
+
+sat :: (Tok -> Bool) -> Parsec [Token] u Tok
+sat f = satisfy' (f . fst)
+
+op :: String -> Parser ()
+op str = (<?> ("operator `" ++ str ++ "`")) $ void $ sat f
+   where
+    f (Op a) = str == a
     f _ = False
 
