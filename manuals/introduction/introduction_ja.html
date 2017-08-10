@@ -11,6 +11,8 @@
 akrantiainは、.sozysozbot.によって開発されている、言語の音韻規則や正書法規則などを記述しその規則に基づいた文字列変換を実行するためのDSLです。
 実装は、GitHubの<a href="https://github.com/sozysozbot/akrantiain2" class="blank">該当リポジトリ</a>から取得することができます。
 </p>
+<p>なお、以下の説明では入力として何らかの正書法で書かれた単語を受け取り、その単語の音素表記を出力するような場合に絞って説明しますが、akrantiain自体はそれ以外の文字列変換も行うことができ、<a href="https://github.com/sozysozbot/akrantiain2/blob/master/samples/sample_base10_to_base2.snoj">自然数の10進数表現を入力として受け取り2進数表現にして出力すること</a>なども可能です。
+</p>
 <p>
 akrantiainでは、「snojファイル」と呼ばれる音韻規則を記述したファイルを読み込み、それに基づいて入力された単語から発音記号などを生成します。
 </p>
