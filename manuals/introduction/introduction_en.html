@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Introducing akrantiain</title>
+<link rel="stylesheet" href="help.css">
+</head>
+<body>
+<h1>Introducing akrantiain</h1>
+<p>
+<strong>akrantiain</strong> is a domain-specific language, developed by <a href="https://twitter.com/sozysozbot">.sozysozbot.</a>, designed to describe phonological or orthographical rules of a language, and to execute string transformation based on the rules. The implementation can be obtained from its <a href="https://github.com/sozysozbot/akrantiain2" class="blank">Github repository</a>.
+</p>
+<p>For the sake of simplicity, the explanation only deals with the case where the input is a list of words (of a natural or constructed language) and outputs a phonemic representation of the words, but akrantiain is by no means limited to that; for instance, it is even possible to <a href="https://github.com/sozysozbot/akrantiain2/blob/master/samples/sample_base10_to_base2.snoj">receive a decimal representation of a natural number as an input and output a binary representation of it</a>.
+</p>
+<p>
+akrantiain first reads a file (called ".snoj file") that explains the phonological rules. It then converts the input based on the .snoj and outputs the result.
+</p>
+<h1>How to write <strong>.snoj</strong> files</h1>
+<h2>Basics</h2>
+<p>
+Write the character(s) inside words before a <span class="monospaced">-></span>, and write the corresponding phoneme(s) after the <span class="monospaced">-></span>.
+Characters inside a word are to be surrounded by <span class="monospaced">"</span>s, and phonemes by <span class="monospaced">/</span>s.
+A sentence is terminated by a <span class="monospaced">;</span>.
+The following describes a rule which says that an "s" inside a word is to be read as /z/. 
+</p>
+<pre>
+"s" -> /z/;
+</pre>
+<p>
+It is also possible to allocate one phoneme to two or more letters.
+Also, more than one strings can be followed by <span class="monospaced">-></span>, which can also be followed by multiple phonemes;
+in that case, the number of strings must equal to that of phonemes.
+The following describes a rule which says that an "sh" followed by "e" is read as /ʃ/ and /ə/ respectively.
+</p>
+<pre>
+"sh" "e" -> /ʃ/ /ə/;
+</pre>
+<h2>Giving choices</h2>
+<p>
+A list of strings separated with <span class="monospaced">|</span>s represents a pattern that matches one of the strings in the list. When using it directly in the left-hand side of declaration, it must be surrounded by a pair of parentheses. For example, the following describes a rule which says that, when an "m" or a "b" is followed by an "a", the "m" or the "b" is read as /b/ and the "a" as /ʌ/.
+</p>
+<pre>
+("m" | "b") "a" -> /b/ /ʌ/;
+</pre>
+<h2>Partial delegation</h2>
+<p>
+By writing a <span class="monospaced">$</span>, instead of a phoneme, in the right-hand side of <span class="monospaced">-></span>, it becomes possible to not define the sound of the corresponding character but delegate that to a different rule.
+For example, the following rule says that "v" is read as /w/ when followed by an "i", but this rule does not define how "i" should be read; it delegates that to another rule.
+</p>
+<pre>
+"v" "i" -> /w/ $;
+</pre>
+<p>
+Thus, as the following example shows, it is also necessary to prepare a different rule that handle "i" itself.
+</p>
+<pre>
+"v" "i" -> /w/ $;
+"i" -> /i/;
+</pre>
+<h2>Defining and using variables</h2>
+<p>
+A pattern can be assigned to a variable by writing a variable name, followed by a <span class="monospaced">=</span>, followed by a list of strings separated with <span class="monospaced">|</span>s.
+This time, the patterns must NOT be surrounded by a pair of parentheses.
+Variable name consist of letters (both uppercase and lowercase letters), digits and underscores. However, it must not start with a digit.
+The following assigns, to a variable named <span class="monospaced">vowel</span>, a pattern which means "either 'a', 'e' or 'i'".
+</p>
+<pre>
+vowel = "a" | "e" | "i";
+</pre>
+<p>
+Variables can be used in the left-hand side of <span class="monospaced">-></span> in a sentence that define the phonological rule. 
+For example, the following first define a variable named <span class="monospaced">vowel</span>, and then defines a rule which says that a "k" is read as /ɡ/ when it follows a <span class="monospaced">vowel</span> (that is, either "a", "e" or "i").
+</p>
+<pre>
+vowel = "a" | "e" | "i";
+vowel "k" -> $ /ɡ/;
+</pre>
+<h2>Word boundary</h2>
+<p>
+In the left-hand side of <span class="monospaced">-&gt;</span>, it is possible to write <span class="monospaced">^</span>, which represents a word boundary.
+It is impossible to allocate phonemes to <span class="monospaced">^</span> itself.
+For example, the following defines a rule which says that, when a "z" is followed by a word boundary, (that is, when a "z" is at the end of a word,) the "z" is read as /s/. Note that the right-hand side has only one phoneme, since you cannot allocate a phoneme to <span class="monospaced">^</span>.
+</p>
+<pre>
+"z" ^ -> /s/;
+</pre>
+<p>
+Note that, although it seems like a valid alternative, it is explicitly forbidden to represent a word boundary with a string literal containing a space character.</p>
+<pre>
+# "z " -> /s/; # illegal
+</pre>
+<!--<p> The rationale behind this is that a word boundary can not only be represented by a space, but also by a tab or a punctuation, so it is semantically incorrect to use a space character.</p>-->
+<h2>Exclusion conditions</h2>
+<p>
+The left-hand side of <span class="monospaced">-></span> can be accompanied by an "exclusion condition", which can be located at the beginning or the end of the list of strings or variables. 
+An exclusion condition is represented by a <span class="monospaced">!</span> followed by a string or a variable.
+For example, the following represents a rule which says that "au" is read as /o/ except when followed by a "t".
+</p>
+<pre>
+"au" !"t" -> /o/;
+</pre>
+<p>
+Another example is the following rule, which says that "ch" is read as /ç/ when it follows neither "a", "o", nor "u". As shown here, <span class="monospaced">!</span> can also be followed by a parenthesized list of strings separated by <span class="monospaced">|</span>s.
+</p>
+<pre>
+!("a" | "o" | "u") "ch" -> /ç/;
+</pre>
+<p>
+It is also possible to specify exclusion conditions on both sides. The following defines a rule which says that "th" is read as /θ/ provided that it neither follows a letter that matches <span class="monospaced">vowel</span> nor it is followed by an "s" or a "z". 
+</p>
+<pre>
+vowel = "a" | "e" | "i" | "o" | "u";
+!vowel "th" !("s" | "z") -> /θ/;
+</pre>
+<h2>Comments</h2>
+<p>
+Anything written from <span class="monospaced">#</span> till the end of the line is regarded as a comment, and will thus be ignored.
+</p>
+<pre>
+C = "s" | "t" | "k" | "f";  # This is a comment
+# This whole line is a comment
+</pre>
+<h2>Omitting semicolons</h2>
+<p>
+A semicolon can be omitted if it is located at the end of the line. However, when you write multiple sentences in a single line,  a semicolon between two sentences cannot be omitted.
+</p>
+<pre>
+semivow = "y" | "w"; vow = "a" | "e"  # can be omitted
+semivow vow -> // $  # can also be omitted
+#  semivow = "y" | "w" vow = "a" | "e";  # will be a parse error
+</pre>
+<h2>Others</h2>
+<p>
+Apart from what has been explained above, there are many more features such as "manually setting which characters should be regarded as punctuations" or "defining 'modules' and combining those".
+For more details, refer to the <a href="https://github.com/sozysozbot/akrantiain2" class="blank">repository</a>.
+</p>
+</body>
+</html>

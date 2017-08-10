@@ -109,7 +109,8 @@ stringsSepByPipe :: Parser (Choose Quote)
 stringsSepByPipe = fmap Ch $ strs `sepBy1` try(op "|")
  where strs = concat' <$> many1 quotedString
 
--- consonant = "a" | "b" "d" | cons2 | co "c" co
+-- ***OUTDATED COMMENT*** consonant = "a" | "b" "d" | cons2 | co "c" co
+-- consonant = "a" | "b" "d" | "c" "d" "e"
 define :: Parser Sentence
 define = do
   ident <- try $ do

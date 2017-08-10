@@ -38,10 +38,12 @@ pre {
   padding: 1.3px 3.9px;
   line-height: 23.4px;
   border-top: #c8c8c8 1.3px solid;
-  border-bottom: #c8c8c8 1.3px solid; }
+  border-bottom: #c8c8c8 1.3px solid;
+  background-color: #f4f4f4; }
 
 span.monospaced {
-  font-family: monospace; }
+  font-family: monospace;
+  background-color: #f4f4f4; }
 
 a {
   color: #0096c9; }
