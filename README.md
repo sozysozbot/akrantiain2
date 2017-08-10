@@ -2,7 +2,7 @@
 A domain-specific language designed to describe conlangs' orthographies
 
 ## What is akrantiain?
-[概略](https://sozysozbot.github.io/akrantiain2/manuals/introduction/akrantiain.html)  
+[概略](https://sozysozbot.github.io/akrantiain2/manuals/introduction/introduction_ja.html)  
 [概略(外部サイト)](http://ja.conlinguistics.wikia.com/wiki/Akrantiain)  
 
 
