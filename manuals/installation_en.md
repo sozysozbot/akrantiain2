@@ -19,7 +19,7 @@ $ ./akrantiain2 samples/sample_lineparine.snoj
 
 Or read from file:
 ```
-$ ./akrantiain2 samples/sample_lineparine.snoj < samples/input_sample_lineparine.txt
+$ ./akrantiain2 samples/sample_lineparine.snoj < samples/input_sample/input_sample_lineparine.txt
 ```
 
 #### Windows (7 and 10)
@@ -40,7 +40,7 @@ $ akrantiain2 samples\sample_lineparine.snoj
 Or read from file:
 ```
 $ chcp 65001
-$ akrantiain2 samples\sample_lineparine.snoj --file < samples\input_sample_lineparine.txt
+$ akrantiain2 samples\sample_lineparine.snoj --file < samples\input_sample\input_sample_lineparine.txt
 ```
 
 Note: In Windows, interactive mode does not work when the input contains multi-byte characters.
@@ -66,5 +66,5 @@ $ ./akrantiain2 samples/sample_lineparine.snoj
 
 Or read from file:
 ```
-$ ./akrantiain2 samples/sample_lineparine.snoj < samples/input_sample_lineparine.txt
+$ ./akrantiain2 samples/sample_lineparine.snoj < samples/input_sample/input_sample_lineparine.txt
 ```
