@@ -9,7 +9,7 @@ A domain-specific language designed to describe conlangs' orthographies
 
 ## Detailed documentations
 [Installation](https://github.com/sozysozbot/akrantiain2/blob/master/manuals/installation_en.md)  
-[インストール方法](https://github.com/sozysozbot/akrantiain2/blob/master/manuals/installation_ja.md) 
+[インストール方法](https://github.com/sozysozbot/akrantiain2/blob/master/manuals/installation_ja.md)  
 [English manual about sentence sequences](https://sozysozbot.github.io/akrantiain2/manuals/manuals_en.htm) (Incomplete) 
 
 [仕様書トップページ](https://sozysozbot.github.io/akrantiain2/manuals/main_ja.htm)
