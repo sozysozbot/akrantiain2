@@ -40,6 +40,8 @@ p {
   line-height: 18*$size;
 }
 
+$a: #f4f4f4;
+
 pre {
   font-family: monospace;
   margin: 5*$size 0*$size;
@@ -47,10 +49,12 @@ pre {
   line-height: 18*$size;
   border-top: rgb(200, 200, 200) 1*$size solid;
   border-bottom: rgb(200, 200, 200) 1*$size solid;
+    background-color: $a;
 }
 
 span.monospaced {
   font-family: monospace;
+  background-color: $a;
 }
 
 a {
