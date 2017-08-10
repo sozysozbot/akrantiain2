@@ -2,6 +2,7 @@
 del *.exe
 cabal update
 cabal install unicode-transforms
+cabal install aeson
 ghc --make akrantiain2
 ghc --make debug1
 ghc --make debug2

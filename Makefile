@@ -3,6 +3,7 @@ foo :
 	ghc --version || sudo apt-get install haskell-platform
 	cabal update || true
 	cabal install unicode-transforms || true
+	cabal install aeson || true
 	ghc --make akrantiain2.hs -o akrantiain2
 	chmod 755 akrantiain2
 
