@@ -139,11 +139,7 @@
 
 
 
-
 a
-aa
-aafs
-aajf
 abdijeːy
 abea
 asalefy
@@ -169,7 +165,6 @@ asiːlon
 asiːnema
 aszele
 ad
-ad
 adeho
 adelbanes
 adenitaʃ
@@ -185,19 +180,13 @@ adiːxtiː
 adist
 adit
 aditepeːle
-adk
-adlp
 adolpd
 adwiːduːta
-adyg
 ad͡ʑaːlefan
 ad͡ʑeːstila
-ae
-af
 af
 afaɲasblo
 afaːxaːnestaːn
-afe
 afenelirfa
 affaːnaʃaːt
 afikeliʃe
@@ -232,15 +221,12 @@ ajrən
 aiːɲe
 ajstao
 ajstaoʃeːzeːleː
-ajstaoʃsl
 aj
 ajasɲelista
 ajeːvin
 ajitiːr
 ajkneː
 ajuːdo
-ajʃf
-ak
 akademise
 akant͡ʃeliefaj
 akaɲeslanast͡sasaːknakimis
@@ -280,7 +266,6 @@ alsenat͡saːg
 alsent
 alseto
 alsewnt
-alsf
 alsiːt
 alsiːta
 also
@@ -332,7 +317,6 @@ alfən
 alfi
 alfiante
 alfiatkuːle
-alhʃ
 aliawjoː
 alid͡ʑeːr
 aliən
@@ -350,7 +334,6 @@ aloajeːl
 aloajeːleːm
 aloazjeːd
 alpileon
-alpo
 als
 alzaːlalfudjuːaʃm
 alzat
@@ -358,7 +341,6 @@ alze oel
 alzekolaː
 alzonif
 alsreto
-alt
 altakrapt
 alte
 altena
@@ -384,7 +366,6 @@ amiftaːfe
 amilafoːmaː
 amol
 amommo
-an
 an-
 ana
 anakswa
@@ -446,7 +427,6 @@ ankaʃenka
 anks
 ankowmi
 ankʃvalo
-anl
 anlejju
 anlekaːnoːk
 anlekkaː
@@ -460,7 +440,6 @@ anliːkkaʃkaːta
 anly
 anlɥes
 anlyːkka
-anlt͡s
 anne
 anni
 anɲa
@@ -519,9 +498,7 @@ anyfkaʃantaːk
 anyfkaɥfka
 anyfklekka
 anyfkoːʃiːnft
-aoən
 aoteaːroa
-aphat͡skdeːa
 apasto
 apalkʃoːn
 apaskən
@@ -623,7 +600,6 @@ aːʃajem
 aːy
 aːt͡saːg
 aːt͡srgeːniaː
-as
 azaːfat͡s
 assa
 assaleːtan
@@ -636,7 +612,6 @@ asmet͡ʃea
 asmjetʃ
 asnast
 aspuːn
-assp
 astaneːla
 astanewatvjata
 astanewt͡siːnas
@@ -648,7 +623,6 @@ astudilfaːst
 astyːt͡sa
 asvi
 asvikantie
-asw
 aswaːl
 at
 ata-
@@ -675,8 +649,6 @@ avaːpesve
 avsinyjl
 avimens
 aviː
-avs
-awps
 aʃe
 aʃefeŋua
 aʃejtaːja
@@ -694,7 +666,6 @@ aʃʃeːvo
 aʃʃuːmaːl
 aɥpleːd
 aɥpleːde
-at͡s
 at͡saːlja
 at͡sefeːte
 at͡silax
@@ -748,7 +719,6 @@ besltafajt
 besvykən
 beʃe
 beʃua
-bfny
 biːle
 bisny
 bju
@@ -780,7 +750,6 @@ brugjaxapp
 brunejdaːrusalaːm
 bulgalija
 buːrkinafaːso
-bʃd
 s-
 sablej
 sabraʃʁaːy
@@ -826,13 +795,11 @@ sazaːmanugaːki
 sazaʃimi
 saszalk
 sastia
-satl
 sawnʃipja
 sawʃaːne
 sawʃaːnekoːʃa
 savjeːt
 saɥfit͡siː
-sssk
 se
 seatviːna
 ses
@@ -920,7 +887,6 @@ setiːle
 seʃelfeːn
 seʃeliːn
 seʃən
-sfʃllst
 t͡ʃad
 t͡ʃafiofes
 t͡ʃaj
@@ -931,7 +897,6 @@ t͡ʃaku
 t͡ʃaly
 t͡ʃaːlimite
 t͡ʃas
-t͡ʃaʃote
 t͡ʃaʃote
 t͡ʃbjaː
 t͡ʃekzaw
@@ -1003,7 +968,6 @@ siwɸo
 siʃ
 sit͡sjuː
 skojnduː
-sls
 slek
 slilaːsɥe
 so
@@ -1050,13 +1014,11 @@ sussadeʃ
 susteːa
 sutuːl
 sutuːletosti
-sv
 swanən
 syfoj
 syjubaː
 syzilaːta
 systfet͡ʃən
-da
 da
 dasraːje
 dasratoʃle
@@ -1082,8 +1044,6 @@ dast͡sa
 dat
 dawtloːt͡se
 davjet
-dd
-dde
 de
 dea
 desafelem
@@ -1169,7 +1129,6 @@ deʃeɥl
 deʃlest͡sdiːt͡ʃa
 deʃɲenpe
 deʃys
-dfa
 ðadeleksel
 ðafaːl
 ðanamjaːβa
@@ -1279,9 +1238,7 @@ diʃalvataʃ
 diʃljeːti
 diʃmaleːta
 dit͡sjeːni
-dks
 dleːŋn
-dlin
 do
 dod 
 dodok
@@ -1322,7 +1279,6 @@ dpan
 dkwa
 dravjaːrta
 droflaːʃe
-dsps
 duatrivas
 dudej
 dues
@@ -1400,7 +1356,6 @@ d͡ʑaːhal
 d͡ʑaːn
 d͡ʑaːt
 d͡ʑastje
-d͡ʑsjo
 d͡ʑes
 d͡ʑesif
 d͡ʑeftloːt͡snaj
@@ -1473,13 +1428,11 @@ ediʃe
 ediʃi
 ediʃo
 ediʃu
-ed͡ʑ
 ed͡ʑun
 efan
 efanelme
 effaːle
 efijenia
-efjip
 efmaleasiː
 eftoːn
 egsa
@@ -1544,7 +1497,6 @@ emjet͡selfa
 emiːju
 emjunʃteːla
 ən
-ən
 en-
 enafenkas
 enalte
@@ -1573,7 +1525,6 @@ enʃeːfinisn
 enʃis
 enyn
 eo
-ep
 epliʃeːd
 epotaj-
 epotajma
@@ -1637,7 +1588,6 @@ et
 eta
 etaj
 etansense
-etsa
 etezeles
 eteslastej
 eteslot͡smareːto
@@ -1682,9 +1632,6 @@ et͡sostankloan
 et͡sostenitepo
 f-
 f 
-f d͡ʑ ʃ 
-f l 
-fa
 fa
 fabi
 fasaːlɥa
@@ -1893,7 +1840,6 @@ faʃin
 faʃinistia
 faʃnefletoːk
 fat͡san
-fsf
 fe
 fea
 fealej
@@ -2045,12 +1991,6 @@ feʃasta
 feɥ
 feɥzən
 ff
-ff
-fffs
-ffla
-ffs
-fft
-fg
 fgiː
 fgju
 ɸaleːs
@@ -2091,7 +2031,6 @@ fgju
 ɸjasafi
 ɸuː
 fi
-fi
 fiamedast
 fianʃa
 fianʃan
@@ -2101,7 +2040,6 @@ fit͡ʃaset͡ʃajvefi
 fisiːve
 fisiʃkes
 fisiʃmefi
-fid
 fidafel
 fidaletaʃ
 fidlje
@@ -2128,7 +2066,6 @@ filipinas
 filʃ
 fimea
 fimenoːl
-fin
 fin
 finaːp
 finastea
@@ -2184,11 +2121,7 @@ fiʃa leʃeːl
 fiʃaeːl
 fiʃonem
 fiʃtasnaːle
-fildl
-fis
 fka
-fl
-fla
 fla
 flassamo
 flaska
@@ -2227,16 +2160,13 @@ flesve
 fliːant
 fliːjoʃemija
 fliːnuva
-flis
 flivia
-fllk
 floaple
 flonn
 flonoslat͡sas
 flyːses
 flyːe
 fmeaene
-fo
 fo
 foatostolfa
 fobleːkolank
@@ -2274,7 +2204,6 @@ fotjenysnej
 fotist
 fkwa
 fkwju
-fkwʃe
 fraleːna
 franse
 frapaltfuːs
@@ -2293,7 +2222,6 @@ ftona
 ftonaol
 ftonenkraftan
 ftono
-ftpmd
 ftuzuːla
 fua
 fuadisk
@@ -2322,7 +2250,6 @@ fuzaf
 fuzjuː
 fuʃ-
 fva
-fvad
 fve
 fvi
 fvis
@@ -2332,7 +2259,6 @@ fvoɥ
 fvu
 fʃe
 fy
-fyjeta
 fyn
 fynet
 fynewfy
@@ -2375,7 +2301,6 @@ gawman
 gedoːs
 gegon
 gekaːifew
-gel
 gelflas
 gelʃ
 gentuan
@@ -2385,7 +2310,6 @@ geːfanbeʃaːt͡s
 geːn
 geːveaːmje
 gesvio
-gfu
 gja
 gjakta
 gidezuleafy
@@ -2399,7 +2323,6 @@ gjupie
 gjuːkelzeː
 gjuːle
 glaːrtesobrliteoe
-gle
 glift
 gliftjums
 glosklojt͡s
@@ -2433,8 +2356,6 @@ gyleːy
 gyːʃ
 gyslaː
 gytɥuv
-
-
 hagenanskən
 hah
 hahuli
@@ -2492,7 +2413,6 @@ heːvjanni
 heska
 hett
 heɥo
-hffm
 hgg
 hjasaɲenim
 hjakegwe
@@ -2524,8 +2444,6 @@ hystɸens
 i
 javnav
 ibuegallajs
-is
-isalja
 issaletis
 issaːtelet
 isse
@@ -2544,11 +2462,6 @@ isvetalv
 isvlanfie
 iðaltaviːel
 iðalt͡st͡s
-idnr
-jeaa
-jeaj
-jeap
-jeaʃ
 jesisvjes
 jezel
 jezelən
@@ -2562,7 +2475,6 @@ jevod
 iffint͡seːnsa
 ifje
 iflukifajs
-ifs
 iftoːn
 ijiesn
 ijuː
@@ -2577,7 +2489,6 @@ ilkis
 ilmafyːme
 ilza
 ilt-
-iltl
 ilvefan
 ilyː
 imalyːke
@@ -2601,23 +2512,18 @@ iŋgland
 ini-
 inistelte
 inistilt
-inp
 inziːt͡snyk
 inzisnaːle
 intakk
 inyːl
 jo
-jo
-jojoo
 ipejssal
 ipejss
 ipes
-ipp
 ippunzaː
 ipt͡st͡sules
 iː
 iːajf
-iːal
 iranŋaj
 iːsalaːt
 iːsalaːtydiv
@@ -2640,7 +2546,6 @@ iːʃe
 iːʃon
 iːt͡saːst
 is
-iza
 ist͡ʃyd͡ʑette
 izes
 izid
@@ -2742,7 +2647,6 @@ jaʃafeːrea
 jaʃeːn
 jaʃfyːm
 jat͡sugazaki
-idsf
 je
 jeast͡ʃamsaː
 jeszuk
@@ -2817,7 +2721,6 @@ jeʃieːt
 jeʃyst
 jeɥvin
 ifasisn
-igje
 jianaenisliːo
 jidopatanfi
 jiedop
@@ -2841,7 +2744,6 @@ jisnul
 jizysn
 jitus
 jiʃyj
-ilpy
 joan
 josinem
 jodu
@@ -3081,7 +2983,6 @@ kaʃilijas
 kaʃtluːk
 kaʃto
 kaɥet
-kdi
 ke
 kebala
 kesmaːkofens
@@ -3162,7 +3063,6 @@ xvoɥ
 xvu
 ki
 kjaesins
-kiss
 kisukosk
 kidest
 kie
@@ -3207,7 +3107,6 @@ kivuj
 kiʃʃezuentas
 kjastaʃel
 kjit͡st͡slesɲel
-kkok
 klableːt͡se
 kladia
 klan
@@ -3315,9 +3214,6 @@ kravonfilset
 kraʃajun
 kredeːlja
 kreos
-ksf
-kzi 
-kzi
 ktalfyːn
 kuakowtt
 kujit
@@ -3504,7 +3400,6 @@ la omjoneanfiejetlaozalnity
 la omjoneanfieviːoty
 la omjoneanfiey
 la pajsistisleʃzjetivfjuːme
-la panlanzaːjenlmmɥɥst͡ʃestatteʃeːly
 la panlanzaːjenleːmeːmeːyːyːst͡ʃestatteʃeːly
 la paːsaʃezentoniːnast͡ʃeː
 la pat͡suzyzity
@@ -3518,8 +3413,6 @@ la kwadlyjotennesn
 la raftefuainfessest
 la raldjunemadseldino
 la relodfonjetezal
-la sn
-
 la zesnudofesyst
 la zjepudzjunay
 la zistizensyfoj
@@ -3532,7 +3425,6 @@ la zulawnniʃy
 la zyzitfyːtlajksaw
 la zyzitenafrikən
 la tamiɥnaːdu
-
 la tlomefleteːateːdezel
 la tostjeʃenafrika
 la tostjeʃensuːdan
@@ -3725,8 +3617,6 @@ lat͡st͡sija
 lbaː
 lbe
 lbeːs
-ldesl
-ldf
 ld͡ʑud͡ʑ
 le
 lease
@@ -3743,7 +3633,6 @@ ledyd
 ledymalt͡s
 led͡ʑ
 led͡ʑil
-lee
 lefans
 lefaː
 lefaːeːn
@@ -3865,13 +3754,10 @@ leʃisn
 leʃissnən
 leʃnaiːfelejja
 leʃt
-leʃt
 leʃʃelvejs
 let͡so
 lfamjeaht͡ʃ
-lff
 lɸud
-lfk
 li
 ljasy
 lianent͡sil
@@ -4008,10 +3894,8 @@ lit͡s
 lit͡sask
 lit͡saːmo
 ljat
-lif
 ljot
 lkaːf
-lke
 lkuːf
 lkuːfaŋgeŋ
 lkuːfon
@@ -4023,7 +3907,6 @@ lkuːlos
 lkuːmaf
 lkuːvelsnoj
 lkw
-llsk
 lmuːk
 lnop
 loaːju
@@ -4069,7 +3952,6 @@ lpoθ
 lkwim
 lkwos
 lzans
-lzef
 lu
 luaːt͡ʃaː
 luaːta
@@ -4141,11 +4023,7 @@ lut͡sed͡ʑ
 lut͡sed͡ʑlaːl
 lut͡suʃ
 lvarajn
-lwi
-lʃi
-lʃunej
 ly
-lɥad
 lyda
 lydes
 lydjest
@@ -4262,13 +4140,11 @@ mawʃelən
 maʃ
 maʃadluttle
 mat͡sokan
-msnss
 mea
 meapatronest
 meblo
 messeːjes
 medaːne
-mef
 mefidi
 mefiliːla
 mefoaj
@@ -4276,7 +4152,6 @@ mejakweːt͡s
 mejlikwa
 mej
 mejna
-mejv
 meksiko
 mela
 melafa
@@ -4345,7 +4220,6 @@ meʃabasaːn
 meʃel
 meʃeːlat͡stej
 meʃkeːfatis
-mfs
 mi
 mjan
 misoːnd
@@ -4378,12 +4252,8 @@ misnin
 mistulet
 mittaː
 mjuŋmaː
-mk
 mlaɥ
-mls
 mm
-mɲo
-mnm
 mod͡ʑambiːkwe
 mol
 moldova
@@ -4438,7 +4308,6 @@ nasy
 nasɥe
 nasyjaːta
 nadeːvirodja
-naeɥl
 nafitakiːs
 nagileviːle
 najd͡ʑeːria
@@ -4485,7 +4354,6 @@ naʃən
 naʃeː
 naʃiːlelən
 naʃtajlietas
-nsf
 nea
 nebjua
 nesilukie
@@ -4570,12 +4438,8 @@ neʃme
 neʃtnasteːs
 neɥd
 neɥdenleʃef
-nɸ
-nɸh
-nfk
 ŋ
 ŋantilmeʃeːlat͡stej
-nhtk
 ni
 ɲasisən
 ɲasislisaːʃt͡sela
@@ -4689,7 +4553,6 @@ niʃuː
 ɲastaːi
 ɲe
 ɲelmeː
-nks
 nn
 no
 noble
@@ -4799,9 +4662,7 @@ nytyː
 nyvjep
 nyʃus
 nyʃvaːl-
-nt͡swp
 o
-oaja
 ode
 oeːl
 of
@@ -4840,7 +4701,6 @@ oːkulgrakzaː
 oːleː
 oːstralja
 os
-os
 osbekiston
 ozjed
 ostoː
@@ -4853,7 +4713,6 @@ ovop
 ovus
 oyjkist
 p-
-p ʃkwpab
 pa
 passameːl
 padenefsti
@@ -5050,8 +4909,6 @@ pljuːmən
 ploːde
 ploːul
 plot͡saːtaːpl
-pm
-pmsf
 pnastaneʃ
 pnastenauːʃ
 podjest
@@ -5074,7 +4931,6 @@ poθes
 potto
 powga
 poʃojmetie
-pp
 praθettaːi
 puajən
 pudem
@@ -5108,7 +4964,6 @@ pysnes
 pyvjest
 pyvjestfaliaː
 pyʃi
-pɥɥ
 pt͡seɲat͡st͡s
 kwa
 kwasemal
@@ -5123,7 +4978,6 @@ kwak
 kwanfeman
 kwante
 kwaː
-kwdf
 kwe
 kweːl
 kweːn
@@ -5136,7 +4990,6 @@ kwusie
 kwun
 kwune
 kwyssi
-kwɥɥ
 rafte
 raftetteʃajn
 rajhel
@@ -5192,8 +5045,6 @@ restut
 retad͡ʑaxal
 retla
 reto
-rhf
-ri
 rjeded
 rjediː
 rjejiel
@@ -5250,14 +5101,12 @@ rypis
 ryːska
 rytjet
 ryvjeʃ
-s h klan
 za
 zat͡ʃaːrefoj
 zat͡ʃies
 zady
 zafes
 zafjuːkuɥ
-zal
 zalaː
 zalaːua
 zalojsisnek
@@ -5341,13 +5190,11 @@ zetival
 zeval
 zeʃən
 zeʃpaː
-sf 
 sfag
 sfatleti
 sftle
 sgatiaː
 ʃane
-ʃkwpa
 ʃobe
 ʃot͡shy
 ʃot͡skiːso
@@ -5472,7 +5319,6 @@ slav
 slaʃeːs
 sle
 slefmelfa
-slgn
 sljefameːnt
 sljejs
 sliːf
@@ -5483,7 +5329,6 @@ slyːs
 smaːret
 smeneo
 smoːnan
-sn
 snaj
 snajuːs
 snakʃat͡s
@@ -5693,7 +5538,6 @@ stetustiɥːtektal
 stety
 steviːʃkən
 stevyp
-sθ
 stidisn
 stiduk
 stjedkwas
@@ -5827,7 +5671,6 @@ svigeŋθaːn
 svimjən
 svjon
 svit͡slati
-sʃ
 sʃe
 zydjes
 zydoʃ
@@ -6009,8 +5852,6 @@ teʃlis
 teʃt
 teʃta
 teʃtiːsapoleː
-tf
-tfy
 θan
 θana
 θaːfahon
@@ -6083,7 +5924,6 @@ tjuːl
 tiʃalemanfi
 tiʃɲe
 tjeːʃ
-tl
 tlaj
 tlakandelʃipiaː
 tlaːkija
@@ -6094,7 +5934,6 @@ tlest
 tletima
 tletlən
 tljest
-tll
 tloaʃasdal
 tlomef
 tlɥoaiːniːl
@@ -6146,7 +5985,6 @@ trete
 trinidaːdobago
 troːvt͡sela
 t͡sans
-ttg
 tuan
 tuanekrant
 tut͡ʃi
@@ -6532,7 +6370,6 @@ votyn
 voʃel
 vusfafuguh
 vsfonkn
-vta
 vujul
 vulmaleːta
 vulo
@@ -6564,8 +6401,6 @@ waxaːijaeːa
 waːvilaː
 waʃ-
 waɥːzenelən
-wd
-wef
 welf-
 wenlenpeʃeːl
 weː
@@ -6600,12 +6435,9 @@ wismehonaw
 witeː
 witeːm
 witma
-wli
 wol
 womuka
 wownza
-wp
-wp
 ʃ a
 ʃ v
 ʃa
@@ -6763,7 +6595,6 @@ wp
 ʃfaːniː
 ʃfojted͡ʑ
 ʃi
-ʃaa
 ʃian
 ʃit͡ʃa
 ʃisi
@@ -6796,9 +6627,6 @@ wp
 ʃitua
 ʃiʃeʃ
 ʃit͡si
-ʃje
-ʃilt
-ʃin
 ʃkad͡ʑ
 ʃkaːdes
 ʃkaːd͡ʑy
@@ -6841,7 +6669,6 @@ wp
 ʃpja
 ʃpjendystis
 ʃrleːza
-ʃsl
 ʃstas
 ʃtaːt͡s
 ʃtelijerijust
@@ -6851,7 +6678,6 @@ wp
 ʃtuːga
 ʃtuːxuːte
 ʃu
-ʃuf
 ʃufieːa
 ʃufiːua
 ʃujiej
@@ -6877,9 +6703,7 @@ wp
 ʃvajt͡seːxiʃe
 ʃvaːlfeːd
 ʃvelis
-ʃvlt
 ʃwaːʁ
-ʃʃo
 ʃy
 ʃyfaːt͡stən
 ʃyfoatost
@@ -6910,16 +6734,13 @@ ysa
 ysaʃ
 ysd͡ʑa
 ysus
-yd
 ydi
 ydisel
 ydun
 ɥeːskeːsk
 ɥesleonewnzaː
 yfestus
-yfl
 ykelʃe
-ykskaːfa
 ylaː
 yled
 ylesnalegeːl
@@ -6979,7 +6800,6 @@ yveːton
 yvete
 yvidustən
 yʃɲən
-ɥɥp
 yt͡sjujosni
 yt͡snet͡suːlajalfid͡ʑykujstantalkaːfa
 t͡s-
