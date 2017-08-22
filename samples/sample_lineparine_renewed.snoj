@@ -17,6 +17,7 @@ pure_consonant = "p"  | "b"  | "t"  | "d"  | "k"  | "g"  | "z"  | "m"  | "n"  | 
 ^ "edioll" ^ -> /edjol/
 ^ "wioll" ^ -> /wjol/
 ^ "woll" ^ -> /wol/
+^ "liaoll" ^ -> /ljaol/
 "vsfafgh" -> /vusfafuguh/
 "simfgh" -> /zimfuguh/
 
