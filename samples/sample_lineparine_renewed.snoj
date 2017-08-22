@@ -21,6 +21,7 @@ pure_consonant = "p"  | "b"  | "t"  | "d"  | "k"  | "g"  | "z"  | "m"  | "n"  | 
 "simfgh" -> /zimfuguh/
 
 "sh" -> /ʃ/
+"ss" ^ -> /s/
 
 vowel "i" "j" vowel -> $ /j/ /j/ $
 vowel "i" "j" ^ -> $ /j/ /i/

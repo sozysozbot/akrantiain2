@@ -99,7 +99,7 @@
 -ski
 -sna
 -snej
--ss
+-s
 -sta
 -stan
 -ste
@@ -163,7 +163,7 @@ asiːd͡ʑe
 asiːl
 asiːlan
 asiːlenizie
-asiːlkuːftless
+asiːlkuːftles
 asiːlo
 asiːlon
 asiːnema
@@ -799,7 +799,7 @@ sakstineːnt͡siːn
 sakstineːnt͡siːnsaszalk
 salalis
 salan
-salass
+salas
 sale
 salengaːt
 salestjelyn
@@ -2285,7 +2285,7 @@ fta
 ftle
 ftleljunzaː
 ftleslorajhel
-ftless
+ftles
 ftlesze
 ftleʃest
 ftleʃiza
@@ -2408,7 +2408,7 @@ gonsum
 grenada
 gʁana
 grosazjon
-grosazjonlkuːftless
+grosazjonlkuːftles
 grosteːze
 gruːtlyʃt
 gzeːyl
@@ -2417,7 +2417,7 @@ guddeː
 gujnebizoː
 gujneːa
 guledjuː
-gumljeːss
+gumljeːs
 guːleuː
 gust
 gustu
@@ -2496,7 +2496,7 @@ hffm
 hgg
 hjasaɲenim
 hjakegwe
-hjumnoːss
+hjumnoːs
 hjuːn
 hi
 hmakrant
@@ -3592,7 +3592,7 @@ lakewlsnetej
 lakim
 lakketeː
 laklzans
-laklzanslkuːftless
+laklzanslkuːftles
 lakoːmeːu
 lakraptana
 laktast
@@ -3984,7 +3984,7 @@ listet
 listin
 listoːbaː
 litaːle
-litepftless
+litepftles
 litis
 lititlipaːʃe
 litiʃesfis
@@ -4016,7 +4016,7 @@ lkuːf
 lkuːfaŋgeŋ
 lkuːfon
 lkuːftes
-lkuːftless
+lkuːftles
 lkuːftleszən
 lkuːgŋ
 lkuːlos
@@ -4253,7 +4253,7 @@ maːta
 maːtnefie
 maːve
 maːvel
-maːʃalamenizess
+maːʃalamenizes
 maskanokleː
 masrin
 mattiljən
@@ -4689,7 +4689,7 @@ niʃuː
 ɲastaːi
 ɲe
 ɲelmeː
-nkss
+nks
 nn
 no
 noble
