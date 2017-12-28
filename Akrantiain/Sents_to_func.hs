@@ -1,4 +1,5 @@
 {-# OPTIONS -Wall -fno-warn-unused-do-bind #-}
+{-# LANGUAGE RecordWildCards, NamedFieldPuns #-}
 
 module Akrantiain.Sents_to_func
 (sentsToFunc
@@ -47,8 +48,8 @@ forbidExplicitSpacepunctMatching (env,rules) = do
   else lift $ Left E{errNum=337, errStr = "a punctuation or space found inside a pattern string(s) "++toBraces (map Quote illegals)}
 
 searchPunct :: Punctuation -> Rule -> [String]
-searchPunct p R{leftneg =ln, leftdollar =ld, middle =m, rightdollar =rd, rightneg =rn} = 
- s3 ln ++ concatMap s2 ld ++ concatMap s1 m ++ concatMap s2 rd ++ s3 rn
+searchPunct p R{..} = 
+ s3 leftneg ++ concatMap s2 leftdollar ++ concatMap s1 middle ++ concatMap s2 rightdollar ++ s3 rightneg
  where
   s1 :: Foo -> [String]
   s1 (Left ()) = []
@@ -65,14 +66,14 @@ searchPunct p R{leftneg =ln, leftdollar =ld, middle =m, rightdollar =rd, rightne
 
 
 handleConv :: M.Map Identifier (Choose Quote) -> Conversion -> Either SemanticError Rule
-handleConv defs_ conv@Conversion{lneg=left, mid=midd, rneg=right, phons=phonemes} = do
+handleConv defs_ conv@Conversion{..} = do
   let solve = resolveSelect defs_
-  left'  <- traverse solve left
-  right' <- traverse solve right
-  midd'  <- traverse solve midd -- midd' :: [Either Boundary_ (Choose String)]
-  when (all isDollar phonemes) $ Left E{errNum = 336, errStr = "right-hand side of the following sentence consists solely of dollar(s):\n" ++ toSource conv}
-  case zipEither midd' (map phonToW phonemes) of
-   Nothing -> Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv ++ "\nleft: " ++ show(length[()|Right _ <- midd']) ++ "; right: " ++ show(length phonemes)}
+  left'  <- traverse solve lneg
+  right' <- traverse solve rneg
+  midd'  <- traverse solve mid -- midd' :: [Either Boundary_ (Choose String)]
+  when (all isDollar phons) $ Left E{errNum = 336, errStr = "right-hand side of the following sentence consists solely of dollar(s):\n" ++ toSource conv}
+  case zipEither midd' (map phonToW phons) of
+   Nothing -> Left E{errNum = 333, errStr = "mismatched number of concrete terms in left- and right-hand side of:\n" ++ toSource conv ++ "\nleft: " ++ show(length[()|Right _ <- midd']) ++ "; right: " ++ show(length phons)}
    Just newmidd -> do
     let (l_,mr_) = spanAndConvert toFoo2 newmidd
     let (m_,r_) = spanAndConvertRight toFoo2 mr_
