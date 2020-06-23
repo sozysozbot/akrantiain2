@@ -28,7 +28,7 @@ $ ./akrantiain2 samples/sample_lineparine.snoj < samples/input_sample/input_samp
 #### Windows (2020年6月24日に検証)
 1. [ここ](https://docs.haskellstack.org/en/stable/README/) の 「Windows 64-bit Installer」の箇所をクリックしてインストール
 2. コマンドプロンプトで `stack setup`
-3. 待つ
+3. 待つ（40分ぐらい掛かるかもね）
 4. (検証中)
 
 
