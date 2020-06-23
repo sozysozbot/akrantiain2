@@ -25,7 +25,14 @@ $ ./akrantiain2 samples/sample_lineparine.snoj < samples/input_sample/input_samp
 ```
 と実行することでできます。
 
-#### Windows (7 and 10)
+#### Windows (2020年6月24日に検証)
+1. [ここ](https://docs.haskellstack.org/en/stable/README/) の 「Windows 64-bit Installer」の箇所をクリックしてインストール
+2. コマンドプロンプトで `stack setup`
+3. 待つ
+4. (検証中)
+
+
+#### Windows (7 and 10) (以下の情報は2017年8月に検証したものなので古いです）
 1. Haskell Platform Full (>= 7.10.2)をインストール
 2. リポジトリをクローン
 3. `make.bat`をダブルクリック
