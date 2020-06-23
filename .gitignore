@@ -1,6 +1,8 @@
 *.bat
 !make.bat
 !make_debug.bat
+!make_stack.bat
+.stack-work/
 *.hi
 *.o
 *.exe
