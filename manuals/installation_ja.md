@@ -7,22 +7,24 @@ akrantiainで扱う全てのファイルはUTF-8である必要があります�
 2. コマンドプロンプトで `stack setup`
 3. 待つ（40分ぐらい掛かるかもね）
 4. `make_stack.bat`をダブルクリック
+5. 出た窓で処理が完了したらEnterを押す
+6. make_stack.bat をダブルクリックしたフォルダを開き、そこのアドレスバーに `cmd` と打ってコマンドプロンプトを立ち上げる
 
-akrantiainを試用するには、
+akrantiainを試用するには、その開いたコマンドプロンプト上で
 ```
-$ echo lineparine | akrantiain2 samples\sample_lineparine.snoj
+echo lineparine | akrantiain2 samples\sample_lineparine.snoj
 ```
 を実行してみましょう。
 
 ```
-$ akrantiain2 samples\sample_lineparine.snoj
+akrantiain2 samples\sample_lineparine.snoj
 ```
 を実行するとインタラクティブに実行できます。([Ctrl+Z] -> [Enter] で終了できます)
 
 ファイルから読むなら、
 ```
-$ chcp 65001
-$ akrantiain2 samples\sample_lineparine.snoj --file < samples\input_sample\input_sample_lineparine.txt
+chcp 65001
+akrantiain2 samples\sample_lineparine.snoj --file < samples\input_sample\input_sample_lineparine.txt
 ```
 と実行することでできます。
 
