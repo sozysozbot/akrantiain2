@@ -10,6 +10,8 @@ akrantiainで扱う全てのファイルはUTF-8である必要があります�
 5. 出た窓で処理が完了したらEnterを押す
 6. make_stack.bat をダブルクリックしたフォルダを開き、そこのアドレスバーに `cmd` と打ってコマンドプロンプトを立ち上げる
 
+![アドレスバー](windows_address_bar.png)
+
 akrantiainを試用するには、その開いたコマンドプロンプト上で
 ```
 echo lineparine | akrantiain2 samples\sample_lineparine.snoj
